@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: Pegasus
+        psr4_prefix: Pegasus
+        src_path: app
