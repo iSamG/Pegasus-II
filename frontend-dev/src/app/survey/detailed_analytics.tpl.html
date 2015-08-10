@@ -1,0 +1,151 @@
+<div class="row">
+
+    <div class="col-lg-12 center">
+        <section class="panel default blue_title h2">
+            <div class="panel-heading border">
+                <span ng-click="$state.go('surveys.selected_survey',{form_id : $stateParams.form_id, survey : $stateParams.survey })"  tooltip-placement="right" tooltip="Back to survey question view" class="pointer pull-left label label-info"><i class="fa fa-arrow-left"></i></span>
+
+                {{ selected_question.survey_name || 'Demo Survey '}}
+
+                <span ng-click="reloadSubmissions()"  tooltip-placement="left" tooltip="Refresh" class="pointer pull-right label label-success"><i class="fa fa-refresh"></i></span>
+            </div>
+        </section>
+    </div>
+
+
+    <div class="col-sm-4">
+        <section class="panel default blue_title h2">
+            <div class="panel-heading">
+                <span class="semi-bold"> Questions <span title="Number of questions under this survey" style="background-color : grey !important;" class="badge pull-right">{{ ( surveyData.questions_details | filter : { survey_name : $stateParams['survey'] }).length }}</span> </span>
+            </div>
+
+            <div class="panel-body">
+                <ul class="list-group">
+                    <perfect-scrollbar class="mini-scroller" wheel-propagation="true" wheel-speed="2" min-scrollbar-length="3">
+                        <li class="list-group-item pointer"
+                            ng-click="selectQuestion(question, $index)"
+                            ng-class="colourTypeSelectionClass(question, $index)"
+                            ng-repeat="question in surveyData.questions_details  | filter : { survey_name : $stateParams.survey}">
+                            <!--<span class="badge">14</span>-->
+                            {{ question.question }}
+                        </li>
+                    </perfect-scrollbar>
+                </ul>
+            </div>
+        </section>
+
+
+    </div>
+
+    <div class="col-md-8">
+        <div class="block-web full">
+            <ul class="nav nav-tabs nav-justified nav_bg">
+                <li class="active"><a href="" data-toggle="tab" data-target="#map"><i class="fa fa-map-marker"></i>   Map</a></li>
+                <li class="" ng-click="resizeChart()" ng-if="selected_question.question_type == 'close_ended'"><a href="" data-toggle="tab" data-target="#charts"><i class="fa fa-bar-chart"></i>   Charts</a></li>
+                <li class="" ng-hide="selected_question.answer_format_type == 'image'" ng-if="selected_question.question_type == 'open_ended'"><a href="" data-toggle="tab" data-target="#responses"><i class="fa fa-comments"></i>   Responses</a></li>
+                <li class="" ng-if="selected_question.answer_format_type == 'image'" ng-click="callSuperBoxGallery()"><a href="" data-toggle="tab" data-target="#gallery"><i class="fa fa-image"></i>   Gallery</a></li>
+                <li class=""><a href="" data-toggle="tab" data-target="#report_summary"><i class="fa fa-file"></i>   Summary</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="charts" class="tab-pane animated fadeInRight" ng-if="selected_question.question_type == 'close_ended'">
+                    <div class="user-profile-content">
+                        <tabset justified="true" type="pills">
+                            <tab select="changeChartType('BarChart')">
+                                <tab-heading>
+                                    <i class="fa fa-list-ul"></i> Bar Chart
+                                </tab-heading>
+                                <div google-chart chart="chartObject" style="height:500px; width:100%;"></div>
+                            </tab>
+
+                            <tab select="changeChartType('PieChart')">
+                                <tab-heading>
+                                    <i class="fa fa-pie-chart"></i> Pie Chart
+                                </tab-heading>
+                                <div google-chart chart="chartObject" style="height:500px; width:100%;"></div>
+                            </tab>
+
+                            <tab select="changeChartType('ColumnChart')">
+                                <tab-heading>
+                                    <i class="fa fa-bar-chart"></i> Column Chart
+                                </tab-heading>
+                                <div google-chart chart="chartObject" style="height:500px; width:100%;"></div>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+                <div id="map" class="tab-pane animated fadeInRight active">
+                    <div class="user-profile-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+                                    <ui-gmap-markers
+                                            models="markers"
+                                            idkey="'id'"
+                                            refresh="mapAccordionIsOpen"
+                                            coords="'points'">
+                                    </ui-gmap-markers>
+                                </ui-gmap-google-map>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-hide="selected_question.answer_format_type == 'image'" id="responses" class="tab-pane" ng-if="selected_question.question_type == 'open_ended'">
+                    <div class="ticket_open">
+                        <div class="ticket_open_heading">
+                            <div class="ticket_open_search hidden">
+                                <div class="btn-group"><i class="fa fa-search"></i></div>
+                                <div class="input-group pull-left">
+                                    <input type="text" placeholder="Search Response..." class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <a ng-show="selected_question.answers.length" class="ticket_open_comment" href="" ng-repeat="response in selected_question.answers | limitTo : maxSize">
+                            <div class="btn-group"><i class="fa fa-comment"></i></div>
+                            <span>{{ response.value}}</span>
+                            <p>&nbsp;</p>
+                            <div class="ticket_action">
+                                <div class="ticket_action_view">i</div>
+                            </div>
+                        </a>
+
+                        <h4 ng-hide="selected_question.answers.length" class="text-center" style="margin: 5% 0">No responses submitted!</h4>
+
+
+                        <div style="margin: 0;" role="toolbar" class="btn-toolbar" ng-show="selected_question.answers.length">
+                            <!--ng-show="totalItems > maxSize"-->
+                            <pagination
+                                    total-items="totalItems"
+                                    items-per-page="maxSize"
+                                    ng-model="currentPage"
+                                    ng-change="pageChanged(currentPage)">
+                            </pagination>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div id="gallery" class="tab-pane" ng-if="selected_question.answer_format_type == 'image'">
+                    <div class="superbox">
+
+                        <div class="superbox-list" ng-repeat="picture in selected_question.answers">
+                            <img class="superbox-img" alt="" data-img="{{ picture.url }}" ng-src="{{ picture.url }}">
+                        </div>
+                        <!--<div class="superbox-list" >-->
+                            <!--<img class="superbox-img" alt="" data-img="images/superbox/superbox-full-24.jpg" src="images/superbox/superbox-thumb-24.jpg">-->
+                        <!--</div>-->
+                        <div class="superbox-float"></div>
+                    </div>
+
+                </div>
+                <div id="report_summary" class="tab-pane">
+                    <p>Reports and summary of the survey</p>
+                </div>
+            </div>
+            <!--/tab-content-->
+        </div>
+        <!--/block-web-->
+    </div>
+</div>
+

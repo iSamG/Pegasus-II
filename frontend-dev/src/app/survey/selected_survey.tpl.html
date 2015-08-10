@@ -1,0 +1,113 @@
+<div class="row">
+
+    <div class="col-lg-12 center">
+        <section class="panel default blue_title h2">
+
+            <div class="panel-heading border">
+                <span ng-click="$state.go('surveys')"  tooltip-placement="right" tooltip="Back to survey list" class="pointer pull-left label label-info"><i class="fa fa-arrow-left"></i></span>
+
+                {{ surveyName || 'Demo Survey'}}
+
+                <span ng-click="reloadSurvey()"  tooltip-placement="left" tooltip="Refresh" class="pointer pull-right label label-success"><i class="fa fa-refresh"></i></span>
+
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-6">
+        <div class="widget_inbox">
+            <perfect-scrollbar class="scroller" wheel-propagation="true" wheel-speed="2" min-scrollbar-length="6">
+                <ul>
+                    <li ng-repeat="question_item in surveyData.questions_details | filter : { survey_name : $stateParams.survey}"> <a href="" ng-class="{'active' : question_item.question_field == selected_question.question_field}" ng-click="selectQuestion(question_item, $index)">
+                        <div class="widget_inbox_header">
+                            <span class="pull-left widget_inbox_time"><b>{{ $index + 1 }}</b></span>
+                            <span class="pull-right widget_inbox_time" open-closed="" type="{{ question_item.question_type }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Question
+                        </div>
+                        {{ question_item.question }}</a></li>
+                </ul>
+            </perfect-scrollbar>
+        </div>
+    </div>
+
+    <div class="col-md-6" ng-show="selected_question">
+        <div class="widget_inbox" ng-show="chartObject.data.rows.length">
+            <tabset justified="true">
+                <tab select="changeChartType('BarChart')">
+                    <tab-heading>
+                        <i class="fa fa-list-ul"></i> Bar Chart
+                    </tab-heading>
+                    <div google-chart chart="chartObject" style="height:350px; width:100%;"></div>
+                </tab>
+
+                <tab select="changeChartType('PieChart')">
+                    <tab-heading>
+                        <i class="fa fa-pie-chart"></i> Pie Chart
+                    </tab-heading>
+                    <div google-chart chart="chartObject" style="height:350px; width:100%;"></div>
+                </tab>
+
+                <tab select="changeChartType('ColumnChart')">
+                    <tab-heading>
+                        <i class="fa fa-bar-chart"></i> Column Chart
+                    </tab-heading>
+                    <div google-chart chart="chartObject" style="height:350px; width:100%;"></div>
+                </tab>
+            </tabset>
+
+        </div>
+        <div class="row" ng-show="selected_question">
+            <div ng-if="selected_question.question_type == 'close_ended'">
+                <button class="text-center col-sm-6 col-sm-offset-3 btn btn-primary btn-lg" ng-click="$state.go('surveys.analytics', {survey : surveyName, form_id : surveyFormId, index : selected_question.index })">
+                    View More Details</button>
+            </div>
+            <!--style="margin-top: 30%"-->
+            <div ng-if="selected_question.question_type == 'open_ended'" >
+                <div class="panel panel-primary">
+                    <div class="panel-heading text-center">
+                        <h4 class="panel-title ">{{selected_question.question}}</h4>
+                    </div>
+                    <div class="panel-body" style="padding-bottom: 0 !important;">
+                        <ul ng-show="selected_question.answers.length" ng-if="selected_question.answer_format_type == 'regular'" class="media-list">
+                            <li class="media answer-list" style="" ng-repeat="response in selected_question.answers | limitTo : 6"> <a href="">
+                                <p><strong>{{ response.value | limitTo : 100 }}</strong> <br>
+                                    <i class="text-muted" title="Submission date">{{ fromNow ( response.submitted_date) }}</i></p>
+                            </a> </li>
+                        </ul>
+                        <ul ng-show="selected_question.answers.length" ng-if="selected_question.answer_format_type == 'image'" class="media-list">
+                            <li class="media answer-list" style="" ng-repeat="response in selected_question.answers | limitTo : 3"> <a href="">
+                                <div class="col-sm-6">
+                                    <div class="contact_people">
+                                        <a href="#"><img ng-src="{{ response.url }}" width="250px"></a>
+                                    </div>
+                                </div>
+                            </a> </li>
+                        </ul>
+
+                        <ul ng-show="selected_question.answers.length" ng-if="selected_question.answer_format_type == 'location'" class="media-list">
+                            <li class="media answer-list" style="" ng-repeat="response in selected_question.answers | limitTo : 6"> <a href="">
+                                <p> Longitude : <strong>{{ response.longitude }}</strong>, Latitude : <strong>{{ response.latitude }}</strong><br>
+                                    <i class="text-muted" title="Business Name">{{ response.business_name }}</i>
+                                    <i class="text-muted pull-right" title="Submission date">({{ fromNow ( response.submitted_date) }})</i>
+                                </p>
+                            </a> </li>
+                        </ul>
+
+                        <h4 ng-hide="selected_question.answers.length" class="text-center" style="margin: 5% 0">No responses submitted!</h4>
+                    </div>
+                </div>
+
+                <button class="text-center col-sm-6 col-sm-offset-3 btn btn-primary btn-lg" ng-click="$state.go('surveys.analytics', {survey : surveyName, form_id : surveyFormId, index : selected_question.index })">
+                    View More Details</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" ng-hide="selected_question">
+        <div class="widget_inbox">
+            <h3 style="margin-top: 30%" class="text-center" ><i class="fa fa-arrow-left"></i>  Select a question on the left to preview</h3>
+        </div>
+    </div>
+
+    <!--<pre>{{selected_question.answers | json }}</pre>-->
+
+</div>
+
