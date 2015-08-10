@@ -13,7 +13,7 @@ module.exports = function (grunt) {
 //    grunt.registerTask('default', ['jshint','build','karma:unit']);
     grunt.registerTask('default', ['clean','concat','copy','html2js']);
     grunt.registerTask('ngfiles', ['concat:angular_application']);
-    grunt.registerTask('build', ['clean','html2js','concat','recess:build','copy:assets']);
+    grunt.registerTask('build', ['clean','html2js','concat', 'copy:assets']);
     grunt.registerTask('release', ['clean','html2js','uglify','jshint','karma:unit','concat:index', 'recess:min','copy:assets']);
     grunt.registerTask('test-watch', ['karma:watch']);
 
@@ -30,9 +30,9 @@ module.exports = function (grunt) {
 
     // Project configuration.
     grunt.initConfig({
-        distdir: 'dist',
+        distdir: '../public',
         distdirStatic: '<%= distdir %>/static',
-        distdirHtml: '<%= distdir %>/html',
+        distdirHtml: '../resources/views',
         pkg: grunt.file.readJSON('package.json'),
         banner:
         '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -97,7 +97,7 @@ module.exports = function (grunt) {
             },
             index: {
                 src: ['src/index.html'],
-                dest: '<%= distdirHtml %>/index.html',
+                dest: '<%= distdirHtml %>/dashboard.php',
                 options: {
                     process: true
                 }
