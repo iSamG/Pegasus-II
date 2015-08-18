@@ -1,7 +1,5 @@
 /vendor
-Homestead.yaml
 .env
-
 frontend-dev/node_modules
 frontend-dev/google visualisation-api_for IDE autocomletion_.js
-.idea
+.idea/

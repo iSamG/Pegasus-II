@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Pegasusrises Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="static/all-<%= grunt.config.get('pkg.name') %>.css"/>
+    <link rel="stylesheet" type="text/css" href="static/all-pegasusrises.css"/>
 
 
 </head>
@@ -157,8 +157,8 @@
 <script type="text/javascript" src="static/jquery.js"></script>
 <script type="text/javascript" src="static/bootstrap.js"></script>
 <script type="text/javascript" src="static/angular_files.js"></script>
-<script type="text/javascript" src="static/<%= grunt.config.get('pkg.name') %>_angular.js"></script>
-<!--<script type="text/javascript" src="static/<%= grunt.config.get('pkg.name') %>.js"></script>-->
+<script type="text/javascript" src="static/pegasusrises_angular.js"></script>
+<!--<script type="text/javascript" src="static/pegasusrises.js"></script>-->
 <script type="text/javascript" src="templates/app.js"></script>
 <script type="text/javascript" src="templates/common.js"></script>
 <script type="text/javascript" src="static/directives.js"></script>
