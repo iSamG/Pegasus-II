@@ -18,3 +18,10 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
+
+//Route::get('/register', function(){
+//    return 'ok';
+//});
+
+Route::post('/register', 'PegasusUserController@create');
+//Route::post('/register', 'PegasusUserController@store');
