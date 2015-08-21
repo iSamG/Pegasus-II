@@ -24,4 +24,5 @@ Route::get('/dashboard', function () {
 //});
 
 Route::post('/register', 'PegasusUserController@create');
+Route::post('/login', 'PegasusUserController@authenticate');
 //Route::post('/register', 'PegasusUserController@store');
