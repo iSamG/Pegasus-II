@@ -1,0 +1,154 @@
+<!--<div class="page-banner">-->
+<!--<div class="">-->
+<!--<div class="row" style="margin: 10px !important;">-->
+<!--<div class="col-md-6">-->
+<!--<h2>Wallet Topup</h2>-->
+<!--</div>-->
+<!--<div class="col-md-6">-->
+<!--<ul class="breadcrumbs">-->
+<!--<li><a href="#/">Home</a></li>-->
+<!--<li>Wallet Topup</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+<div id="content" class="add-shadow" style="margin-bottom: 20px">
+    <div class="">
+        <div class="row" style="margin: 10px !important;">
+            <div class="col-xs-12">
+                <div class="row classic-title">
+                    <div class="col-xs-12 col-sm-8" style="margin-left: -15px;">
+                        <span class="h3">Bidding Wallet TopUp</span>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-xs-12 col-sm-2 pull-right" title="Back to Auction ">
+                        <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="goBackInHistory()">
+                            <i class="fa fa-arrow-circle-left"></i>&nbsp;&nbsp;&nbsp;  Back
+                        </button>
+                    </div>
+                </div>
+                <div class="panel panel-success">
+                    <div class="panel-heading hidden">
+                        <div class="panel-title">
+                            <div class="row">
+                                <div class="col-xs-6" style="margin-top: 5px ">
+                                    <h3><span class="fa fa-money"></span> Bidding Wallet TopUp</h3>
+                                </div>
+                                <div class="col-xs-2 pull-right" style="margin: 9px ">
+                                    <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="$state.go('public_home')">
+                                        <span class="fa fa-arrow-circle-left"></span>&nbsp;&nbsp;&nbsp;  Back to Auctions
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-2 hidden-xs hidden-xs" style="margin-top: 10px">
+                                <img class="img-responsive" src="/punters/assets/images/logo.png">
+                            </div>
+                            <div class="col-xs-6 col-md-4">
+                                <h4 class="product-name"><strong>Bidding Credits (bcs)</strong></h4>
+                                <h4>
+                                    <small class="text-muted">This is the allowed currency on the {{ app_name }} platform</small>
+                                    <br>
+                                    <small class="text-left" >Ratio  =  <code>GHc 1 : 100 bcs</code></small>
+                                </h4>
+                            </div>
+                            <div class="col-xs-6 col-md-6">
+                                <div class="col-md-3 hidden-sm hidden-xs text-right">
+                                    <h4 class="text-muted">Amount</h4>
+                                </div>
+                                <div class="col-xs-12 col-md-7" >
+                                    <div class="input-group">
+                                        <span class="input-group-addon hidden-xs" id="creditMultiplierValue">GHc</span>
+                                        <input type="number" class="form-control input" ng-model="creditMultiplierValue">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 hidden-sm hidden-xs">
+                                    <button type="button" class="btn btn-link btn-xs" style="padding: 5px 14px !important;" ng-click="creditMultiplierValue = 1">
+                                        <span class="fa fa-refresh"> </span>
+                                    </button>
+                                </div>
+                                <div class="col-md-11 pull-right col-xs-12 text-center">
+                                    <small style="font-size: 100%" class="help-block text-muted"><i class="fa fa-info-circle"></i> Enter the amount you wish to pay</small>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class=" col-md-4 hidden-xs hidden-sm" style="margin-top: 12px">
+                                <h4 class="text-left text-muted" > </h4><!--Credit Conversion Ratio   :-->
+                            </div>
+                            <div class="visible-sm col-sm-3" style="margin-top: 12px">
+                                <h4 class="text-left text-muted" >Ratio</h4><!--Ratio-->
+                            </div>
+                            <div class=" col-xs-6 col-md-3 col-sm-4 hidden-sm hidden-xs" style="margin-top: 12px">
+                                <h4 class="text-left" ><code class="hidden">GHc 1 : 100 bcs</code></h4>
+                            </div>
+                            <div class="col-md-3 hidden-xs hidden-sm" style="margin-top: 12px">
+                                <h4 class="text-right ng-cloak text-muted">Total {{ app_name }} Credits :</h4>
+                            </div>
+                            <div class="visible-sm visible-xs col-xs-6" style="margin-top: 12px">
+                                <h4 class="text-left ng-cloak text-muted">Credits</h4>
+                            </div>
+                            <div class="col-xs-6 col-md-2 col-sm-3" style="margin-top: 12px">
+                                <h4 class="text-center text-muted"><strong>{{ creditMultiplierValue * 100 }} bcs</strong></h4>
+                                <!--<button type="button" class="btn btn-success btn-block">-->
+                                <!--TopUp with MPower-->
+                                <!--</button>-->
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-6 hidden" style="margin-top: 12px">
+                                <h5 class="text-center text-muted" ng-show="punter.punter_current_status == 'confirmed'">This is your first topup attempt. The registration fee of <strong>GHc 1</strong>
+                                    will be deducted from the final topup amount</h5>
+                            </div>
+                            <div class="col-md-6 hidden-xs hidden-sm" style="margin-top: 12px">
+                                <h4 class="text-right text-muted"><strong></strong></h4>
+                            </div>
+                            <div class=" col-md-4 col-xs-6" style="margin-top: 12px">
+                                <h4 class="text-center text-muted hidden-sm hidden-xs"><strong>Total Charge :</strong></h4>
+                                <h4 class="text-left text-muted visible-sm visible-xs"><strong>Total Charge :</strong></h4>
+                            </div>
+                            <div class="col-xs-6 col-md-2 col-sm-3" style="margin-top: 12px">
+                                <h4 class="text-center text-muted"><strong>GHc {{ creditMultiplierValue * 1 }}</strong></h4>
+                            </div>
+                        </div>
+                        <hr>
+                        <!--<div class="row hidden">-->
+                        <!--<div class="text-center">-->
+                        <!--<div class="col-xs-9">-->
+                        <!--<h6 class="text-right ">Added items?</h6>-->
+                        <!--</div>-->
+                        <!--<div class="col-xs-3">-->
+                        <!--<button type="button" class="btn btn-default btn-sm btn-block">-->
+                        <!--Update Wallet (former vesion)-->
+                        <!--</button>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                    <div class="panel-footer" style="background-color : white">
+                        <div class="row text-center">
+                            <div class="col-md-9 col-xs-12" style="margin: 8px auto">
+                                <img src="punters/assets/images/mpower_options.jpg" height="32px" class="img-responsive text-right pull-right">
+                            </div>
+                            <div class="col-md-3 col-xs-12" style="margin: 8px auto">
+                                <button ng-disabled="!creditMultiplierValue" type="button" class="btn btn-success center-block" ng-click="initiateTopup(creditMultiplierValue * 1)">
+                                    <!--ng-click="initiateTopup(creditMultiplierValue * 1)-->
+                                    Click to Top Up
+                                    <!--<a style="color: #FFFFFF !important;" data-ng-href="{{ topUpUrl }}" ng-show="creditMultiplierValue">Click to Top Up</a>-->
+                                    <!--<a style="color: #FFFFFF !important;" ng-hide="creditMultiplierValue">Specify Topup Amount</a>-->
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End .row -->
+    </div><!-- End .container -->
+</div><!-- End .content -->

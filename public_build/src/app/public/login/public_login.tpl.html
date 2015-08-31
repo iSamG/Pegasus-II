@@ -1,0 +1,106 @@
+<!--<div class="page-banner" style="padding:20px 0; background: #f9f9f9;">-->
+<!--<div class="">-->
+<!--<div class="row" style="margin: 10px !important;">-->
+<!--<div class="col-md-6">-->
+<!--<h2>Login</h2>-->
+<!--&lt;!&ndash;<p>Sign in page</p>&ndash;&gt;-->
+<!--</div>-->
+<!--<div class="col-md-6">-->
+<!--<ul class="breadcrumbs">-->
+<!--<li><a href="#/">Home</a></li>-->
+<!--<li>Login</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<div id="content" class="add-shadow" style="margin-bottom: 20px">
+    <div class="">
+
+        <div class="row" style="margin: 10px !important;">
+            <!-- Classic Heading -->
+
+            <div class="col-md-6">
+                <h2 class="classic-title"><span>Enter login details below</span></h2>
+                <form id="login-form" ng-submit="loginPunter()">
+                    <div class="row">
+
+                        <div class="col-sm-6 col-xs-10 center-block ">
+
+                            <fieldset>
+                                <div class="alert alert-danger text-center h4" ng-if="loginError"><i class="fa fa-warning"></i> Invalid login credentials!</div>
+                                <div class="row">
+                                    <label for="username">Username<span class="required">*</span></label>
+                                    <input type="text" id="username" placeholder="Your Username" ng-model="punter_login_form.username" class="form-control input-lg" required="">
+                                </div><!-- End .input-group -->
+
+
+                                <div class="row margin-top">
+                                    <label for="password">Password<span class="required">*</span></label>
+
+                                    <div class=" has-feedback" style="display: block">
+                                        <input type="password" id="password" placeholder="Your Password"  ng-model="punter_login_form.password" class="form-control input-lg" required="">
+                                        <span class="form-control-feedback" aria-hidden="true" style="width: 120px!important;"><a href="" reset-password="" > Forgot password?</a></span>
+                                    </div>
+
+                                </div><!-- End .input-group -->
+
+                                <div class="margin-top center-block">
+                                    <div class="center-block text-center">
+
+                                        <div class="input-group center-block">
+                                            <input type="checkbox" ng-model="punter_login_form.remember_me_token">
+                                            <span style="margin-left: 10px "><b>Remember me!</b></span>
+                                        </div><!-- End .input-group -->
+                                    </div><!-- End  col-xs-12-->
+                                </div>
+
+                                <div class="row margin-top">
+
+                                    <div class="col-xs-12 text-center">
+
+                                        <input type="submit" class="btn btn-success btn-lg" value="LOG ME IN">
+                                    </div><!-- End .col-md-6 -->
+                                </div><!-- End .row -->
+
+                            </fieldset>
+
+
+                        </div><!-- End .col-md-6 -->
+
+                    </div><!-- End .row -->
+
+                    <!--Verify Punter-->
+                    <div class="row margin-top">
+                        <code class="col-xs-6 pointer btn text-success text-center force-custom-font center-block text-center" verify-punter-modal=""><i class="fa fa-key"></i>  Enter verification code</code>
+                    </div><!--End Verify Punter-->
+
+
+                </form>
+            </div><!-- End .col-md-12 -->
+
+            <div class="col-md-6">
+                <h2 class="classic-title" style=""><span>Login with Social Media Account</span></h2>
+
+                <div class="row" style="margin-top: 45px">
+                    <!---->
+                    <!--href="/facebook/login" target="_blank"-->
+                    <button class="facebook btn btn-lg btn-facebook center-block"  social-media-login="facebook"><i class="fa fa-facebook-official"></i>   Login with Facebook</button>
+                    <div style="margin: 60px 0"></div>
+                    <button class="btn-foursquare btn-lg btn center-block" social-media-login="foursquare"><i class="fa fa-foursquare"></i>  Connect with Foursquare</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row margin-90">
+            <div class="col-sm-12">
+                <p class="text-center h3"><a ui-sref="public_home.register">Don't have an account? Click here to register</a></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- End content -->
+
+

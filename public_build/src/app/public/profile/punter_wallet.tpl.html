@@ -1,0 +1,97 @@
+<div class="user-profile-content" >
+    <h5 ><strong>Wallet Details</strong></h5>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <td width="55%">Available {{ app_name }} Credits </td>
+            <td class="center text-center" width="40%" ng-if="punter.user_wallet.amount_available_in_wallet">
+                {{ punter.user_wallet.amount_available_in_wallet | number  }}
+                <span ng-if="punter.user_wallet.amount_available_in_wallet"> bcs</span></td>
+            <td class="center text-center" width="40%" ng-if="!(punter.user_wallet.amount_available_in_wallet)"> --- </td>
+        </tr>
+
+        <tr>
+            <td width="55%">Total {{ app_name }} Credits Spent</td>
+            <td class="center text-center" width="40%" ng-if="punter.user_wallet.amount_spent_from_wallet">
+                {{ punter.user_wallet.amount_spent_from_wallet | number  }}
+                <span ng-if="punter.user_wallet.amount_spent_from_wallet"> bcs</span></td>
+            <td class="center text-center" width="40%" ng-if="!(punter.user_wallet.amount_spent_from_wallet)"> --- </td>
+
+        </tr>
+
+        <tr>
+            <td width="55%">Last Amount Paid </td>
+            <td class="center text-center" width="40%" ng-if="punter.user_wallet.latest_amount_loaded_on_wallet">
+                {{ punter.user_wallet.latest_amount_loaded_on_wallet | currency : 'GHc ' : 2 }}</td>
+            <td class="center text-center" width="40%" ng-if="!(punter.user_wallet.latest_amount_loaded_on_wallet)"> --- </td>
+
+        </tr>
+
+        <tr>
+            <td width="55%">Last {{ app_name }} Credits Bought</td>
+            <td class="center text-center" width="40%" ng-if="punter.user_wallet.latest_bid2win_credit_loaded">
+                {{ punter.user_wallet.latest_bid2win_credit_loaded | number }}
+                <span ng-if="punter.user_wallet.latest_bid2win_credit_loaded"> bcs</span></td>
+            <td class="center text-center" width="40%" ng-if="!(punter.user_wallet.latest_bid2win_credit_loaded)"> --- </td>
+
+        </tr>
+
+    </table>
+
+    <hr >
+
+    <h5><strong>Topup Statistics</strong></h5>
+    <div ng-if="topupHistory.length" class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <td width="60%">Total Topup Amount </td>
+                <td class="center text-center" width="40%">{{ punterTopupObject.money_in_total | currency : 'GHc ' : 2 }}</td>
+            </tr>
+            <tr>
+                <td>Total BCS Bought </td>
+                <td class="center text-center" >{{ punterTopupObject.bcs_in_total | number  }} bcs</td>
+            </tr>
+            <tr>
+                <td>Number of Times Topped Up </td>
+                <td class="center text-center" >{{ topupHistory.length + ' time' }}<span ng-if="topupHistory.length != 1">s</span></td>
+            </tr>
+            <tr>
+                <td>Last Topup Date </td>
+                <td class="center text-center" >{{ topupHistory[0].topped_up_date | amDateFormat:' Do MMM, YYYY  | HH:mm'}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <hr ng-if="topupHistory.length">
+    <div class="row">
+        <div class="col-sm-12">
+            <h5 ng-if="topupHistory.length"><strong>Topup Breakdown</strong></h5>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" ng-if="topupHistory.length">
+                    <thead>
+                    <tr>
+                        <td class="center text-center">Topup Date</td>
+                        <td class="center text-center">Amount</td>
+                        <td class="center text-center">Credits Equivalent</td>
+                        <td class="hidden center text-center">Mpower Name</td>
+                        <td class="hidden center text-center">Mpower Email</td>
+                        <td class="hidden center text-center">Mpower Phone Number</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in topupHistory">
+                        <td class="center text-center">{{ item.topped_up_date | amDateFormat:' Do MMM, YYYY  |  HH:mm'}}</td>
+                        <td class="center text-center">{{ item.money_topped_up | currency : 'GHc ' : 2 }}</td>
+                        <td class="center text-center">{{ item.amount_in_bid2win_credit | number  }} bcs</td>
+                        <td class="hidden center text-center">{{ item.mpower_name }}</td>
+                        <td class="hidden center text-center">{{ item.mpower_email }}</td>
+                        <td class="hidden center text-center">{{ item.mpower_phone_number }}</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+
+                <p ng-if="!(topupHistory.length)" style="margin: 60px 0" class="h4 text-center">No top up record under this account</p>
+            </div>
+        </div>
+    </div>
+</div>
