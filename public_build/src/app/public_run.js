@@ -2,7 +2,7 @@ angular.module('bid2winApp')
     .run(['$rootScope', '$state', '$stateParams','$localStorage','$sessionStorage','B2WConstants',
         'Punter','Auction','Pusher','Advertising', 'sortDate',
         function($rootScope, $state, $stateParams ,$localStorage, $sessionStorage, B2WConstants,
-                 Punter, Auction, Pusher, Advertising, sortDate){
+                 Punter, Auction, Pusher, Advertising, sortDate, B2WAuth){
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 
@@ -35,6 +35,8 @@ angular.module('bid2winApp')
             $rootScope.$on('$viewContentLoaded',function(event){
                 //cfpLoadingBar.complete();
                 $rootScope.pageLoading = false;
+                B2WAuth.checkIfUserIsAuthenticated();
+
             });
 
 

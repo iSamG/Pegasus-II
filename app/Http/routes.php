@@ -19,3 +19,13 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
+
+//Route::get('/register', function(){
+//    return 'ok';
+//});
+
+Route::post('/register', 'PegasusUserController@create');
+Route::post('/login', 'PegasusUserController@authenticate');
+Route::get('/logout', 'PegasusUserController@logout');
+Route::get('/auth/user', 'PegasusUserController@currentUser');
+//Route::post('/register', 'PegasusUserController@store');

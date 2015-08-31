@@ -26,7 +26,7 @@ angular.module('bid2winApp.constants', [])
         paid_subscription : "Subscribed"
     })
     .constant('B2WRoutes', {
-        authentication : 'punter/user/authenticated',
+        authentication : '/auth/user',
         getRunningAuctions : '../homepage/auctions',
         getAuctionLeaderboard : 'auction/bidders/leaders/board',
         getAuctionTips : 'active/auction/tips',
@@ -45,9 +45,9 @@ angular.module('bid2winApp.constants', [])
         punterBidsPerAuction : 'punter/total/bid/under/auction',
         allAuctionsParticipated : 'punter/all/auctions/participated',
         placeABid : 'punter/place/bid',
-        register : 'punter/register',
-        login : 'user/login',
-        logout : 'punter/logout',
+        register : '/register',
+        login : '/login',
+        logout : '/logout',
         activeAdverts : 'active/adverts',
         endorsedAuctionWinner : 'auction/endorsed/winner',
 

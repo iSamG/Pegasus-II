@@ -727,15 +727,6 @@ angular.module('public')
                   growl, SweetAlert, $location, $timeout, ngDialog) {
 
 
-            /*if the login was a social media one redirect if there are no errors*/
-            if ($stateParams.channel) {
-                /*Do some check here with the session variable from the server*/
-                //else
-                var fbResponse = $('#fbLogResponse').text();
-                console.log(fbResponse);
-                $state.go('public_home');
-            }
-
             /*Begin Punter login form*/
             $scope.submittingLoginForm = false;
             $scope.punter_login_form = {
@@ -950,33 +941,12 @@ angular.module('public')
             }else{
                 //Begin punter register form
                 $scope.punter_register_form = $localStorage.punter_register_form = {
-                    bidder_rank_type : 'newbie',
-                    is_punter : 1,
-                    is_admin : 0,
-                    date_of_birth : '',
-                    email : "",
-                    first_name: "",
-                    other_names : ""
+                    email : ""
                 };
                 $scope.validation = $localStorage.signup_validation = {};
 
             }
 
-            $scope.statePickADate = function () {
-                $('.datepicker').pickadate({
-                    today: '',
-                    clear: 'Clear',
-                    close: 'Close',
-                    closeOnSelect: true,
-                    closeOnClear: false,
-                    selectMonths: true,
-                    selectYears: 25,
-                    format : 'dddd d mmmm, yyyy',
-                    formatSubmit: 'yyyy-mm-dd',
-                    //min: new Date(2015,3,20),
-                    max:  - (10 * 366) //Must be 18 years to register
-                });
-            };
 
 
             $scope.registerPunter = function(isValid){
@@ -1000,57 +970,6 @@ angular.module('public')
 
                 //End password  validation
 
-                //Phone number validations
-                if (!($scope.punter_register_form.phone_number.length > 9 && $scope.punter_register_form.phone_number.length < 14)) {
-                    $scope.validation.phone_number = 'The phone number is incomplete' ;
-                    return false
-                }
-                if ($scope.punter_register_form.phone_number.slice(0,4) == '+233') {
-                    if ($scope.punter_register_form.phone_number.length == 13) {
-                        $scope.punter_register_form.formatted_phone_number = '0' + $scope.punter_register_form.phone_number.slice(4).toString()
-                    }else{
-                        $scope.validation.phone_number = 'The phone number is incomplete' ;
-                        return false
-                    }
-                }
-                else if($scope.punter_register_form.phone_number.slice(0,1) == '0') {
-                    if ($scope.punter_register_form.phone_number.length == 10) {
-                        $scope.punter_register_form.formatted_phone_number = $scope.punter_register_form.phone_number;
-                        $scope.punter_register_form.phone_number = '+233' + $scope.punter_register_form.phone_number.slice(1).toString();
-                    }else if ($scope.punter_register_form.phone_number.length > 10) {
-                        $scope.validation.phone_number = 'The phone number has too many characters' ;
-                        return false
-                    }else{
-                        $scope.validation.phone_number = 'The phone number is incomplete' ;
-                        return false
-                    }
-
-                }else{
-                    $scope.validation.phone_number = 'The phone number is invalid' ;
-                    return false
-                }
-                //End phone number validation
-
-                //Validate user date of birth
-                var setDate = $('input[name ="date_of_birth_submit"]').val();
-                if (setDate) {
-                    var today = new Date(),
-                        setDateInSecs = new Date(setDate);
-                    var timeDiff = today.getTime() - setDateInSecs.getTime();
-                    if (Math.floor(timeDiff / (1000 * 3600 * 24 * 7 * 52)) < 18) {
-                        $scope.validation.date_of_birth = 'You need to be over 18years to sign up.' ;
-                        growl.warning("You need to be over 18years to sign up.", {title : "Age Limit"});
-                        return false
-                    }
-                }else{
-                    growl.warning("You need to be over 18years to sign up.", {title : "Age Limit"});
-                    $scope.validation.date_of_birth = 'Date of birth is required' ;
-                    return false
-                }
-
-                //change the date to a format accepted in the db
-                $scope.punter_register_form.date_of_birth = setDate;
-
 
                 $scope.submittingRegistrationFormLoader = true;
 
@@ -1061,7 +980,7 @@ angular.module('public')
                 //send form to the server to be saved
                 B2WAuth.register($scope.punter_register_form)
                     .success(function (successData) {
-                        $scope.hidePopover();
+                        $scope.cancel();
                         if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok' ) {
                             growl.success("You have successfully registered on "+ B2WConstants.app_name +". An SMS confirmation code will be sent to " + $scope.punter_register_form.phone_number + " shortly. Thank you.", {title : "Registration"});
                             $scope.punter_register_form = $localStorage.punter_register_form = {};
@@ -1335,11 +1254,120 @@ angular.module('public')
             };
 
         }]);
+/**
+ * Created by Kaygee on 27/03/2015.
+ */
+
+if (!window.location.origin) {
+    window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+}
+
+angular.module('bid2winApp.constants', [])
+    .constant('B2WConstants', {
+        app_name : 'i-Bid2Win',
+        app_url : 'http://www.i-bid2win.com',
+        app_email : 'support@i-bid2win.com',
+        credit_symbol : 'bcs',
+        credit_name_singular : 'credit',
+        credit_name_plural : 'credits',
+        fbId : '384423575082172', //facebookId
+        pusherToken : '48d1c62b0717d8444d92',
+        pusher_public_channel : 'bid2win_public_channel',
+        pusher_admin_channel : 'bid2win_admin_channel',
+        cacheMaxAge : 61 * 60 * 1000, // 1 hour 1minute,
+
+        /*Account Type Formatting*/
+        confirmed : "Confirmed",
+        inactive : "Inactive",
+        paid_subscription : "Subscribed"
+    })
+    .constant('B2WRoutes', {
+        authentication : '/auth/user',
+        getRunningAuctions : '../homepage/auctions',
+        getAuctionLeaderboard : 'auction/bidders/leaders/board',
+        getAuctionTips : 'active/auction/tips',
+        verifyPunterCode : 'punter/account/confirmation',
+        resendPunterCode : 'punter/account/confirmation/resend',
+        sendPasswordResetToken : 'user/send/password/link',
+        wallet : 'punter/wallet',
+        topUpWallet : window.location.origin + '/punter/wallet/topup',/*the origin is added so it redirects on all platforms*/
+        walletTopUpHistory : 'punter/wallet/topup/history',
+        editPunterProfile : 'punter/profile/edit',
+        editPunterProfileAfterSocialMediaSignup : 'punter/update/social/media/profile',
+        paySubscription : 'punter/pay/for/subscription',
+        uploadAvatar : '/upload/image',
+        allPunterBids : 'punter/bids',
+        allPunterBidTotal : 'punter/bids/totals',
+        punterBidsPerAuction : 'punter/total/bid/under/auction',
+        allAuctionsParticipated : 'punter/all/auctions/participated',
+        placeABid : 'punter/place/bid',
+        register : '/register',
+        login : '/login',
+        logout : '/logout',
+        activeAdverts : 'active/adverts',
+        endorsedAuctionWinner : 'auction/endorsed/winner',
+
+        /*Facebook on the Server*/
+        facebook : 'facebook/login',
+        /*Foursquare on the Server*/
+        foursquare : 'foursquare/login',
+
+        adSizes : {
+            leaderboard : {
+                name : 'Leaderboard',
+                type : 'leaderboard',
+                width : 728,
+                height : 90
+            },
+            take_over : {
+                name : 'Take Over',
+                type : 'take_over',
+                width : 2000,
+                height : 1200
+            },
+            //wide_skyscraper : {
+            //    name : 'Wide Skyscraper',
+            //    type : 'wide_skyscraper',
+            //    width : 160,
+            //    height : 600
+            //},
+            //skyscraper : {
+            //    name : 'Wide Skyscraper',
+            //    type : 'skyscraper',
+            //    width : 120,
+            //    height : 600
+            //},
+            square_pop_up : {
+                name : 'Square pop-up',
+                type : 'square_pop_up',
+                width : 250,
+                height : 250
+            },
+            //rectangle : {
+            //    name : 'Rectangle',
+            //    type : 'rectangle',
+            //    width : 180,
+            //    height : 150
+            //},
+            //square_button : {
+            //    name : 'Square Button',
+            //    type : 'square_button',
+            //    width : 125,
+            //    height : 125
+            //}
+            home_page_carousel : {
+                name : 'Home Page Slider',
+                type : 'home_page_carousel',
+                width : 1440,
+                height : 504
+            }
+        }
+    });
 angular.module('bid2winApp')
     .run(['$rootScope', '$state', '$stateParams','$localStorage','$sessionStorage','B2WConstants',
         'Punter','Auction','Pusher','Advertising', 'sortDate',
         function($rootScope, $state, $stateParams ,$localStorage, $sessionStorage, B2WConstants,
-                 Punter, Auction, Pusher, Advertising, sortDate){
+                 Punter, Auction, Pusher, Advertising, sortDate, B2WAuth){
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 
@@ -1372,6 +1400,8 @@ angular.module('bid2winApp')
             $rootScope.$on('$viewContentLoaded',function(event){
                 //cfpLoadingBar.complete();
                 $rootScope.pageLoading = false;
+                B2WAuth.checkIfUserIsAuthenticated();
+
             });
 
 
@@ -1559,7 +1589,6 @@ angular.module('pegasus.directives')
                 function signupModalController
                 ($scope, $modalInstance, $state, growl, $timeout, $rootScope){
 
-                    console.log('log');
                     $scope.cancel = function(){
                         $modalInstance.dismiss('cancel');
                     }
@@ -1567,115 +1596,6 @@ angular.module('pegasus.directives')
             })
         }
     }]);
-/**
- * Created by Kaygee on 27/03/2015.
- */
-
-if (!window.location.origin) {
-    window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
-}
-
-angular.module('bid2winApp.constants', [])
-    .constant('B2WConstants', {
-        app_name : 'i-Bid2Win',
-        app_url : 'http://www.i-bid2win.com',
-        app_email : 'support@i-bid2win.com',
-        credit_symbol : 'bcs',
-        credit_name_singular : 'credit',
-        credit_name_plural : 'credits',
-        fbId : '384423575082172', //facebookId
-        pusherToken : '48d1c62b0717d8444d92',
-        pusher_public_channel : 'bid2win_public_channel',
-        pusher_admin_channel : 'bid2win_admin_channel',
-        cacheMaxAge : 61 * 60 * 1000, // 1 hour 1minute,
-
-        /*Account Type Formatting*/
-        confirmed : "Confirmed",
-        inactive : "Inactive",
-        paid_subscription : "Subscribed"
-    })
-    .constant('B2WRoutes', {
-        authentication : 'punter/user/authenticated',
-        getRunningAuctions : '../homepage/auctions',
-        getAuctionLeaderboard : 'auction/bidders/leaders/board',
-        getAuctionTips : 'active/auction/tips',
-        verifyPunterCode : 'punter/account/confirmation',
-        resendPunterCode : 'punter/account/confirmation/resend',
-        sendPasswordResetToken : 'user/send/password/link',
-        wallet : 'punter/wallet',
-        topUpWallet : window.location.origin + '/punter/wallet/topup',/*the origin is added so it redirects on all platforms*/
-        walletTopUpHistory : 'punter/wallet/topup/history',
-        editPunterProfile : 'punter/profile/edit',
-        editPunterProfileAfterSocialMediaSignup : 'punter/update/social/media/profile',
-        paySubscription : 'punter/pay/for/subscription',
-        uploadAvatar : '/upload/image',
-        allPunterBids : 'punter/bids',
-        allPunterBidTotal : 'punter/bids/totals',
-        punterBidsPerAuction : 'punter/total/bid/under/auction',
-        allAuctionsParticipated : 'punter/all/auctions/participated',
-        placeABid : 'punter/place/bid',
-        register : 'punter/register',
-        login : 'user/login',
-        logout : 'punter/logout',
-        activeAdverts : 'active/adverts',
-        endorsedAuctionWinner : 'auction/endorsed/winner',
-
-        /*Facebook on the Server*/
-        facebook : 'facebook/login',
-        /*Foursquare on the Server*/
-        foursquare : 'foursquare/login',
-
-        adSizes : {
-            leaderboard : {
-                name : 'Leaderboard',
-                type : 'leaderboard',
-                width : 728,
-                height : 90
-            },
-            take_over : {
-                name : 'Take Over',
-                type : 'take_over',
-                width : 2000,
-                height : 1200
-            },
-            //wide_skyscraper : {
-            //    name : 'Wide Skyscraper',
-            //    type : 'wide_skyscraper',
-            //    width : 160,
-            //    height : 600
-            //},
-            //skyscraper : {
-            //    name : 'Wide Skyscraper',
-            //    type : 'skyscraper',
-            //    width : 120,
-            //    height : 600
-            //},
-            square_pop_up : {
-                name : 'Square pop-up',
-                type : 'square_pop_up',
-                width : 250,
-                height : 250
-            },
-            //rectangle : {
-            //    name : 'Rectangle',
-            //    type : 'rectangle',
-            //    width : 180,
-            //    height : 150
-            //},
-            //square_button : {
-            //    name : 'Square Button',
-            //    type : 'square_button',
-            //    width : 125,
-            //    height : 125
-            //}
-            home_page_carousel : {
-                name : 'Home Page Slider',
-                type : 'home_page_carousel',
-                width : 1440,
-                height : 504
-            }
-        }
-    });
 /**
  * Created by Kaygee on 25/03/2015.
  */
@@ -1971,17 +1891,6 @@ angular.module('authentication', [])
 
             var authentication = {};
 
-            function runLogin_PunterButtonHider(){
-                var hider =  $('.showAfterAuthCheck');
-                if (hider.hasClass('showAfterAuthCheck')) {
-                    $timeout (function () {
-                        hider.removeClass('showAfterAuthCheck');
-                    }, 2000)
-                }
-            }
-
-            var walletUrl;
-
             var checkingAuthentication = false;
             authentication.checkIfUserIsAuthenticated = function () {
                 if (!checkingAuthentication) {
@@ -2010,33 +1919,12 @@ angular.module('authentication', [])
                                     }
                                 });
 
-                                /*if he has, get his wallet */
-                                walletUrl = B2WRoutes.wallet+'?user_id='+successData.data.id;
-
                                 /*Do some rootScope changes*/
                                 $rootScope.authentication = true;
-                                runLogin_PunterButtonHider();
-                                $rootScope.logoutPunter = function () {
-                                    authentication.logout();
-                                };
 
-                                /*If no cache exists, fetch wallet from server*/
-                                Punter.getWallet(successData.data.id)
-                                    .success(function (walletSuccessData) {
-                                        if (walletSuccessData.code == '200' && $.trim(walletSuccessData.status.toLowerCase()) == 'ok') {
-                                            if (walletSuccessData.data.length) {
-                                                if ( !walletSuccessData.data[0].username) {
-                                                    Punter.updateUserDetails(walletSuccessData.data[0]);
-                                                    return false;
-                                                }
-                                                walletSuccessData.data[0].punter_current_status_format =
-                                                    B2WConstants[ walletSuccessData.data[0].punter_current_status];
-                                                $rootScope.punter = walletSuccessData.data[0];
-                                                $localStorage.punter = walletSuccessData.data[0];
-                                            }
-                                        }
+                                $rootScope.punter = successData.data[0];
+                                $localStorage.punter = successData.data[0];
 
-                                    });
                                 /*Or else, assign it from cache*/
                             }else{
                                 /*If user hasn't signed in, put everything to false*/
@@ -2051,7 +1939,6 @@ angular.module('authentication', [])
                             /*pass*/
                         }).finally(function () {
                             checkingAuthentication = false;
-                            runLogin_PunterButtonHider();
                         });
                 }
             };
@@ -2064,12 +1951,10 @@ angular.module('authentication', [])
                 return $http.post(B2WRoutes.login, formObject);
             };
 
-            authentication.logout = function(){
-                BwPublicCache.cache.remove(walletUrl);
+            $rootScope.logoutUser = function(){
                 $rootScope.authentication = false;
                 $localStorage.authentication = false;
-                delete $localStorage.last_auction_bidding_attempt;
-                $location.path('/app');
+                $location.path('/');
                 $http.get(B2WRoutes.logout)
                     .success(function (successData) {
                         if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok') {
@@ -2077,7 +1962,6 @@ angular.module('authentication', [])
                         }
                     });
             };
-
             return authentication;
         }]);
 /**

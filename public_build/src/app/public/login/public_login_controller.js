@@ -10,15 +10,6 @@ angular.module('public')
                   growl, SweetAlert, $location, $timeout, ngDialog) {
 
 
-            /*if the login was a social media one redirect if there are no errors*/
-            if ($stateParams.channel) {
-                /*Do some check here with the session variable from the server*/
-                //else
-                var fbResponse = $('#fbLogResponse').text();
-                console.log(fbResponse);
-                $state.go('public_home');
-            }
-
             /*Begin Punter login form*/
             $scope.submittingLoginForm = false;
             $scope.punter_login_form = {

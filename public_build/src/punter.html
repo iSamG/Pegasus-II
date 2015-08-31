@@ -101,7 +101,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
                     <!-- End Toggle Nav Link For Mobiles -->
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="/">
                         Pegasusrises
                         <!--<img alt="" src="images/margo.png">-->
                     </a>
@@ -144,6 +144,7 @@
                         <li><a href="">About</a></li>
                         <li><a href="" login-modal="">Login</a></li>
                         <li><a href="" signup-modal="">Signup</a></li>
+                        <li><a href="" ng-click="logoutUser()">Logout</a></li>
                     </ul>
                     <!-- End Navigation List -->
                 </div>
