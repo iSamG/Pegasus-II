@@ -1,0 +1,96 @@
+<div class="col-sm-3 col-md-offset-2 col-xs-12">
+
+    <fieldset>
+        <h2 class="classic-title">Personal Details</h2>
+
+        <div class="row " ng-class="{'has-error  mag-bottom-5' : login_validation.first_name || submittingRegistrationForm && punterRegistrationForm.first_name.$error.required }">
+            <label for="first_name">First Name<span class="required">*</span></label>
+            <input type="text" id="first_name" placeholder="Your First Name" name="first_name" ng-model="punter_register_form.first_name" class="form-control" required="">
+            <span class="help-block text-left mag-bottom-25" ng-show="login_validation.first_name">{{login_validation.first_name}}</span>
+        </div><!-- End .input-group -->
+
+        <div class="row margin-top-15" ng-class="{'has-error  mag-bottom-5' : login_validation.other_names || submittingRegistrationForm && punterRegistrationForm.other_names.$error.required }">
+            <label for="other_names">Other Names<span class="required">*</span></label>
+            <input type="text" id="other_names" placeholder="Other Names" name="other_names" ng-model="punter_register_form.other_names" class="form-control" required="">
+            <span class="help-block text-left mag-bottom-25" ng-show="login_validation.other_names">{{login_validation.other_names}}</span>
+        </div><!-- End .input-group -->
+
+
+        <div class="row margin-top-15" ng-class="{'has-error  mag-bottom-5' : submittingRegistrationForm && punterRegistrationForm.email.$error.email || login_validation.email || submittingRegistrationForm && punterRegistrationForm.email.$error.required }">
+            <label for="email">Email<span class="required">*</span></label>
+            <input  type="email" id="email" placeholder="Your Email" ng-model="punter_register_form.email" name="email"
+                    ng-pattern="/[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}/" class="form-control" required="">
+            <span class="help-block text-left mag-bottom-25" ng-show="submittingRegistrationForm && punterRegistrationForm.email.$error.email">Email address is not valid</span>
+            <span class="help-block text-left mag-bottom-25" ng-show="login_validation.email">{{ login_validation.email }}</span>
+
+        </div><!-- End .input-group -->
+
+        <div class="row margin-top-15" ng-class="{'has-error  mag-bottom-5' : login_validation.gender || submittingRegistrationForm && punterRegistrationForm.gender.$error.required }">
+            <label for="gender">Gender<span class="required">*</span></label>
+            <select   name="gender" id="gender" ng-model="punter_register_form.gender" class="form-control " required="">
+                <option value="">Select your gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            <span class="help-block text-left mag-bottom-25" ng-show="login_validation.gender">{{login_validation.gender}}</span>
+        </div><!-- End .input-group -->
+
+
+
+
+
+    </fieldset>
+
+</div><!-- End .col-md-6 -->
+
+<div class="col-md-3 col-md-offset-2 col-xs-12">
+
+    <fieldset>
+        <h2 class="classic-title">Account Details</h2>
+
+        <div class="row margin-top-15" ng-class="{'has-error  mag-bottom-5' : login_validation.username || submittingRegistrationForm && punterRegistrationForm.username.$error.required }">
+            <label for="username">Username<span class="required">*</span></label>
+            <input type="text" id="username" placeholder="Your Username" name="username" ng-model="punter_register_form.username" class="form-control " required="">
+            <span class="help-block text-left mag-bottom-25" ng-show="login_validation.username">{{login_validation.username}}</span>
+        </div><!-- End .input-group -->
+
+
+        <div class="row margin-top-15" ng-class="{'has-error  mag-bottom-5' : login_validation.password || submittingRegistrationForm && punterRegistrationForm.password.$error.required }">
+            <label for="password">Password<span class="required">*</span></label>
+            <input type="password" id="password" placeholder="Your Password " name="password" ng-model="punter_register_form.password" class="form-control " required="">
+            <span class="help-block text-left mag-bottom-25" ng-show="login_validation.password">{{login_validation.password}}</span>
+        </div><!-- End .input-group -->
+
+        <div class="row margin-top-15" ng-class="{'has-error  mag-bottom-5' : login_validation.confirm_password || submittingRegistrationForm && punterRegistrationForm.confirm_password.$error.required }">
+            <label for="confirm_password">Confirm Password<span class="required">*</span></label>
+            <input type="password" id="confirm_password" placeholder="Confirm Password" name="confirm_password" ng-model="punter_register_form.confirm_password" class="form-control " required="">
+            <span class="help-block text-left mag-bottom-25" ng-show="login_validation.confirm_password">{{login_validation.confirm_password}}</span>
+        </div><!-- End .input-group -->
+
+        <div class="row margin-top-15" ng-class="{'has-error  mag-bottom-5' : login_validation.phone_number || submittingRegistrationForm && punterRegistrationForm.phone_number.$error.required }">
+            <label for="phone_number">Mobile Number<span class="required">*</span></label>
+            <input type="text" name="phone_number" id="phone_number" ng-maxlength="13" maxlength="13" placeholder="Your Phone Number in the format +233#########" ng-model="punter_register_form.phone_number"  class="form-control" required="">
+
+            <span class="help-block text-left mag-bottom-25" ng-show="submittingRegistrationForm &&  punterRegistrationForm.phone_number.$error.required">Please enter a valid phone number starting with +233, without the '0'.</span>
+            <span class="help-block text-left mag-bottom-25" ng-show="login_validation.phone_number">{{login_validation.phone_number}}</span>
+
+
+        </div><!-- End .input-group -->
+
+
+
+
+        <div class="row">
+
+
+            <div class="col-md-6 col-sm-6 col-xs-12 margin-top-15 pull-right">
+
+                <!--<input type="submit" class="btn btn-custom-2 col-sm-12 btn-lg md-margin pull-right " value="SIGN ME UP">-->
+                <button wz-next class="btn btn-primary col-sm-12 btn-sm md-margin pull-right ">Next &nbsp; <i class="btn-icon fa fa-arrow-circle-o-right"></i></button>
+            </div><!-- End .col-md-6 -->
+        </div><!-- End .row -->
+
+    </fieldset>
+
+
+</div><!-- End .col-md-6 -->

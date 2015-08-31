@@ -1,0 +1,54 @@
+<div id="content" class="add-shadow" style="margin-bottom: 20px">
+    <div class="">
+
+        <div class="row" style="margin: 10px !important;">
+            <!-- Classic Heading -->
+
+            <h2 class="classic-title"><span>Fill all required details to register</span></h2>
+            <div class="col-md-12">
+                <form id="register-form" name="punterRegistrationForm"  novalidate>
+                    <!--ng-submit="registerPunter(punterRegistrationForm.$valid)"-->
+                    <div class="row">
+                        <wizard on-finish="registerPunter(punterRegistrationForm.$valid)" hide-indicators="true">
+                            <wz-step title="Step 1 of 3" class="nga-default nga-stagger nga-slide-left">
+
+
+
+                              <span ng-include="'public/register/public_register_step_1.tpl.html' "></span>
+
+                            </wz-step>
+
+
+
+                            <!-- Step 2 -->
+
+                            <wz-step title="Step 2 of 3" class="nga-default nga-stagger nga-slide-right" style="overflow: visible !important;">
+
+                                <span ng-include=" 'public/register/public_register_step_2.tpl.html' "></span>
+
+                            </wz-step>
+
+                            <wz-step title="Step 3 of 3" class="nga-default nga-stagger nga-slide-right">
+
+                                <span ng-include=" 'public/register/public_register_step_3.tpl.html' "></span>
+
+                                <!--<input type="submit"  value="Finish now" />-->
+                            </wz-step>
+                        </wizard>
+                    </div><!-- End .row -->
+
+                </form>
+            </div><!-- End .col-md-12 -->
+
+        </div>
+
+        <div class="row margin-90">
+            <div class="col-sm-12">
+                <p class="text-center h3"><a ui-sref="public_home.login">Already have an account? Click here to login</a></p>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- End content -->

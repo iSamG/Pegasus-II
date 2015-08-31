@@ -1,0 +1,28 @@
+CACHE MANIFEST
+#Last change made : <%= grunt.template.date(new Date() , 'dddd, mmmm dS, yyyy, h:MM:ss TT')  %>
+#Rendering social media shares
+
+
+
+# Explicitly cached 'master entries'.
+CACHE:
+/punters/templates/app.js
+/punters/templates/common.js
+/punters/angular.js
+/punters/bid2win-scripts.js
+/punters/bid2win.css
+/punters/jquery.js
+/punters/ng-bid2win-vendors.js
+/punters/ng-bid2win.js
+
+
+# Resources that require the user to be online.
+NETWORK:
+*
+
+# static.html will be served if main.py is inaccessible
+# offline.jpg will be served in place of all images in images/large/
+# offline.html will be served in place of all other .html files
+FALLBACK:
+#/main.py /static.html
+#images/large/ images/offline.jpg

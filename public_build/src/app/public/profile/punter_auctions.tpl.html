@@ -1,0 +1,50 @@
+<div class="user-profile-content" >
+    <h5 ng-if="auctionsParticipatedIn.length"><strong>Auction Statistics</strong></h5>
+    <div ng-if="auctionsParticipatedIn.length" class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <td width="60%">Auctions Participated In </td>
+                <td class="center text-center" width="40%">{{ auctionsDetails.auctions + ' auction' }}<span ng-if="auctionsDetails.auctions != 1">s</span></td>
+            </tr>
+            <tr>
+                <td>Total BCS Spent</td>
+                <td class="center text-center" >{{ auctionsDetails.bcs_spent | number }} bcs</td>
+            </tr>
+            <tr>
+                <td>Total Bids Placed </td>
+                <td class="center text-center" >{{ auctionsDetails.bids_placed + ' bid' }}<span ng-if="auctionsDetails.bids_placed != 1">s</span></td>
+            </tr>
+        </table>
+    </div>
+    <hr ng-if="auctionsParticipatedIn.length">
+    <div class="row">
+        <div class="col-sm-12">
+            <h5 ng-if="auctionsParticipatedIn.length"><strong>Auction Breakdown</strong></h5>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" ng-if="auctionsParticipatedIn.length">
+                    <thead>
+                    <tr>
+                        <td class="center text-center">Last Bid Date</td>
+                        <td class="center text-center">Auctioned Item</td>
+                        <td class="center text-center">Auction Code</td>
+                        <td class="center text-center">BCS Spent</td>
+                        <td class="center text-center">Total Bids Placed</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="auction in auctionsParticipatedIn | limitTo : numberOfAuctionsToShow">
+                        <td class="center text-center">{{ auction.date_of_record | amDateFormat:' Do MMM, YYYY HH:mm'}}</td>
+                        <td class="center text-center">{{ auction.auction.auction_tagline || '---' }}</td>
+                        <td class="center text-center">{{ auction.auction.auction_code }}</td>
+                        <td class="center text-center">{{ auction.total_bid_amount | number }} bcs</td>
+                        <td class="center text-center">{{ auction.number_of_bids +  ' bid' }}<span ng-if="auction.number_of_bids != 1">s</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p ng-if="auctionsParticipatedIn.length > numberOfAuctionsToShow" ng-click="addToShowingAuctions()" class="text-center center-block pointer btn btn-link btn-sm">Show More</p>
+
+                <p ng-if="!(auctionsParticipatedIn.length)" style="margin: 60px 0" class="h4 text-center">You haven't participated in any auctions.</p>
+            </div>
+        </div>
+    </div>
+</div>

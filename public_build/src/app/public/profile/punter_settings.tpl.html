@@ -1,0 +1,41 @@
+<ul class="media-list">
+    <li class="media" style="overflow: visible">
+        <div class="media-body" style="overflow: visible">
+            <div class="media-heading">
+                <a href="" class="h5">Auction Alert</a> <small class="hidden">notifications</small>
+                <div class="btn-group pull-right">
+                    <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                        {{ auction_alert }}  <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" ng-init="auction_alert = 'Receive' ">
+                        <li><a href="" ng-click="auction_alert = 'Receive' ">Receive</a></li>
+                        <li><a href="" ng-click="auction_alert = 'Don\'t Receive' ">Don't Receive</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p>Get notified about new auctions on {{ app_name }}</p>
+        </div>
+    </li>
+
+    <hr class="hr5"/>
+
+    <li class="media" style="overflow: visible">
+        <div class="media-body" style="overflow: visible">
+            <div class="media-heading">
+                <a href="" class="h5">Toast Notifications</a> <small class="hidden">notifications</small>
+                <div class="btn-group pull-right">
+                    <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                       {{ toast_notifications }}  <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" ng-init="toast_notifications = 'Show' ">
+                        <li><a href="" ng-click="toast_notifications = 'Show' ">Show</a></li>
+                        <li><a href="" ng-click="toast_notifications = 'Hide' ">Hide</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p>Display notifications when events occurs such as leaderboard changes</p>
+        </div>
+    </li>
+
+
+</ul>

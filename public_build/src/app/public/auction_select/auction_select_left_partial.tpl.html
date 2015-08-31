@@ -1,0 +1,113 @@
+
+
+<!--Carousel-->
+<div id="main-slide" class="carousel slide" data-ride="carousel" style="min-height: 270px">
+
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li data-target="#main-slide" data-slide-to="{{image_indicator}}" ng-class="{'active' : $index == 0}"
+            class="pointer" ng-repeat="image_indicator in selected_auction.gallery_images_indicators"></li>
+    </ol><!--/ Indicators end-->
+
+    <!-- Carousel inner -->
+    <div class="carousel-inner">
+        <!--<div class="item  active">-->
+            <!--<img class="img-responsive" src="/punters/assets/images/products/big-phone3.jpg" alt="slider" width="250px" style="max-width: 250px">-->
+        <!--</div>&lt;!&ndash;/ Carousel item end &ndash;&gt;-->
+        <div class="item" ng-repeat="image in selected_auction.gallery_images" ng-class="{'active' : $index == 0}">
+            <img class="img-responsive" ng-src="{{image }}" alt="{{selected_auction.item.item_name }}" width="250px" style="max-width: 250px">
+        </div><!--/ Carousel item end -->
+    </div><!-- Carousel inner end-->
+
+    <!--&lt;!&ndash; Controls &ndash;&gt;#main-slide-->
+    <a class="left carousel-control" href="" data-target="#main-slide" data-slide="prev">
+        <span><i class="fa fa-angle-left"></i></span>
+    </a>
+    <a class="right carousel-control" href="" data-target="#main-slide" data-slide="next">
+        <span><i class="fa fa-angle-right"></i></span>
+    </a>
+</div>
+<!--Carousel End-->
+
+<!--Start of prices display-->
+<div class="">
+    <div class="col-xs-12 col-no-padding">
+        <div class="" title="Recommended Retail Price">
+            <span  class="col-xs-6 retail-price text-left">Retail Price</span>
+            <span  class="col-xs-6 retail-price text-right">-&nbsp;&nbsp;{{ selected_auction.auction_retail_price| currency : 'GHc '  :  2}}</span>
+        </div>
+    </div>
+    <div class="col-xs-12 col-no-padding">
+        <div class="" title="Auction Price">
+            <span  class="col-xs-6 auction-price text-left">Auction Price</span>
+            <span  class="col-xs-6 auction-price text-right">-&nbsp;&nbsp;{{ selected_auction.auction_price | currency : 'GHc '  :  2}}</span>
+        </div>
+    </div>
+</div>
+<!--End of Prices display-->
+
+<div class="clearfix"></div>
+
+<div class="panel-group" id="accordion" style="margin-top: 12px">
+
+    <!-- Start description -->
+    <div class="panel panel-default">
+        <!-- Toggle Heading -->
+        <div class="panel-heading">
+            <span class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="" data-target="#description" class="">
+                    <i class="fa fa-angle-up control-icon"></i>
+                    <i class="fa fa-newspaper-o"></i>  Description
+                </a>
+            </span>
+        </div>
+        <!-- Toggle Content -->
+        <div id="description" class="panel-collapse collapse in">
+            <div class="panel-body">
+                {{ selected_auction.item.item_description || "No description available" }}
+            </div>
+        </div>
+    </div>
+    <!-- End description -->
+
+    <!-- Start info -->
+    <div class="panel panel-default">
+        <!-- Toggle Heading -->
+        <div class="panel-heading">
+            <span class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" data-target="#info" href="" class="collapsed">
+                    <i class="fa fa-angle-up control-icon"></i>
+                    <i class="fa fa-list-alt"></i> Info
+                </a>
+            </span>
+        </div>
+        <!-- Toggle Content -->
+        <div id="info" class="panel-collapse collapse" style="height: 0px;">
+            <div class="panel-body">
+                {{ selected_auction.auction_description || "No statistics available" }}
+            </div>
+        </div>
+    </div>
+    <!-- End info -->
+
+    <!-- Start reviews -->
+    <div class="panel panel-default">
+        <!-- Toggle Heading -->
+        <div class="panel-heading">
+            <span class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="" data-target="#reviews" class="collapsed">
+                    <i class="fa fa-angle-up control-icon"></i>
+                    <i class="fa fa-comments-o"></i> Reviews
+                </a>
+            </span>
+        </div>
+        <!-- Toggle Content -->
+        <div id="reviews" class="panel-collapse collapse" style="height: 0px;">
+            <div class="panel-body">
+                {{ selected_auction.auction_reviews || "No reviews available" }}
+            </div>
+        </div>
+    </div>
+    <!-- End reviews -->
+
+</div>

@@ -1,0 +1,113 @@
+<div class="leaderboad">
+    <ul class="nav nav-tabs">
+        <li class="text-center text-danger col-xs-12" style="padding: 0 !important; margin-left: 1px !important;"><a>Leaderboard</a></li>
+    </ul>
+    <table class="table table-responsive" ng-if="leaderBoard.length">
+        <tr ng-repeat="leader in leaderBoard | limitTo : 5">
+            <td class="hidden-sm hidden-xs">
+                <img class="img-circle pointer text-center"  ng-href="{{leader.bidder.avatar_url }}" pretty-image rel="prettyPhoto"
+                     width="25px"  title="{{leader.bidder.username}}'s avatar" ng-src="{{ leader.bidder.avatar_url }}" alt="{{leader.bidder.username }}'s avatar" />
+
+            <td class="text-center  pointer" image-url="{{leader.bidder.avatar_url }}" pretty-image title="{{leader.bidder.username}}'s avatar" >{{ leader.bidder.username }}</td>
+
+            <td class="text-center"><span class="">{{ leader.total_bid_amount }}&nbsp;bcs</span></td>
+
+            <td class="text-center"><i class="fa fa-clock-o"></i>&nbsp;&nbsp;<span  am-time-ago="leader.date_of_record"></span></td>
+        </tr>
+
+    </table>
+    <table class="table table-responsive" ng-if="!leaderBoard.length">
+        <tr>
+            <td class="" style="padding: 70px 0"><p class=" text-center">Leaderboard has no entries currently</p></td>
+        </tr>
+    </table>
+
+    <div class=" margin-60" ng-show="loadingLeaderBoard">
+        <div >
+            <div class="spinner" style="top: 35%; left : 55% !important;">
+                <div class="dot1"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+    <ul class="nav nav-tabs">
+        <li class="text-center text-danger col-xs-12" style="padding: 0 !important; margin-left: 1px !important;"><a style="color: limegreen !important;">Winning Tips</a></li>
+    </ul>
+    <table class="table table-responsive">
+        <tr ng-if="!(auction_tips.length)">
+            <td><p class="text-center" >No tips available!</p></td>
+        </tr>
+        <tr ng-if="auction_tips.length" ng-repeat="tip in auction_tips">
+            <td>
+                <p><i class="fa fa-trophy text-success"></i>&nbsp;|&nbsp;<span class="">{{ tip.auction_tip }}</span></p>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="">
+    <div class="page-header">
+        <div class="row">
+            <p class="col-md-5 hidden-sm hidden-xs" style="padding-top: 5px">Lets Get Social</p>
+            <div class="col-md-6 col-xs-12">
+                <div class="row">
+                    <div class="col-xs-4 ">
+                        <div class="">
+                            <button
+                                    class="btn btn-primary center-block"
+                                    tooltip="Share on Facebook"
+                                    socialshare
+                                    socialshare-provider="facebook"
+                                    socialshare-url="http://www.i-bid2win.com/share/auction/{{$stateParams.id}}">
+                                <i class="fa fa-facebook"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4 ">
+                        <div class="">
+                            <button
+                                    class="btn btn-danger center-block"
+                                    tooltip="Share on Google +"
+                                    socialshare
+                                    socialshare-provider="google+"
+                                    socialshare-url="http://www.i-bid2win.com/share/auction/{{$stateParams.id}}">
+                                <i class="fa fa-google-plus"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                    <div class="col-xs-4 ">
+                        <div class="">
+                            <button
+                                    class="btn btn-info center-block"
+                                    socialshare
+                                    tooltip="Share on Twitter"
+                                    socialshare-provider="twitter"
+                                    socialshare-via="@ibid2win"
+                                    socialshare-text="{{ selected_auction.auction_description }}"
+                                    socialshare-hashtags="auction, bid, i-bid2win"
+                                    socialshare-media="{{ selected_auction.item.item_thumbnail_url }}"
+                                    socialshare-url="http://www.i-bid2win.com/share/auction/{{$stateParams.id}}">
+                                <i class="fa fa-twitter"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<div class="row margin-top" ng-if="square_pop_upImages" ng-controller="BwPublicGeneralController">
+    <div class="col-md-12 hidden-sm hidden-xs">
+        <a target="_blank" class="" ng-href="{{ square_pop_upImages.click_destination_url }}">
+            <img class="center-block "  width="250" height="250"
+                 style="max-width : 250px; max-height: 250px" ng-src="{{ square_pop_upImages.advert_image_url }}" alt="Advertisement">
+        </a>
+    </div>
+</div>
