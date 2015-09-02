@@ -34,18 +34,18 @@
 
 
                         <!--Phone number-->
-                        <!--<div class="form-group " ng-class="{'has-error  mag-bottom-5' : validation.phone_number || submittingRegistrationForm && punterRegistrationForm.phone_number.$error.required }">-->
-                            <!--<div class="col-sm-12">-->
-                                <!--<input type="text" name="phone_number" id="phone_number"-->
-                                       <!--ng-maxlength="13" maxlength="13"-->
-                                       <!--ng-minlength="10" minlength="10"-->
-                                       <!--placeholder="Phone Number" ng-model="punter_register_form.phone_number"  class="form-control" required="">-->
-                                <!--<span class="help-block text-left mag-bottom-25" ng-show="submittingRegistrationForm &&  punterRegistrationForm.phone_number.$error.required">Please enter a valid phone number starting with +233, without the '0'.</span>-->
-                                <!--<span class="help-block text-left mag-bottom-25" ng-show="validation.phone_number">{{validation.phone_number}}</span>-->
-                            <!--</div>-->
+                        <div class="form-group " ng-class="{'has-error  mag-bottom-5' : validation.phone_number || submittingRegistrationForm && punterRegistrationForm.phone_number.$error.required }">
+                            <div class="col-sm-12">
+                                <input type="text" name="phone_number" id="phone_number"
+                                       ng-maxlength="13" maxlength="13"
+                                       ng-minlength="10" minlength="10"
+                                       placeholder="Phone Number" ng-model="punter_register_form.phone_number"  class="form-control" required="">
+                                <span class="help-block text-left mag-bottom-25" ng-show="submittingRegistrationForm &&  punterRegistrationForm.phone_number.$error.required">Please enter a valid phone number starting with +233, without the '0'.</span>
+                                <span class="help-block text-left mag-bottom-25" ng-show="validation.phone_number">{{validation.phone_number}}</span>
+                            </div>
 
 
-                        <!--</div>&lt;!&ndash; End .input-group &ndash;&gt;-->
+                        </div><!-- End .input-group -->
 
 
                         <!--Password-->
@@ -97,7 +97,7 @@
                             <!--</div>&lt;!&ndash; End .col-md-6 &ndash;&gt;-->
                         </div><!-- End .row -->
 
-
+                        <pre>{{ punter_register_form | json }}</pre>
 
                     </fieldset>
                 </form>

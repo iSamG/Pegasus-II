@@ -1,8 +1,7 @@
 angular.module('pegasusApp')
-    .run(['$rootScope', '$state', '$stateParams','$localStorage','$sessionStorage','B2WConstants',
-        'Punter','Auction','Pusher','Advertising', 'sortDate',
+    .run(['$rootScope', '$state', '$stateParams','$localStorage','$sessionStorage','B2WConstants', 'Pusher', 'sortDate','User',
         function($rootScope, $state, $stateParams ,$localStorage, $sessionStorage, B2WConstants,
-                 Punter, Auction, Pusher, Advertising, sortDate, B2WAuth){
+                 Pusher, sortDate, User){
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 
@@ -35,7 +34,7 @@ angular.module('pegasusApp')
             $rootScope.$on('$viewContentLoaded',function(event){
                 //cfpLoadingBar.complete();
                 $rootScope.pageLoading = false;
-                B2WAuth.checkIfUserIsAuthenticated();
+                User.checkIfUserIsAuthenticated();
 
             });
 

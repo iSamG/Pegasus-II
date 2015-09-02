@@ -6,11 +6,11 @@ if (!window.location.origin) {
     window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
 }
 
-angular.module('pegasusApp.services', [])
+angular.module('pegasusApp.constants', [])
     .constant('B2WConstants', {
-        app_name : 'i-Bid2Win',
-        app_url : 'http://www.i-bid2win.com',
-        app_email : 'support@i-bid2win.com',
+        app_name : 'Pegasus',
+        app_url : 'http://www.pegasusrises.com',
+        app_email : 'support@pegasusrises.com',
         credit_symbol : 'bcs',
         credit_name_singular : 'credit',
         credit_name_plural : 'credits',

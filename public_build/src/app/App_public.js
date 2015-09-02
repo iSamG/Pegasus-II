@@ -22,11 +22,11 @@ angular.module('pegasusApp', [
     'satellizer',
     'pegasusApp.services',
     'pegasusApp.directives',
-    'pegasusApp.services',
+    'pegasusApp.constants',
     'public'
 ])
     .config(['$stateProvider','$urlRouterProvider','B2WConstants','growlProvider','CacheFactoryProvider',
-        '$rootScopeProvider','PusherServiceProvider','$locationProvider','$provide','$authProvider',
+        '$rootScopeProvider', 'PusherServiceProvider','$locationProvider','$provide','$authProvider',
         function($stateProvider, $urlRouterProvider, B2WConstants, growlProvider, CacheFactoryProvider,
                  $rootScopeProvider, PusherServiceProvider, $locationProvider, $provide, $authProvider){
 

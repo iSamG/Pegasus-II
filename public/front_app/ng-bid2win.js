@@ -1,4 +1,4 @@
-/* Bid2Win - v0.0.1 - 2015-08-31
+/* Bid2Win - v0.0.1 - 2015-09-02
  * http://bid2win.herokuapp.com
  * Copyright (c) 2015 PollAfrique Ltd;
  * Licensed MIT
@@ -27,11 +27,11 @@ angular.module('pegasusApp', [
     'satellizer',
     'pegasusApp.services',
     'pegasusApp.directives',
-    'pegasusApp.services',
+    'pegasusApp.constants',
     'public'
 ])
     .config(['$stateProvider','$urlRouterProvider','B2WConstants','growlProvider','CacheFactoryProvider',
-        '$rootScopeProvider','PusherServiceProvider','$locationProvider','$provide','$authProvider',
+        '$rootScopeProvider', 'PusherServiceProvider','$locationProvider','$provide','$authProvider',
         function($stateProvider, $urlRouterProvider, B2WConstants, growlProvider, CacheFactoryProvider,
                  $rootScopeProvider, PusherServiceProvider, $locationProvider, $provide, $authProvider){
 
@@ -126,25 +126,7 @@ angular.module('public')
                 templateUrl: 'public/auction_select/auction_select.tpl.html',
                 controller: 'BwPublicItemSelectController',
                 metadata: "Auction Page",
-                link_active : 'false',
-                resolve: {
-                    authenticate: authenticate,
-                    Auction : 'Auction',
-
-                    auctionExists : function (Auction, $stateParams, $location, $rootScope) {
-
-                        if(!Auction.auctionIdLookup[$stateParams.id] ){
-                            $rootScope.$on('auctionsLoadedAndPrepped', function () {
-                                if(!Auction.auctionIdLookup[$stateParams.id]){
-                                    $location.path('/error');
-                                }
-                                // Reject the authentication promise to prevent the state from loading
-                                //return $q.reject()
-                            });
-                        }
-                    }
-
-                }
+                link_active : 'false'
             })
             .state('public_home.login', {
                 url: '/login/:channel',
@@ -267,9 +249,9 @@ angular.module('public')
 
 angular.module('public')
     .controller('BwPublicLoginController',
-    ['$rootScope', '$scope','$state','$stateParams', 'B2WConstants', '$modal', 'B2WAuth'
+    ['$rootScope', '$scope','$state','$stateParams', 'B2WConstants', '$modal', 'User'
         ,'growl','SweetAlert','$location','$timeout',
-        function ($rootScope, $scope, $state, $stateParams, B2WConstants, $modal, B2WAuth,
+        function ($rootScope, $scope, $state, $stateParams, B2WConstants, $modal, User,
                   growl, SweetAlert, $location, $timeout) {
 
 
@@ -290,11 +272,11 @@ angular.module('public')
 
                 //Submit if details have been entered
                 if ($scope.punter_login_form.username && $scope.punter_login_form.password) {
-                    B2WAuth.login($scope.punter_login_form)
+                    User.login($scope.punter_login_form)
                         .success(function (successData) {
                             if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok' ) {
                                 growl.success("Welcome, " + successData.data.username, {title : "Login Success"});
-                                B2WAuth.checkIfUserIsAuthenticated();
+                                User.checkIfUserIsAuthenticated();
                                 //the punter came to registration page from trying to bid on an item, redirect back to the item page
                                 /*rf is reference id*/
                                 $scope.hidePopover();
@@ -331,14 +313,13 @@ angular.module('public')
 
 angular.module('public')
     .controller('BwPublicSignUpModalController',
-    ['$rootScope', '$scope','$state','B2WConstants', '$localStorage', 'B2WAuth','growl','SweetAlert','$location','$timeout',
-        function ($rootScope, $scope, $state, B2WConstants, $localStorage, B2WAuth, growl, SweetAlert, $location, $timeout) {
+    ['$rootScope', '$scope','$state','B2WConstants', '$localStorage', 'User','growl','SweetAlert','$location','$timeout',
+        function ($rootScope, $scope, $state, B2WConstants, $localStorage, User, growl, SweetAlert, $location, $timeout) {
 
 
             //A variable to check if the for is undergoing submission
             $scope.submittingRegistrationForm = false;
             $scope.submittingRegistrationFormLoader = false;
-
 
             if ($localStorage.punter_register_form) {
                 $scope.punter_register_form = $localStorage.punter_register_form;
@@ -348,7 +329,8 @@ angular.module('public')
             }else{
                 //Begin punter register form
                 $scope.punter_register_form = $localStorage.punter_register_form = {
-                    email : ""
+                    email : "",
+                    country : "gh"
                 };
                 $scope.validation = $localStorage.signup_validation = {};
 
@@ -357,6 +339,8 @@ angular.module('public')
 
 
             $scope.registerPunter = function(isValid){
+                $scope.punter_register_form.country = 'gh';
+
                 $scope.validation = $localStorage.signup_validation =  {};// reset the validation errors
                 //Change to true when form is being submitted
                 $scope.submittingRegistrationForm = true;
@@ -377,39 +361,26 @@ angular.module('public')
 
                 //End password  validation
 
-
                 $scope.submittingRegistrationFormLoader = true;
 
-
-                /*Assign an avatar*/
-                $scope.punter_register_form.avatar_url = 'http://www.i-bid2win.com/punters/assets/images/male.jpg';
-
                 //send form to the server to be saved
-                B2WAuth.register($scope.punter_register_form)
+                User.register($scope.punter_register_form)
                     .success(function (successData) {
                         $scope.cancel();
                         if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok' ) {
-                            growl.success("You have successfully registered on "+ B2WConstants.app_name +". An SMS confirmation code will be sent to " + $scope.punter_register_form.phone_number + " shortly. Thank you.", {title : "Registration"});
+                            growl.success("You have successfully created an account on "+ B2WConstants.app_name +". Thank you.", {title : "Registration"});
                             $scope.punter_register_form = $localStorage.punter_register_form = {};
 
                             //the punter came to registration page from trying to bid on an item, redirect back to the item page
                             /*rf is reference id*/
-                            if ($location.search().rf) {
-                                B2WAuth.isAuthenticated = true;
-                                B2WAuth.user = successData.data;
-                                $state.go('public_home.item_select', {id : $location.search().rf}, {reload : true})
-                            }else{
-                                B2WAuth.isAuthenticated = true;
-                                B2WAuth.user = successData.data;
-                                $state.go('public_home', {}, {reload : true});
-                                //growl.error("Your submission could not be processed at this time. Please check internet connection and try again", {title: 'Punter Registration'});
-                                //$state.go('public_home', {}, {reload : true})
-                            }
+                            User.isAuthenticated = true;
+                            User.user = successData.data;
+                            $state.go('public_home', {}, {reload : true});
+                            //growl.error("Your submission could not be processed at this time. Please check internet connection and try again", {title: 'Punter Registration'});
+                            //$state.go('public_home', {}, {reload : true})
                         }else{
                             $timeout(function () {
-                                growl.success("You have successfully registered on "+ B2WConstants.app_name +". " +
-                                    "Your activation code will be sent to " + $scope.punter_register_form.phone_number + " shortly via SMS. Thank you.",
-                                    {title : "Punter Registration"});
+                                growl.success("You have successfully created an account on "+ B2WConstants.app_name +". Thank you.", {title : "Registration 3seconds timer"});
                                 $state.go('public_home', {}, {reload : true});
                             }, 3000)
                         }
@@ -437,11 +408,11 @@ if (!window.location.origin) {
     window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
 }
 
-angular.module('pegasusApp.services', [])
+angular.module('pegasusApp.constants', [])
     .constant('B2WConstants', {
-        app_name : 'i-Bid2Win',
-        app_url : 'http://www.i-bid2win.com',
-        app_email : 'support@i-bid2win.com',
+        app_name : 'Pegasus',
+        app_url : 'http://www.pegasusrises.com',
+        app_email : 'support@pegasusrises.com',
         credit_symbol : 'bcs',
         credit_name_singular : 'credit',
         credit_name_plural : 'credits',
@@ -539,10 +510,9 @@ angular.module('pegasusApp.services', [])
         }
     });
 angular.module('pegasusApp')
-    .run(['$rootScope', '$state', '$stateParams','$localStorage','$sessionStorage','B2WConstants',
-        'Punter','Auction','Pusher','Advertising', 'sortDate',
+    .run(['$rootScope', '$state', '$stateParams','$localStorage','$sessionStorage','B2WConstants', 'Pusher', 'sortDate','User',
         function($rootScope, $state, $stateParams ,$localStorage, $sessionStorage, B2WConstants,
-                 Punter, Auction, Pusher, Advertising, sortDate, B2WAuth){
+                 Pusher, sortDate, User){
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 
@@ -575,7 +545,7 @@ angular.module('pegasusApp')
             $rootScope.$on('$viewContentLoaded',function(event){
                 //cfpLoadingBar.complete();
                 $rootScope.pageLoading = false;
-                B2WAuth.checkIfUserIsAuthenticated();
+                User.checkIfUserIsAuthenticated();
 
             });
 
@@ -650,7 +620,7 @@ angular.module('pegasusApp.directives')
         }
     });
 angular.module('pegasusApp.directives')
-    .directive('resetPassword', ['SweetAlert','Punter','$q','$state','B2WAuth', function (SweetAlert, Punter, $q, $state, B2WAuth) {
+    .directive('resetPassword', ['SweetAlert','$q','$state','User', function (SweetAlert, $q, $state, User) {
 
         return {
 
@@ -663,7 +633,7 @@ angular.module('pegasusApp.directives')
                     var data_to_post = {
                         password_reset_email : inputValue
                     };
-                    Punter.sendPasswordResetToken(data_to_post)
+                    User.sendPasswordResetToken(data_to_post)
                         .success(function (successData) {
                             defer.resolve(true);
                         })
@@ -736,7 +706,6 @@ angular.module('pegasusApp.directives')
                             });
                     }
                 });
-                /*End Punter Verify Modal*/
             },
             template : '',
             replace : false
@@ -772,6 +741,10 @@ angular.module('pegasusApp.directives')
         }
     }]);
 /**
+ * Created by Kaygee on 14/05/2015.
+ */
+angular.module('pegasusApp.services', []);
+/**
  * Created by Kaygee on 04/04/2015.
  */
 angular.module('pegasusApp.services')
@@ -783,94 +756,6 @@ angular.module('pegasusApp.services')
 
             return authentication;
         }]);
-/**
- * Created by Kaygee on 25/03/2015.
- */
-angular.module('pegasusApp.services')
-    .factory('Punter', ['$http','B2WConstants', 'B2WRoutes', '$rootScope','$localStorage','$timeout','growl','$modal',
-        function ($http, B2WConstants, B2WRoutes, $rootScope, $localStorage, $timeout, growl, $modal) {
-
-            var User = {};
-
-            var checkingAuthentication = false;
-            User.checkIfUserIsAuthenticated = function () {
-                if (!checkingAuthentication) {
-                    checkingAuthentication = true;
-                    /*
-                     * Check the user authentication route if the user has signed in before
-                     * */
-                    $http.get(B2WRoutes.authentication)
-
-                        .success(function (successData) {
-                            if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok') {
-
-                                //Put the cached response in a session storage using angular-cache defined as a service
-                                //BwPublicCache.cache.put(B2WRoutes.authentication, successData.data);
-
-                                //Save a token  in the local storage for authentication on refresh
-                                $localStorage.authentication = true;
-
-                                //set how long it should take for the cache to clear itself
-                                //BwPublicCache.cache.setMaxAge(B2WConstants.cacheMaxAge);
-
-                                //Set the on expire function to check if the user is still logged in from the server
-                                //BwPublicCache.cache.setOnExpire(function (key, value) {
-                                //    if (key == B2WRoutes.authentication) {
-                                //        User.checkIfUserIsAuthenticated()
-                                //    }
-                                //});
-
-                                /*Do some rootScope changes*/
-                                $rootScope.authentication = true;
-
-                                $rootScope.punter = successData.data[0];
-                                $localStorage.punter = successData.data[0];
-
-                                /*Or else, assign it from cache*/
-                            }else{
-                                /*If user hasn't signed in, put everything to false*/
-                                $rootScope.authentication = false;
-                                $localStorage.authentication = false;
-                                $rootScope.punter = {};
-                                $localStorage.punter = {};
-                                //BwPublicCache.cache.removeAll();
-                            }
-                        })
-                        .error(function () {
-                            /*pass*/
-                        }).finally(function () {
-                            checkingAuthentication = false;
-                        });
-                }
-            };
-
-            User.register = function(formObject){
-                return $http.post(B2WRoutes.register, formObject);
-            };
-
-            User.login = function(formObject){
-                return $http.post(B2WRoutes.login, formObject);
-            };
-
-            $rootScope.logoutUser = function(){
-                $rootScope.authentication = false;
-                $localStorage.authentication = false;
-                $location.path('/');
-                $http.get(B2WRoutes.logout)
-                    .success(function (successData) {
-                        if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok') {
-                            User.checkIfUserIsAuthenticated()
-                        }
-                    });
-            };
-
-            return User;
-
-        }]);
-/**
- * Created by Kaygee on 14/05/2015.
- */
-angular.module('pegasusApp.services', []);
 /**
  * Created by Kaygee on 30/03/2015.
  */
@@ -1016,3 +901,91 @@ angular.module('pegasusApp.services').service('blobber', [function(){
     };
 
 }]);
+/**
+ * Created by Kaygee on 25/03/2015.
+ */
+angular.module('pegasusApp.services')
+    .factory('User', ['$http','B2WConstants', 'B2WRoutes', '$rootScope','$localStorage','$timeout','growl','$modal','$location',
+        function ($http, B2WConstants, B2WRoutes, $rootScope, $localStorage, $timeout, growl, $modal, $location) {
+
+            var User = {};
+
+            var checkingAuthentication = false;
+            User.checkIfUserIsAuthenticated = function () {
+                if (!checkingAuthentication) {
+                    checkingAuthentication = true;
+                    /*
+                     * Check the user authentication route if the user has signed in before
+                     * */
+                    $http.get(B2WRoutes.authentication)
+
+                        .success(function (successData) {
+                            if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok') {
+
+                                //Put the cached response in a session storage using angular-cache defined as a service
+                                //BwPublicCache.cache.put(B2WRoutes.authentication, successData.data);
+
+                                //Save a token  in the local storage for authentication on refresh
+                                $localStorage.authentication = true;
+
+                                //set how long it should take for the cache to clear itself
+                                //BwPublicCache.cache.setMaxAge(B2WConstants.cacheMaxAge);
+
+                                //Set the on expire function to check if the user is still logged in from the server
+                                //BwPublicCache.cache.setOnExpire(function (key, value) {
+                                //    if (key == B2WRoutes.authentication) {
+                                //        User.checkIfUserIsAuthenticated()
+                                //    }
+                                //});
+
+                                /*Do some rootScope changes*/
+                                $rootScope.authentication = true;
+
+                                $rootScope.punter = successData.data[0];
+                                $localStorage.punter = successData.data[0];
+
+                                /*Or else, assign it from cache*/
+                            }else{
+                                /*If user hasn't signed in, put everything to false*/
+                                $rootScope.authentication = false;
+                                $localStorage.authentication = false;
+                                $rootScope.punter = {};
+                                $localStorage.punter = {};
+                                //BwPublicCache.cache.removeAll();
+                            }
+                        })
+                        .error(function () {
+                            /*pass*/
+                        }).finally(function () {
+                            checkingAuthentication = false;
+                        });
+                }
+            };
+
+            User.register = function(formObject){
+                return $http.post(B2WRoutes.register, formObject);
+            };
+
+            User.login = function(formObject){
+                return $http.post(B2WRoutes.login, formObject);
+            };
+
+            User.sendPasswordResetToken = function(formObject){
+                return $http.post(B2WRoutes.login, formObject);
+            };
+
+            $rootScope.logoutUser = function(){
+                $rootScope.authentication = false;
+                $localStorage.authentication = false;
+                $location.path('/');
+                $http.get(B2WRoutes.logout)
+                    .success(function (successData) {
+                        if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok') {
+                            User.checkIfUserIsAuthenticated()
+                        }
+                    });
+            };
+
+            return User;
+
+        }]);

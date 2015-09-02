@@ -2,8 +2,8 @@
  * Created by Kaygee on 25/03/2015.
  */
 angular.module('pegasusApp.services')
-    .factory('Punter', ['$http','B2WConstants', 'B2WRoutes', '$rootScope','$localStorage','$timeout','growl','$modal',
-        function ($http, B2WConstants, B2WRoutes, $rootScope, $localStorage, $timeout, growl, $modal) {
+    .factory('User', ['$http','B2WConstants', 'B2WRoutes', '$rootScope','$localStorage','$timeout','growl','$modal','$location',
+        function ($http, B2WConstants, B2WRoutes, $rootScope, $localStorage, $timeout, growl, $modal, $location) {
 
             var User = {};
 
@@ -64,6 +64,10 @@ angular.module('pegasusApp.services')
             };
 
             User.login = function(formObject){
+                return $http.post(B2WRoutes.login, formObject);
+            };
+
+            User.sendPasswordResetToken = function(formObject){
                 return $http.post(B2WRoutes.login, formObject);
             };
 

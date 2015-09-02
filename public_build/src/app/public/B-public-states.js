@@ -26,25 +26,7 @@ angular.module('public')
                 templateUrl: 'public/auction_select/auction_select.tpl.html',
                 controller: 'BwPublicItemSelectController',
                 metadata: "Auction Page",
-                link_active : 'false',
-                resolve: {
-                    authenticate: authenticate,
-                    Auction : 'Auction',
-
-                    auctionExists : function (Auction, $stateParams, $location, $rootScope) {
-
-                        if(!Auction.auctionIdLookup[$stateParams.id] ){
-                            $rootScope.$on('auctionsLoadedAndPrepped', function () {
-                                if(!Auction.auctionIdLookup[$stateParams.id]){
-                                    $location.path('/error');
-                                }
-                                // Reject the authentication promise to prevent the state from loading
-                                //return $q.reject()
-                            });
-                        }
-                    }
-
-                }
+                link_active : 'false'
             })
             .state('public_home.login', {
                 url: '/login/:channel',

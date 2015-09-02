@@ -4,14 +4,13 @@
 
 angular.module('public')
     .controller('BwPublicSignUpModalController',
-    ['$rootScope', '$scope','$state','B2WConstants', '$localStorage', 'B2WAuth','growl','SweetAlert','$location','$timeout',
-        function ($rootScope, $scope, $state, B2WConstants, $localStorage, B2WAuth, growl, SweetAlert, $location, $timeout) {
+    ['$rootScope', '$scope','$state','B2WConstants', '$localStorage', 'User','growl','SweetAlert','$location','$timeout',
+        function ($rootScope, $scope, $state, B2WConstants, $localStorage, User, growl, SweetAlert, $location, $timeout) {
 
 
             //A variable to check if the for is undergoing submission
             $scope.submittingRegistrationForm = false;
             $scope.submittingRegistrationFormLoader = false;
-
 
             if ($localStorage.punter_register_form) {
                 $scope.punter_register_form = $localStorage.punter_register_form;
@@ -21,7 +20,8 @@ angular.module('public')
             }else{
                 //Begin punter register form
                 $scope.punter_register_form = $localStorage.punter_register_form = {
-                    email : ""
+                    email : "",
+                    country : "gh"
                 };
                 $scope.validation = $localStorage.signup_validation = {};
 
@@ -30,6 +30,8 @@ angular.module('public')
 
 
             $scope.registerPunter = function(isValid){
+                $scope.punter_register_form.country = 'gh';
+
                 $scope.validation = $localStorage.signup_validation =  {};// reset the validation errors
                 //Change to true when form is being submitted
                 $scope.submittingRegistrationForm = true;
@@ -50,39 +52,26 @@ angular.module('public')
 
                 //End password  validation
 
-
                 $scope.submittingRegistrationFormLoader = true;
 
-
-                /*Assign an avatar*/
-                $scope.punter_register_form.avatar_url = 'http://www.i-bid2win.com/punters/assets/images/male.jpg';
-
                 //send form to the server to be saved
-                B2WAuth.register($scope.punter_register_form)
+                User.register($scope.punter_register_form)
                     .success(function (successData) {
                         $scope.cancel();
                         if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok' ) {
-                            growl.success("You have successfully registered on "+ B2WConstants.app_name +". An SMS confirmation code will be sent to " + $scope.punter_register_form.phone_number + " shortly. Thank you.", {title : "Registration"});
+                            growl.success("You have successfully created an account on "+ B2WConstants.app_name +". Thank you.", {title : "Registration"});
                             $scope.punter_register_form = $localStorage.punter_register_form = {};
 
                             //the punter came to registration page from trying to bid on an item, redirect back to the item page
                             /*rf is reference id*/
-                            if ($location.search().rf) {
-                                B2WAuth.isAuthenticated = true;
-                                B2WAuth.user = successData.data;
-                                $state.go('public_home.item_select', {id : $location.search().rf}, {reload : true})
-                            }else{
-                                B2WAuth.isAuthenticated = true;
-                                B2WAuth.user = successData.data;
-                                $state.go('public_home', {}, {reload : true});
-                                //growl.error("Your submission could not be processed at this time. Please check internet connection and try again", {title: 'Punter Registration'});
-                                //$state.go('public_home', {}, {reload : true})
-                            }
+                            User.isAuthenticated = true;
+                            User.user = successData.data;
+                            $state.go('public_home', {}, {reload : true});
+                            //growl.error("Your submission could not be processed at this time. Please check internet connection and try again", {title: 'Punter Registration'});
+                            //$state.go('public_home', {}, {reload : true})
                         }else{
                             $timeout(function () {
-                                growl.success("You have successfully registered on "+ B2WConstants.app_name +". " +
-                                    "Your activation code will be sent to " + $scope.punter_register_form.phone_number + " shortly via SMS. Thank you.",
-                                    {title : "Punter Registration"});
+                                growl.success("You have successfully created an account on "+ B2WConstants.app_name +". Thank you.", {title : "Registration 3seconds timer"});
                                 $state.go('public_home', {}, {reload : true});
                             }, 3000)
                         }

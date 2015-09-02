@@ -4,9 +4,9 @@
 
 angular.module('public')
     .controller('BwPublicLoginController',
-    ['$rootScope', '$scope','$state','$stateParams', 'B2WConstants', '$modal', 'B2WAuth'
+    ['$rootScope', '$scope','$state','$stateParams', 'B2WConstants', '$modal', 'User'
         ,'growl','SweetAlert','$location','$timeout',
-        function ($rootScope, $scope, $state, $stateParams, B2WConstants, $modal, B2WAuth,
+        function ($rootScope, $scope, $state, $stateParams, B2WConstants, $modal, User,
                   growl, SweetAlert, $location, $timeout) {
 
 
@@ -27,11 +27,11 @@ angular.module('public')
 
                 //Submit if details have been entered
                 if ($scope.punter_login_form.username && $scope.punter_login_form.password) {
-                    B2WAuth.login($scope.punter_login_form)
+                    User.login($scope.punter_login_form)
                         .success(function (successData) {
                             if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok' ) {
                                 growl.success("Welcome, " + successData.data.username, {title : "Login Success"});
-                                B2WAuth.checkIfUserIsAuthenticated();
+                                User.checkIfUserIsAuthenticated();
                                 //the punter came to registration page from trying to bid on an item, redirect back to the item page
                                 /*rf is reference id*/
                                 $scope.hidePopover();

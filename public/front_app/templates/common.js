@@ -105,18 +105,18 @@ angular.module("modals/signupModal.tpl.html", []).run(["$templateCache", functio
     "\n" +
     "\n" +
     "                        <!--Phone number-->\n" +
-    "                        <!--<div class=\"form-group \" ng-class=\"{'has-error  mag-bottom-5' : validation.phone_number || submittingRegistrationForm && punterRegistrationForm.phone_number.$error.required }\">-->\n" +
-    "                            <!--<div class=\"col-sm-12\">-->\n" +
-    "                                <!--<input type=\"text\" name=\"phone_number\" id=\"phone_number\"-->\n" +
-    "                                       <!--ng-maxlength=\"13\" maxlength=\"13\"-->\n" +
-    "                                       <!--ng-minlength=\"10\" minlength=\"10\"-->\n" +
-    "                                       <!--placeholder=\"Phone Number\" ng-model=\"punter_register_form.phone_number\"  class=\"form-control\" required=\"\">-->\n" +
-    "                                <!--<span class=\"help-block text-left mag-bottom-25\" ng-show=\"submittingRegistrationForm &&  punterRegistrationForm.phone_number.$error.required\">Please enter a valid phone number starting with +233, without the '0'.</span>-->\n" +
-    "                                <!--<span class=\"help-block text-left mag-bottom-25\" ng-show=\"validation.phone_number\">{{validation.phone_number}}</span>-->\n" +
-    "                            <!--</div>-->\n" +
+    "                        <div class=\"form-group \" ng-class=\"{'has-error  mag-bottom-5' : validation.phone_number || submittingRegistrationForm && punterRegistrationForm.phone_number.$error.required }\">\n" +
+    "                            <div class=\"col-sm-12\">\n" +
+    "                                <input type=\"text\" name=\"phone_number\" id=\"phone_number\"\n" +
+    "                                       ng-maxlength=\"13\" maxlength=\"13\"\n" +
+    "                                       ng-minlength=\"10\" minlength=\"10\"\n" +
+    "                                       placeholder=\"Phone Number\" ng-model=\"punter_register_form.phone_number\"  class=\"form-control\" required=\"\">\n" +
+    "                                <span class=\"help-block text-left mag-bottom-25\" ng-show=\"submittingRegistrationForm &&  punterRegistrationForm.phone_number.$error.required\">Please enter a valid phone number starting with +233, without the '0'.</span>\n" +
+    "                                <span class=\"help-block text-left mag-bottom-25\" ng-show=\"validation.phone_number\">{{validation.phone_number}}</span>\n" +
+    "                            </div>\n" +
     "\n" +
     "\n" +
-    "                        <!--</div>&lt;!&ndash; End .input-group &ndash;&gt;-->\n" +
+    "                        </div><!-- End .input-group -->\n" +
     "\n" +
     "\n" +
     "                        <!--Password-->\n" +
@@ -168,7 +168,7 @@ angular.module("modals/signupModal.tpl.html", []).run(["$templateCache", functio
     "                            <!--</div>&lt;!&ndash; End .col-md-6 &ndash;&gt;-->\n" +
     "                        </div><!-- End .row -->\n" +
     "\n" +
-    "\n" +
+    "                        <pre>{{ punter_register_form | json }}</pre>\n" +
     "\n" +
     "                    </fieldset>\n" +
     "                </form>\n" +

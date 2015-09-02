@@ -1,5 +1,5 @@
 angular.module('pegasusApp.directives')
-    .directive('resetPassword', ['SweetAlert','Punter','$q','$state','B2WAuth', function (SweetAlert, Punter, $q, $state, B2WAuth) {
+    .directive('resetPassword', ['SweetAlert','$q','$state','User', function (SweetAlert, $q, $state, User) {
 
         return {
 
@@ -12,7 +12,7 @@ angular.module('pegasusApp.directives')
                     var data_to_post = {
                         password_reset_email : inputValue
                     };
-                    Punter.sendPasswordResetToken(data_to_post)
+                    User.sendPasswordResetToken(data_to_post)
                         .success(function (successData) {
                             defer.resolve(true);
                         })
@@ -85,7 +85,6 @@ angular.module('pegasusApp.directives')
                             });
                     }
                 });
-                /*End Punter Verify Modal*/
             },
             template : '',
             replace : false
