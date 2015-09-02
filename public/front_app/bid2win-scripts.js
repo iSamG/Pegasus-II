@@ -1,4 +1,4 @@
-/* Bid2Win - v0.0.1 - 2015-08-28
+/* Bid2Win - v0.0.1 - 2015-08-31
  * http://bid2win.herokuapp.com
  * Copyright (c) 2015 PollAfrique Ltd;
  * Licensed MIT

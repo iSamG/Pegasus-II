@@ -1,6 +1,4 @@
-var bid2winApp;
-
-angular.module('bid2winApp', [
+angular.module('pegasusApp', [
     'ui.router',
     'ui.bootstrap',
     'ngAnimate',
@@ -12,8 +10,6 @@ angular.module('bid2winApp', [
     'angularMoment',
     'ngImgCrop',
     'pasvaz.bindonce',
-    'ngDialog',
-    'rt.popup',
     'angularFileUpload',
     'angular-datepicker',
     'angular-cache',
@@ -24,15 +20,10 @@ angular.module('bid2winApp', [
     'templates.common',
     '720kb.socialshare',
     'satellizer',
-    'bid2winApp.constants',
-    'pegasus.directives',
-    'bid2winApp.services',
-    'punters',
-    'auctions',
-    'public',
-    'authentication',
-    'punterCache',
-    'advertisement'
+    'pegasusApp.services',
+    'pegasusApp.directives',
+    'pegasusApp.services',
+    'public'
 ])
     .config(['$stateProvider','$urlRouterProvider','B2WConstants','growlProvider','CacheFactoryProvider',
         '$rootScopeProvider','PusherServiceProvider','$locationProvider','$provide','$authProvider',

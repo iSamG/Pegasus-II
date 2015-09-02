@@ -36,7 +36,7 @@ module.exports = function (grunt) {
 
     // Project configuration.
     grunt.initConfig({
-        distdir: '../public/punters',
+        distdir: '../public/front_app',
         pkg: grunt.file.readJSON('package.json'),
         banner:
         '/* <%= pkg.title || pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -44,7 +44,7 @@ module.exports = function (grunt) {
         ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>;\n' +
         ' * Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>\n */\n',
         src: {
-            html: ['src/punter.html'],
+            html: ['src/public_index.html'],
             css: ['stylesheets/**.css', 'stylesheets/responsive.css', 'vendor/**/*.css'],
             assets : ['assets'],
             app_files : ['src/app/**/*.js'],

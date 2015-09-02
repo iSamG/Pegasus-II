@@ -31,7 +31,7 @@
 
     <base href="/">
 
-    <link rel="stylesheet" href="/punters/bid2win.css">
+    <link rel="stylesheet" href="/front_app/bid2win.css">
     <!-- Favicon-->
     <link href="ib2w_favicon.png" rel="icon" type="image/png" />
     <!--- jQuery -->
@@ -1299,15 +1299,13 @@
 <!--End of  angular-growl-2-->
 
 
-<script src="/punters/jquery.js"></script>
-<script src="/punters/angular.js"></script>
-<script  src="/punters/ng-bid2win-vendors.js"></script>
-<script  src="/punters/ng-bid2win.js"></script>
-<script src="/punters/templates/app.js"></script>
-<script src="/punters/templates/common.js"></script>
-<!---->
-<!---->
-<script  src="/punters/bid2win-scripts.js"></script>
+<script src="/front_app/jquery.js"></script>
+<script src="/front_app/angular.js"></script>
+<script  src="/front_app/ng-bid2win-vendors.js"></script>
+<script  src="/front_app/ng-bid2win.js"></script>
+<script src="/front_app/templates/app.js"></script>
+<script src="/front_app/templates/common.js"></script>
+<script  src="/front_app/bid2win-scripts.js"></script>
 
 
 

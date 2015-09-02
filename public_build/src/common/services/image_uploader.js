@@ -4,7 +4,7 @@
 
 
 
-angular.module('bid2winApp.services').
+angular.module('pegasusApp.services').
     service('imageUploader', ['$upload','blobber','B2WRoutes', function($upload, blobber, B2WRoutes) {
 
 

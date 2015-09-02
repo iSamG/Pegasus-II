@@ -3,7 +3,7 @@
  */
 
 
-angular.module('bid2winApp.services').service('CheckPhoneNumber', [function(){
+angular.module('pegasusApp.services').service('CheckPhoneNumber', [function(){
 
     this.verify = function (number) {
         var phone_number = angular.copy(number);

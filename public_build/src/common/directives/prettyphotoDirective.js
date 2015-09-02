@@ -1,7 +1,7 @@
 /*
  * Created by Kaygee on 10/11/2014.
  */
-angular.module('pegasus.directives')
+angular.module('pegasusApp.directives')
     .directive('prettyImage', function(){
         return function(scope, element, attrs) {
             if (attrs.imageUrl) {

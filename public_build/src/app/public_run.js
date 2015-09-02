@@ -1,4 +1,4 @@
-angular.module('bid2winApp')
+angular.module('pegasusApp')
     .run(['$rootScope', '$state', '$stateParams','$localStorage','$sessionStorage','B2WConstants',
         'Punter','Auction','Pusher','Advertising', 'sortDate',
         function($rootScope, $state, $stateParams ,$localStorage, $sessionStorage, B2WConstants,

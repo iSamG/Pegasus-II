@@ -1,4 +1,4 @@
-angular.module('pegasus.directives')
+angular.module('pegasusApp.directives')
     .directive('resetPassword', ['SweetAlert','Punter','$q','$state','B2WAuth', function (SweetAlert, Punter, $q, $state, B2WAuth) {
 
         return {

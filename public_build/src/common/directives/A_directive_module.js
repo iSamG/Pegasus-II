@@ -1,1 +1,1 @@
-angular.module('pegasus.directives', []);
+angular.module('pegasusApp.directives', []);

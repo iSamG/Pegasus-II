@@ -5,9 +5,9 @@
 angular.module('public')
     .controller('BwPublicLoginController',
     ['$rootScope', '$scope','$state','$stateParams', 'B2WConstants', '$modal', 'B2WAuth'
-        ,'growl','SweetAlert','$location','$timeout','ngDialog',
+        ,'growl','SweetAlert','$location','$timeout',
         function ($rootScope, $scope, $state, $stateParams, B2WConstants, $modal, B2WAuth,
-                  growl, SweetAlert, $location, $timeout, ngDialog) {
+                  growl, SweetAlert, $location, $timeout) {
 
 
             /*Begin Punter login form*/

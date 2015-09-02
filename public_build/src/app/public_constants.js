@@ -6,7 +6,7 @@ if (!window.location.origin) {
     window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
 }
 
-angular.module('bid2winApp.constants', [])
+angular.module('pegasusApp.services', [])
     .constant('B2WConstants', {
         app_name : 'i-Bid2Win',
         app_url : 'http://www.i-bid2win.com',

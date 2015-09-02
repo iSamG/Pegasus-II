@@ -1,48 +1,46 @@
 <!DOCTYPE html>
 <!--[if IE 8]> <html class="ie8" lang="en"> <![endif]-->
 <!--[if IE 9]> <html class="ie9" lang="en"> <![endif]-->
-<!--[if !IE]><!--> <html lang="en" ><!--<![endif]--><!--manifest="/punters/b2w_public.appcache"-->
+<!--[if !IE]><!--> <html lang="en" ><!--<![endif]--><!--manifest="/front_app/b2w_public.appcache"-->
 <head>
     <meta charset="utf-8">
-    <title>i-Bid2win | Where the highest bidder wins</title>
+    <title>Pegasusrises | The Cloud Survey Builder</title>
     <!--[if IE]> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="i-Bid2Win is an online auction bidding platform" name="description" />
-    <meta content="PollAfrique Ltd" name="author" />
+    <meta content="BBG Innovation Lab " name="description" />
+    <meta content="BBG Innovation Lab" name="author" />
 
     <meta property="og:title"
-          content="Where the highest bidder wins" />
+          content="BBG Innovation Lab" />
 
     <meta property="og:site_name"
-          content="i-Bid2Win" />
+          content="Pegasusrises" />
 
     <meta property="og:url"
-          content="http://www.i-bid2win.com" />
+          content="http://www.pegasusrises.com" />
 
-    <meta property="og:description" content="i-Bid2Win is an online, TV, and mobile based bidding auction game with a target audience
-	for participation anticipated to be corporate workers, social work groups & association’s members, families, students, and individuals with an age range between 18-55.
-	It was borne out of the realization that most if not all SMS based competitions are not interactive enough in terms of a more dynamic offering."/>
+    <meta property="og:description" content="BBG Innovation Lab"/>
 
-    <meta property="fb:app_id" content="384423575082172" />
+    <meta property="fb:app_id" content="###########" />
 
     <meta property="og:locale" content="en_US" />
 
-    <meta property="og:type" content="product.group" />
+    <meta property="og:type" content="product" />
 
     <base href="/">
 
-    <link rel="stylesheet" href="/punters/<%= grunt.config.get('pkg.name_lowercase') %>.css">
+    <link rel="stylesheet" href="/front_app/<%= grunt.config.get('pkg.name_lowercase') %>.css">
     <!-- Favicon-->
-    <link href="ib2w_favicon.png" rel="icon" type="image/png" />
+    <link href="favicon.ico" rel="icon" type="image/ico" />
     <!--- jQuery -->
     <!--[if IE 8]>
-<script type="javascript" src="/punters/assets/legacy.js"></script>
+<script type="javascript" src="/front_app/assets/legacy.js"></script>
     <![endif]-->
     <!--[if lt IE 10]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 
 
-<body ng-app="bid2winApp">
+<body ng-app="pegasusApp">
 
 <!-- Full Body Container -->
 <div id="container">
@@ -1299,15 +1297,13 @@
 <!--End of  angular-growl-2-->
 
 
-<script src="/punters/jquery.js"></script>
-<script src="/punters/angular.js"></script>
-<script  src="/punters/ng-<%= grunt.config.get('pkg.name_lowercase') %>-vendors.js"></script>
-<script  src="/punters/ng-<%= grunt.config.get('pkg.name_lowercase') %>.js"></script>
-<script src="/punters/templates/app.js"></script>
-<script src="/punters/templates/common.js"></script>
-<!---->
-<!---->
-<script  src="/punters/<%= grunt.config.get('pkg.name_lowercase') %>-scripts.js"></script>
+<script src="/front_app/jquery.js"></script>
+<script src="/front_app/angular.js"></script>
+<script  src="/front_app/ng-<%= grunt.config.get('pkg.name_lowercase') %>-vendors.js"></script>
+<script  src="/front_app/ng-<%= grunt.config.get('pkg.name_lowercase') %>.js"></script>
+<script src="/front_app/templates/app.js"></script>
+<script src="/front_app/templates/common.js"></script>
+<script  src="/front_app/<%= grunt.config.get('pkg.name_lowercase') %>-scripts.js"></script>
 
 
 

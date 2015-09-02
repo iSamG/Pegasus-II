@@ -3,7 +3,7 @@
  */
 
 
-angular.module('bid2winApp.services')
+angular.module('pegasusApp.services')
     .service('sortDate', ['$http', function($http){
 
         /*first date first*/

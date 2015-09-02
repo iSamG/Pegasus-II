@@ -3,7 +3,7 @@
  */
 
 
-angular.module('bid2winApp.services').service('blobber', [function(){
+angular.module('pegasusApp.services').service('blobber', [function(){
 
     this.blobify = function(dataURI) {
         //console.log(dataURI);
