@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Pegasusrises Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="static/all-pegasusrises.css"/>
+    <link rel="stylesheet" type="text/css" href="back_app/pegasusrises.css"/>
 
 
 </head>
@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <div class="user_admin dropdown"> <a href="javascript:void(0);" data-toggle="dropdown" ng-controller="prBreadCrumbCtrl">
-                    <img src="static/images/user.png" />
+                    <img src="back_app/images/user.png" />
                     <span class="user_adminname" id="user_logged_in_email">{{ username }}</span> <b class="caret"></b> </a>
                     <ul class="dropdown-menu">
                         <div class="top_pointer"></div>
@@ -139,7 +139,7 @@
         <!--\\\\\\\left_nav end \\\\\\-->
         <div class="contentpanel">
             <!--\\\\\\\ Bread Crumb header \\\\\\-->
-            <div ng-include="'header.tpl.html'"></div>
+            <div ng-include="'common/partials/header.tpl.html'"></div>
 
             <!--\\\\\\\ container  start \\\\\\-->
             <div class="container clear_both padding_fix" ui-view="">
@@ -154,19 +154,13 @@
 <!--\\\\\\\ wrapper end\\\\\\-->
 <div growl limit-messages="1"></div>
 
-<script type="text/javascript" src="static/jquery.js"></script>
-<script type="text/javascript" src="static/bootstrap.js"></script>
-<script type="text/javascript" src="static/angular_files.js"></script>
-<script type="text/javascript" src="static/pegasusrises_angular.js"></script>
-<!--<script type="text/javascript" src="static/pegasusrises.js"></script>-->
-<script type="text/javascript" src="templates/app.js"></script>
-<script type="text/javascript" src="templates/common.js"></script>
-<script type="text/javascript" src="static/directives.js"></script>
-<script type="text/javascript" src="static/scripts.js"></script>
+<script type="text/javascript" src="back_app/scripts.js"></script>
+<script type="text/javascript" src="back_app/pegasusrises.js"></script>
+<script type="text/javascript" src="back_app/templates.js"></script>
 
-<!--<script type="text/javascript" src="http://apis.google.com/js/client.js"></script>-->
-<!--<script type="text/javascript" src="http://apis.google.com/js/api.js"></script>-->
-<!--<script type="text/javascript" src="https://www.google.com/jsapi"></script>-->
+<script type="text/javascript" src="http://apis.google.com/js/client.js"></script>
+<script type="text/javascript" src="http://apis.google.com/js/api.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 
 

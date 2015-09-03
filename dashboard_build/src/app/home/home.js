@@ -9,7 +9,7 @@ angular.module('home', [])
         $stateProvider
             .state('home', {
                 url : '/',
-                templateUrl : 'home/home.tpl.html',
+                templateUrl : 'app/home/home.tpl.html',
                 controller : 'prHomeController',
                 metadata : 'Home'
                 //resolve : {

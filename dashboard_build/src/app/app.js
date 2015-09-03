@@ -4,7 +4,6 @@ angular.module('pegasusrises', [
     'ui.bootstrap',
     'ngAnimate',
     'templates.app',
-    'templates.common',
     'home',
     'admin',
     'survey',

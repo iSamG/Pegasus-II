@@ -29,7 +29,7 @@
 
     <base href="/">
 
-    <link rel="stylesheet" href="/front_app/bid2win.css">
+    <link rel="stylesheet" href="/front_app/pegasusrises.css">
     <!-- Favicon-->
     <link href="favicon.ico" rel="icon" type="image/ico" />
     <!--- jQuery -->
@@ -101,7 +101,7 @@
                     <!-- End Toggle Nav Link For Mobiles -->
                     <a class="navbar-brand" href="/">
                         Pegasusrises
-                        <!--<img alt="" src="images/margo.png">-->
+                        <!--<img alt="" src="front_app/assets/images/margo.png">-->
                     </a>
                 </div>
                 <div class="navbar-collapse collapse">
@@ -171,7 +171,7 @@
             <!-- Carousel inner -->
             <div class="carousel-inner">
                 <div class="item active">
-                    <img class="img-responsive" src="images/slider/bg1.jpg" alt="slider">
+                    <img class="img-responsive" src="front_app/assets/images/slider/bg1.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
                             <h2 class="animated2">
@@ -187,7 +187,7 @@
                 </div>
                 <!--/ Carousel item end -->
                 <div class="item">
-                    <img class="img-responsive" src="images/slider/bg2.jpg" alt="slider">
+                    <img class="img-responsive" src="front_app/assets/images/slider/bg2.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
                             <h2 class="animated4">
@@ -203,7 +203,7 @@
                 </div>
                 <!--/ Carousel item end -->
                 <div class="item">
-                    <img class="img-responsive" src="images/slider/bg3.jpg" alt="slider">
+                    <img class="img-responsive" src="front_app/assets/images/slider/bg3.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
                             <h2 class="animated7 white">
@@ -399,7 +399,7 @@
         <!-- Start Recent Projects Carousel -->
         <ul id="portfolio-list" data-animated="fadeIn">
             <li>
-                <img src="images/Portfolio/1.png" alt="" />
+                <img src="front_app/assets/images/Portfolio/1.png" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">Town winter 2013</span>
                     <p class="body">web develpment, design</p>
@@ -408,7 +408,7 @@
 
             </li>
             <li>
-                <img src="images/Portfolio/2.png" alt="" />
+                <img src="front_app/assets/images/Portfolio/2.png" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">Quarterly Musashino</span>
                     <p class="body">web develpment, design</p>
@@ -417,7 +417,7 @@
 
             </li>
             <li>
-                <img src="images/Portfolio/3.png" alt="" />
+                <img src="front_app/assets/images/Portfolio/3.png" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">Mainichi April 2014</span>
                     <p class="body">web develpment, design</p>
@@ -426,7 +426,7 @@
 
             </li>
             <li>
-                <img src="images/Portfolio/4.png" alt="" />
+                <img src="front_app/assets/images/Portfolio/4.png" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">Shitamachi Rocket</span>
                     <p class="body">web develpment, design</p>
@@ -435,7 +435,7 @@
 
             </li>
             <li>
-                <img src="images/Portfolio/5.png" alt="" />
+                <img src="front_app/assets/images/Portfolio/5.png" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">Majesty express vol. 01</span>
                     <p class="body">web develpment, design</p>
@@ -444,7 +444,7 @@
 
             </li>
             <li>
-                <img src="images/Portfolio/6.png" alt="" />
+                <img src="front_app/assets/images/Portfolio/6.png" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">Monocle issue 69</span>
                     <p class="body">web develpment, design</p>
@@ -453,7 +453,7 @@
 
             </li>
             <li>
-                <img src="images/Portfolio/7.png" alt="" />
+                <img src="front_app/assets/images/Portfolio/7.png" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">Monocle issue 69</span>
                     <p class="body">web develpment, design</p>
@@ -462,7 +462,7 @@
 
             </li>
             <li>
-                <img src="images/Portfolio/8.png" alt="" />
+                <img src="front_app/assets/images/Portfolio/8.png" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">Monocle issue 69</span>
                     <p class="body">web develpment, design</p>
@@ -471,7 +471,7 @@
 
             </li>
             <li>
-                <img src="images/Portfolio/9.png" alt="" />
+                <img src="front_app/assets/images/Portfolio/9.png" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">Monocle issue 69</span>
                     <p class="body">web develpment, design</p>
@@ -480,7 +480,7 @@
 
             </li>
             <li>
-                <img src="images/Portfolio/10.png" alt="" />
+                <img src="front_app/assets/images/Portfolio/10.png" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">Monocle issue 69</span>
                     <p class="body">web develpment, design</p>
@@ -489,7 +489,7 @@
 
             </li>
             <li>
-                <img src="images/Portfolio/11.png" alt="" />
+                <img src="front_app/assets/images/Portfolio/11.png" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">Monocle issue 69</span>
                     <p class="body">web develpment, design</p>
@@ -498,7 +498,7 @@
 
             </li>
             <li>
-                <img src="images/Portfolio/12.png" alt="" />
+                <img src="front_app/assets/images/Portfolio/12.png" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">Monocle issue 69</span>
                     <p class="body">web develpment, design</p>
@@ -679,7 +679,7 @@
                     <div class="team-member modern">
                         <!-- Memebr Photo, Name & Position -->
                         <div class="member-photo">
-                            <img alt="" src="images/team/face_1.png" />
+                            <img alt="" src="front_app/assets/images/team/face_1.png" />
                             <div class="member-name">John Doe <span>Developer</span>
                             </div>
                         </div>
@@ -725,7 +725,7 @@
                     <div class="team-member modern">
                         <!-- Memebr Photo, Name & Position -->
                         <div class="member-photo">
-                            <img alt="" src="images/team/face_2.png" />
+                            <img alt="" src="front_app/assets/images/team/face_2.png" />
                             <div class="member-name">Silly Sally <span>Developer</span>
                             </div>
                         </div>
@@ -771,7 +771,7 @@
                     <div class="team-member modern">
                         <!-- Memebr Photo, Name & Position -->
                         <div class="member-photo">
-                            <img alt="" src="images/team/face_3.png" />
+                            <img alt="" src="front_app/assets/images/team/face_3.png" />
                             <div class="member-name">Chris John <span>Developer</span>
                             </div>
                         </div>
@@ -817,7 +817,7 @@
                     <div class="team-member modern">
                         <!-- Memebr Photo, Name & Position -->
                         <div class="member-photo">
-                            <img alt="" src="images/team/face_4.png" />
+                            <img alt="" src="front_app/assets/images/team/face_4.png" />
                             <div class="member-name">Sara John <span>Developer</span>
                             </div>
                         </div>
@@ -866,7 +866,7 @@
     <!-- End Team Member Section -->
 
 
-    <div id="parallax-one" class="hidden parallax" style="background-image:url(images/parallax/bg-02.jpg);">
+    <div id="parallax-one" class="hidden parallax" style="background-image:url(front_app/assets/images/parallax/bg-02.jpg);">
         <div class="parallax-text-container-1">
             <div class="parallax-text-item">
                 <div class="container">
@@ -1050,42 +1050,42 @@
 
                         <!-- Client 1 -->
                         <div class="client-item item">
-                            <a href="#"><img src="images/c1.png" alt="" /></a>
+                            <a href="#"><img src="front_app/assets/images/c1.png" alt="" /></a>
                         </div>
 
                         <!-- Client 2 -->
                         <div class="client-item item">
-                            <a href="#"><img src="images/c2.png" alt="" /></a>
+                            <a href="#"><img src="front_app/assets/images/c2.png" alt="" /></a>
                         </div>
 
                         <!-- Client 3 -->
                         <div class="client-item item">
-                            <a href="#"><img src="images/c3.png" alt="" /></a>
+                            <a href="#"><img src="front_app/assets/images/c3.png" alt="" /></a>
                         </div>
 
                         <!-- Client 4 -->
                         <div class="client-item item">
-                            <a href="#"><img src="images/c4.png" alt="" /></a>
+                            <a href="#"><img src="front_app/assets/images/c4.png" alt="" /></a>
                         </div>
 
                         <!-- Client 5 -->
                         <div class="client-item item">
-                            <a href="#"><img src="images/c5.png" alt="" /></a>
+                            <a href="#"><img src="front_app/assets/images/c5.png" alt="" /></a>
                         </div>
 
                         <!-- Client 6 -->
                         <div class="client-item item">
-                            <a href="#"><img src="images/c6.png" alt="" /></a>
+                            <a href="#"><img src="front_app/assets/images/c6.png" alt="" /></a>
                         </div>
 
                         <!-- Client 7 -->
                         <div class="client-item item">
-                            <a href="#"><img src="images/c7.png" alt="" /></a>
+                            <a href="#"><img src="front_app/assets/images/c7.png" alt="" /></a>
                         </div>
 
                         <!-- Client 8 -->
                         <div class="client-item item">
-                            <a href="#"><img src="images/c8.png" alt="" /></a>
+                            <a href="#"><img src="front_app/assets/images/c8.png" alt="" /></a>
                         </div>
 
                     </div>
@@ -1184,48 +1184,48 @@
                         <h4>Flicker Feed<span class="head-line"></span></h4>
                         <ul class="flickr-list">
                             <li>
-                                <a href="images/flickr-01.jpg" class="lightbox">
-                                    <img alt="" src="images/flickr-01.jpg">
+                                <a href="front_app/assets/images/flickr-01.jpg" class="lightbox">
+                                    <img alt="" src="front_app/assets/images/flickr-01.jpg">
                                 </a>
                             </li>
                             <li>
-                                <a href="images/flickr-02.jpg" class="lightbox">
-                                    <img alt="" src="images/flickr-02.jpg">
+                                <a href="front_app/assets/images/flickr-02.jpg" class="lightbox">
+                                    <img alt="" src="front_app/assets/images/flickr-02.jpg">
                                 </a>
                             </li>
                             <li>
-                                <a href="images/flickr-03.jpg" class="lightbox">
-                                    <img alt="" src="images/flickr-03.jpg">
+                                <a href="front_app/assets/images/flickr-03.jpg" class="lightbox">
+                                    <img alt="" src="front_app/assets/images/flickr-03.jpg">
                                 </a>
                             </li>
                             <li>
-                                <a href="images/flickr-04.jpg" class="lightbox">
-                                    <img alt="" src="images/flickr-04.jpg">
+                                <a href="front_app/assets/images/flickr-04.jpg" class="lightbox">
+                                    <img alt="" src="front_app/assets/images/flickr-04.jpg">
                                 </a>
                             </li>
                             <li>
-                                <a href="images/flickr-05.jpg" class="lightbox">
-                                    <img alt="" src="images/flickr-05.jpg">
+                                <a href="front_app/assets/images/flickr-05.jpg" class="lightbox">
+                                    <img alt="" src="front_app/assets/images/flickr-05.jpg">
                                 </a>
                             </li>
                             <li>
-                                <a href="images/flickr-06.jpg" class="lightbox">
-                                    <img alt="" src="images/flickr-06.jpg">
+                                <a href="front_app/assets/images/flickr-06.jpg" class="lightbox">
+                                    <img alt="" src="front_app/assets/images/flickr-06.jpg">
                                 </a>
                             </li>
                             <li>
-                                <a href="images/flickr-07.jpg" class="lightbox">
-                                    <img alt="" src="images/flickr-07.jpg">
+                                <a href="front_app/assets/images/flickr-07.jpg" class="lightbox">
+                                    <img alt="" src="front_app/assets/images/flickr-07.jpg">
                                 </a>
                             </li>
                             <li>
-                                <a href="images/flickr-08.jpg" class="lightbox">
-                                    <img alt="" src="images/flickr-08.jpg">
+                                <a href="front_app/assets/images/flickr-08.jpg" class="lightbox">
+                                    <img alt="" src="front_app/assets/images/flickr-08.jpg">
                                 </a>
                             </li>
                             <li>
-                                <a href="images/flickr-09.jpg" class="lightbox">
-                                    <img alt="" src="images/flickr-09.jpg">
+                                <a href="front_app/assets/images/flickr-09.jpg" class="lightbox">
+                                    <img alt="" src="front_app/assets/images/flickr-09.jpg">
                                 </a>
                             </li>
                         </ul>
@@ -1237,12 +1237,12 @@
                 <!-- Start Contact Widget -->
                 <div class="col-md-3 col-xs-12">
                     <div class="footer-widget contact-widget">
-                        <h4><img src="images/footer-margo.png" class="img-responsive" alt="Footer Logo" /></h4>
+                        <h4><img src="front_app/assets/images/footer-margo.png" class="img-responsive" alt="Footer Logo" /></h4>
                         <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
                         <ul>
                             <li><span>Phone Number:</span> +01 234 567 890</li>
-                            <li><span>Email:</span> company@company.com</li>
-                            <li><span>Website:</span> www.yourdomain.com</li>
+                            <li><span>Email:</span> info@pegasusrises.com</li>
+                            <li><span>Website:</span> www.pegasusrises.com</li>
                         </ul>
                     </div>
                 </div><!-- .col-md-3 -->
@@ -1255,7 +1255,7 @@
             <div class="copyright-section">
                 <div class="row">
                     <div class="col-md-6">
-                        <p>&copy; 2014 Margo -  All Rights Reserved <a href="http://graygrids.com">GrayGrids</a> </p>
+                        <p>&copy; 2015 Pegasus -  All Rights Reserved <a href="http://pegasusrises.com">Pegasusrises</a> </p>
                     </div><!-- .col-md-6 -->
                     <div class="col-md-6">
                         <ul class="footer-nav">
@@ -1297,13 +1297,10 @@
 <!--End of  angular-growl-2-->
 
 
-<script src="/front_app/jquery.js"></script>
-<script src="/front_app/angular.js"></script>
-<script  src="/front_app/ng-bid2win-vendors.js"></script>
-<script  src="/front_app/ng-bid2win.js"></script>
+<script  src="/front_app/scripts.js"></script>
+<script  src="/front_app/pegasusrises.js"></script>
 <script src="/front_app/templates/app.js"></script>
 <script src="/front_app/templates/common.js"></script>
-<script  src="/front_app/bid2win-scripts.js"></script>
 
 
 

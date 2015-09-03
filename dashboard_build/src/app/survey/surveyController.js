@@ -11,13 +11,16 @@ angular.module('survey')
 
             $scope.surveyData = questionData.data;
 
-            if ($.trim(surveysList.data.surveys) != 'No surveys set up') {
-                $scope.listOfSurveys = surveysList.data;
-            }else{
-                $scope.listOfSurveys = {
-                    surveys : []
-                }
+            $scope.listOfSurveys = {
+                surveys : []
+            };
+
+            if (surveysList) {
+                //if ($.trim(surveysList.data.surveys) != 'No surveys set up') {
+                //    $scope.listOfSurveys = surveysList.data;
+                //}
             }
+
 
             $scope.notifyRespondents = function(survey_name){
                 $location.path('/surveys/respondents').search({survey : survey_name })
@@ -39,9 +42,9 @@ angular.module('survey')
                     })
             });
 
-            $interval(function () {
-                $scope.reloadSurveyData();
-            }, 6000, 10000);
+            //$interval(function () {
+            //    $scope.reloadSurveyData();
+            //}, 6000, 10000);
 
 
             $scope.reloadSurveyData = function () {

@@ -7,39 +7,42 @@ angular.module('survey', [])
         $stateProvider.
             state('surveys', {
                 url : '/surveys',
-                templateUrl : 'survey/survey_list.tpl.html',
+                templateUrl : 'app/survey/survey_list.tpl.html',
                 controller : 'prSurveyController',
                 metadata : "Surveys",
                 resolve : {
                     surveyService : 'surveyService',
 
                     surveysList : function(surveyService){
-                        return surveyService.getAllSurveys()
+                        //return surveyService.getAllSurveys()
+                        return []
                     },
 
                     questionData : function(surveyService){
-                        return surveyService.getSurveyQuestionDetails()
+                        //return surveyService.getSurveyQuestionDetails()
+                        return []
                     },
 
                     submittedResponsesData : function(surveyService){
-                        return surveyService.getAllResponses()
+                        //return surveyService.getAllResponses()
+                        return []
                     }
                 }
             })
             .state('surveys.analytics', {
-                url : '/analytics/:survey/:form_id/:index',
+                url : 'app/analytics/:survey/:form_id/:index',
                 templateUrl : 'survey/detailed_analytics.tpl.html',
                 controller : 'prDetailedAnalyticsSurveyController',
                 metadata : "Survey Analytics"
             })
             .state('surveys.respondents', {
                 url : '/respondents',
-                templateUrl : 'survey/respondents.tpl.html',
+                templateUrl : 'app/survey/respondents.tpl.html',
                 controller : 'prSurveyRespondentsController',
                 metadata : "Invite Respondents"
             })
             .state('surveys.selected_survey', {
-                url : '/select/:form_id/:survey',
+                url : 'app/select/:form_id/:survey',
                 templateUrl : 'survey/selected_survey.tpl.html',
                 controller : 'prSelectedSurveyController',
                 metadata : 'View Survey'

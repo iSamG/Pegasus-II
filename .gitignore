@@ -1,5 +1,5 @@
 /vendor
 .env
 /dashboard_build/node_modules
-/public_build/node_modules
+/front_build/node_modules
 .idea/
