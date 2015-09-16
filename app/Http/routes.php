@@ -24,6 +24,13 @@ Route::get('/dashboard', function () {
 //    return 'ok';
 //});
 
+Route::controllers([
+    'password' => 'Auth\PasswordController',
+]);
+
+Route::get('/register','PegasusUserController@create');
+
+
 Route::post('/register', 'PegasusUserController@create');
 Route::post('/login', 'PegasusUserController@authenticate');
 Route::get('/logout', 'PegasusUserController@logout');
