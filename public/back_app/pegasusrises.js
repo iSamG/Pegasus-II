@@ -113,8 +113,10 @@ angular.module('pegasusrises', [
     'googlechart',
     'ngStorage',
     'ngTagsInput',
-    'perfect_scrollbar'
+    'perfect_scrollbar',
+    'mgo-angular-wizard'
 ])
+
     //'angular-loading-bar',
     .constant('prConstantKeys', {
         google_api_key: 'AIzaSyDSBIljWNHZ9xMXuaROc4oAypA8LT5xmaU',
@@ -577,8 +579,8 @@ angular.module('survey', [])
                 }
             })
             .state('surveys.analytics', {
-                url : 'app/analytics/:survey/:form_id/:index',
-                templateUrl : 'survey/detailed_analytics.tpl.html',
+                url : 'analytics/:survey/:form_id/:index',
+                templateUrl : 'app/survey/detailed_analytics.tpl.html',
                 controller : 'prDetailedAnalyticsSurveyController',
                 metadata : "Survey Analytics"
             })
@@ -589,10 +591,16 @@ angular.module('survey', [])
                 metadata : "Invite Respondents"
             })
             .state('surveys.selected_survey', {
-                url : 'app/select/:form_id/:survey',
-                templateUrl : 'survey/selected_survey.tpl.html',
+                url : 'select/:form_id/:survey',
+                templateUrl : 'app/survey/selected_survey.tpl.html',
                 controller : 'prSelectedSurveyController',
                 metadata : 'View Survey'
+            })
+            .state('surveys.create_new', {
+                url : 'survey/create/new',
+                templateUrl : 'app/survey/create_server_wizard.tpl.html',
+                controller : 'prCreateSurveyController',
+                metadata : 'Create Survey'
             })
     }]);
 /**
@@ -1358,6 +1366,66 @@ angular.module('survey')
              * Send SMS end
              * */
 
+        }])
+    .controller('prCreateSurveyController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl','$location','$timeout',
+        function($rootScope, $scope, homeService, surveyService, growl, $location, $timeout ){
+
+
+            // Disable weekend selection
+            //$scope.disabled = function(date, mode) {
+            //    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+            //};
+
+            $scope.toggleMin = function() {
+                $scope.minDate = $scope.minDate ? null : new Date();
+            };
+            $scope.toggleMin();
+            $scope.maxDate = new Date(2020, 5, 22);
+
+            $scope.status = {
+                opened : false
+            };
+
+            $scope.open = function($event) {
+                $scope.status.opened = true;
+            };
+
+            $scope.dateOptions = {
+                formatYear: 'yy',
+                startingDay: 1
+            };
+
+            $scope.format = "dd-MMMM-yyyy";
+
+            $scope.createSurveyForm = {};
+
+
+            $scope.surveyNameEntered = function () {
+                if (!$scope.createSurveyForm.survey_name || $scope.createSurveyForm.survey_name.length < 5) {
+                    growl.warning("Please enter a valid name of at least 5 characters to proceed", {title : "Survey name is required"});
+                    return false;
+                }
+                return true;
+            };
+
+            $scope.surveyDurationEntered = function () {
+                if (!$scope.createSurveyForm.startDate && !$scope.createSurveyForm.endDate) {
+                    growl.warning("Please select a valid duration to proceed", {title : "Survey duration is required"});
+                    return false;
+                }
+                return true;
+            };
+
+            $scope.submitForm = function () {
+                surveyService.createSurvey($scope.createSurveyForm)
+                    .success(function () {
+                        alert("success")
+                    })
+                    .error(function () {
+                        alert("failed")
+                    })
+            };
+
         }]);
 
 
@@ -1368,6 +1436,10 @@ angular.module('survey')
 angular.module('survey')
     .factory('surveyService' , [ '$http', function($http){
         var surveyService = {};
+
+        surveyService.createSurvey = function(form){
+            return $http.post('/create/survey', form)
+        };
 
         surveyService.getAllSurveys = function(){
             return $http.get('/user/surveys/read')

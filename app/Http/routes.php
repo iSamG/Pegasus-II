@@ -29,3 +29,7 @@ Route::post('/login', 'PegasusUserController@authenticate');
 Route::get('/logout', 'PegasusUserController@logout');
 Route::get('/auth/user', 'PegasusUserController@currentUser');
 //Route::post('/register', 'PegasusUserController@store');
+
+Route::post('/create/survey', function(){
+    return "created successfully";
+});

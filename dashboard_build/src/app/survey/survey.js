@@ -30,8 +30,8 @@ angular.module('survey', [])
                 }
             })
             .state('surveys.analytics', {
-                url : 'app/analytics/:survey/:form_id/:index',
-                templateUrl : 'survey/detailed_analytics.tpl.html',
+                url : 'analytics/:survey/:form_id/:index',
+                templateUrl : 'app/survey/detailed_analytics.tpl.html',
                 controller : 'prDetailedAnalyticsSurveyController',
                 metadata : "Survey Analytics"
             })
@@ -42,9 +42,15 @@ angular.module('survey', [])
                 metadata : "Invite Respondents"
             })
             .state('surveys.selected_survey', {
-                url : 'app/select/:form_id/:survey',
-                templateUrl : 'survey/selected_survey.tpl.html',
+                url : 'select/:form_id/:survey',
+                templateUrl : 'app/survey/selected_survey.tpl.html',
                 controller : 'prSelectedSurveyController',
                 metadata : 'View Survey'
+            })
+            .state('surveys.create_new', {
+                url : 'survey/create/new',
+                templateUrl : 'app/survey/create_server_wizard.tpl.html',
+                controller : 'prCreateSurveyController',
+                metadata : 'Create Survey'
             })
     }]);

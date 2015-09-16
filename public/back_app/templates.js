@@ -1,4 +1,4 @@
-angular.module('templates.app', ['app/admin/profile.tpl.html', 'app/admin/settings.tpl.html', 'app/home/home.tpl.html', 'app/survey/detailed_analytics.tpl.html', 'app/survey/respondents.tpl.html', 'app/survey/selected_survey.tpl.html', 'app/survey/survey_list.tpl.html', 'common/modals/deleteSurveyModal.tpl.html', 'common/partials/header.tpl.html']);
+angular.module('templates.app', ['app/admin/profile.tpl.html', 'app/admin/settings.tpl.html', 'app/home/home.tpl.html', 'app/survey/create_server_wizard.tpl.html', 'app/survey/detailed_analytics.tpl.html', 'app/survey/respondents.tpl.html', 'app/survey/selected_survey.tpl.html', 'app/survey/survey_list.tpl.html', 'common/modals/deleteSurveyModal.tpl.html', 'common/partials/header.tpl.html']);
 
 angular.module("app/admin/profile.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/admin/profile.tpl.html",
@@ -356,36 +356,13 @@ angular.module("app/home/home.tpl.html", []).run(["$templateCache", function($te
     "        <div class=\"text-center\" style=\"margin: 50px 0\" id=\"ngJoyRide_1_gdrive\">\n" +
     "\n" +
     "            <!--This button appears if you've not selected a file-->\n" +
-    "            <button ng-hide=\"files.length\" data-effect=\"flipInX\" class=\"effect-button col-lg-offset-4 col-lg-4 btn-lg btn btn-primary\" lk-google-picker picker-files=\"files\">\n" +
+    "            <button ng-hide=\"files.length\" ui-sref=\"surveys.create_new\" data-effect=\"flipInX\" class=\"effect-button col-lg-offset-4 col-lg-4 btn-lg btn btn-primary\">\n" +
     "               <i class=\"fa fa-dashboard\"></i>&nbsp;&nbsp;&nbsp;Get Started\n" +
     "            </button>\n" +
     "\n" +
-    "            <!--This show when a file is selected.-->\n" +
-    "            <button ng-show=\"files.length\" ng-click=\"beginPegasusServer()\" ng-disabled=\"disableServerCreateButton\" data-effect=\"\"  class=\"effect-button col-lg-offset-4 col-lg-4 btn-lg btn btn-success\" >\n" +
-    "               <i class=\"fa fa-upload\"></i>&nbsp;&nbsp;&nbsp;Create a server\n" +
-    "            </button>\n" +
-    "\n" +
     "        </div>\n" +
-    "        <p ng-hide=\"files.length\" class=\"text-center col-lg-offset-4 col-lg-4 blue_text\"><em><i class=\"fa fa-warning\"></i>  This will open Google Drive</em></p>\n" +
-    "        <p ng-show=\"files.length\" class=\"text-center col-lg-offset-4 col-lg-4 green_text\"><em><i class=\"fa fa-file\"></i>  Selected file : {{ files[files.length-1].name }}</em></p>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div ng-show=\"files.length\" class=\"row\">\n" +
-    "        <!--<button ng-click=\"files = []\" ng-disabled=\"disableServerCreateButton\" class=\"text-center col-lg-offset-5 col-lg-2 btn btn-warning\"><i class=\"fa fa-refresh\">    <b>Reset</b></i> </button>-->\n" +
-    "        <button ng-click=\"processServer()\" ng-disabled=\"disableServerCreateButton\" class=\"text-center col-lg-offset-5 col-lg-2 btn btn-warning\"><i class=\"fa fa-refresh\">    <b>Retry</b></i> </button>\n" +
-    "        </div>\n" +
-    "    <div ng-show=\"false\" class=\"row\">\n" +
-    "        <p class=\"text-center col-lg-offset-4 col-lg-4 green_text\"><em><i class=\"fa fa-file\"></i>  Selected filename : {{ files[files.length-1].name }}</em></p>\n" +
-    "        <div  class=\"text-center\" style=\"padding-bottom: 30px\">\n" +
-    "            <button id=\"ngJoyRide_2_upload\" class=\"col-lg-offset-4 col-lg-4 btn-lg btn btn-warning\" ng-click=\"uploadSheet()\"><i class=\"fa fa-upload\"></i>&nbsp;&nbsp;&nbsp;Send selected file's details</button>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "    <!--<div ng-show=\"files.length\" class=\"row\">-->\n" +
-    "    <div ng-show=\"false\" class=\"row\">\n" +
-    "        <div  class=\"text-center\" style=\"padding-bottom: 30px\">\n" +
-    "            <button class=\"col-lg-offset-4 col-lg-4 btn-lg btn btn-danger\" ng-click=\"tabletop()\"><i class=\"fa fa-upload\"></i>&nbsp;&nbsp;&nbsp;Send selected file contents as JSON</button>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
     "</div>\n" +
     "<!--ng-hide - first_timer ||-->\n" +
     "<div class=\"container clear_both padding_fix\" ng-hide=\"true\">\n" +
@@ -547,19 +524,104 @@ angular.module("app/home/home.tpl.html", []).run(["$templateCache", function($te
     "\n" +
     "\n" +
     "\n" +
-    "</div>\n" +
+    "</div>");
+}]);
+
+angular.module("app/survey/create_server_wizard.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/survey/create_server_wizard.tpl.html",
+    "<div class=\"row fill_white\">\n" +
+    "    <div class=\"block-web\">\n" +
+    "        <div class=\"header\">\n" +
+    "            <div class=\"actions\">\n" +
+    "                <a class=\"minimize\" href=\"#\"><i class=\"fa fa-chevron-down\"></i></a>\n" +
+    "                <a class=\"refresh\" href=\"#\"><i class=\"fa fa-repeat\"></i></a>\n" +
+    "                <a class=\"close-down\" href=\"#\"><i class=\"fa fa-times\"></i></a>\n" +
+    "            </div>\n" +
+    "            <h3 class=\"content-header\">Create Survey Below</h3>\n" +
+    "        </div>\n" +
+    "        <div class=\"porlets-content\">\n" +
+    "            <wizard on-finish=\"submitForm()\">\n" +
+    "                <wz-step title=\"Survey Identity\" canexit=\"surveyNameEntered\">\n" +
+    "                    <h1>Name <small>A short keyword to identify the survey</small></h1>\n" +
+    "                    <div class=\"row\" style=\"margin-top: 50px\">\n" +
+    "                        <div class=\"col-md-7 col-xs-12 center-block\">\n" +
+    "                            <form class=\"form \">\n" +
+    "                                <div class=\"form-group\">\n" +
+    "                                    <h3> <label for=\"survey_name\" class=\" col-sm-4 col-xs-6\">Survey Name</label></h3>\n" +
+    "                                    <div class=\"col-sm-8 col-xs-6\">\n" +
+    "                                        <input id=\"survey_name\" ng-model=\"createSurveyForm.survey_name\" type=\"text\" class=\"form-control input-lg col-xs-12\" name=\"survey_name\" title=\"survey_name\">\n" +
+    "                                    </div>\n" +
+    "                                </div>\n" +
+    "                            </form>\n" +
+    "                            <br>\n" +
+    "                            <button  wz-next=\"\" style=\"margin-right: 15px;\" class=\"btn btn-primary pull-right \">Continue &nbsp;&nbsp;&nbsp; <i class=\"fa fa-arrow-circle-o-right\"></i></button>\n" +
+    "\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </wz-step>\n" +
     "\n" +
     "\n" +
-    "<!--<p ng-hide=\"first_timer\" class=\"text-center h2\" style=\"margin-top: 50px\">Click the button go to the survey list page</p>-->\n" +
-    "<!--<p ng-hide=\"first_timer\" class=\"text-center\" style=\"margin-top: 10px\"><span ng-click=\"$state.go('surveys')\"  class=\"btn btn-primary btn-lg\"><i class=\"fa fa-list\"></i>    Survey List </span></p>-->\n" +
+    "                <wz-step title=\"Survey Duration\" canexit=\"surveyDurationEntered\">\n" +
+    "                    <h1>Duration <small>Start and End date of the survey</small></h1>\n" +
+    "                    <div class=\"row\" style=\"margin-top: 50px\">\n" +
+    "                        <div class=\"col-md-8 col-xs-12 center-block\">\n" +
+    "                            <div class=\"row\">\n" +
     "\n" +
-    "<!--files.length-->\n" +
-    "<div class=\"btn btn-warning\" ng-show=\"false\" ng-click=\"getFile()\"> Get file from Google </div>\n" +
+    "                                <div class=\"col-md-6\">\n" +
+    "                                    <h5 class=\"col-xs-12\"> <label for=\"startDate\">Start Date</label></h5>\n" +
+    "                                    <p class=\"input-group col-xs-12\">\n" +
+    "                                        <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" id=\"startDate\"\n" +
+    "                                               ng-model=\"createSurveyForm.startDate\" is-open=\"status.opened\" min-date=\"minDate\" max-date=\"createSurveyForm.endDate\"\n" +
+    "                                               datepicker-options=\"dateOptions\" close-on-date-selection=\"false\"\n" +
+    "                                               ng-required=\"true\" close-text=\"Close\" />\n" +
+    "                                          <span class=\"input-group-btn\">\n" +
+    "                                            <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                                          </span>\n" +
+    "                                    </p>\n" +
+    "                                </div>\n" +
     "\n" +
-    "<!--<div class=\"btn btn-info\" ng-click=\"dataFromAggregate()\"> Test Json Data </div>-->\n" +
+    "                                <div class=\"col-md-6\">\n" +
+    "                                    <h5 class=\"col-xs-12\"> <label for=\"endDate\">End Date</label></h5>\n" +
+    "                                    <p class=\"input-group col-xs-12\">\n" +
+    "                                        <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"createSurveyForm.endDate\"\n" +
+    "                                               is-open=\"status.opened\" min-date=\"createSurveyForm.startDate\" max-date=\"maxDate\" id=\"endDate\"\n" +
+    "                                               datepicker-options=\"dateOptions\" close-on-date-selection=\"true\"\n" +
+    "                                               ng-required=\"true\" close-text=\"Close\" />\n" +
+    "                                          <span class=\"input-group-btn\">\n" +
+    "                                            <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                                          </span>\n" +
+    "                                    </p>\n" +
+    "                                </div>\n" +
     "\n" +
-    "<!--<div ng-joy-ride=\"startJoyRide\" config=\"configJoyRide\" on-finish=\"onFinish()\"  on-skip=\"onFinish()\"></div>-->\n" +
-    "");
+    "                            </div>\n" +
+    "\n" +
+    "                            <button  wz-next=\"\"  class=\"btn btn-primary pull-right \">Continue &nbsp;&nbsp;&nbsp; <i class=\"fa fa-arrow-circle-o-right\"></i></button>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </wz-step>\n" +
+    "\n" +
+    "\n" +
+    "\n" +
+    "                <wz-step title=\"Final Step\">\n" +
+    "                    <h1>Congrats!!! <small>Click on the button to create the survey</small></h1>\n" +
+    "                    <div class=\"row\" style=\"margin-top: 50px\">\n" +
+    "                        <div class=\"col-md-8 col-xs-12 center-block\">\n" +
+    "                            <div class=\"row\">\n" +
+    "                                <h5 class=\"text-center\">You are about to create a survey named\n" +
+    "                                    <code style=\"color: cornflowerblue !important;\">{{ createSurveyForm.survey_name}}</code></h5>\n" +
+    "                                <br>\n" +
+    "                                <br>\n" +
+    "                                <div class=\"col-xs-12\">\n" +
+    "                                    <button style=\"display: block\"  wz-next=\"\"  class=\"btn btn-primary center-block text-center \">Create Survey &nbsp;&nbsp;&nbsp; <i class=\"fa fa-send-o\"></i></button>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </wz-step>\n" +
+    "            </wizard>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "</div>");
 }]);
 
 angular.module("app/survey/detailed_analytics.tpl.html", []).run(["$templateCache", function($templateCache) {

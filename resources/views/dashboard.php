@@ -72,7 +72,7 @@
                 <div class="user_admin dropdown"> <a href="javascript:void(0);" data-toggle="dropdown" ng-controller="prBreadCrumbCtrl">
                     <img src="back_app/images/user.png" />
                     <span class="user_adminname" id="user_logged_in_email">{{ username }}</span> <b class="caret"></b> </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style="left: -105px">
                         <div class="top_pointer"></div>
                         <li class="hidden"> <a ui-sref="profile"><i class="fa fa-user"></i> Profile</a> </li>
                         <li> <a ui-sref="settings"><i class="fa fa-cog"></i> Settings </a></li>

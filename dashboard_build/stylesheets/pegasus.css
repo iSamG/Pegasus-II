@@ -269,7 +269,10 @@ img {border: 0!important;}
 
 
 
-.contentpanel{ margin-left:220px;overflow:hidden;position: relative; padding:0px; background-color:#f1f1f1; padding-bottom:21px; min-height:800px;}
+.contentpanel{ margin-left:220px;overflow:hidden;position: relative; padding:0; background-color:#f1f1f1;
+    /*padding-bottom:21px; */
+    min-height:621px;
+}
 
 .fixed_header .header_bar{position:fixed; z-index:99;}
 .fixed_header .contentpanel{top:60px;}
@@ -473,7 +476,7 @@ img {border: 0!important;}
 }
 
 
-.dropdown-menu {position: absolute; top: 100%; left: -105px !important; z-index: 1000;display: none; float: left; min-width: 160px; padding: 0px 0; margin: 0px 0 0;font-size: 14px;list-style: none;background-color: #fff;
+.dropdown-menu {position: absolute; top: 100%; z-index: 1000;display: none; float: left; min-width: 160px; padding: 0px 0; margin: 0px 0 0;font-size: 14px;list-style: none;background-color: #fff;
     background-clip: padding-box; border: 1px solid #ccc;border: 1px solid rgba(0, 0, 0, .15);border-radius: 2px;-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175); box-shadow: 0 6px 12px rgba(0, 0, 0, .175);}
 
 .modal-content { position: relative; background-color: #fff;background-clip: padding-box; border: 1px solid #999;border: 1px solid rgba(0, 0, 0, .2); border-radius: 2px; outline: none;-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);box-shadow: 0 0 9px rgba(0, 0, 0, 0.36);}
@@ -654,7 +657,8 @@ h1,h2,h3,h4,h5,h6{margin-bottom:14px;}
 
 
 
-.white_bg{background:#FFFFFF; padding:15px;}
+.white_bg{background:#FFFFFF; padding:15px; min-height: 558px}
+.fill_white{background:#FFFFFF; min-height: 558px}
 
 
 .btn{ border:none; border-radius:2px;}
