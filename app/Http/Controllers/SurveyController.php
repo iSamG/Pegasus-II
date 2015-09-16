@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\pegasustwo\Helpers;
+use App\surveys\SurveysRepository;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -9,79 +11,53 @@ use App\Http\Controllers\Controller;
 
 class SurveyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        //
+
+    protected  $surveyRepository;
+
+    protected $requestMade;
+
+    public function __construct(SurveysRepository $surveyRepository, Request $requestMade) {
+
+        $this->surveyRepository = $surveyRepository;
+
+        $this->requestMade = $requestMade;
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
+
+    public function createSurvey()
     {
-        //
+
+        return Helpers::logingInfo($message = "You are about to create a survey", $data = $this->requestMade->all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
+    public function retrieveAllSurveysByAnAdmin()
     {
-        //
+        return Helpers::logingInfo($message = "Retrieve all surveys", $data = $this->requestMade->all());
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
+
+    public function retrieveASurveyByAnAdmin($id)
     {
-        //
+        return Helpers::logingInfo($message = "Retrieve a survey", $data = $this->requestMade->all());
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
+
+    public function editSurvey()
     {
-        //
+
+        return Helpers::logingInfo($message = "Edit a survey", $data = $this->requestMade->all());
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
+
+    public function deleteSurvey()
     {
-        //
+
+        return Helpers::logingInfo($message = "Delete a survey", $data = $this->requestMade->all());
+
     }
 }

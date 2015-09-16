@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="pegasusrises">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Pegasusrises Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="back_app/<%= grunt.config.get('pkg.name') %>.css"/>
+
+
+</head>
+<body class="light_theme  fixed_header left_nav_fixed">
+<div class="wrapper">
+    <!--\\\\\\\ wrapper Start \\\\\\-->
+    <div class="header_bar">
+        <!--\\\\\\\ header Start \\\\\\-->
+        <div class="brand">
+            <!--\\\\\\\ brand Start \\\\\\-->
+            <div class="logo" style="display:block"><span class="blue_text">Pegasus Rises</span> </div>
+        </div>
+        <!--\\\\\\\ brand end \\\\\\-->
+        <div class="header_top_bar">
+            <!--\\\\\\\ header top bar start \\\\\\-->
+            <a href="javascript:void(0);" class="menutoggle"> <i class="fa fa-bars"></i> </a>
+            <div class="top_left">
+                <div class="top_left_menu">
+                    <ul>
+                        <li> <a href="javascript:void(0);"><i class="fa fa-refresh" ng-class="{'fa-spin' : loading }"></i></a> </li>
+                    </ul>
+                </div>
+            </div>
+
+            <a href="javascript:void(0);" class="add_server hidden" data-toggle="modal" data-target="#myModal"> <i class="fa fa-plus-square"></i>
+                <span> New Server</span> </a>
+            <div class="top_right_bar">
+                <div class="top_right">
+                    <div class="top_right_menu">
+                        <ul>
+
+                            <li class="dropdown"> <a href="javascript:void(0);" data-toggle="dropdown"> Notifications
+                                <span class="badge badge color_1 hidden">4</span> </a>
+                                <ul class="drop_down_task dropdown-menu">
+                                    <div class="top_pointer"></div>
+                                    <li>
+                                        <p class="number"></p>
+                                    </li>
+                                    <li> <a href="readmail.html" class="mail">
+                                        <span class="subject">
+                                            <!--<span class="from">sarat m</span>-->
+                                            <span class="time"></span>
+                                        </span> <span class="message">You have no notifications</span>
+                                    </a>
+                                    </li>
+                                    <!--<li> <a href="readmail.html" class="mail"> <span class="photo"><img src="images/user.png" /></span> <span class="subject"> <span class="from">sarat m</span> <span class="time">just now</span> </span> <span class="message">Hello,this is an example msg.</span> </a> </li>-->
+                                    <!--<li> <a href="readmail.html" class="mail red_color"> <span class="photo"><img src="images/user.png" /></span> <span class="subject"> <span class="from">sarat m</span> <span class="time">just now</span> </span> <span class="message">Hello,this is an example msg.</span> </a> </li>-->
+                                    <!--<li> <a href="readmail.html" class="mail"> <span class="photo"><img src="images/user.png" /></span> <span class="subject"> <span class="from">sarat m</span> <span class="time">just now</span> </span> <span class="message">Hello,this is an example msg.</span> </a> </li>-->
+
+                                </ul>
+                            </li>
+                            <li class="dropdown hidden"> <a href="javascript:void(0);" data-toggle="dropdown"> Quick Menu </a>
+                                <div class="notification_drop_down dropdown-menu">
+                                    <div class="top_pointer"></div>
+                                    <div class="box"> <a href=""> <span class="block primery_6"> <i class="fa fa-envelope-o"></i> </span> <span class="block_text">Mailbox</span> </a> </div>
+                                    <div class="box"> <a href=""> <span class="block primery_2"> <i class="fa fa-calendar-o"></i> </span> <span class="block_text">Calendar</span> </a> </div>
+                                    <div class="box"> <a href=""> <span class="block primery_4"> <i class="fa fa-map-marker"></i> </span> <span class="block_text">Map</span> </a> </div>
+                                    <div class="box"> <a href=""> <span class="block primery_3"> <i class="fa fa-plane"></i> </span> <span class="block_text">To-Do</span> </a> </div>
+                                    <div class="box"> <a href=""> <span class="block primery_5"> <i class="fa fa-picture-o"></i> </span> <span class="block_text">Tasks</span> </a> </div>
+                                    <div class="box"> <a href=""> <span class="block primery_1"> <i class="fa fa-clock-o"></i> </span> <span class="block_text">Timeline</span> </a> </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="user_admin dropdown"> <a href="javascript:void(0);" data-toggle="dropdown" ng-controller="prBreadCrumbCtrl">
+                    <img src="back_app/images/user.png" />
+                    <span class="user_adminname" id="user_logged_in_email">{{ username }}</span> <b class="caret"></b> </a>
+                    <ul class="dropdown-menu" style="left: -105px">
+                        <div class="top_pointer"></div>
+                        <li class="hidden"> <a ui-sref="profile"><i class="fa fa-user"></i> Profile</a> </li>
+                        <li> <a ui-sref="settings"><i class="fa fa-cog"></i> Settings </a></li>
+                        <li> <a href=""  ng-click="startJoyRide()"><i class="fa fa-question-circle"></i> Help</a> </li>
+                        <li> <a href="{{ logout_url }}"><i class="fa fa-power-off"></i> Logout</a> </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <!--\\\\\\\ header top bar end \\\\\\-->
+    </div>
+    <!--\\\\\\\ header end \\\\\\-->
+    <div class="inner">
+        <!--\\\\\\\ inner start \\\\\\--><div class="left_nav">
+
+        <!--\\\\\\\left_nav start \\\\\\-->
+        <div class="search_bar"> <i class="fa fa-search"></i>
+            <input name="" disabled type="text" class="search" placeholder="Search Pegasus..." />
+        </div>
+        <div class="left_nav_slidebar">
+            <ul>
+                <li class="theme_border" ng-class="{'left_nav_active' : $state.includes('home')}">
+                    <a ui-sref="home"><i class="fa fa-home"></i> HOME <span class="left_nav_pointer">
+
+                    </span>
+                    <!--<span class="plus"><i class="fa fa-plus"></i></span> </a>-->
+                    <!--<ul class="opened" style="display:block">-->
+                        <!--<li> <a href="index.html"> <span>&nbsp;</span> <i class="fa fa-circle theme_color"></i> <b class="theme_color">Dashboard</b> </a> </li>-->
+                        <!--<li> <a href="settings.html"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Settings</b> </a> </li>-->
+                        <!--<li> <a href="layouts.html"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Layouts</b> </a> </li>-->
+                        <!--<li> <a href="themes.html"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Themes</b> </a> </li>-->
+                        <!--<li> <a href="widgets.html"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Widgets</b> </a> </li>-->
+                        <!--<li> <a href="animations.html"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Animations</b> </a> </li>-->
+                    <!--</ul>-->
+                    </a>
+                </li>
+                <li class="theme_border" ng-class="{'left_nav_active' : $state.includes('surveys')}">
+                    <a class="pointer"> <i class="fa fa-list"></i> SURVEYS <span class="plus"><i class="fa fa-plus"></i></span></a>
+                    <ul>
+                        <li> <a ui-sref="surveys"> <span>&nbsp;</span> <i class="fa fa-list"></i> <b>List Surveys</b> </a> </li>
+                        <li> <a ui-sref="surveys.respondents"> <span>&nbsp;</span> <i class="fa fa-users"></i> <b>Invite Respondents</b> </a> </li>
+                        <li class="hidden"> <a href=""> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Questionnaires</b> </a> </li>
+                        <li class="hidden"> <a href=""> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Statistics</b> </a> </li>
+                    </ul>
+                </li>
+
+
+
+
+                <li class="hidden"> <a href="javascript:void(0);"> <i class="fa fa-glass"></i> EXTRA <span class="plus"><i class="fa fa-plus"></i></span></a>
+                    <ul>
+                        <li> <a href=""> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Timeline</b> </a> </li>
+                        <li> <a href=""> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Profile</b> </a> </li>
+                        <li> <a href=""> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Contact List</b> </a> </li>
+                        <li> <a href=""> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Maps</b> </a> </li>
+                        <li> <a href=""> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Gallery</b> </a> </li>
+                        <li> <a href=""> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Help</b> </a> </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+        <!--\\\\\\\left_nav end \\\\\\-->
+        <div class="contentpanel">
+            <!--\\\\\\\ Bread Crumb header \\\\\\-->
+            <div ng-include="'common/partials/header.tpl.html'"></div>
+
+            <!--\\\\\\\ container  start \\\\\\-->
+            <div class="container clear_both padding_fix" ui-view="">
+
+            </div>
+            <!--\\\\\\\ container  end \\\\\\-->
+        </div>
+        <!--\\\\\\\ content panel end \\\\\\-->
+    </div>
+    <!--\\\\\\\ inner end\\\\\\-->
+</div>
+<!--\\\\\\\ wrapper end\\\\\\-->
+<div growl limit-messages="1"></div>
+
+<script type="text/javascript" src="back_app/scripts.js"></script>
+<script type="text/javascript" src="back_app/<%= grunt.config.get('pkg.name') %>.js"></script>
+<script type="text/javascript" src="back_app/templates.js"></script>
+
+<script type="text/javascript" src="http://apis.google.com/js/client.js"></script>
+<script type="text/javascript" src="http://apis.google.com/js/api.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+
+
+</body>
+</html>

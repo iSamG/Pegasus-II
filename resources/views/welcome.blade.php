@@ -40,8 +40,11 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Laravel 5</div>
+                <div class="title">Pegasus</div>
                 <div class="quote">{{ Inspiring::quote() }}</div>
+                <br>
+                <br>
+                <div class="quote"><a href="/dashboard">Go to Dashboard</a></div>
             </div>
         </div>
     </body>

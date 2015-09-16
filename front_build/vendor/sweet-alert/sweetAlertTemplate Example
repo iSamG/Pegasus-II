@@ -1,0 +1,21 @@
+              SweetAlert.swal({
+                                title: "Are you sure?",
+                                text: "Your will not be able to recover this imaginary file!",
+                                type: "warning, success,  type: "input",",
+                                 timer: 2000,
+                                  animation: "slide-from-top"
+                                  allowEscapeKey : true
+                                  allowOutsideClick : true
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",confirmButtonText: "Yes, delete it!",
+                                cancelButtonText: "No, cancel plx!",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                    SweetAlert.swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                                } else {
+                                    SweetAlert.swal("Cancelled", "Your imaginary file is safe :)", "error");
+                                }
+                            });
