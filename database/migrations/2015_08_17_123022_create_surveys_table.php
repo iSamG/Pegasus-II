@@ -13,7 +13,8 @@ class CreateSurveysTable extends Migration
     public function up()
     {
         Schema::create('surveys', function(Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
+            $table->bigIncrements('user_id');
             $table->string('survey_name');
             $table->enum('survey_type',['private','public']); //Just a thinking, suggest if any comes up
             $table->enum('survey_medium',['email','sms','ivr']); //Just a thinking, suggest if any comes up

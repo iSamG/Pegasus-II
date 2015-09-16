@@ -1,4 +1,4 @@
-<?php namespace App\surveys;
+<?php namespace App\pegasustwo\surveys;
 /**
  * Created by PhpStorm.
  * User: Gbeila Aliu Wahab

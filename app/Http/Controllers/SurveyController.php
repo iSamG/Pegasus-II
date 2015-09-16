@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\pegasustwo\Helpers;
-use App\surveys\SurveysRepository;
+use App\pegasustwo\surveys\SurveysRepository;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
