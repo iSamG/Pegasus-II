@@ -1,0 +1,93 @@
+<div class="row fill_white">
+    <div class="block-web">
+        <div class="header">
+            <div class="actions">
+                <a class="minimize" href="#"><i class="fa fa-chevron-down"></i></a>
+                <a class="refresh" href="#"><i class="fa fa-repeat"></i></a>
+                <a class="close-down" href="#"><i class="fa fa-times"></i></a>
+            </div>
+            <h3 class="content-header">Create Survey Below</h3>
+        </div>
+        <div class="porlets-content">
+            <wizard on-finish="submitForm()">
+                <wz-step title="Survey Identity" canexit="surveyNameEntered">
+                    <h1>Name <small>A short keyword to identify the survey</small></h1>
+                    <div class="row" style="margin-top: 50px">
+                        <div class="col-md-7 col-xs-12 center-block">
+                            <form class="form ">
+                                <div class="form-group">
+                                    <h3> <label for="survey_name" class=" col-sm-4 col-xs-6">Survey Name</label></h3>
+                                    <div class="col-sm-8 col-xs-6">
+                                        <input id="survey_name" ng-model="createSurveyForm.survey_name" type="text" class="form-control input-lg col-xs-12" name="survey_name" title="survey_name">
+                                    </div>
+                                </div>
+                            </form>
+                            <br>
+                            <button  wz-next="" style="margin-right: 15px;" class="btn btn-primary pull-right ">Continue &nbsp;&nbsp;&nbsp; <i class="fa fa-arrow-circle-o-right"></i></button>
+
+                        </div>
+                    </div>
+                </wz-step>
+
+
+                <wz-step title="Survey Duration" canexit="surveyDurationEntered">
+                    <h1>Duration <small>Start and End date of the survey</small></h1>
+                    <div class="row" style="margin-top: 50px">
+                        <div class="col-md-8 col-xs-12 center-block">
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <h5 class="col-xs-12"> <label for="startDate">Start Date</label></h5>
+                                    <p class="input-group col-xs-12">
+                                        <input type="text" class="form-control" datepicker-popup="{{format}}" id="startDate"
+                                               ng-model="createSurveyForm.startDate" is-open="status.opened" min-date="minDate" max-date="createSurveyForm.endDate"
+                                               datepicker-options="dateOptions" close-on-date-selection="false"
+                                               ng-required="true" close-text="Close" />
+                                          <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
+                                          </span>
+                                    </p>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h5 class="col-xs-12"> <label for="endDate">End Date</label></h5>
+                                    <p class="input-group col-xs-12">
+                                        <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="createSurveyForm.endDate"
+                                               is-open="status.opened" min-date="createSurveyForm.startDate" max-date="maxDate" id="endDate"
+                                               datepicker-options="dateOptions" close-on-date-selection="true"
+                                               ng-required="true" close-text="Close" />
+                                          <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
+                                          </span>
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <button  wz-next=""  class="btn btn-primary pull-right ">Continue &nbsp;&nbsp;&nbsp; <i class="fa fa-arrow-circle-o-right"></i></button>
+                        </div>
+                    </div>
+                </wz-step>
+
+
+
+                <wz-step title="Final Step">
+                    <h1>Congrats!!! <small>Click on the button to create the survey</small></h1>
+                    <div class="row" style="margin-top: 50px">
+                        <div class="col-md-8 col-xs-12 center-block">
+                            <div class="row">
+                                <h5 class="text-center">You are about to create a survey named
+                                    <code style="color: cornflowerblue !important;">{{ createSurveyForm.survey_name}}</code></h5>
+                                <br>
+                                <br>
+                                <div class="col-xs-12">
+                                    <button style="display: block"  wz-next=""  class="btn btn-primary center-block text-center ">Create Survey &nbsp;&nbsp;&nbsp; <i class="fa fa-send-o"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </wz-step>
+            </wizard>
+        </div>
+    </div>
+</div>

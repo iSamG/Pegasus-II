@@ -5,36 +5,13 @@
         <div class="text-center" style="margin: 50px 0" id="ngJoyRide_1_gdrive">
 
             <!--This button appears if you've not selected a file-->
-            <button ng-hide="files.length" data-effect="flipInX" class="effect-button col-lg-offset-4 col-lg-4 btn-lg btn btn-primary" lk-google-picker picker-files="files">
+            <button ng-hide="files.length" ui-sref="surveys.create_new" data-effect="flipInX" class="effect-button col-lg-offset-4 col-lg-4 btn-lg btn btn-primary">
                <i class="fa fa-dashboard"></i>&nbsp;&nbsp;&nbsp;Get Started
             </button>
 
-            <!--This show when a file is selected.-->
-            <button ng-show="files.length" ng-click="beginPegasusServer()" ng-disabled="disableServerCreateButton" data-effect=""  class="effect-button col-lg-offset-4 col-lg-4 btn-lg btn btn-success" >
-               <i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;Create a server
-            </button>
-
         </div>
-        <p ng-hide="files.length" class="text-center col-lg-offset-4 col-lg-4 blue_text"><em><i class="fa fa-warning"></i>  This will open Google Drive</em></p>
-        <p ng-show="files.length" class="text-center col-lg-offset-4 col-lg-4 green_text"><em><i class="fa fa-file"></i>  Selected file : {{ files[files.length-1].name }}</em></p>
     </div>
 
-    <div ng-show="files.length" class="row">
-        <!--<button ng-click="files = []" ng-disabled="disableServerCreateButton" class="text-center col-lg-offset-5 col-lg-2 btn btn-warning"><i class="fa fa-refresh">    <b>Reset</b></i> </button>-->
-        <button ng-click="processServer()" ng-disabled="disableServerCreateButton" class="text-center col-lg-offset-5 col-lg-2 btn btn-warning"><i class="fa fa-refresh">    <b>Retry</b></i> </button>
-        </div>
-    <div ng-show="false" class="row">
-        <p class="text-center col-lg-offset-4 col-lg-4 green_text"><em><i class="fa fa-file"></i>  Selected filename : {{ files[files.length-1].name }}</em></p>
-        <div  class="text-center" style="padding-bottom: 30px">
-            <button id="ngJoyRide_2_upload" class="col-lg-offset-4 col-lg-4 btn-lg btn btn-warning" ng-click="uploadSheet()"><i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;Send selected file's details</button>
-        </div>
-    </div>
-    <!--<div ng-show="files.length" class="row">-->
-    <div ng-show="false" class="row">
-        <div  class="text-center" style="padding-bottom: 30px">
-            <button class="col-lg-offset-4 col-lg-4 btn-lg btn btn-danger" ng-click="tabletop()"><i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;Send selected file contents as JSON</button>
-        </div>
-    </div>
 </div>
 <!--ng-hide - first_timer ||-->
 <div class="container clear_both padding_fix" ng-hide="true">
@@ -197,14 +174,3 @@
 
 
 </div>
-
-
-<!--<p ng-hide="first_timer" class="text-center h2" style="margin-top: 50px">Click the button go to the survey list page</p>-->
-<!--<p ng-hide="first_timer" class="text-center" style="margin-top: 10px"><span ng-click="$state.go('surveys')"  class="btn btn-primary btn-lg"><i class="fa fa-list"></i>    Survey List </span></p>-->
-
-<!--files.length-->
-<div class="btn btn-warning" ng-show="false" ng-click="getFile()"> Get file from Google </div>
-
-<!--<div class="btn btn-info" ng-click="dataFromAggregate()"> Test Json Data </div>-->
-
-<!--<div ng-joy-ride="startJoyRide" config="configJoyRide" on-finish="onFinish()"  on-skip="onFinish()"></div>-->

@@ -12,8 +12,7 @@ module.exports = function (grunt) {
     // Default task.
 //    grunt.registerTask('default', ['jshint','build','karma:unit']);
     grunt.registerTask('default', ['clean','concat','copy','html2js']);
-    grunt.registerTask('ngfiles', ['concat:angular_application']);
-    grunt.registerTask('build', ['clean','html2js','concat', 'copy:assets']);
+    grunt.registerTask('load', ['concat:app_scripts', 'html2js']);
     grunt.registerTask('release', ['clean','html2js','uglify','jshint','karma:unit','concat:index', 'recess:min','copy:assets']);
     grunt.registerTask('test-watch', ['karma:watch']);
 
@@ -31,7 +30,7 @@ module.exports = function (grunt) {
     // Project configuration.
     grunt.initConfig({
         distdir: '../public',
-        distdirStatic: '<%= distdir %>/static',
+        distdirStatic: '<%= distdir %>/back_app',
         distdirHtml: '../resources/views',
         pkg: grunt.file.readJSON('package.json'),
         banner:
@@ -44,25 +43,24 @@ module.exports = function (grunt) {
             jsTpl: ['<%= distdir %>/templates/**/*.js'],
             specs: ['test/**/*.spec.js'],
             scenarios: ['test/**/*.scenario.js'],
-            html: ['src/index.html'],
+            scripts: ['vendor/jquery/*.js',
+                'vendor/bootstrap/*.js',
+                'vendor/angular/*.js',
+                'vendor/**/*.js'
+            ],
+            html: ['src/dashboard_index.html'],
             tpl: {
-                app: ['src/app/**/*.tpl.html'],
-                common: ['src/common/**/*.tpl.html']
+                app: ['src/app/**/*.tpl.html', 'src/common/**/*.tpl.html']
             },
-            css : ['src/stylesheets/font*.css', 'src/stylesheets/boot*.css', 'src/stylesheets/animate.css','src/stylesheets/pegasus.css',
-                'src/stylesheets/*.css','src/vendor/angular-loading-bar/*.css', 'src/vendor/angular-growl-2/*.css', 'src/vendor/ng-joyride/*.css',
-                'src/vendor/ng-tags-input/*.css','src/vendor/perfect-scroller/*.css']
+            css : ['stylesheets/font*.css', 'stylesheets/boot*.css', 'stylesheets/*.css', 'vendor/**/*.css']
         },
         clean: ['<%= distdir %>/*'],
         copy: {
             assets: {
                 files: [
-                    { dest: '<%= distdirStatic %>/', src : '**', expand: true, cwd: 'src/assets/' },
-                    { dest: '<%= distdirStatic %>/dummyloader', src : '**', expand: true, cwd: 'src/dummydata/' }
+                    { dest: '<%= distdirStatic %>/', src : '**', expand: true, cwd: 'assets/' }
+                    //{ dest: '<%= distdirStatic %>/dummyloader', src : '**', expand: true, cwd: 'src/dummydata/' }
                 ]
-            },
-            fonts : {
-                files: [{ dest: '<%= distdirStatic %>/fonts/', src : '**', expand: true, cwd: 'src/fonts/' }]
             }
         },
         karma: {
@@ -72,31 +70,16 @@ module.exports = function (grunt) {
         html2js: {
             app: {
                 options: {
-                    base: 'src/app'
+                    base: 'src'
                 },
                 src: ['<%= src.tpl.app %>'],
-                dest: '<%= distdir %>/templates/app.js',
+                dest: '<%= distdir %>/back_app/templates.js',
                 module: 'templates.app'
-            },
-            common: {
-                options: {
-                    base: 'src/common'
-                },
-                src: ['<%= src.tpl.common %>'],
-                dest: '<%= distdir %>/templates/common.js',
-                module: 'templates.common'
             }
         },
         concat:{
-            dist:{
-                options: {
-                    banner: "<%= banner %>"
-                },
-                src: ['<%= src.js %>', '<%= src.jsTpl %>'],
-                dest:'<%= distdirStatic %>/<%= pkg.name %>.js'
-            },
-            index: {
-                src: ['src/index.html'],
+            html: {
+                src: ['<%= src.html %>'],
                 dest: '<%= distdirHtml %>/dashboard.php',
                 options: {
                     process: true
@@ -104,34 +87,15 @@ module.exports = function (grunt) {
             },
             stylesheet : {
                 files : {
-                    '<%= distdirStatic %>/all-<%= pkg.name %>.css' : '<%= src.css %>'
+                    '<%= distdirStatic %>/<%= pkg.name %>.css' : '<%= src.css %>'
                 }
             },
-            jquery: {
-                src:['src/vendor/jquery/*.js'],
-                dest: '<%= distdirStatic %>/jquery.js'
+            app_scripts: {
+                src:['<%= src.js %>'],
+                dest: '<%= distdirStatic %>/<%= pkg.name %>.js'
             },
-            bootstrap: {
-                src:['src/vendor/bootstrap/*.js'],
-                dest: '<%= distdirStatic %>/bootstrap.js'
-            },
-            angular: {
-                src:['src/vendor/angular/angular.js', 'src/vendor/angular/*.js'],
-                dest: '<%= distdirStatic %>/angular_files.js'
-            },
-            angular_application: {
-                src:['src/app/**/*.js'],
-                dest: '<%= distdirStatic %>/<%= pkg.name %>_angular.js'
-            },
-            directives : {
-                src:['src/common/directives/*.js'],
-                dest: '<%= distdirStatic %>/directives.js'
-            },
-            vendors: {
-                src:['src/scripts/common-script.js', 'src/vendor/google/*.js',
-                    'src/vendor/tabletop/*.js','src/vendor/angular-loading-bar/*.js', 'src/vendor/angular-growl-2/*.js',
-                    'src/vendor/perfect-scroller/*.js','src/vendor/moment/*.js',
-                    'src/vendor/angular-file-uploader/*.js','src/vendor/ng-joyride/*.js', 'src/vendor/ngStorage/*.js','src/vendor/ng-tags-input/*.js'],
+            vendor_scripts: {
+                src:['<%= src.scripts %>'],
                 dest: '<%= distdirStatic %>/scripts.js'
             }
         },
@@ -161,13 +125,9 @@ module.exports = function (grunt) {
             }
         },
         watch:{
-            all: {
-                files:['<%= src.js %>', '<%= src.tpl.app %>', '<%= src.tpl.common %>', '<%= src.html %>'],
-                tasks:['default','timestamp']
-            },
-            build: {
-                files:['<%= src.js %>', '<%= src.specs %>', '<%= src.lessWatch %>', '<%= src.tpl.app %>', '<%= src.tpl.common %>', '<%= src.html %>'],
-                tasks:['build','timestamp']
+            app: {
+                files:['<%= src.js %>', '<%= src.tpl.app %>'],
+                tasks:['load','timestamp']
             }
         },
         jshint:{

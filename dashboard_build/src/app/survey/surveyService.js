@@ -6,6 +6,10 @@ angular.module('survey')
     .factory('surveyService' , [ '$http', function($http){
         var surveyService = {};
 
+        surveyService.createSurvey = function(form){
+            return $http.post('/create/survey', form)
+        };
+
         surveyService.getAllSurveys = function(){
             return $http.get('/user/surveys/read')
         };

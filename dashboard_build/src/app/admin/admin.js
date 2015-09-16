@@ -6,12 +6,12 @@ angular.module('admin', [])
         $stateProvider
             .state('settings', {
                 url : '/settings',
-                templateUrl : 'admin/settings.tpl.html',
+                templateUrl : 'app/admin/settings.tpl.html',
                 controller : 'prAdminSettingsCtrl'
             })
             .state('profile', {
                 url : '/profile',
-                templateUrl : 'admin/profile.tpl.html',
+                templateUrl : 'app/admin/profile.tpl.html',
                 controller : 'prAdminProfileCtrl'
             })
     }])

@@ -4,7 +4,6 @@ angular.module('pegasusrises', [
     'ui.bootstrap',
     'ngAnimate',
     'templates.app',
-    'templates.common',
     'home',
     'admin',
     'survey',
@@ -19,8 +18,10 @@ angular.module('pegasusrises', [
     'googlechart',
     'ngStorage',
     'ngTagsInput',
-    'perfect_scrollbar'
+    'perfect_scrollbar',
+    'mgo-angular-wizard'
 ])
+
     //'angular-loading-bar',
     .constant('prConstantKeys', {
         google_api_key: 'AIzaSyDSBIljWNHZ9xMXuaROc4oAypA8LT5xmaU',
