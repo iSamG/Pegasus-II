@@ -8,4 +8,38 @@
 
 class SurveysRepository {
 
+
+    public function createSurvey()
+    {
+
+    }
+
+
+    public function retrieveAllSurveysByAnAdmin()
+    {
+
+
+    }
+
+
+    public function retrieveASurveyByAnAdmin($id)
+    {
+
+
+    }
+
+
+    public function editSurvey()
+    {
+
+
+    }
+
+
+
+    public function deleteSurvey()
+    {
+
+    }
+
 }
