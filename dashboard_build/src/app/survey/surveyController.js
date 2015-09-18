@@ -765,6 +765,9 @@ angular.module('survey')
     .controller('prCreateSurveyController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl','$location','$timeout',
         function($rootScope, $scope, homeService, surveyService, growl, $location, $timeout ){
 
+            $scope.createSurveyForm = {
+
+            };
 
             // Disable weekend selection
             //$scope.disabled = function(date, mode) {
