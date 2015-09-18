@@ -1371,6 +1371,7 @@ angular.module('survey')
         function($rootScope, $scope, homeService, surveyService, growl, $location, $timeout ){
 
 
+
             // Disable weekend selection
             //$scope.disabled = function(date, mode) {
             //    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
@@ -1397,8 +1398,11 @@ angular.module('survey')
 
             $scope.format = "dd-MMMM-yyyy";
 
-            $scope.createSurveyForm = {};
-
+            $scope.createSurveyForm = {
+                user_id : 1,
+                survey_type : 'public',
+                survey_medium : 'email'
+            };
 
             $scope.surveyNameEntered = function () {
                 if (!$scope.createSurveyForm.survey_name || $scope.createSurveyForm.survey_name.length < 5) {
