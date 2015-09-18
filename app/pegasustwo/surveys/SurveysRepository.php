@@ -1,4 +1,7 @@
 <?php namespace App\pegasustwo\surveys;
+use App\pegasustwo\Helpers;
+use App\Survey;
+
 /**
  * Created by PhpStorm.
  * User: Gbeila Aliu Wahab
@@ -9,8 +12,11 @@
 class SurveysRepository {
 
 
-    public function createSurvey()
+    public function createSurvey($details_of_survey_to_be_created)
     {
+        $create_survey = Survey::create($details_of_survey_to_be_created);
+
+        return Helpers::responseToView($code = 200, $status= "OK",$message= "Survey created successfully", $data = $create_survey);
 
     }
 

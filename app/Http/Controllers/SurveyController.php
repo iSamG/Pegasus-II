@@ -25,10 +25,13 @@ class SurveyController extends Controller
     }
 
 
-    public function createSurvey()
+    public function createSurvey(Requests\CreateSurveyRequest $createSurveyRequest)
     {
 
-        return Helpers::logingInfo($message = "You are about to create a survey", $data = $this->requestMade->all());
+        $create_survey = $this->surveyRepository->createSurvey($createSurveyRequest->all());
+
+        return $create_survey;
+
     }
 
     public function retrieveAllSurveysByAnAdmin()

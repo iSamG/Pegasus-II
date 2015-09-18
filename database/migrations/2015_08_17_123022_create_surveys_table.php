@@ -16,8 +16,8 @@ class CreateSurveysTable extends Migration
             $table->bigIncrements('id');
             $table->bigIncrements('user_id');
             $table->string('survey_name');
-            $table->enum('survey_type',['private','public']); //Just a thinking, suggest if any comes up
-            $table->enum('survey_medium',['email','sms','ivr']); //Just a thinking, suggest if any comes up
+            $table->enum('survey_type',['private','public'])->default('public'); //Just a thinking, suggest if any comes up
+            $table->enum('survey_medium',['email','sms','ivr','any'])->default('any'); //Just a thinking, suggest if any comes up
             $table->timestamp('start_date');
             $table->timestamp('end_date');
             $table->boolean('status')->default(0);
