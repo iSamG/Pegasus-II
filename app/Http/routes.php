@@ -16,9 +16,7 @@ Route::get('/', function () {
     return view('public_home');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
+
 
 //Route::get('/register', function(){
 //    return 'ok';
@@ -30,6 +28,22 @@ Route::get('/logout', 'PegasusUserController@logout');
 Route::get('/auth/user', 'PegasusUserController@currentUser');
 //Route::post('/register', 'PegasusUserController@store');
 
-Route::post('/create/survey', function(){
-    return "created successfully";
+
+
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
 });
+
+
+Route::post('/create/survey', 'SurveyController@createSurvey');
+
+Route::post('/edit/survey', 'SurveyController@editSurvey');
+
+Route::post('/delete/survey', 'SurveyController@deleteSurvey');
+
+Route::get('/retrieve/all/surveys', 'SurveyController@retrieveAllSurveysByAnAdmin');
+
+Route::post('/retrieve/a/survey', 'SurveyController@retrieveASurveyByAnAdmin');
+
+
