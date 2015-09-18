@@ -1,12 +1,8 @@
-<?php
+<?php namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
 
-use App\User;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Input;
 
 class PegasusUserController extends Controller
 {
@@ -22,8 +18,16 @@ class PegasusUserController extends Controller
 
     public function authenticate(){
 
-        if (Auth::attempt(['username' => Request::input('username'), 'password' => Request::input('password')]))
+        $user_details = Input::all();
+        $username = $user_details['username'];
+        $password = $user_details['password'];
+
+        var_dump($username." ".$password);
+        if (Auth::attempt(['username' => $username, 'password' => $password]))
         {
+
+            var_dump("it showwwwwwssss");
+            exit();
             $authenticated_user = Auth::User();
 
             $authenticated_user->last_login = Carbon::now();
@@ -35,9 +39,9 @@ class PegasusUserController extends Controller
 
         }
 
-        //return "baad";
+        return "baad";
 
-        return Helpers::responseToView($code = 401, $status = "Failed", $message = "Pegasus User authentication failed");
+       // return Helpers::responseToView($code = 401, $status = "Failed", $message = "Pegasus User authentication failed");
     }
 
     /**
