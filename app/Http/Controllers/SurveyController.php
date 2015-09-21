@@ -36,14 +36,17 @@ class SurveyController extends Controller
 
     public function retrieveAllSurveysByAnAdmin()
     {
-        return Helpers::logingInfo($message = "Retrieve all surveys", $data = $this->requestMade->all());
+        $all_surveys_by_an_admin = $this->surveyRepository->retrieveAllSurveysByAnAdmin($this->requestMade->get('admin_id'));
 
+        return $all_surveys_by_an_admin;
     }
 
 
     public function retrieveASurveyByAnAdmin($id)
     {
-        return Helpers::logingInfo($message = "Retrieve a survey", $data = $this->requestMade->all());
+        $retrieve_a_survey_by_an_admin = $this->surveyRepository->retrieveASurveyByAnAdmin($this->requestMade->get('admin_id'), $this->requestMade->get('survey_id'));
+
+        return $retrieve_a_survey_by_an_admin;
 
     }
 
@@ -51,7 +54,9 @@ class SurveyController extends Controller
     public function editSurvey()
     {
 
-        return Helpers::logingInfo($message = "Edit a survey", $data = $this->requestMade->all());
+        $edit_survey = $this->surveyRepository->editSurvey($this->requestMade->all());
+
+        return $edit_survey;
 
     }
 
@@ -60,7 +65,9 @@ class SurveyController extends Controller
     public function deleteSurvey()
     {
 
-        return Helpers::logingInfo($message = "Delete a survey", $data = $this->requestMade->all());
+        $delete_survey = $this->surveyRepository->deleteSurvey($this->requestMade->get('survey_id'));
+
+        return $delete_survey;
 
     }
 }

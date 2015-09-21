@@ -30,11 +30,5 @@ class CreateSurveyRequest extends Request
             'end_date' => ['required']
         ];
 
-        $table->bigIncrements('user_id');
-        $table->string('survey_name');
-        $table->enum('survey_type',['private','public']); //Just a thinking, suggest if any comes up
-        $table->enum('survey_medium',['email','sms','ivr','any']); //Just a thinking, suggest if any comes up
-        $table->timestamp('start_date');
-        $table->timestamp('end_date');
     }
 }
