@@ -579,7 +579,7 @@ angular.module('survey', [])
                 }
             })
             .state('surveys.analytics', {
-                url : 'analytics/:survey/:form_id/:index',
+                url : '/analytics/:survey/:form_id/:index',
                 templateUrl : 'app/survey/detailed_analytics.tpl.html',
                 controller : 'prDetailedAnalyticsSurveyController',
                 metadata : "Survey Analytics"
@@ -591,18 +591,169 @@ angular.module('survey', [])
                 metadata : "Invite Respondents"
             })
             .state('surveys.selected_survey', {
-                url : 'select/:form_id/:survey',
+                url : '/select/:form_id/:survey',
                 templateUrl : 'app/survey/selected_survey.tpl.html',
                 controller : 'prSelectedSurveyController',
                 metadata : 'View Survey'
             })
             .state('surveys.create_new', {
-                url : 'survey/create/new',
-                templateUrl : 'app/survey/create_server_wizard.tpl.html',
+                url : '/create/new',
+                templateUrl : 'app/survey/create/create_server_wizard.tpl.html',
                 controller : 'prCreateSurveyController',
                 metadata : 'Create Survey'
             })
+            .state('surveys.build_new_form', {
+                url : '/build/new/form',
+                templateUrl : 'app/survey/forms/new_form/build_new_form.tpl.html',
+                controller : 'prBuildNewFormController',
+                metadata : 'Survey Form Builder'
+            })
     }]);
+/**
+ * Created by Kaygee on 24/02/2015.
+ */
+
+angular.module('survey')
+    .controller('prCreateSurveyController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl','$location','$timeout',
+        function($rootScope, $scope, homeService, surveyService, growl, $location, $timeout ){
+
+
+
+            // Disable weekend selection
+            //$scope.disabled = function(date, mode) {
+            //    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+            //};
+
+            $scope.toggleMin = function() {
+                $scope.minDate = $scope.minDate ? null : new Date();
+            };
+            $scope.toggleMin();
+            $scope.maxDate = new Date(2020, 5, 22);
+
+            $scope.status = {
+                opened : false
+            };
+
+            $scope.open = function($event) {
+                $scope.status.opened = true;
+            };
+
+            $scope.dateOptions = {
+                formatYear: 'yy',
+                startingDay: 1
+            };
+
+            $scope.format = "dd-MMMM-yyyy";
+
+            $scope.createSurveyForm = {
+                user_id : 1,
+                survey_type : 'public',
+                survey_medium : 'email'
+            };
+
+            $scope.surveyNameEntered = function () {
+                if (!$scope.createSurveyForm.survey_name || $scope.createSurveyForm.survey_name.length < 5) {
+                    growl.warning("Please enter a valid name of at least 5 characters to proceed", {title : "Survey name is required"});
+                    return false;
+                }
+                return true;
+            };
+
+            $scope.surveyDurationEntered = function () {
+                if (!$scope.createSurveyForm.start_date && !$scope.createSurveyForm.end_date) {
+                    growl.warning("Please select a valid duration to proceed", {title : "Survey duration is required"});
+                    return false;
+                }
+                return true;
+            };
+
+            $scope.submitForm = function () {
+                surveyService.createSurvey($scope.createSurveyForm)
+                    .success(function () {
+                        alert("success")
+                    })
+                    .error(function () {
+                        alert("failed")
+                    })
+            };
+
+        }]);
+
+
+/**
+ * Created by Kaygee on 24/02/2015.
+ */
+
+angular.module('survey')
+    .controller('prBuildNewFormController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl','$location','$timeout',
+        function($rootScope, $scope, homeService, surveyService, growl, $location, $timeout ){
+
+            $("#newForm").alpaca({
+                "data": {
+                    "name": "Sam Dzidzornu",
+                    "feedback": "Very impressive.",
+                    "ranking": "excellent"
+                },
+                "schema": {
+                    "title":"User Feedback",
+                    "description":"What do you think about Alpaca?",
+                    "type":"object",
+                    "properties": {
+                        "name": {
+                            "type":"string",
+                            "title":"Name",
+                            required : true
+                        },
+                        "feedback": {
+                            "type":"string",
+                            "title":"Feedback"
+                        },
+                        "ranking": {
+                            "type":"string",
+                            "title":"Ranking",
+                            "enum":['excellent','ok','so so']
+                        }
+                    }
+                },
+                "options": {
+                    "renderForm":true,
+                    "form":{
+                        "attributes":{
+                            "action":"examples/endpoints/save.php",
+                            "method":"post"
+                        },
+                        "buttons":{
+                            "submit":{}
+                        }
+                    },
+                    "helper": "Tell us what you think about Alpaca!",
+                    "fields": {
+                        "name": {
+                            "size": 20,
+                            "helper": "Please enter your name.",
+                            "placeholder": "Enter your name"
+                        },
+                        "feedback" : {
+                            "type": "textarea",
+                            "rows": 5,
+                            "cols": 40,
+                            "helper": "Please enter your feedback."
+                        },
+                        "ranking": {
+                            "type": "select",
+                            "helper": "Select your ranking.",
+                            "optionLabels": ["Awesome!",
+                                "It's Ok",
+                                "Hmm..."]
+                        }
+                    }
+                },
+                "view" : "VIEW_WEB_EDIT_LIST"
+            });
+
+        }]);
+
+
 /**
  * Created by Kaygee on 24/02/2015.
  */
@@ -1366,72 +1517,7 @@ angular.module('survey')
              * Send SMS end
              * */
 
-        }])
-    .controller('prCreateSurveyController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl','$location','$timeout',
-        function($rootScope, $scope, homeService, surveyService, growl, $location, $timeout ){
-
-
-
-            // Disable weekend selection
-            //$scope.disabled = function(date, mode) {
-            //    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-            //};
-
-            $scope.toggleMin = function() {
-                $scope.minDate = $scope.minDate ? null : new Date();
-            };
-            $scope.toggleMin();
-            $scope.maxDate = new Date(2020, 5, 22);
-
-            $scope.status = {
-                opened : false
-            };
-
-            $scope.open = function($event) {
-                $scope.status.opened = true;
-            };
-
-            $scope.dateOptions = {
-                formatYear: 'yy',
-                startingDay: 1
-            };
-
-            $scope.format = "dd-MMMM-yyyy";
-
-            $scope.createSurveyForm = {
-                user_id : 1,
-                survey_type : 'public',
-                survey_medium : 'email'
-            };
-
-            $scope.surveyNameEntered = function () {
-                if (!$scope.createSurveyForm.survey_name || $scope.createSurveyForm.survey_name.length < 5) {
-                    growl.warning("Please enter a valid name of at least 5 characters to proceed", {title : "Survey name is required"});
-                    return false;
-                }
-                return true;
-            };
-
-            $scope.surveyDurationEntered = function () {
-                if (!$scope.createSurveyForm.startDate && !$scope.createSurveyForm.endDate) {
-                    growl.warning("Please select a valid duration to proceed", {title : "Survey duration is required"});
-                    return false;
-                }
-                return true;
-            };
-
-            $scope.submitForm = function () {
-                surveyService.createSurvey($scope.createSurveyForm)
-                    .success(function () {
-                        alert("success")
-                    })
-                    .error(function () {
-                        alert("failed")
-                    })
-            };
-
         }]);
-
 
 /**
  * Created by Kaygee on 24/02/2015.

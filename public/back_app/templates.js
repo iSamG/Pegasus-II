@@ -1,4 +1,4 @@
-angular.module('templates.app', ['app/admin/profile.tpl.html', 'app/admin/settings.tpl.html', 'app/home/home.tpl.html', 'app/survey/create_server_wizard.tpl.html', 'app/survey/detailed_analytics.tpl.html', 'app/survey/respondents.tpl.html', 'app/survey/selected_survey.tpl.html', 'app/survey/survey_list.tpl.html', 'common/modals/deleteSurveyModal.tpl.html', 'common/partials/header.tpl.html']);
+angular.module('templates.app', ['app/admin/profile.tpl.html', 'app/admin/settings.tpl.html', 'app/home/home.tpl.html', 'app/survey/create/create_server_wizard.tpl.html', 'app/survey/detailed_analytics.tpl.html', 'app/survey/forms/new_form/build_new_form.tpl.html', 'app/survey/respondents.tpl.html', 'app/survey/selected_survey.tpl.html', 'app/survey/survey_list.tpl.html', 'common/modals/deleteSurveyModal.tpl.html', 'common/partials/header.tpl.html']);
 
 angular.module("app/admin/profile.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/admin/profile.tpl.html",
@@ -527,8 +527,8 @@ angular.module("app/home/home.tpl.html", []).run(["$templateCache", function($te
     "</div>");
 }]);
 
-angular.module("app/survey/create_server_wizard.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/survey/create_server_wizard.tpl.html",
+angular.module("app/survey/create/create_server_wizard.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/survey/create/create_server_wizard.tpl.html",
     "<div class=\"row fill_white\">\n" +
     "    <div class=\"block-web\">\n" +
     "        <div class=\"header\">\n" +
@@ -571,7 +571,7 @@ angular.module("app/survey/create_server_wizard.tpl.html", []).run(["$templateCa
     "                                    <h5 class=\"col-xs-12\"> <label for=\"startDate\">Start Date</label></h5>\n" +
     "                                    <p class=\"input-group col-xs-12\">\n" +
     "                                        <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" id=\"startDate\"\n" +
-    "                                               ng-model=\"createSurveyForm.startDate\" is-open=\"status.opened\" min-date=\"minDate\" max-date=\"createSurveyForm.endDate\"\n" +
+    "                                               ng-model=\"createSurveyForm.start_date\" is-open=\"status.opened\" min-date=\"minDate\" max-date=\"createSurveyForm.end_date\"\n" +
     "                                               datepicker-options=\"dateOptions\" close-on-date-selection=\"false\"\n" +
     "                                               ng-required=\"true\" close-text=\"Close\" />\n" +
     "                                          <span class=\"input-group-btn\">\n" +
@@ -583,8 +583,8 @@ angular.module("app/survey/create_server_wizard.tpl.html", []).run(["$templateCa
     "                                <div class=\"col-md-6\">\n" +
     "                                    <h5 class=\"col-xs-12\"> <label for=\"endDate\">End Date</label></h5>\n" +
     "                                    <p class=\"input-group col-xs-12\">\n" +
-    "                                        <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"createSurveyForm.endDate\"\n" +
-    "                                               is-open=\"status.opened\" min-date=\"createSurveyForm.startDate\" max-date=\"maxDate\" id=\"endDate\"\n" +
+    "                                        <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"createSurveyForm.end_date\"\n" +
+    "                                               is-open=\"status.opened\" min-date=\"createSurveyForm.start_date\" max-date=\"maxDate\" id=\"endDate\"\n" +
     "                                               datepicker-options=\"dateOptions\" close-on-date-selection=\"true\"\n" +
     "                                               ng-required=\"true\" close-text=\"Close\" />\n" +
     "                                          <span class=\"input-group-btn\">\n" +
@@ -613,6 +613,7 @@ angular.module("app/survey/create_server_wizard.tpl.html", []).run(["$templateCa
     "                                <br>\n" +
     "                                <div class=\"col-xs-12\">\n" +
     "                                    <button style=\"display: block\"  wz-next=\"\"  class=\"btn btn-primary center-block text-center \">Create Survey &nbsp;&nbsp;&nbsp; <i class=\"fa fa-send-o\"></i></button>\n" +
+    "                                    <p class=\"text-center h6\" ui-sref=\"surveys.build_new_form\">Create and Build Form</p>\n" +
     "                                </div>\n" +
     "                            </div>\n" +
     "                        </div>\n" +
@@ -778,6 +779,25 @@ angular.module("app/survey/detailed_analytics.tpl.html", []).run(["$templateCach
     "</div>\n" +
     "\n" +
     "");
+}]);
+
+angular.module("app/survey/forms/new_form/build_new_form.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/survey/forms/new_form/build_new_form.tpl.html",
+    "<div class=\"row fill_white\">\n" +
+    "    <div class=\"block-web\">\n" +
+    "        <div class=\"header\">\n" +
+    "            <div class=\"actions\">\n" +
+    "                <a class=\"minimize\" href=\"#\"><i class=\"fa fa-chevron-down\"></i></a>\n" +
+    "                <a class=\"refresh\" href=\"#\"><i class=\"fa fa-repeat\"></i></a>\n" +
+    "                <a class=\"close-down\" href=\"#\"><i class=\"fa fa-times\"></i></a>\n" +
+    "            </div>\n" +
+    "            <h3 class=\"content-header\">Design a Questionnaire</h3>\n" +
+    "        </div>\n" +
+    "        <div class=\"porlets-content\">\n" +
+    "            <div id=\"newForm\"></div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "</div>");
 }]);
 
 angular.module("app/survey/respondents.tpl.html", []).run(["$templateCache", function($templateCache) {
