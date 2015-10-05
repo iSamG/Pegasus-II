@@ -15,7 +15,9 @@ class CreateAnswerOptionsTable extends Migration
         Schema::create('answer_options', function(Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('question_id');
-            $table->string('answer_option');
+            $table->string('question_unique_code');
+            $table->string('answer_options');
+            $table->enum('answer_display_type',['radio_button','drop_down','check_box']);
             $table->timestamps();
         });
     }

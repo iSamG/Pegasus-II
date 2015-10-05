@@ -14,10 +14,10 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function(Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('unique_question_id');
-            $table->enum('question_type', ['open', 'close']);
+            $table->enum('question_type', ['open_ended', 'close_ended']);
             $table->enum('question_position', ['beginning', 'middle','end']);
             $table->string('question');
+            $table->string('question_unique_code');
             $table->string('entry_question_unique_id')->nullable();
             $table->string('exit_question_unique_id')->nullable();
             $table->timestamps();
