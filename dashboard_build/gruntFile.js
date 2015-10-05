@@ -46,7 +46,8 @@ module.exports = function (grunt) {
             scripts: ['vendor/jquery/*.js',
                 'vendor/bootstrap/*.js',
                 'vendor/angular/*.js',
-                'vendor/**/*.js'
+                'vendor/**/*.js',
+                '!vendor/formbuilder/formbuilder.js'
             ],
             html: ['src/dashboard_index.html'],
             tpl: {
@@ -95,7 +96,7 @@ module.exports = function (grunt) {
                 dest: '<%= distdirStatic %>/<%= pkg.name %>.js'
             },
             vendor_scripts: {
-                src:['<%= src.scripts %>'],
+                src:['<%= src.scripts %>','vendor/formbuilder/formbuilder.js'],
                 dest: '<%= distdirStatic %>/scripts.js'
             }
         },

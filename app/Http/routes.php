@@ -51,6 +51,6 @@ Route::post('/delete/survey', 'SurveyController@deleteSurvey');
 
 Route::get('/retrieve/all/surveys', 'SurveyController@retrieveAllSurveysByAnAdmin');
 
-Route::post('/retrieve/a/survey', 'SurveyController@retrieveASurveyByAnAdmin');
+Route::get('/retrieve/a/survey', 'SurveyController@retrieveASurveyByAnAdmin');
 
 

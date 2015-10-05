@@ -26,7 +26,7 @@ class CreateSurveyRequest extends Request
         return [
             'user_id' => ['required'],
             'survey_name' => ['required'],
-            'start_date' => ['required','email'],
+            'start_date' => ['required'],
             'end_date' => ['required']
         ];
 

@@ -3,8 +3,8 @@
  */
 
 angular.module('survey')
-    .controller('prCreateSurveyController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl','$location','$timeout',
-        function($rootScope, $scope, homeService, surveyService, growl, $location, $timeout ){
+    .controller('prCreateSurveyController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl','$state','$timeout',
+        function($rootScope, $scope, homeService, surveyService, growl, $state, $timeout ){
 
 
 
@@ -59,10 +59,15 @@ angular.module('survey')
             $scope.submitForm = function () {
                 surveyService.createSurvey($scope.createSurveyForm)
                     .success(function () {
-                        alert("success")
+                       growl.success('Survey created successfully');
+                        surveyService.loadAllSurveys()
+                            .then(function () {
+                                $state.go('surveys');
+                            })
                     })
                     .error(function () {
-                        alert("failed")
+                        growl.error('Survey creation failed');
+
                     })
             };
 

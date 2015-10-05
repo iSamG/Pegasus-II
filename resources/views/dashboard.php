@@ -158,9 +158,9 @@
 <script type="text/javascript" src="back_app/pegasusrises.js"></script>
 <script type="text/javascript" src="back_app/templates.js"></script>
 
-<script type="text/javascript" src="http://apis.google.com/js/client.js"></script>
-<script type="text/javascript" src="http://apis.google.com/js/api.js"></script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<!--<script type="text/javascript" src="http://apis.google.com/js/client.js"></script>-->
+<!--<script type="text/javascript" src="http://apis.google.com/js/api.js"></script>-->
+<!--<script type="text/javascript" src="https://www.google.com/jsapi"></script>-->
 
 
 

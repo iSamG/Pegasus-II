@@ -1,4 +1,4 @@
-angular.module('templates.app', ['app/admin/profile.tpl.html', 'app/admin/settings.tpl.html', 'app/home/home.tpl.html', 'app/survey/create/create_server_wizard.tpl.html', 'app/survey/detailed_analytics.tpl.html', 'app/survey/forms/new_form/build_new_form.tpl.html', 'app/survey/respondents.tpl.html', 'app/survey/selected_survey.tpl.html', 'app/survey/survey_list.tpl.html', 'common/modals/deleteSurveyModal.tpl.html', 'common/partials/header.tpl.html']);
+angular.module('templates.app', ['app/admin/profile.tpl.html', 'app/admin/settings.tpl.html', 'app/home/home.tpl.html', 'app/survey/analytics/detailed_analytics.tpl.html', 'app/survey/create/create_server_wizard.tpl.html', 'app/survey/forms/design_formbuilder/design_form.tpl.html', 'app/survey/list_all/survey_list.tpl.html', 'app/survey/respondents/respondents.tpl.html', 'app/survey/selected/selected_survey.tpl.html', 'common/modals/deleteSurveyModal.tpl.html', 'common/partials/header.tpl.html']);
 
 angular.module("app/admin/profile.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/admin/profile.tpl.html",
@@ -349,7 +349,7 @@ angular.module("app/admin/settings.tpl.html", []).run(["$templateCache", functio
 
 angular.module("app/home/home.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/home/home.tpl.html",
-    "<div class=\"white_bg\" ng-show=\"first_timer\">\n" +
+    "<div class=\"white_bg\">\n" +
     "    <h2 class=\"page-header text-center\">Welcome to Pegasusrises</h2>\n" +
     "    <div class=\"row\" style=\"padding-bottom: 50px\">\n" +
     "        <p class=\"h5 text-center\">Click the button below to create a survey on Pegasusrises</p>\n" +
@@ -527,106 +527,8 @@ angular.module("app/home/home.tpl.html", []).run(["$templateCache", function($te
     "</div>");
 }]);
 
-angular.module("app/survey/create/create_server_wizard.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/survey/create/create_server_wizard.tpl.html",
-    "<div class=\"row fill_white\">\n" +
-    "    <div class=\"block-web\">\n" +
-    "        <div class=\"header\">\n" +
-    "            <div class=\"actions\">\n" +
-    "                <a class=\"minimize\" href=\"#\"><i class=\"fa fa-chevron-down\"></i></a>\n" +
-    "                <a class=\"refresh\" href=\"#\"><i class=\"fa fa-repeat\"></i></a>\n" +
-    "                <a class=\"close-down\" href=\"#\"><i class=\"fa fa-times\"></i></a>\n" +
-    "            </div>\n" +
-    "            <h3 class=\"content-header\">Create Survey Below</h3>\n" +
-    "        </div>\n" +
-    "        <div class=\"porlets-content\">\n" +
-    "            <wizard on-finish=\"submitForm()\">\n" +
-    "                <wz-step title=\"Survey Identity\" canexit=\"surveyNameEntered\">\n" +
-    "                    <h1>Name <small>A short keyword to identify the survey</small></h1>\n" +
-    "                    <div class=\"row\" style=\"margin-top: 50px\">\n" +
-    "                        <div class=\"col-md-7 col-xs-12 center-block\">\n" +
-    "                            <form class=\"form \">\n" +
-    "                                <div class=\"form-group\">\n" +
-    "                                    <h3> <label for=\"survey_name\" class=\" col-sm-4 col-xs-6\">Survey Name</label></h3>\n" +
-    "                                    <div class=\"col-sm-8 col-xs-6\">\n" +
-    "                                        <input id=\"survey_name\" ng-model=\"createSurveyForm.survey_name\" type=\"text\" class=\"form-control input-lg col-xs-12\" name=\"survey_name\" title=\"survey_name\">\n" +
-    "                                    </div>\n" +
-    "                                </div>\n" +
-    "                            </form>\n" +
-    "                            <br>\n" +
-    "                            <button  wz-next=\"\" style=\"margin-right: 15px;\" class=\"btn btn-primary pull-right \">Continue &nbsp;&nbsp;&nbsp; <i class=\"fa fa-arrow-circle-o-right\"></i></button>\n" +
-    "\n" +
-    "                        </div>\n" +
-    "                    </div>\n" +
-    "                </wz-step>\n" +
-    "\n" +
-    "\n" +
-    "                <wz-step title=\"Survey Duration\" canexit=\"surveyDurationEntered\">\n" +
-    "                    <h1>Duration <small>Start and End date of the survey</small></h1>\n" +
-    "                    <div class=\"row\" style=\"margin-top: 50px\">\n" +
-    "                        <div class=\"col-md-8 col-xs-12 center-block\">\n" +
-    "                            <div class=\"row\">\n" +
-    "\n" +
-    "                                <div class=\"col-md-6\">\n" +
-    "                                    <h5 class=\"col-xs-12\"> <label for=\"startDate\">Start Date</label></h5>\n" +
-    "                                    <p class=\"input-group col-xs-12\">\n" +
-    "                                        <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" id=\"startDate\"\n" +
-    "                                               ng-model=\"createSurveyForm.start_date\" is-open=\"status.opened\" min-date=\"minDate\" max-date=\"createSurveyForm.end_date\"\n" +
-    "                                               datepicker-options=\"dateOptions\" close-on-date-selection=\"false\"\n" +
-    "                                               ng-required=\"true\" close-text=\"Close\" />\n" +
-    "                                          <span class=\"input-group-btn\">\n" +
-    "                                            <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
-    "                                          </span>\n" +
-    "                                    </p>\n" +
-    "                                </div>\n" +
-    "\n" +
-    "                                <div class=\"col-md-6\">\n" +
-    "                                    <h5 class=\"col-xs-12\"> <label for=\"endDate\">End Date</label></h5>\n" +
-    "                                    <p class=\"input-group col-xs-12\">\n" +
-    "                                        <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"createSurveyForm.end_date\"\n" +
-    "                                               is-open=\"status.opened\" min-date=\"createSurveyForm.start_date\" max-date=\"maxDate\" id=\"endDate\"\n" +
-    "                                               datepicker-options=\"dateOptions\" close-on-date-selection=\"true\"\n" +
-    "                                               ng-required=\"true\" close-text=\"Close\" />\n" +
-    "                                          <span class=\"input-group-btn\">\n" +
-    "                                            <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
-    "                                          </span>\n" +
-    "                                    </p>\n" +
-    "                                </div>\n" +
-    "\n" +
-    "                            </div>\n" +
-    "\n" +
-    "                            <button  wz-next=\"\"  class=\"btn btn-primary pull-right \">Continue &nbsp;&nbsp;&nbsp; <i class=\"fa fa-arrow-circle-o-right\"></i></button>\n" +
-    "                        </div>\n" +
-    "                    </div>\n" +
-    "                </wz-step>\n" +
-    "\n" +
-    "\n" +
-    "\n" +
-    "                <wz-step title=\"Final Step\">\n" +
-    "                    <h1>Congrats!!! <small>Click on the button to create the survey</small></h1>\n" +
-    "                    <div class=\"row\" style=\"margin-top: 50px\">\n" +
-    "                        <div class=\"col-md-8 col-xs-12 center-block\">\n" +
-    "                            <div class=\"row\">\n" +
-    "                                <h5 class=\"text-center\">You are about to create a survey named\n" +
-    "                                    <code style=\"color: cornflowerblue !important;\">{{ createSurveyForm.survey_name}}</code></h5>\n" +
-    "                                <br>\n" +
-    "                                <br>\n" +
-    "                                <div class=\"col-xs-12\">\n" +
-    "                                    <button style=\"display: block\"  wz-next=\"\"  class=\"btn btn-primary center-block text-center \">Create Survey &nbsp;&nbsp;&nbsp; <i class=\"fa fa-send-o\"></i></button>\n" +
-    "                                    <p class=\"text-center h6\" ui-sref=\"surveys.build_new_form\">Create and Build Form</p>\n" +
-    "                                </div>\n" +
-    "                            </div>\n" +
-    "                        </div>\n" +
-    "                    </div>\n" +
-    "                </wz-step>\n" +
-    "            </wizard>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "</div>");
-}]);
-
-angular.module("app/survey/detailed_analytics.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/survey/detailed_analytics.tpl.html",
+angular.module("app/survey/analytics/detailed_analytics.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/survey/analytics/detailed_analytics.tpl.html",
     "<div class=\"row\">\n" +
     "\n" +
     "    <div class=\"col-lg-12 center\">\n" +
@@ -781,8 +683,8 @@ angular.module("app/survey/detailed_analytics.tpl.html", []).run(["$templateCach
     "");
 }]);
 
-angular.module("app/survey/forms/new_form/build_new_form.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/survey/forms/new_form/build_new_form.tpl.html",
+angular.module("app/survey/create/create_server_wizard.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/survey/create/create_server_wizard.tpl.html",
     "<div class=\"row fill_white\">\n" +
     "    <div class=\"block-web\">\n" +
     "        <div class=\"header\">\n" +
@@ -791,17 +693,200 @@ angular.module("app/survey/forms/new_form/build_new_form.tpl.html", []).run(["$t
     "                <a class=\"refresh\" href=\"#\"><i class=\"fa fa-repeat\"></i></a>\n" +
     "                <a class=\"close-down\" href=\"#\"><i class=\"fa fa-times\"></i></a>\n" +
     "            </div>\n" +
-    "            <h3 class=\"content-header\">Design a Questionnaire</h3>\n" +
+    "            <h3 class=\"content-header\">Create Survey Below</h3>\n" +
     "        </div>\n" +
     "        <div class=\"porlets-content\">\n" +
-    "            <div id=\"newForm\"></div>\n" +
+    "            <wizard on-finish=\"submitForm()\">\n" +
+    "                <wz-step title=\"Survey Identity\" canexit=\"surveyNameEntered\">\n" +
+    "                    <h1>Name <small>A short keyword to identify the survey</small></h1>\n" +
+    "                    <div class=\"row\" style=\"margin-top: 50px\">\n" +
+    "                        <div class=\"col-md-7 col-xs-12 center-block\">\n" +
+    "                            <form class=\"form \">\n" +
+    "                                <div class=\"form-group\">\n" +
+    "                                    <h3> <label for=\"survey_name\" class=\" col-sm-4 col-xs-6\">Survey Name</label></h3>\n" +
+    "                                    <div class=\"col-sm-8 col-xs-6\">\n" +
+    "                                        <input id=\"survey_name\" ng-model=\"createSurveyForm.survey_name\" type=\"text\" class=\"form-control input-lg col-xs-12\" name=\"survey_name\" title=\"survey_name\">\n" +
+    "                                    </div>\n" +
+    "                                </div>\n" +
+    "                            </form>\n" +
+    "                            <br>\n" +
+    "                            <button  wz-next=\"\" style=\"margin-right: 15px;\" class=\"btn btn-primary pull-right \">Continue &nbsp;&nbsp;&nbsp; <i class=\"fa fa-arrow-circle-o-right\"></i></button>\n" +
+    "\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </wz-step>\n" +
+    "\n" +
+    "\n" +
+    "                <wz-step title=\"Survey Duration\" canexit=\"surveyDurationEntered\">\n" +
+    "                    <h1>Duration <small>Start and End date of the survey</small></h1>\n" +
+    "                    <div class=\"row\" style=\"margin-top: 50px\">\n" +
+    "                        <div class=\"col-md-8 col-xs-12 center-block\">\n" +
+    "                            <div class=\"row\">\n" +
+    "\n" +
+    "                                <div class=\"col-md-6\">\n" +
+    "                                    <h5 class=\"col-xs-12\"> <label for=\"startDate\">Start Date</label></h5>\n" +
+    "                                    <p class=\"input-group col-xs-12\">\n" +
+    "                                    <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" id=\"startDate\"\n" +
+    "                                           ng-model=\"createSurveyForm.start_date\" is-open=\"status.opened\" min-date=\"minDate\" max-date=\"createSurveyForm.end_date\"\n" +
+    "                                           datepicker-options=\"dateOptions\" close-on-date-selection=\"false\"\n" +
+    "                                           ng-required=\"true\" close-text=\"Close\" />\n" +
+    "                                          <span class=\"input-group-btn\">\n" +
+    "                                            <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                                          </span>\n" +
+    "                                </p>\n" +
+    "                                </div>\n" +
+    "\n" +
+    "                                <div class=\"col-md-6\">\n" +
+    "                                    <h5 class=\"col-xs-12\"> <label for=\"endDate\">End Date</label></h5>\n" +
+    "                                    <p class=\"input-group col-xs-12\">\n" +
+    "                                        <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"createSurveyForm.end_date\"\n" +
+    "                                               is-open=\"status.opened\" min-date=\"createSurveyForm.start_date\" max-date=\"maxDate\" id=\"endDate\"\n" +
+    "                                               datepicker-options=\"dateOptions\" close-on-date-selection=\"true\"\n" +
+    "                                               ng-required=\"true\" close-text=\"Close\" />\n" +
+    "                                          <span class=\"input-group-btn\">\n" +
+    "                                            <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                                          </span>\n" +
+    "                                    </p>\n" +
+    "                                </div>\n" +
+    "\n" +
+    "                            </div>\n" +
+    "\n" +
+    "                            <button  wz-next=\"\"  class=\"btn btn-primary pull-right \">Continue &nbsp;&nbsp;&nbsp; <i class=\"fa fa-arrow-circle-o-right\"></i></button>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </wz-step>\n" +
+    "\n" +
+    "\n" +
+    "\n" +
+    "                <wz-step title=\"Final Step\">\n" +
+    "                    <h1>Congrats!!! <small>Click on the button to create the survey</small></h1>\n" +
+    "                    <div class=\"row\" style=\"margin-top: 50px\">\n" +
+    "                        <div class=\"col-md-8 col-xs-12 center-block\">\n" +
+    "                            <div class=\"row\">\n" +
+    "                                <h5 class=\"text-center\">You are about to create a survey named\n" +
+    "                                    <code style=\"color: cornflowerblue !important;\">{{ createSurveyForm.survey_name}}</code></h5>\n" +
+    "                                <br>\n" +
+    "                                <br>\n" +
+    "                                <div class=\"col-xs-12\">\n" +
+    "                                    <button style=\"display: block\"  wz-next=\"\"  class=\"btn btn-primary center-block text-center \">Create Survey &nbsp;&nbsp;&nbsp; <i class=\"fa fa-send-o\"></i></button>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </wz-step>\n" +
+    "            </wizard>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</div>");
 }]);
 
-angular.module("app/survey/respondents.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/survey/respondents.tpl.html",
+angular.module("app/survey/forms/design_formbuilder/design_form.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/survey/forms/design_formbuilder/design_form.tpl.html",
+    "<div class=\"row fill_white\">\n" +
+    "    <div class=\"block-web\">\n" +
+    "        <div class=\"header\">\n" +
+    "            <div class=\"actions hidden\">\n" +
+    "                <a class=\"minimize\" href=\"#\"><i class=\"fa fa-chevron-down\"></i></a>\n" +
+    "                <a class=\"refresh\" href=\"#\"><i class=\"fa fa-repeat\"></i></a>\n" +
+    "                <a class=\"close-down\" href=\"#\"><i class=\"fa fa-times\"></i></a>\n" +
+    "            </div>\n" +
+    "            <h3 class=\"content-header\">Design Questionnaire</h3>\n" +
+    "        </div>\n" +
+    "        <div class=\"porlets-content\">\n" +
+    "            <div id='formbuilder'></div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "</div>\n" +
+    "\n" +
+    "");
+}]);
+
+angular.module("app/survey/list_all/survey_list.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/survey/list_all/survey_list.tpl.html",
+    "<div class=\"container clear_both padding_fix\" ui-view=\"\">\n" +
+    "    <!--\\\\\\\\\\\\\\ container  start \\\\\\\\\\\\-->\n" +
+    "    <div class=\"task_bar clearfix\" ng-show=\"surveys.length\">\n" +
+    "        <div class=\"task_bar_left\">\n" +
+    "            <label>Search survey:</label>\n" +
+    "            <input type=\"text\" class=\"task_form\" placeholder=\" Survey title...\" name=\"\" ng-model=\"searchSurvey\" ng-init=\"searchSurvey = ''\">\n" +
+    "            <button type=\"button\" class=\"btn btn-primary btn-icon\"><i class=\"fa fa-search\"></i> </button>\n" +
+    "        </div>\n" +
+    "        <div class=\"task_bar_right\">\n" +
+    "            <label>Sorting:</label>\n" +
+    "            <input type=\"text\" disabled class=\"task_form\" placeholder=\"SORT BY DATE\" name=\"\">\n" +
+    "            <button type=\"button\" class=\"btn btn-primary btn-icon\" ng-init=\"sortOrder = 'created_at'; reverse = false\" data-ng-click=\"reverse=!reverse\">\n" +
+    "                <i class=\"fa fa-arrows-v\"></i></button>\n" +
+    "            <button type=\"button\" class=\"btn btn-success btn-icon\" tooltip=\"Reload Surveys\" data-ng-click=\"reloadSurveyData()\"><i class=\"fa fa-refresh\"></i></button>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"row\">\n" +
+    "        <!--\\\\\\\\\\\\\\ row  start \\\\\\\\\\\\-->\n" +
+    "        <div class=\"col-md-12\">\n" +
+    "            <!--red_border-->\n" +
+    "            <!--green_border-->\n" +
+    "            <!--orange_border-->\n" +
+    "            <!--blue_border-->\n" +
+    "            <section class=\"panel default blue_border vertical_border h1\" ng-show=\"surveys.length\" ng-repeat=\"survey in surveys | filter : { survey_name: searchSurvey } | orderBy : sortOrder : reverse\">\n" +
+    "                <div class=\"task-header blue_task\">\n" +
+    "                    <a href=\"\">{{ survey.survey_name }}</a>\n" +
+    "                    <span title=\"{{ survey.created_at }}\" tooltip-placement=\"top\" tooltip=\"{{ survey.created_at | date : fullDate }}\"><i class=\"fa fa-clock-o\"></i>{{ fromNow(survey.created_at) }}</span> </div>\n" +
+    "                <div class=\"row task_inner inner_padding\">\n" +
+    "                    <div class=\"col-sm-9\">\n" +
+    "                        <p><em>Start Date : &nbsp;</em><span ng-bind=\"survey.start_date | date : mediumDate\"></span></p>\n" +
+    "                        <p><em>End Date : &nbsp;</em><span ng-bind=\"survey.end_date | date : shortDate\"></span></p>\n" +
+    "                        <p><em>Questions : &nbsp;</em><span ui-sref=\"surveys.form_builder\" class=\"pointer btn btn-link\">Click to add questions</span></p>\n" +
+    "                        <!--<p><em>Total Responses : &nbsp;</em><span ui-sref=\"surveys.demo_form\">Click to send survey</span></p>-->\n" +
+    "                        <p><em>Total Responses : &nbsp;</em><span>No responses recorded</span></p>\n" +
+    "                    </div>\n" +
+    "                    <div class=\"col-sm-3\">\n" +
+    "                        <!--<div class=\"pull-right\"><span>August  15, 2014</span></div>-->\n" +
+    "                        <!--<div class=\"clearfix\"></div>-->\n" +
+    "                        <!--<div class=\"pull-right\"><span>August  17, 2014</span></div>-->\n" +
+    "                        <!--<div class=\"clearfix\"></div>-->\n" +
+    "                        <!--<div class=\"pull-right\"><span>August  19, 2014</span></div>-->\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "                <div class=\"task-footer \">\n" +
+    "                    <label class=\"pull-left hidden\">\n" +
+    "                        <div class=\"progress\">\n" +
+    "                            <div class=\"progress-bar progress-bar-info\" role=\"progressbar\" aria-valuenow=\"40\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 60%;\">\n" +
+    "                                <span class=\"sr-only\">40% Complete</span> </div>\n" +
+    "                        </div>\n" +
+    "                    </label>\n" +
+    "                    <span class=\"label btn-primary hidden\">40%</span>\n" +
+    "                    <div class=\"pull-right\">\n" +
+    "                        <ul class=\"footer-icons-group\">\n" +
+    "                            <li tooltip-placement=\"top\" tooltip=\"Notify respondents\"><a ng-click=\"notifyRespondents(survey.survey_name)\" class=\"pointer\"><i class=\"fa fa-users\"></i></a></li>\n" +
+    "                            <li tooltip-placement=\"top\" tooltip=\"Edit Survey\"><a href=\"\"><i class=\"fa fa-pencil\"></i></a></li>\n" +
+    "                            <li tooltip-placement=\"top\" tooltip=\"Delete Survey\"><a href=\"\" delete-survey=\"{{survey.id}}\"><i class=\"fa fa-trash-o\"></i></a></li>\n" +
+    "                            <!--<li class=\"dropup\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"fa fa-wrench\"></i></a></li>-->\n" +
+    "                        </ul>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "            </section>\n" +
+    "            <div class=\"bs-callout bs-callout-warning\" ng-hide=\"surveys.length\">\n" +
+    "                <h4><i class=\"fa fa-warning\"></i> No Survey! </h4>\n" +
+    "                <p>You currently do not have a survey on the system. <button class=\"btn btn-success\" ng-click=\"$state.go('home')\">Click to create a server</button> and start surveying.</p>\n" +
+    "            </div>\n" +
+    "\n" +
+    "            <div ng-show=\"surveys.length\">\n" +
+    "                <div class=\"bs-callout bs-callout-primary\" ng-hide=\"( surveys | filter : { survey_name: searchSurvey }).length\">\n" +
+    "                    <h4><i class=\"fa fa-warning\"></i> Search Survey </h4>\n" +
+    "                    <p>No survey name found matching <b>\"{{searchSurvey }}\"</b>.</p>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <!--<div>{{surveys | json }}</div>-->\n" +
+    "\n" +
+    "\n" +
+    "    </div>\n" +
+    "    <!--\\\\\\\\\\\\\\ row  end \\\\\\\\\\\\-->\n" +
+    "</div>");
+}]);
+
+angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/survey/respondents/respondents.tpl.html",
     "<div class=\"col-sm-12\">\n" +
     "    <div class=\"block-web\">\n" +
     "        <div class=\"header\">\n" +
@@ -941,8 +1026,8 @@ angular.module("app/survey/respondents.tpl.html", []).run(["$templateCache", fun
     "<!--<pre>{{ sms_respondent_form | json }}</pre>-->");
 }]);
 
-angular.module("app/survey/selected_survey.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/survey/selected_survey.tpl.html",
+angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/survey/selected/selected_survey.tpl.html",
     "<div class=\"row\">\n" +
     "\n" +
     "    <div class=\"col-lg-12 center\">\n" +
@@ -1059,102 +1144,16 @@ angular.module("app/survey/selected_survey.tpl.html", []).run(["$templateCache",
     "");
 }]);
 
-angular.module("app/survey/survey_list.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/survey/survey_list.tpl.html",
-    "<div class=\"container clear_both padding_fix\" ui-view=\"\">\n" +
-    "    <!--\\\\\\\\\\\\\\ container  start \\\\\\\\\\\\-->\n" +
-    "    <div class=\"task_bar clearfix\" ng-show=\"listOfSurveys.surveys.length\">\n" +
-    "        <div class=\"task_bar_left\">\n" +
-    "            <label>Search survey:</label>\n" +
-    "            <input type=\"text\" class=\"task_form\" placeholder=\" Survey title...\" name=\"\" ng-model=\"searchSurvey\" ng-init=\"searchSurvey = ''\">\n" +
-    "            <button type=\"button\" class=\"btn btn-primary btn-icon\"><i class=\"fa fa-search\"></i> </button>\n" +
-    "        </div>\n" +
-    "        <div class=\"task_bar_right\">\n" +
-    "            <label>Sorting:</label>\n" +
-    "            <input type=\"text\" disabled class=\"task_form\" placeholder=\"SORT BY DATE\" name=\"\">\n" +
-    "            <button type=\"button\" class=\"btn btn-primary btn-icon\" ng-init=\"sortOrder = 'created_date'; reverse = false\" data-ng-click=\"reverse=!reverse\"><i class=\"fa fa-arrows-v\"></i></button>\n" +
-    "            <button type=\"button\" class=\"btn btn-success btn-icon\" data-ng-click=\"reloadSurveyData()\"><i class=\"fa fa-refresh\"></i></button>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "    <div class=\"row\">\n" +
-    "        <!--\\\\\\\\\\\\\\ row  start \\\\\\\\\\\\-->\n" +
-    "        <div class=\"col-md-12\">\n" +
-    "            <!--red_border-->\n" +
-    "            <!--green_border-->\n" +
-    "            <!--orange_border-->\n" +
-    "            <!--blue_border-->\n" +
-    "            <section class=\"panel default blue_border vertical_border h1\" ng-show=\"listOfSurveys.surveys.length\" ng-repeat=\"survey in listOfSurveys.surveys | filter : { survey_name: searchSurvey } | orderBy : sortOrder : reverse\">\n" +
-    "                <div class=\"task-header blue_task\"><a ui-sref=\"surveys.selected_survey({survey : survey.survey_name, form_id : survey.survey_aggregate_form_id })\">{{ survey.survey_name }}</a>\n" +
-    "                    <span title=\"{{ survey.created_date }}\" tooltip-placement=\"top\" tooltip=\"{{ survey.created_date | date : fullDate }}\"><i class=\"fa fa-clock-o\"></i>{{ fromNow(survey.created_date) }}</span> </div>\n" +
-    "                <div class=\"row task_inner inner_padding\">\n" +
-    "                    <div class=\"col-sm-9\">\n" +
-    "                        <p><em>Description : &nbsp;</em>No description provided</p>\n" +
-    "                        <p><em>Questions : &nbsp;</em>{{ ( surveyData.questions_details | filter : { survey_name : survey.survey_name }).length }} questions</p>\n" +
-    "                        <p><em>Total Responses : &nbsp;</em>{{ ( submittedResponses.submissions | filter : { formId : survey.survey_aggregate_form_id }).length }} submissions</p>\n" +
-    "                    </div>\n" +
-    "                    <div class=\"col-sm-3\">\n" +
-    "                        <!--<div class=\"pull-right\"><span>August  15, 2014</span></div>-->\n" +
-    "                        <!--<div class=\"clearfix\"></div>-->\n" +
-    "                        <!--<div class=\"pull-right\"><span>August  17, 2014</span></div>-->\n" +
-    "                        <!--<div class=\"clearfix\"></div>-->\n" +
-    "                        <!--<div class=\"pull-right\"><span>August  19, 2014</span></div>-->\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "                <div class=\"task-footer \">\n" +
-    "                    <label class=\"pull-left hidden\">\n" +
-    "                        <div class=\"progress\">\n" +
-    "                            <div class=\"progress-bar progress-bar-info\" role=\"progressbar\" aria-valuenow=\"40\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 60%;\">\n" +
-    "                                <span class=\"sr-only\">40% Complete</span> </div>\n" +
-    "                        </div>\n" +
-    "                    </label>\n" +
-    "                    <span class=\"label btn-primary hidden\">40%</span>\n" +
-    "                    <div class=\"pull-right\">\n" +
-    "                        <ul class=\"footer-icons-group\">\n" +
-    "                            <li tooltip-placement=\"top\" tooltip=\"Notify respondents\"><a ng-click=\"notifyRespondents(survey.survey_name)\" class=\"pointer\"><i class=\"fa fa-users\"></i></a></li>\n" +
-    "                            <li tooltip-placement=\"top\" tooltip=\"Edit Survey\"><a href=\"\"><i class=\"fa fa-pencil\"></i></a></li>\n" +
-    "                            <li tooltip-placement=\"top\" tooltip=\"Delete Survey\"><a href=\"\" ng-click=\"openDeleteModal(\n" +
-    "                            survey.survey_name,\n" +
-    "                            survey.survey_aggregate_form_id,\n" +
-    "                            (surveyData.questions_details | filter : { survey_name : survey.survey_name }).length,\n" +
-    "                               ( submittedResponses.submissions | filter : { formId : survey.survey_aggregate_form_id }).length)\"><i class=\"fa fa-trash-o\"></i></a></li>\n" +
-    "                            <!--<li class=\"dropup\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"fa fa-wrench\"></i></a></li>-->\n" +
-    "                        </ul>\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "            </section>\n" +
-    "            <div class=\"bs-callout bs-callout-warning\" ng-hide=\"listOfSurveys.surveys.length\">\n" +
-    "                <h4><i class=\"fa fa-warning\"></i> No Survey! </h4>\n" +
-    "                <p>You currently do not have a survey on the system. <button class=\"btn btn-success\" ng-click=\"$state.go('home')\">Click to create a server</button> and start surveying.</p>\n" +
-    "            </div>\n" +
-    "\n" +
-    "            <div ng-show=\"listOfSurveys.surveys.length\">\n" +
-    "                <div class=\"bs-callout bs-callout-primary\" ng-hide=\"( listOfSurveys.surveys | filter : { survey_name: searchSurvey }).length\">\n" +
-    "                    <h4><i class=\"fa fa-warning\"></i> Search Survey </h4>\n" +
-    "                    <p>No survey name found matching <b>\"{{searchSurvey }}\"</b>.</p>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "\n" +
-    "        <!--<div>{{listOfSurveys.surveys | json }}</div>-->\n" +
-    "\n" +
-    "\n" +
-    "    </div>\n" +
-    "    <!--\\\\\\\\\\\\\\ row  end \\\\\\\\\\\\-->\n" +
-    "</div>");
-}]);
-
 angular.module("common/modals/deleteSurveyModal.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/modals/deleteSurveyModal.tpl.html",
     "<div class=\"modal-content\">\n" +
     "    <div class=\"modal-header\">\n" +
     "        <button type=\"button\" class=\"close\" ng-click=\"close()\" aria-hidden=\"true\">×</button>\n" +
-    "        <h4 class=\"modal-title\" id=\"myModalLabel\"><i class=\"fa fa-remove\"></i>     Delete Survey</h4>\n" +
+    "        <h4 class=\"modal-title\"> Delete Survey</h4>\n" +
     "    </div>\n" +
     "    <div class=\"modal-body\">\n" +
-    "        <h5>Are you sure you want to delete this survey?</h5>\n" +
-    "        <h5>Name : {{ selected_survey.survey_name}}</h5>\n" +
-    "        <p><em>Questions</em> : <b>{{ selected_survey.questions_length }}</b></p>\n" +
-    "        <p><em>Responses</em> : <b>{{ selected_survey.responses_length }}</b></p>\n" +
+    "        <h6>Are you sure you want to delete the survey with name : </h6>\n" +
+    "        <h5>{{ selected_survey.survey_name}}</h5>\n" +
     "    </div>\n" +
     "    <div class=\"modal-footer\">\n" +
     "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"close()\">Close</button>\n" +
