@@ -86,7 +86,8 @@ class PegasusUserController extends Controller
 
         $input_is_valid = \Validator::make($fields, $validation_patterns);
         if($input_is_valid){
-            User::create($fields);
+            $user = User::create($fields);
+            return Helpers::loginInfo($message="Pegasus user created successfully", $data= $user);
         }
         else{
 
