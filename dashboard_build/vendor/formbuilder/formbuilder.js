@@ -1097,9 +1097,9 @@ this["Formbuilder"]["templates"]["partials/save_button"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-save-wrapper\'>\n  <button class=\'js-save-form ' +
+__p += '<div class=\'fb-save-wrapper\'>\n  <button class=\'hidden js-save-form ' +
 ((__t = ( Formbuilder.options.BUTTON_CLASS )) == null ? '' : __t) +
-'\'></button>\n</div>';
+'\'></button><button class=\'btn btn-success\' id=\'saveQuestionnaire\' ng-click=\'saveQuestionnaire()\'>Save Questionnaire</button>\n</div>';
 
 }
 return __p

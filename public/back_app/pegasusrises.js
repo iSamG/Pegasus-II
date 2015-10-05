@@ -236,7 +236,12 @@ angular.module('pegasusrises')
         editSurvey : '/edit/survey',
         deleteSurvey : '/delete/survey',
         retrieveAllSurveys : '/retrieve/all/surveys',
-        retrieveOneSurvey : '/retrieve/a/survey'
+        retrieveOneSurvey : '/retrieve/a/survey',
+
+        saveQuestions : '/retrieve/a/survey',
+        editQuestions : '/retrieve/a/survey',
+        deleteQuestions : '/retrieve/a/survey',
+        retrieveQuestions : '/retrieve/a/survey'
     });
 /**
  * Home Template
@@ -448,7 +453,65 @@ angular.module('survey')
                         $localStorage.survey = payload;
                     });
                 }
-            })
+            });
+
+
+
+            $scope.saveQuestionnaire = function () {
+                console.log("$localStorage.survey", $localStorage.survey);
+                if ($localStorage.survey) {
+                    var surveyData = JSON.parse($localStorage.survey);
+                    console.log('surveyData', surveyData);
+                    var questionsArray = [];
+                    if (surveyData.fields.length) {
+                        console.log(surveyData.fields.length);
+                        for (var i = 0; i < surveyData.fields.length; i++) {
+                            var eachArrayItem = surveyData.fields[i];
+                            console.log('eachArrayItem', eachArrayItem);
+
+                            var question_type = 'open';
+                            if (eachArrayItem.field_type == 'radio') {
+                                question_type = 'close';
+                            }
+
+                            var question_position = 'middle';
+                            if ( i == 0) {
+                                question_position = 'beginning';
+                            }else if ( i  == (surveyData.fields.length - 1) && surveyData.fields.length > 1){
+                                question_position = 'end';
+                            }
+
+                            questionsArray.push({
+                                unique_question_id : eachArrayItem.cid,
+                                question_type : question_type, /*open, close'*/
+                                question_position : question_position, /*'beginning', 'middle', 'end' */
+                                question : eachArrayItem.label,
+                                entry_question_unique_id : '',
+                                exit_question_unique_id : ''
+                            });
+
+                        }
+                        console.log('questionsArray', questionsArray);
+
+                        surveyService.saveQuestions(questionsArray)
+                            .success(function (data) {
+                                if (data.code == '200' && data.status.toLowerCase() == 'ok') {
+                                    growl.success('Questions saved successfully on the server');
+                                }
+                            })
+                            .error(function () {
+                                growl.error('An error occurred while attempting to save');
+
+                            })
+                    }
+
+                }
+            };
+
+            $('#saveQuestionnaire').click(function () {
+                $scope.saveQuestionnaire();
+            });
+
         }]);
 
 
@@ -541,6 +604,27 @@ angular.module('survey')
         surveyService.getAllResponses = function( ){
             return $http.get(prRoutes.createSurvey);
         };
+
+        surveyService.retrieveQuestions = function(form){
+            return $http.get(prRoutes.saveQuestions, form)
+        };
+
+        surveyService.saveQuestions = function(form){
+            return $http.post(prRoutes.saveQuestions, form)
+        };
+
+        surveyService.editQuestions = function(form){
+            return $http.post(prRoutes.editQuestions, form)
+        };
+
+        surveyService.deleteQuestions = function(form){
+            return $http.post(prRoutes.deleteQuestions, form)
+        };
+
+
+
+
+
 
         function initObjectsAndArrays(){
             surveyService.surveys = [];

@@ -30,6 +30,27 @@ angular.module('survey')
             return $http.get(prRoutes.createSurvey);
         };
 
+        surveyService.retrieveQuestions = function(form){
+            return $http.get(prRoutes.saveQuestions, form)
+        };
+
+        surveyService.saveQuestions = function(form){
+            return $http.post(prRoutes.saveQuestions, form)
+        };
+
+        surveyService.editQuestions = function(form){
+            return $http.post(prRoutes.editQuestions, form)
+        };
+
+        surveyService.deleteQuestions = function(form){
+            return $http.post(prRoutes.deleteQuestions, form)
+        };
+
+
+
+
+
+
         function initObjectsAndArrays(){
             surveyService.surveys = [];
             surveyService.surveyLookup = {};

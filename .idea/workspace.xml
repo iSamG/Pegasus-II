@@ -2,55 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6441f921-8003-493c-b541-141d6538f442" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/analytics/analyticsController.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/src/app/app_run.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/src/app/admin/breadCrumbCtrl.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/src/app/constants.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/src/common/directives/deleteSurveyDirective.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/forms/design_formbuilder/designFormController.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/vendor/formbuilder/formbuilder-min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/vendor/formbuilder/formbuilder-min.js_min" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/vendor/formbuilder/formbuilder.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/vendor/handlebars-alpaca-dependency/handlebars-v4.0.2.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/vendor/jquery/jquery-2.0.3.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/respondents/respondentController.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/selected/selectedSurveyController.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/list_all/surveyListController.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dashboard_build/vendor/formbuilder/js/vendor.js" />
-      <change type="DELETED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\src\app\home\homeController.changes" afterPath="" />
-      <change type="DELETED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\src\app\survey\analytics-accordion-backup.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\src\app\survey\forms\new_form\buildNewFormController.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\src\app\survey\surveyController.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\vendor\alpaca\alpaca-bootstrap.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\vendor\alpaca\alpaca.min.js" afterPath="" />
-      <change type="MOVED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\src\app\survey\detailed_analytics.tpl.html" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/analytics/detailed_analytics.tpl.html" />
-      <change type="MOVED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\src\app\survey\forms\new_form\build_new_form.tpl.html" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/forms/design_formbuilder/design_form.tpl.html" />
-      <change type="MOVED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\src\app\survey\respondents.tpl.html" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/respondents/respondents.tpl.html" />
-      <change type="MOVED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\src\app\survey\selected_survey.tpl.html" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/selected/selected_survey.tpl.html" />
-      <change type="MOVED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\src\app\survey\survey.js" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/Survey.js" />
-      <change type="MOVED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\src\app\survey\survey_list.tpl.html" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/list_all/survey_list.tpl.html" />
-      <change type="MOVED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\vendor\jquery\jquery-1.11.2.js" afterPath="$PROJECT_DIR$/dashboard_build/vendor/jquery/jquery-1.11.2.js_bxk" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/migrations/2015_08_17_123022_create_surveys_table.php" afterPath="$PROJECT_DIR$/database/migrations/2015_08_17_123022_create_surveys_table.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Requests/CreateSurveyRequest.php" afterPath="$PROJECT_DIR$/app/Http/Requests/CreateSurveyRequest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/PegasusUserController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/PegasusUserController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/src/app/app.js" afterPath="$PROJECT_DIR$/dashboard_build/src/app/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/src/app/survey/create/createSurveyController.js" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/create/createSurveyController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/src/app/survey/create/create_server_wizard.tpl.html" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/create/create_server_wizard.tpl.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/dashboard.php" afterPath="$PROJECT_DIR$/resources/views/dashboard.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/src/dashboard_index.html" afterPath="$PROJECT_DIR$/dashboard_build/src/dashboard_index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/src/common/modals/deleteSurveyModal.tpl.html" afterPath="$PROJECT_DIR$/dashboard_build/src/common/modals/deleteSurveyModal.tpl.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/gruntFile.js" afterPath="$PROJECT_DIR$/dashboard_build/gruntFile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/src/app/home/home.tpl.html" afterPath="$PROJECT_DIR$/dashboard_build/src/app/home/home.tpl.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/src/app/home/homeController.js" afterPath="$PROJECT_DIR$/dashboard_build/src/app/home/homeController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/src/app/home/homeService.js" afterPath="$PROJECT_DIR$/dashboard_build/src/app/home/homeService.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/src/common/directives/openCloseLabelDirective.js" afterPath="$PROJECT_DIR$/dashboard_build/src/common/directives/openCloseLabelDirective.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/stylesheets/pegasus.css" afterPath="$PROJECT_DIR$/dashboard_build/stylesheets/pegasus.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/back_app/pegasusrises.css" afterPath="$PROJECT_DIR$/public/back_app/pegasusrises.css" />
+      <change type="DELETED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\vendor\handlebars-alpaca-dependency\handlebars-v4.0.2.js" afterPath="" />
+      <change type="DELETED" beforePath="C:\xampp\htdocs\Pegasus-II\dashboard_build\vendor\tabletop\tabletop.js" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/src/app/constants.js" afterPath="$PROJECT_DIR$/dashboard_build/src/app/constants.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/src/app/survey/forms/design_formbuilder/designFormController.js" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/forms/design_formbuilder/designFormController.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/vendor/formbuilder/formbuilder.js" afterPath="$PROJECT_DIR$/dashboard_build/vendor/formbuilder/formbuilder.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/back_app/pegasusrises.js" afterPath="$PROJECT_DIR$/public/back_app/pegasusrises.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/routes.php" afterPath="$PROJECT_DIR$/app/Http/routes.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/back_app/scripts.js" afterPath="$PROJECT_DIR$/public/back_app/scripts.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dashboard_build/src/app/survey/surveyService.js" afterPath="$PROJECT_DIR$/dashboard_build/src/app/survey/surveyService.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/back_app/templates.js" afterPath="$PROJECT_DIR$/public/back_app/templates.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="PegasusTwo.iws" />
@@ -72,24 +31,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="app_run.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/app_run.js">
+      <file leaf-file-name="2015_08_17_123034_create_questions_table.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/database/migrations/2015_08_17_123034_create_questions_table.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <caret line="21" column="66" selection-start-line="16" selection-start-column="11" selection-end-line="21" selection-end-column="66" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="constants.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/constants.js">
+      <file leaf-file-name="2015_08_17_123118_create_answer_options_table.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/database/migrations/2015_08_17_123118_create_answer_options_table.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#43#0" expanded="false" />
-              </folding>
+              <caret line="17" column="44" selection-start-line="16" selection-start-column="10" selection-end-line="17" selection-end-column="44" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -97,8 +54,8 @@
       <file leaf-file-name="designFormController.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/survey/forms/design_formbuilder/designFormController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6783784">
-              <caret line="13" column="40" selection-start-line="13" selection-start-column="40" selection-end-line="13" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.84737676">
+              <caret line="63" column="87" selection-start-line="63" selection-start-column="87" selection-end-line="63" selection-end-column="87" />
               <folding />
             </state>
           </provider>
@@ -107,8 +64,8 @@
       <file leaf-file-name="formbuilder.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dashboard_build/vendor/formbuilder/formbuilder.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="12.0">
-              <caret line="339" column="14" selection-start-line="339" selection-start-column="14" selection-end-line="339" selection-end-column="14" />
+            <state vertical-scroll-proportion="-8.56">
+              <caret line="1101" column="69" selection-start-line="1101" selection-start-column="52" selection-end-line="1101" selection-end-column="69" />
               <folding>
                 <element signature="e#12#1010#0" expanded="false" />
                 <element signature="e#293#1005#0" expanded="false" />
@@ -117,11 +74,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gruntFile.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dashboard_build/gruntFile.js">
+      <file leaf-file-name="surveyService.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/survey/surveyService.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="50" column="14" selection-start-line="50" selection-start-column="14" selection-end-line="50" selection-end-column="14" />
+              <caret line="36" column="35" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -168,12 +125,10 @@
         <option value="$PROJECT_DIR$/app/Http/Requests/CreateSurveyRequest.php" />
         <option value="$PROJECT_DIR$/database/migrations/2015_08_17_123022_create_surveys_table.php" />
         <option value="$PROJECT_DIR$/dashboard_build/src/app/app.js" />
-        <option value="$PROJECT_DIR$/dashboard_build/src/app/constants.js" />
         <option value="$PROJECT_DIR$/app/Http/routes.php" />
         <option value="$PROJECT_DIR$/dashboard_build/src/app/survey/list_all/surveyListController.js" />
         <option value="$PROJECT_DIR$/dashboard_build/src/app/survey/create/create_server_wizard.tpl.html" />
         <option value="$PROJECT_DIR$/dashboard_build/src/app/survey/create/createSurveyController.js" />
-        <option value="$PROJECT_DIR$/dashboard_build/src/app/survey/surveyService.js" />
         <option value="$PROJECT_DIR$/dashboard_build/src/common/directives/openCloseLabelDirective.js" />
         <option value="$PROJECT_DIR$/dashboard_build/src/common/directives/deleteSurveyDirective.js" />
         <option value="$PROJECT_DIR$/dashboard_build/src/common/modals/deleteSurveyModal.tpl.html" />
@@ -192,6 +147,8 @@
         <option value="$PROJECT_DIR$/dashboard_build/src/app/admin/breadCrumbCtrl.js" />
         <option value="$PROJECT_DIR$/dashboard_build/src/app/app_run.js" />
         <option value="$PROJECT_DIR$/dashboard_build/gruntFile.js" />
+        <option value="$PROJECT_DIR$/dashboard_build/src/app/constants.js" />
+        <option value="$PROJECT_DIR$/dashboard_build/src/app/survey/surveyService.js" />
         <option value="$PROJECT_DIR$/dashboard_build/vendor/formbuilder/formbuilder.js" />
         <option value="$PROJECT_DIR$/dashboard_build/src/app/survey/forms/design_formbuilder/designFormController.js" />
       </list>
@@ -407,7 +364,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
+              <option name="myItemId" value="database" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -421,389 +378,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
+              <option name="myItemId" value="database" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngStorage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jquery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="formbuilder" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="stylesheets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="partials" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="modals" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="directives" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="survey" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="survey" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="list_all" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="survey" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="forms" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="design_formbuilder" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="survey" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="create" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="survey" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="analytics" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pegasus-II" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard_build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="home" />
+              <option name="myItemId" value="migrations" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -935,7 +514,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39541984" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39541984" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3038168" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27063197" sideWeight="0.20305343" order="0" side_tool="false" content_ui="combo" />
@@ -1097,14 +676,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/pegasustwo/surveys/SurveysRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.807693">
-          <caret line="17" column="31" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Requests/CreateSurveyRequest.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1125,22 +696,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="13" column="46" selection-start-line="13" selection-start-column="46" selection-end-line="13" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="51" column="53" selection-start-line="51" selection-start-column="37" selection-end-line="51" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/SurveyController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.807693">
-          <caret line="38" column="121" selection-start-line="38" selection-start-column="113" selection-end-line="38" selection-end-column="121" />
           <folding />
         </state>
       </provider>
@@ -1323,42 +878,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="12" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/survey/surveyService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="48" column="8" selection-start-line="48" selection-start-column="8" selection-end-line="48" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/constants.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#43#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/back_app/pegasusrises.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="444" column="30" selection-start-line="444" selection-start-column="20" selection-end-line="444" selection-end-column="30" />
           <folding>
-            <marker date="1444059003717" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444059003717" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444059003717" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444059003717" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444059003717" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1444062161000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1444062161000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1444062161000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1444062161000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1444062161000" expanded="true" signature="-1:-1" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1379,14 +908,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/app_run.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dashboard_build/gruntFile.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1395,10 +916,68 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/app_run.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/SurveyController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.230769">
+          <caret line="46" column="64" selection-start-line="46" selection-start-column="48" selection-end-line="46" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/pegasustwo/surveys/SurveysRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.0384614">
+          <caret line="34" column="44" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="12" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/constants.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="25" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#43#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/survey/surveyService.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="35" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/dashboard_build/vendor/formbuilder/formbuilder.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="12.0">
-          <caret line="339" column="14" selection-start-line="339" selection-start-column="14" selection-end-line="339" selection-end-column="14" />
+        <state vertical-scroll-proportion="-8.56">
+          <caret line="1101" column="69" selection-start-line="1101" selection-start-column="52" selection-end-line="1101" selection-end-column="69" />
           <folding>
             <element signature="e#12#1010#0" expanded="false" />
             <element signature="e#293#1005#0" expanded="false" />
@@ -1406,10 +985,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2015_08_17_123034_create_questions_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="66" selection-start-line="16" selection-start-column="11" selection-end-line="21" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2015_08_17_123118_create_answer_options_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="44" selection-start-line="16" selection-start-column="10" selection-end-line="17" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/dashboard_build/src/app/survey/forms/design_formbuilder/designFormController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6783784">
-          <caret line="13" column="40" selection-start-line="13" selection-start-column="40" selection-end-line="13" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.84737676">
+          <caret line="63" column="87" selection-start-line="63" selection-start-column="87" selection-end-line="63" selection-end-column="87" />
           <folding />
         </state>
       </provider>
