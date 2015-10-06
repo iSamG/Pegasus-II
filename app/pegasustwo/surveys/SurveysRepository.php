@@ -66,15 +66,21 @@ class SurveysRepository {
 
     public function deleteSurvey($survey_id)
     {
+
         $delete_survey = \DB::table('surveys')->where('id', $survey_id)->delete();
 
         if ($delete_survey) {
 
             return Helpers::responseToView($code=200, $status="OK",$message = "Survey deleted successfully");
+
         }
+
 
         return Helpers::responseToView($code=401, $status="Failed",$message = "Unable to delete survey, please try again");
 
+
     }
+
+
 
 }
