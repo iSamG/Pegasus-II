@@ -37,7 +37,17 @@ class SurveysRepository {
 
         $survey_by_admin = \DB::table("surveys")->where("id", $survey_id)->where("user_id", $admin_id)->first();
 
-        return $survey_by_admin;
+        return Helpers::responseToView($code = 200, $status= "OK", $message = "A survey by an admin returned successfully", $data = $survey_by_admin);
+
+    }
+
+
+    public function retrieveASurveyWithItsQuestions($survey_id){
+
+        $survey_with_questions = Survey::with('questions')->where('id', $survey_id)->get();
+
+        return Helpers::responseToView($code = 200, $status= "OK", $message = "A survey with its questions returned successfully", $data = $survey_with_questions);
+
     }
 
 

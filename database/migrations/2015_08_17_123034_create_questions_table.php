@@ -14,6 +14,7 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function(Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigIncrements('survey_id');
             $table->enum('question_type', ['open_ended', 'close_ended']);
             $table->enum('input_type', ['radio', 'checkboxes','text','date','dropdown','time','number','website','email','price','address','gps','image','video']);
             $table->string('question');
