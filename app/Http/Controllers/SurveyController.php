@@ -42,6 +42,16 @@ class SurveyController extends Controller
     }
 
 
+    public function retrieveASurveyWithItsQuestions()
+    {
+
+        $survey_with_questions = $this->surveyRepository->retrieveASurveyWithItsQuestions($this->requestMade->get('survey_id'));
+
+        return $survey_with_questions;
+
+    }
+
+
     public function retrieveASurveyByAnAdmin($id)
     {
         $retrieve_a_survey_by_an_admin = $this->surveyRepository->retrieveASurveyByAnAdmin($this->requestMade->get('admin_id'), $this->requestMade->get('survey_id'));
@@ -59,6 +69,7 @@ class SurveyController extends Controller
         return $edit_survey;
 
     }
+
 
 
 

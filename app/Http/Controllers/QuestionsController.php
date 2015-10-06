@@ -25,19 +25,19 @@ class QuestionsController extends Controller
     }
 
 
-    public function createQuestion()
+    public function createQuestion(Requests\CreateQuestionRequest $createQuestionRequest)
     {
-        $create_a_survey_question = $this->questionsRepository->createANewQuestion($this->requestMade->all());
+        $create_a_survey_question = $this->questionsRepository->createANewQuestion($createQuestionRequest->all());
 
         return $create_a_survey_question;
 
      }
 
 
-    public function editQuestion()
+    public function editQuestion(Requests\CreateQuestionRequest $createQuestionRequest)
     {
 
-        $edit_a_survey_question = $this->questionsRepository->editAnExistingQuestion($this->requestMade);
+        $edit_a_survey_question = $this->questionsRepository->editAnExistingQuestion($createQuestionRequest->all());
 
         return $edit_a_survey_question;
 

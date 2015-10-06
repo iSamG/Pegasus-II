@@ -73,6 +73,12 @@ Route::post('/retrieve/a/survey', [
 
 ]);
 
+Route::post('/retrieve/a/survey/with/questions', [
+
+    'as' => 'retrieve_a_survey_with_questions', 'uses' => 'SurveyController@retrieveASurveyWithItsQuestions'
+
+]);
+
 
 Route::post('/create/a/survey/question', [
 
