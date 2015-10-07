@@ -1,8 +1,8 @@
 
 
 angular.module('pegasusrises')
-    .run(['$rootScope', '$state', '$stateParams', 'cfpLoadingBar','$localStorage','surveyService',
-        function($rootScope, $state, $stateParams, cfpLoadingBar, $localStorage, surveyService){
+    .run(['$rootScope', '$state', '$stateParams', 'cfpLoadingBar','$localStorage','surveyService','adminService',
+        function($rootScope, $state, $stateParams, cfpLoadingBar, $localStorage, surveyService, adminService){
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 
@@ -38,6 +38,10 @@ angular.module('pegasusrises')
                 file : 'File'
             };
 
+            $rootScope.logoutUser = function () {
+                adminService.logoutUser();
+            };
+
             $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
                 cfpLoadingBar.start();
                 $rootScope.loading = true;
@@ -52,6 +56,7 @@ angular.module('pegasusrises')
                 $rootScope.loading = false;
             });
 
+            adminService.getAuthUser();
 
             surveyService.loadAllSurveys();
             $rootScope.reloadSurveyData = function () {

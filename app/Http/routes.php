@@ -11,10 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-//    return view('welcome');
+Route::get('/', function(){
     return view('public_home');
 });
+
+Route::post('/', [
+            'as' => 'public_view', 'uses' => 'PegasusUserController@renderPublicView'
+]);
 
 
 
@@ -26,9 +29,6 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 
-Route::get('/register','PegasusUserController@create');
-
-
 Route::post('/register', 'PegasusUserController@create');
 Route::post('/login', 'PegasusUserController@authenticate');
 Route::get('/logout', 'PegasusUserController@logout');
@@ -37,6 +37,11 @@ Route::get('/auth/user', 'PegasusUserController@currentUser');
 
 
 
+Route::get('/dashboard', [
+
+    'as' => 'dashboard_view', 'uses' => 'PegasusUserController@renderDashboard'
+
+]);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

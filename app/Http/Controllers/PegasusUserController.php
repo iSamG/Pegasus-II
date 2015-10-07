@@ -36,14 +36,13 @@ class PegasusUserController extends Controller
 
             $authenticated_user->save();
 
-//
-            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully", $data = $authenticated_user);
+            \Redirect::route('dashboard_view')->with('user', $authenticated_user);
+
+            //return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully", $data = $authenticated_user);
 
         }
 
-        return "baad";
-
-       // return Helpers::responseToView($code = 401, $status = "Failed", $message = "Pegasus User authentication failed");
+        return Helpers::responseToView($code = 401, $status = "Failed", $message = "Pegasus User authentication failed");
     }
 
     /**
@@ -88,8 +87,11 @@ class PegasusUserController extends Controller
         $input_is_valid = \Validator::make($fields, $validation_patterns);
         if($input_is_valid){
             $user = User::create($fields);
-            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully",
-                $data = $user);
+
+            \Redirect::route('dashboard_view');
+
+//            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully",
+//                $data = $user);
         }
         else{
 
@@ -160,7 +162,10 @@ class PegasusUserController extends Controller
     public function logout(){
         $logged_out = Auth::logout();
         if($logged_out){
-            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged out successfully");
+
+            \Redirect::route('public_view');
+
+//            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged out successfully");
         }
         {
             return Helpers::responseToView($code = 401, $status = "failed", $message = "Cannot log user out");
@@ -179,4 +184,18 @@ class PegasusUserController extends Controller
 
         }
     }
+
+    public function renderDashboard()
+         {
+
+            // User::create(Request::all());
+             return redirect('dashboard');
+         }
+
+         public function renderPublicView()
+         {
+
+            // User::create(Request::all());
+             return redirect('public_home');
+         }
 }

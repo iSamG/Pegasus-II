@@ -149,14 +149,16 @@ angular.module('directives')
                                 schema: schema,
                                 form: formArray,
                                 onSubmit: function (errors, values) {
-                                    if (errors) {
-                                        $('#res').html('<p>I beg your pardon?</p>');
-                                    }
-                                    else {
-                                        $('#res').html('<p>Hello ' + values.name + '.' +
-                                            (values.age ? '<br/>You are ' + values.age + '.' : '') +
-                                            '</p>');
-                                    }
+                                    growl.info('This is for preview purposes only.');
+                                    return false;
+                                    //if (errors) {
+                                    //    $('#res').html('<p>I beg your pardon?</p>');
+                                    //}
+                                    //else {
+                                    //    $('#res').html('<p>Hello ' + values.name + '.' +
+                                    //        (values.age ? '<br/>You are ' + values.age + '.' : '') +
+                                    //        '</p>');
+                                    //}
                                 }
                             })
 

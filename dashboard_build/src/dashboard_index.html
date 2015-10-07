@@ -77,7 +77,7 @@
                         <li class="hidden"> <a ui-sref="profile"><i class="fa fa-user"></i> Profile</a> </li>
                         <li> <a ui-sref="settings"><i class="fa fa-cog"></i> Settings </a></li>
                         <li> <a href=""  ng-click="startJoyRide()"><i class="fa fa-question-circle"></i> Help</a> </li>
-                        <li> <a href="{{ logout_url }}"><i class="fa fa-power-off"></i> Logout</a> </li>
+                        <li> <a href="" ng-click="logoutUser()"><i class="fa fa-power-off"></i> Logout</a> </li>
                     </ul>
                 </div>
 

@@ -92,6 +92,23 @@ angular.module('admin', [])
 /**
  * Created by kaygee on 2/16/15.
  */
+angular.module('admin')
+    .factory('adminService' , ['$rootScope', '$http', '$q','prRoutes', function($rootScope, $http, $q, prRoutes) {
+        var adminService = {};
+
+        adminService.getAuthUser = function () {
+            $http.get(prRoutes.getAuthUser)
+                .success(function (successData) {
+                    $rootScope.user = successData.data;
+                })
+        };
+
+        adminService.logoutUser = function () {
+            return $http.get(prRoutes.logoutUser)
+        };
+
+        return adminService;
+    }]);
 
 /**
  * Created by Kaygee on 03/10/2015.
@@ -188,8 +205,8 @@ angular.module('pegasusrises', [
 
 
 angular.module('pegasusrises')
-    .run(['$rootScope', '$state', '$stateParams', 'cfpLoadingBar','$localStorage','surveyService',
-        function($rootScope, $state, $stateParams, cfpLoadingBar, $localStorage, surveyService){
+    .run(['$rootScope', '$state', '$stateParams', 'cfpLoadingBar','$localStorage','surveyService','adminService',
+        function($rootScope, $state, $stateParams, cfpLoadingBar, $localStorage, surveyService, adminService){
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 
@@ -225,6 +242,10 @@ angular.module('pegasusrises')
                 file : 'File'
             };
 
+            $rootScope.logoutUser = function () {
+                adminService.logoutUser();
+            };
+
             $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
                 cfpLoadingBar.start();
                 $rootScope.loading = true;
@@ -239,6 +260,7 @@ angular.module('pegasusrises')
                 $rootScope.loading = false;
             });
 
+            adminService.getAuthUser();
 
             surveyService.loadAllSurveys();
             $rootScope.reloadSurveyData = function () {
@@ -289,7 +311,11 @@ angular.module('pegasusrises')
         editQuestions : '/edit/a/survey/question',
         deleteQuestions : '/delete/a/survey/question',
 
-        retrieveQuestions : '/retrieve/a/survey/with/questions'
+        retrieveQuestions : '/retrieve/a/survey/with/questions',
+
+
+        getAuthUser : '/auth/user',
+        logoutUser : '/logout'
 
     });
 /**
@@ -1113,14 +1139,16 @@ angular.module('directives')
                                 schema: schema,
                                 form: formArray,
                                 onSubmit: function (errors, values) {
-                                    if (errors) {
-                                        $('#res').html('<p>I beg your pardon?</p>');
-                                    }
-                                    else {
-                                        $('#res').html('<p>Hello ' + values.name + '.' +
-                                            (values.age ? '<br/>You are ' + values.age + '.' : '') +
-                                            '</p>');
-                                    }
+                                    growl.info('This is for preview purposes only.');
+                                    return false;
+                                    //if (errors) {
+                                    //    $('#res').html('<p>I beg your pardon?</p>');
+                                    //}
+                                    //else {
+                                    //    $('#res').html('<p>Hello ' + values.name + '.' +
+                                    //        (values.age ? '<br/>You are ' + values.age + '.' : '') +
+                                    //        '</p>');
+                                    //}
                                 }
                             })
 

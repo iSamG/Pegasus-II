@@ -41,6 +41,10 @@ angular.module('pegasusrises')
         editQuestions : '/edit/a/survey/question',
         deleteQuestions : '/delete/a/survey/question',
 
-        retrieveQuestions : '/retrieve/a/survey/with/questions'
+        retrieveQuestions : '/retrieve/a/survey/with/questions',
+
+
+        getAuthUser : '/auth/user',
+        logoutUser : '/logout'
 
     });
