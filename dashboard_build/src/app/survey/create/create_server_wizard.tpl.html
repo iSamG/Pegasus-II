@@ -39,21 +39,21 @@
                                 <div class="col-md-6">
                                     <h5 class="col-xs-12"> <label for="startDate">Start Date</label></h5>
                                     <p class="input-group col-xs-12">
-                                        <input type="text" class="form-control" datepicker-popup="{{format}}" id="startDate"
-                                               ng-model="createSurveyForm.startDate" is-open="status.opened" min-date="minDate" max-date="createSurveyForm.endDate"
-                                               datepicker-options="dateOptions" close-on-date-selection="false"
-                                               ng-required="true" close-text="Close" />
+                                    <input type="text" class="form-control" datepicker-popup="{{format}}" id="startDate"
+                                           ng-model="createSurveyForm.start_date" is-open="status.opened" min-date="minDate" max-date="createSurveyForm.end_date"
+                                           datepicker-options="dateOptions" close-on-date-selection="false"
+                                           ng-required="true" close-text="Close" />
                                           <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
                                           </span>
-                                    </p>
+                                </p>
                                 </div>
 
                                 <div class="col-md-6">
                                     <h5 class="col-xs-12"> <label for="endDate">End Date</label></h5>
                                     <p class="input-group col-xs-12">
-                                        <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="createSurveyForm.endDate"
-                                               is-open="status.opened" min-date="createSurveyForm.startDate" max-date="maxDate" id="endDate"
+                                        <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="createSurveyForm.end_date"
+                                               is-open="status.opened" min-date="createSurveyForm.start_date" max-date="maxDate" id="endDate"
                                                datepicker-options="dateOptions" close-on-date-selection="true"
                                                ng-required="true" close-text="Close" />
                                           <span class="input-group-btn">

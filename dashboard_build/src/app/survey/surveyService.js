@@ -3,38 +3,93 @@
  */
 
 angular.module('survey')
-    .factory('surveyService' , [ '$http', function($http){
+    .factory('surveyService' , ['$rootScope', '$http', '$q','prRoutes', function($rootScope, $http, $q, prRoutes){
         var surveyService = {};
 
         surveyService.createSurvey = function(form){
-            return $http.post('/create/survey', form)
+            return $http.post(prRoutes.createSurvey, form)
         };
 
-        surveyService.getAllSurveys = function(){
-            return $http.get('/user/surveys/read')
+        surveyService.editSurvey = function(form){
+            return $http.post(prRoutes.editSurvey, form)
         };
 
-        surveyService.getSurveyQuestionDetails = function( ){
-            return $http.get('/questions/properties/read');
-            //return $http.get('/frontend/dummyloader/questions.json')
+        surveyService.deleteSurvey = function(surveyId){
+            return $http.post(prRoutes.deleteSurvey, {survey_id : surveyId})
+        };
+
+        surveyService.retrieveAllSurveys = function(){
+            return $http.get(prRoutes.retrieveAllSurveys, {params : { admin_id : 1}})
+        };
+
+        surveyService.retrieveOneSurvey = function(){
+            return $http.get(prRoutes.retrieveOneSurvey)
         };
 
         surveyService.getAllResponses = function( ){
-            return $http.get('/data/submissions/read');
-            //return $http.get('/frontend/dummyloader/submissions.json')
+            return $http.get(prRoutes.createSurvey);
         };
 
-        surveyService.sendRespondentEmail = function(data){
-            return $http.post('/sendmail', data)
+        surveyService.retrieveQuestions = function(form){
+            return $http.get(prRoutes.saveQuestions, form)
         };
 
-        surveyService.sendRespondentSMS = function(data){
-            return $http.post('/send/sms', data)
+        surveyService.saveQuestions = function(form){
+            return $http.post(prRoutes.saveQuestions, form)
         };
 
-        surveyService.deleteSurvey = function(data){
-            return $http.post('/delete/user/surveys', data)
+        surveyService.editQuestions = function(form){
+            return $http.post(prRoutes.editQuestions, form)
         };
+
+        surveyService.deleteQuestions = function(form){
+            return $http.post(prRoutes.deleteQuestions, form)
+        };
+
+
+
+
+
+
+        function initObjectsAndArrays(){
+            surveyService.surveys = [];
+            surveyService.surveyLookup = {};
+        }
+
+
+
+        function initiateSurveys() {
+            for (var i = 0; i <  surveyService.surveys.length; i++){
+                var each =  surveyService.surveys[i];
+                surveyService.surveyLookup[each.id] = each;
+            }
+            $rootScope.$broadcast('surveysLoadedAndPrepped');
+        }
+
+
+        surveyService.loadAllSurveys = function () {
+            var defer = $q.defer();
+            initObjectsAndArrays();
+
+
+            this.retrieveAllSurveys()
+                .success(function (data) {
+                    if (data.code == '200' && data.status.toLowerCase() == 'ok') {
+                        surveyService.surveys = data.data;
+                        initiateSurveys();
+                        defer.resolve(true);
+                    }
+                })
+                .error(function () {
+                    defer.reject(false);
+
+                });
+
+            return defer.promise;
+
+        };
+
+
 
         return surveyService;
     }]);

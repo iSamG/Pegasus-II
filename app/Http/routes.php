@@ -43,14 +43,56 @@ Route::get('/dashboard', function () {
 });
 
 
-Route::post('/create/survey', 'SurveyController@createSurvey');
+Route::post('/create/survey', [
 
-Route::post('/edit/survey', 'SurveyController@editSurvey');
+    'as' => 'create_survey', 'uses' => 'SurveyController@createSurvey'
 
-Route::post('/delete/survey', 'SurveyController@deleteSurvey');
+]);
 
-Route::get('/retrieve/all/surveys', 'SurveyController@retrieveAllSurveysByAnAdmin');
+Route::post('/edit/survey', [
 
-Route::post('/retrieve/a/survey', 'SurveyController@retrieveASurveyByAnAdmin');
+    'as' => 'edit_survey', 'uses' => 'SurveyController@editSurvey'
+
+]);
+
+Route::post('/delete/survey', [
+
+    'as' => 'delete_survey', 'uses' => 'SurveyController@deleteSurvey'
+
+]);
+
+Route::get('/retrieve/all/surveys', [
+
+    'as' => 'retrieve_all_surveys', 'uses' => 'SurveyController@retrieveAllSurveysByAnAdmin'
+
+]);
+
+Route::post('/retrieve/a/survey', [
+
+    'as' => 'retrieve_a_survey', 'uses' => 'SurveyController@retrieveASurveyByAnAdmin'
+
+]);
+
+
+Route::post('/create/a/survey/question', [
+
+    'as' => 'create_a_survey_question', 'uses' => 'QuestionsController@createQuestion'
+
+]);
+
+
+
+Route::post('/edit/a/survey/question', [
+
+    'as' => 'edit_a_survey_question', 'uses' => 'QuestionsController@editQuestion'
+
+]);
+
+
+Route::post('/delete/a/survey/question', [
+
+    'as' => 'delete_a_survey_question', 'uses' => 'QuestionsController@deleteQuestion'
+
+]);
 
 

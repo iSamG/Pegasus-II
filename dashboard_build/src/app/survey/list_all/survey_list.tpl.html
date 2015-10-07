@@ -1,6 +1,6 @@
 <div class="container clear_both padding_fix" ui-view="">
     <!--\\\\\\\ container  start \\\\\\-->
-    <div class="task_bar clearfix" ng-show="listOfSurveys.surveys.length">
+    <div class="task_bar clearfix" ng-show="surveys.length">
         <div class="task_bar_left">
             <label>Search survey:</label>
             <input type="text" class="task_form" placeholder=" Survey title..." name="" ng-model="searchSurvey" ng-init="searchSurvey = ''">
@@ -9,8 +9,9 @@
         <div class="task_bar_right">
             <label>Sorting:</label>
             <input type="text" disabled class="task_form" placeholder="SORT BY DATE" name="">
-            <button type="button" class="btn btn-primary btn-icon" ng-init="sortOrder = 'created_date'; reverse = false" data-ng-click="reverse=!reverse"><i class="fa fa-arrows-v"></i></button>
-            <button type="button" class="btn btn-success btn-icon" data-ng-click="reloadSurveyData()"><i class="fa fa-refresh"></i></button>
+            <button type="button" class="btn btn-primary btn-icon" ng-init="sortOrder = 'created_at'; reverse = false" data-ng-click="reverse=!reverse">
+                <i class="fa fa-arrows-v"></i></button>
+            <button type="button" class="btn btn-success btn-icon" tooltip="Reload Surveys" data-ng-click="reloadSurveyData()"><i class="fa fa-refresh"></i></button>
         </div>
     </div>
     <div class="row">
@@ -20,14 +21,17 @@
             <!--green_border-->
             <!--orange_border-->
             <!--blue_border-->
-            <section class="panel default blue_border vertical_border h1" ng-show="listOfSurveys.surveys.length" ng-repeat="survey in listOfSurveys.surveys | filter : { survey_name: searchSurvey } | orderBy : sortOrder : reverse">
-                <div class="task-header blue_task"><a ui-sref="surveys.selected_survey({survey : survey.survey_name, form_id : survey.survey_aggregate_form_id })">{{ survey.survey_name }}</a>
-                    <span title="{{ survey.created_date }}" tooltip-placement="top" tooltip="{{ survey.created_date | date : fullDate }}"><i class="fa fa-clock-o"></i>{{ fromNow(survey.created_date) }}</span> </div>
+            <section class="panel default blue_border vertical_border h1" ng-show="surveys.length" ng-repeat="survey in surveys | filter : { survey_name: searchSurvey } | orderBy : sortOrder : reverse">
+                <div class="task-header blue_task">
+                    <a href="">{{ survey.survey_name }}</a>
+                    <span title="{{ survey.created_at }}" tooltip-placement="top" tooltip="{{ survey.created_at | date : fullDate }}"><i class="fa fa-clock-o"></i>{{ fromNow(survey.created_at) }}</span> </div>
                 <div class="row task_inner inner_padding">
                     <div class="col-sm-9">
-                        <p><em>Description : &nbsp;</em>No description provided</p>
-                        <p><em>Questions : &nbsp;</em>{{ ( surveyData.questions_details | filter : { survey_name : survey.survey_name }).length }} questions</p>
-                        <p><em>Total Responses : &nbsp;</em>{{ ( submittedResponses.submissions | filter : { formId : survey.survey_aggregate_form_id }).length }} submissions</p>
+                        <p><em>Start Date : &nbsp;</em><span ng-bind="survey.start_date | date : mediumDate"></span></p>
+                        <p><em>End Date : &nbsp;</em><span ng-bind="survey.end_date | date : shortDate"></span></p>
+                        <p><em>Questions : &nbsp;</em><span ui-sref="surveys.form_builder" class="pointer btn btn-link">Click to add questions</span></p>
+                        <!--<p><em>Total Responses : &nbsp;</em><span ui-sref="surveys.demo_form">Click to send survey</span></p>-->
+                        <p><em>Total Responses : &nbsp;</em><span>No responses recorded</span></p>
                     </div>
                     <div class="col-sm-3">
                         <!--<div class="pull-right"><span>August  15, 2014</span></div>-->
@@ -49,30 +53,26 @@
                         <ul class="footer-icons-group">
                             <li tooltip-placement="top" tooltip="Notify respondents"><a ng-click="notifyRespondents(survey.survey_name)" class="pointer"><i class="fa fa-users"></i></a></li>
                             <li tooltip-placement="top" tooltip="Edit Survey"><a href=""><i class="fa fa-pencil"></i></a></li>
-                            <li tooltip-placement="top" tooltip="Delete Survey"><a href="" ng-click="openDeleteModal(
-                            survey.survey_name,
-                            survey.survey_aggregate_form_id,
-                            (surveyData.questions_details | filter : { survey_name : survey.survey_name }).length,
-                               ( submittedResponses.submissions | filter : { formId : survey.survey_aggregate_form_id }).length)"><i class="fa fa-trash-o"></i></a></li>
+                            <li tooltip-placement="top" tooltip="Delete Survey"><a href="" delete-survey="{{survey.id}}"><i class="fa fa-trash-o"></i></a></li>
                             <!--<li class="dropup"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></a></li>-->
                         </ul>
                     </div>
                 </div>
             </section>
-            <div class="bs-callout bs-callout-warning" ng-hide="listOfSurveys.surveys.length">
+            <div class="bs-callout bs-callout-warning" ng-hide="surveys.length">
                 <h4><i class="fa fa-warning"></i> No Survey! </h4>
                 <p>You currently do not have a survey on the system. <button class="btn btn-success" ng-click="$state.go('home')">Click to create a server</button> and start surveying.</p>
             </div>
 
-            <div ng-show="listOfSurveys.surveys.length">
-                <div class="bs-callout bs-callout-primary" ng-hide="( listOfSurveys.surveys | filter : { survey_name: searchSurvey }).length">
+            <div ng-show="surveys.length">
+                <div class="bs-callout bs-callout-primary" ng-hide="( surveys | filter : { survey_name: searchSurvey }).length">
                     <h4><i class="fa fa-warning"></i> Search Survey </h4>
                     <p>No survey name found matching <b>"{{searchSurvey }}"</b>.</p>
                 </div>
             </div>
         </div>
 
-        <!--<div>{{listOfSurveys.surveys | json }}</div>-->
+        <!--<div>{{surveys | json }}</div>-->
 
 
     </div>

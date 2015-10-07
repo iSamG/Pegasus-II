@@ -93,95 +93,12 @@ angular.module('admin', [])
  * Created by kaygee on 2/16/15.
  */
 
-//var ngPegasusApp =
-angular.module('pegasusrises', [
-    'ui.router',
-    'ui.bootstrap',
-    'ngAnimate',
-    'templates.app',
-    'home',
-    'admin',
-    'survey',
-    'directives',
-    'lk-google-picker',
-    'cfp.loadingBar',
-    'angular-growl',
-    'angularFileUpload',
-    'ngResource',
-    'ngJoyRide',
-    'uiGmapgoogle-maps',
-    'googlechart',
-    'ngStorage',
-    'ngTagsInput',
-    'perfect_scrollbar',
-    'mgo-angular-wizard'
-])
+/**
+ * Created by Kaygee on 03/10/2015.
+ */
 
-    //'angular-loading-bar',
-    .constant('prConstantKeys', {
-        google_api_key: 'AIzaSyDSBIljWNHZ9xMXuaROc4oAypA8LT5xmaU',
-        google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com'
-    })
+angular.module('admin').controller('prBreadCrumbCtrl', ['$scope', '$state' ,function($scope, $state){
 
-    .config(['$stateProvider','$urlRouterProvider','lkGoogleSettingsProvider',
-        'growlProvider', '$httpProvider', 'uiGmapGoogleMapApiProvider','prConstantKeys',
-        function($stateProvider, $urlRouterProvider, lkGoogleSettingsProvider,
-                 growlProvider, $httpProvider, uiGmapGoogleMapApiProvider, prConstantKeys){
-            //for any unmatched url, redirect to the state '/home'
-            $urlRouterProvider.otherwise('/');
-
-            //This is the configuration for the Google Picker API
-            lkGoogleSettingsProvider.configure({
-                apiKey   :  prConstantKeys.google_api_key,
-                clientId : prConstantKeys.google_client_id,
-                scopes   : ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive.readonly'],
-                locale   : 'en',
-                features : [],
-                views    : [
-                    'DocsView().setMimeTypes("application/vnd.google-apps.spreadsheet")'
-                ]
-            });
-            //globally time the growl toatser to stay visible for 5seconds
-            growlProvider.globalTimeToLive(5000);
-
-            uiGmapGoogleMapApiProvider.configure({
-                key : prConstantKeys.google_api_key,
-                v: '3.17',
-                //libraries: 'weather,geometry,visualization'
-                libraries: ''
-            });
-
-
-        }])
-    .run(['$rootScope', '$state', '$stateParams', 'cfpLoadingBar','$localStorage' ,function($rootScope, $state, $stateParams, cfpLoadingBar, $localStorage){
-        $rootScope.$state = $state;
-        $rootScope.$stateParams = $stateParams;
-
-        $localStorage.$default({
-            first_timer : true
-        });
-
-        $rootScope.fromNow = function(datetime){
-            return moment(datetime).fromNow();
-        };
-
-        $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
-            cfpLoadingBar.start();
-            $rootScope.loading = true;
-        });
-
-        $rootScope.$on('$viewContentLoading',function(event){
-            cfpLoadingBar.inc();
-        });
-
-        $rootScope.$on('$viewContentLoaded',function(event){
-            cfpLoadingBar.complete();
-            $rootScope.loading = false;
-        });
-
-    }]);
-
-angular.module('pegasusrises').controller('prBreadCrumbCtrl', ['$scope', '$state' ,function($scope, $state){
     $scope.$watch('$state', function(oldVal, newVal){
         $scope.subtitle = ($state.current.name).toUpperCase();
     });
@@ -231,7 +148,101 @@ angular.module('pegasusrises').controller('prBreadCrumbCtrl', ['$scope', '$state
 
 
 
-}]);
+}])
+//var ngPegasusApp =
+angular.module('pegasusrises', [
+    'ui.router',
+    'ui.bootstrap',
+    'ngAnimate',
+    'templates.app',
+    'home',
+    'admin',
+    'survey',
+    'directives',
+    //'lk-google-picker',
+    'cfp.loadingBar',
+    'angular-growl',
+    'angularFileUpload',
+    'ngResource',
+    'ngJoyRide',
+    //'uiGmapgoogle-maps',
+    'googlechart',
+    'ngStorage',
+    'ngTagsInput',
+    'perfect_scrollbar',
+    'mgo-angular-wizard'
+])
+    .config(['$stateProvider','$urlRouterProvider',
+        'growlProvider', '$httpProvider','prConstantKeys',
+        function($stateProvider, $urlRouterProvider,
+                 growlProvider, $httpProvider, prConstantKeys){
+            //for any unmatched url, redirect to the state '/home'
+            $urlRouterProvider.otherwise('/');
+
+            //globally time the growl toatser to stay visible for 5seconds
+            growlProvider.globalTimeToLive(5000);
+
+        }]);
+
+
+
+
+angular.module('pegasusrises')
+    .run(['$rootScope', '$state', '$stateParams', 'cfpLoadingBar','$localStorage','surveyService',
+        function($rootScope, $state, $stateParams, cfpLoadingBar, $localStorage, surveyService){
+            $rootScope.$state = $state;
+            $rootScope.$stateParams = $stateParams;
+
+            //$localStorage.$default({
+            //    first_timer : true
+            //});
+
+            $rootScope.fromNow = function(datetime){
+                return moment(datetime).fromNow();
+            };
+
+            $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
+                cfpLoadingBar.start();
+                $rootScope.loading = true;
+            });
+
+            $rootScope.$on('$viewContentLoading',function(event){
+                cfpLoadingBar.inc();
+            });
+
+            $rootScope.$on('$viewContentLoaded',function(event){
+                cfpLoadingBar.complete();
+                $rootScope.loading = false;
+            });
+
+
+            surveyService.loadAllSurveys();
+            $rootScope.reloadSurveyData = function () {
+                surveyService.loadAllSurveys();
+            }
+
+        }]);
+/**
+ * Created by Kaygee on 03/10/2015.
+ */
+
+angular.module('pegasusrises')
+    .constant('prConstantKeys', {
+        google_api_key: 'AIzaSyDSBIljWNHZ9xMXuaROc4oAypA8LT5xmaU',
+        google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com'
+    })
+    .constant('prRoutes', {
+        createSurvey : '/create/survey',
+        editSurvey : '/edit/survey',
+        deleteSurvey : '/delete/survey',
+        retrieveAllSurveys : '/retrieve/all/surveys',
+        retrieveOneSurvey : '/retrieve/a/survey',
+
+        saveQuestions : '/retrieve/a/survey',
+        editQuestions : '/retrieve/a/survey',
+        deleteQuestions : '/retrieve/a/survey',
+        retrieveQuestions : '/retrieve/a/survey'
+    });
 /**
  * Home Template
  *
@@ -265,258 +276,7 @@ angular.module('home')
         'cfpLoadingBar', '$localStorage', '$sessionStorage','$timeout','$interval',
         function($rootScope, $scope, $state, homeService, surveyService, growl, cfpLoadingBar, $localStorage, $sessionStorage,
                  $timeout, $interval){
-            $scope.files = [];
 
-            $scope.first_timer = $localStorage.first_timer;
-
-            $scope.uploadSheet = function(){
-                var fileToUpload = $scope.files[ $scope.files.length - 1 ];
-                homeService.uploadGoogleSheet(fileToUpload).
-                    success(function(data, status, headers, config) {
-                        growl.success("Data was posted successfully", {});
-                    }).
-                    error(function(data, status, headers, config) {
-                        growl.error("Something went wrong on the server", {});
-                    });
-            };
-
-            $scope.tabletop= function(){
-                if ($scope.files.length) {
-                    $scope.surveyDataReturned = {};
-                    Tabletop.init( {
-                        key: $scope.files[ $scope.files.length - 1].id,
-                        callback: function(data, tabletop) {
-                            console.dir(data);
-                            angular.forEach(data, function(val, prop){
-                                $scope.surveyDataReturned [ prop ] = {
-                                    column_names :  data[prop].column_names,
-                                    elements :  data[prop].elements,
-                                    name :  data[prop].name,
-                                    original_columns : data[prop].original_columns,
-                                    pretty_columns : data[prop].pretty_columns
-                                };
-                                $scope.surveyDataReturned.form_id = $scope.files[$scope.files.length-1].name;
-                            });
-                            if (data) {
-                                homeService.uploadGoogleSheetContentsAsJson($scope.surveyDataReturned)
-                                    .success(function(data){
-                                        //$localStorage.first_timer = false;
-                                        growl.success("Data was posted successfully", {});
-                                    })
-                                    .error(function(){
-                                        growl.error("Something went wrong on the server", {});
-                                    })
-                            }else{
-                                alert("The file has not been shared to the public")
-                            }
-                        },
-                        simpleSheet: false
-                    })
-                }else{
-                    alert("No file selected")
-                }
-            };
-
-            $scope.getFile = function(){
-                homeService.getFileFromGoogle($scope.files[ $scope.files.length - 1].id)
-                    .success(function(data, stuff, more, headers){
-                        console.log(data);
-                        var infoToPost = {
-                            downloadUrl : data['exportLinks']['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
-                            filename : $scope.files[ $scope.files.length - 1].name
-                        };
-
-                        homeService.sendXLSDownloadUrl(infoToPost)
-
-                    })
-            };
-
-            $scope.processServer = function(){
-                cfpLoadingBar.start();
-                growl.info('Getting file from Google Spreadsheets...', {});
-
-
-                $timeout(function(){
-                    growl.success('File downloaded successfully', {});
-                    cfpLoadingBar.set(0.3);
-
-
-                    $scope.tabletop();
-
-
-                    $timeout(function(){
-                        growl.info('Processing and saving file content into database', {});
-
-                        $timeout(function(){
-                            growl.success('File saved successfully', {});
-                            cfpLoadingBar.set(0.6);
-
-                            $timeout(function(){
-                                cfpLoadingBar.set(0.8);
-                                growl.info('Deploying survey for participation...', {});
-
-                                $timeout(function(){
-                                    growl.success('Successfully created server', {});
-                                    cfpLoadingBar.complete();
-                                    //$localStorage.first_timer = false;
-                                    $state.go('surveys.respondents')
-                                }, 2000);
-
-                            }, 3500);
-
-                        }, 3500);
-
-                    }, 3000);
-
-
-                }, 2000);
-
-
-
-            };
-
-            $scope.disableServerCreateButton = false;
-
-            $scope.beginPegasusServer = function(){
-                $scope.disableServerCreateButton = true;
-                cfpLoadingBar.start();
-                growl.info('Downloading file from Google Spreadsheets...', {});
-
-                homeService.getFileFromGoogle($scope.files[ $scope.files.length - 1].id)
-                    .success(function(data, stuff, more, headers){
-                        growl.success('File downloaded successfully from Google', {});
-                        var infoToPost = {
-                            downloadUrl : data['exportLinks']['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
-                            filename : $scope.files[ $scope.files.length - 1].name
-                        };
-                        var retryCounter = 0;
-                        $scope.sendFileForConversion = function () {
-                            $scope.disableServerCreateButton = true;
-                            growl.info('Converting file to XForms', {});
-                            homeService.sendXLSDownloadUrl(infoToPost)
-                                .success(function (data) {
-                                    if (data.status == 'success') {
-
-                                        growl.success('File converted successfully', {});
-                                        cfpLoadingBar.set(0.3);
-
-                                        growl.info('Processing and saving file content into database', {});
-                                        if ($scope.files.length) {
-                                            $scope.surveyDataReturned = {};
-                                            Tabletop.init({
-                                                key: $scope.files[$scope.files.length - 1].id,
-                                                callback: function (data, tabletop) {
-                                                    angular.forEach(data, function (val, prop) {
-                                                        $scope.surveyDataReturned [prop] = {
-                                                            column_names: data[prop].column_names,
-                                                            elements: data[prop].elements,
-                                                            name: data[prop].name,
-                                                            original_columns: data[prop].original_columns,
-                                                            pretty_columns: data[prop].pretty_columns
-                                                        };
-                                                        if (prop == 'settings') {
-                                                            angular.forEach($scope.surveyDataReturned.settings.elements, function (form, index) {
-                                                                if (form.form_id != '') {
-                                                                    $scope.surveyDataReturned.form_id = form.form_id;
-                                                                }else{
-                                                                    $scope.surveyDataReturned.form_id = $scope.files[$scope.files.length - 1].name;
-                                                                }
-                                                            })
-                                                        }
-
-                                                    });
-                                                    if (data) {
-                                                        homeService.uploadGoogleSheetContentsAsJson($scope.surveyDataReturned)
-                                                            .success(function (data) {
-                                                                growl.success("Spreadsheet contents saved successfully", {});
-                                                                cfpLoadingBar.set(0.6);
-
-                                                                $timeout(function () {
-                                                                    cfpLoadingBar.set(0.8);
-                                                                    growl.info('Deploying survey for participation...', {});
-
-                                                                    $timeout(function () {
-                                                                        growl.success('Successfully created survey server', {});
-                                                                        cfpLoadingBar.complete();
-                                                                        //$localStorage.first_timer = false;
-                                                                        $state.go('surveys.respondents')
-                                                                    }, 2000);
-
-                                                                }, 3500);
-                                                            })
-                                                            .error(function () {
-                                                                cfpLoadingBar.complete();
-                                                                growl.error("File contents could not be processed. Please check if all required parameters are in place.", {title : "File Processing Error"});
-                                                                $scope.files = [];
-                                                            })
-                                                    } else {
-                                                        growl.error("The file has not been shared to the public", {})
-                                                    }
-                                                },
-                                                simpleSheet: false
-                                            })
-                                        } else {
-                                            growl.error(data.content, {});
-                                        }
-                                    } else if (data.status == 'failed') {
-                                        if (data.content == "timeout_exception") {
-                                            if (retryCounter < 3) {
-                                                growl.info("A timeout occurred on the server. Retrying file conversion...", {});
-                                                $timeout(function () {
-                                                    $scope.sendFileForConversion();
-                                                    retryCounter ++
-                                                }, 2500);
-                                            }else{
-                                                growl.error("There was a problem converting the file selected", {});
-                                            }
-                                        }else{
-                                            growl.error(data.content, {});
-                                        }
-                                        console.log('conversion error---   ', data);
-                                    }
-                                })
-                                .error(function (data) {
-                                    console.log('error--', data);
-                                    cfpLoadingBar.complete();
-                                    growl.error("Something went wrong on the server. Please retry", {});
-                                })
-                                .then(function () {
-                                    $scope.disableServerCreateButton = false;
-                                    cfpLoadingBar.complete();
-                                });
-                        };
-
-                        /*Send an Email to dev to alert them to publish data*/
-                        var recipients = {
-                            from : "Publish Data on Aggregate",
-                            recipients : ["team@pollafrique.com","lostsaux@gmail.com", "aliuwahab@gmail.com"]
-                        };
-                        surveyService.sendRespondentEmail(recipients)
-                            .success(function () {
-                                $scope.sendFileForConversion();
-                            });
-                    })
-                    .error(function () {
-                        cfpLoadingBar.complete();
-                        growl.error("Could not download file from Google. Please ensure the file has been published to the web and retry.", {});
-                        $scope.files = [];
-
-                    });
-
-            };
-
-            $scope.dataFromAggregate = function() {
-                surveyService.getDataFromPegasus()
-                    .success(function (data) {
-                        console.log('data');
-                        $scope.returnedDataSingle = data;
-                        angular.forEach(data, function (setInfo, index) {
-                            console.log(JSON.parse(setInfo));
-                            $scope.returnedData = JSON.parse(setInfo);
-
-                        });
-                    })
-            }
 
         }]);
 /**
@@ -527,23 +287,6 @@ angular.module('home')
 angular.module('home')
     .factory('homeService', ['$http','prConstantKeys', function($http, prConstantKeys){
         var homeService = {};
-
-        homeService.uploadGoogleSheet = function(fileObject){
-            return $http.post('/post/google/sheet', fileObject);
-        };
-
-        homeService.uploadGoogleSheetContentsAsJson = function(fileObject){
-            return $http.post('/google/sheet/json', fileObject);
-        };
-
-        homeService.sendXLSDownloadUrl = function( data ){
-            return $http.post('/gcs', data);
-        };
-
-        homeService.getFileFromGoogle = function(fileId){
-            var url = 'https://www.googleapis.com/drive/v2/files/' + fileId;
-            return $http.get(url, {params : { key : prConstantKeys.google_api_key}});
-        };
 
         return homeService;
     }]);
@@ -556,51 +299,39 @@ angular.module('survey', [])
         $stateProvider.
             state('surveys', {
                 url : '/surveys',
-                templateUrl : 'app/survey/survey_list.tpl.html',
+                templateUrl : 'app/survey/list_all/survey_list.tpl.html',
                 controller : 'prSurveyController',
-                metadata : "Surveys",
-                resolve : {
-                    surveyService : 'surveyService',
-
-                    surveysList : function(surveyService){
-                        //return surveyService.getAllSurveys()
-                        return []
-                    },
-
-                    questionData : function(surveyService){
-                        //return surveyService.getSurveyQuestionDetails()
-                        return []
-                    },
-
-                    submittedResponsesData : function(surveyService){
-                        //return surveyService.getAllResponses()
-                        return []
-                    }
-                }
+                metadata : "Surveys"
             })
             .state('surveys.analytics', {
-                url : 'analytics/:survey/:form_id/:index',
-                templateUrl : 'app/survey/detailed_analytics.tpl.html',
+                url : '/analytics/:survey/:form_id/:index',
+                templateUrl : 'app/survey/analytics/detailed_analytics.tpl.html',
                 controller : 'prDetailedAnalyticsSurveyController',
                 metadata : "Survey Analytics"
             })
             .state('surveys.respondents', {
                 url : '/respondents',
-                templateUrl : 'app/survey/respondents.tpl.html',
+                templateUrl : 'app/survey/respondents/respondents.tpl.html',
                 controller : 'prSurveyRespondentsController',
-                metadata : "Invite Respondents"
+                metadata : "Respondents"
             })
             .state('surveys.selected_survey', {
-                url : 'select/:form_id/:survey',
-                templateUrl : 'app/survey/selected_survey.tpl.html',
+                url : '/select/:form_id/:survey',
+                templateUrl : 'app/survey/selected/selected_survey.tpl.html',
                 controller : 'prSelectedSurveyController',
                 metadata : 'View Survey'
             })
             .state('surveys.create_new', {
-                url : 'survey/create/new',
-                templateUrl : 'app/survey/create_server_wizard.tpl.html',
+                url : '/create/new',
+                templateUrl : 'app/survey/create/create_server_wizard.tpl.html',
                 controller : 'prCreateSurveyController',
                 metadata : 'Create Survey'
+            })
+            .state('surveys.form_builder', {
+                url : '/build/questionnaire/form',
+                templateUrl : 'app/survey/forms/design_formbuilder/design_form.tpl.html',
+                controller : 'prFormBuilderController',
+                metadata : 'Survey Form Builder'
             })
     }]);
 /**
@@ -608,767 +339,21 @@ angular.module('survey', [])
  */
 
 angular.module('survey')
-
-    .controller('prSurveyController', ['$rootScope', '$scope', 'homeService', 'growl','surveysList','questionData',
-        'submittedResponsesData','$location','$modal','surveyService','$interval',
-        function($rootScope, $scope, homeService, growl, surveysList, questionData,
-                 submittedResponsesData, $location, $modal, surveyService, $interval){
-
-            $scope.surveyData = questionData.data;
-
-            $scope.listOfSurveys = {
-                surveys : []
-            };
-
-            if (surveysList) {
-                //if ($.trim(surveysList.data.surveys) != 'No surveys set up') {
-                //    $scope.listOfSurveys = surveysList.data;
-                //}
-            }
-
-
-            $scope.notifyRespondents = function(survey_name){
-                $location.path('/surveys/respondents').search({survey : survey_name })
-            };
-            //submittedResponsesData.data = {
-            //    submissions : [{ formId :'journalis_survey_id', i :1},{formId :'journalis_survey_id', w:2},{formId :'journalis_survey_id', e:3}]
-            //};
-            $scope.submittedResponses = submittedResponsesData.data;
-
-            $scope.$on('reloadSurvey', function (info) {
-                growl.info('Reloading survey list...', {});
-                surveyService.getAllSurveys()
-                    .success(function (surveysListData) {
-                        $scope.listOfSurveys = surveysListData.data;
-                        growl.info('Survey list has been reloaded', {});
-                    })
-                    .error(function (data) {
-                        growl.info('Survey list data could not be loaded. Please refresh your browser', {});
-                    })
-            });
-
-            //$interval(function () {
-            //    $scope.reloadSurveyData();
-            //}, 6000, 10000);
-
-
-            $scope.reloadSurveyData = function () {
-                //$rootScope.$broadcast('reloadSurvey');
-                surveyService.getAllResponses()
-                    .success(function (surveyResponsesData) {
-                        console.log("before");
-                        console.log($scope.submittedResponses);
-
-                        $rootScope.$broadcast('updateSubmissions', surveyResponsesData);
-                        //surveyResponsesData.data = {
-                        //    submissions : [{formId :'journalis_survey_id',i :1},{formId :'journalis_survey_id', w:2},{formId :'journalis_survey_id', e:6},{formId :'journalis_survey_id', i :6},{formId :'journalis_survey_id', w:9},{formId :'journalis_survey_id', e:0},{formId :'journalis_survey_id', i :32},{formId :'journalis_survey_id', w:42},{formId :'journalis_survey_id', e:73},{formId :'journalis_survey_id', i :61},{formId :'journalis_survey_id', w:72},{e:903}]
-                        //};
-                        //angular.forEach(surveyResponsesData.data.submissions, function (resp, index) {
-                        //    $scope.submittedResponses.submissions.push(resp);
-                        //});
-                        $scope.submittedResponses = surveyResponsesData;
-                        console.log("after");
-                        console.log($scope.submittedResponses);
-                        //$scope.listOfSurveys = surveysListData.data;
-                        //growl.info('Survey responses refreshed', {});
-                    })
-                    .error(function (data) {
-                        growl.info('Survey responses data could not be loaded. Please refresh your browser', {});
-                    })
-                    .then(function () {
-                    })
-            };
-
-            $scope.openDeleteModal = function(survey_name, form_id, num_of_questions, num_of_responses){
-                $modal.open({
-                    templateUrl : 'modals/deleteSurveyModal.tpl.html',
-                    controller : deleteSurveyModalController,
-                    size : 'lg',
-                    resolve : {
-                        selected_survey : function(){
-                            return {
-                                survey_name : survey_name,
-                                form_id : form_id,
-                                questions_length : num_of_questions,
-                                responses_length : num_of_responses
-                            }
-                        }
-                    }
-                });
-
-                function deleteSurveyModalController ($rootScope, $scope, $modalInstance, surveyService, selected_survey, growl ){
-
-                    $scope.selected_survey = selected_survey;
-
-                    $scope.deleteSurvey = function(){
-
-                        surveyService.deleteSurvey(selected_survey)
-                            .success(function (data) {
-                                console.log('delete - ' , data);
-                                growl.success('Survey deleted successfully', {title : 'Delete Survey'});
-                                $rootScope.$broadcast('reloadSurvey');
-                            })
-                            .error(function (data) {
-                                growl.error('Survey could not be deleted', {title : 'Delete Survey'});
-                            }).then(function () {
-                                $scope.close();
-                            });
-
-                    };
-
-                    $scope.close = function(){
-                        $modalInstance.dismiss('cancel')
-                    }
-                }
-            }
-        }])
-
-
-
-    .controller('prSelectedSurveyController', ['$rootScope', '$scope', 'homeService','surveyService', 'growl','uiGmapGoogleMapApi',
-        'questionData', 'submittedResponsesData','$stateParams','cfpLoadingBar','$timeout',
-        function($rootScope, $scope, homeService, surveyService, growl, uiGmapGoogleMapApi, questionData, submittedResponsesData,
-                 $stateParams, cfpLoadingBar, $timeout){
-
-            $scope.surveyData = questionData.data;
-
-            $scope.submittedResponsesData = submittedResponsesData.data;
-
-            $scope.surveyName = $stateParams.survey;
-
-            $scope.surveyFormId = $stateParams.form_id;
-
-            var questionHolder = {};
-            var indexHolder = null;
-
-            $scope.$on('updateSubmissions', function (evt, data) {
-                $scope.submittedResponsesData = data;
-                if (indexHolder) {
-                    $scope.selectQuestion($scope.selected_question, indexHolder);
-                }
-            });
-
-            //This is the object to be sent to google charts
-            $scope.chartObject = {
-                data : {
-                    cols : [],
-                    rows : []
-                }
-            };
-
-            $scope.selectQuestion = function(question, index){
-                //Empty the scope object or declare if undefined
-                $scope.selected_question = {};
-
-                //Assign the selected/clicked question to the declared scope variable
-                $scope.selected_question = question;
-                questionHolder = question;
-
-                //Assign the index too for detailed analytics view
-                $scope.selected_question.index = index;
-                indexHolder = index;
-
-                //for close ended questions,
-                if ($scope.selected_question.question_type == 'close_ended') {
-
-                    //Get the individual answers value
-                    $scope.selected_question.answer_values = $scope.selected_question.possible_answers.split(',');
-                    $scope.selected_question.answer_labels = $scope.selected_question.possible_answers_labels.split(',');
-                    $scope.selected_question.answers = {};
-                    $scope.chartObject.data= {
-                        cols: [
-                            {id: 'A', label: 'question_field', type: 'string'},
-                            {id: 'B', label: 'Responses', type: 'number'}
-                        ],
-                        rows : []
-                    };
-                    //Assign the split answer value as a key in a property of the selected question's answer object
-                    angular.forEach($scope.selected_question.answer_values, function (option, index) {
-
-                        //In the selected question object, assign each possible answer to a property in the "answer" property of the question
-                        if ($.trim(option) != '') {
-                            $scope.selected_question.answers[ $.trim(option) ] = 0;
-
-                        }
-                    });
-
-                    //Loop over the submitted responses submitted
-                    angular.forEach($scope.submittedResponsesData.submissions, function (responseObject, indexObject) {
-
-                        if (responseObject.formId == $stateParams['form_id'] ) {
-                            //Loop over the data field in the responses submitted
-                            angular.forEach(responseObject.data, function (responseData, indexData) {
-
-                                //if the supplied answer is a multiple choice one, loop over and increment each option
-                                if (typeof (responseData[$scope.selected_question.question_field]) == 'object') {
-                                    angular.forEach(responseData[$scope.selected_question.question_field], function (choice, index) {
-
-                                        //And Increment the answer chosen in the chosen question's answer object
-                                        $scope.selected_question.answers [choice]++
-                                    });
-                                }
-                                else {
-                                    //Increment the answer chosen in the chosen question's answer object
-                                    $scope.selected_question.answers [responseData[$scope.selected_question.question_field]]++
-                                }
-
-
-                            })
-                        }
-                    });
-
-                    //Assign answer count to chart rows for chart display
-                    angular.forEach($scope.selected_question.answer_values, function (option, indexOption) {
-                        if ($.trim(option) != '') {
-
-                            $scope.chartObject.data.rows.push({
-                                c : [ {v: $scope.selected_question.answer_labels[indexOption]},
-                                    {v : $scope.selected_question.answers[option],   f: $scope.selected_question.answers[option] }]
-                            });
-                        }
-
-                    });
-
-
-
-                    // $routeParams.chartType == BarChart or PieChart or ColumnChart...
-                    $scope.chartObject.type = 'BarChart';
-                    $scope.chartObject.options = {
-                        "title": $scope.selected_question.question,
-                        "fill": 20,
-                        "displayExactValues": true
-                        //"is3D": true,
-
-                    };
-                }else{
-                    $scope.chartObject = {
-                        data : {
-                            cols : [],
-                            rows : []
-                        }
-                    };
-                    questionHolder = {};
-                    indexHolder = null;
-                    //Empty answer variable or declare if undefined
-                    $scope.selected_question.answers = [];
-
-                    //Loop over the submitted responses submitted
-                    angular.forEach($scope.submittedResponsesData.submissions, function (responseObject, indexObject) {
-
-                        if (responseObject.formId == $stateParams['form_id'] ) {
-                            //Loop over the data field in the responses submitted
-                            angular.forEach(responseObject.data, function (responseData, indexData) {
-
-                                //Check if the content of the answer is a media one
-                                if (typeof (responseData[$scope.selected_question.question_field]) == 'object') {
-
-                                    $scope.selected_question.answers.push({
-                                        url: responseData[$scope.selected_question.question_field].url,
-                                        type: responseData[$scope.selected_question.question_field].type,
-                                        filename: responseData[$scope.selected_question.question_field].filename,
-                                        submitted_date: responseData['*meta-submission-date*']
-                                    });
-                                    $scope.selected_question.answer_format_type = 'image';
-
-                                }else{
-                                    if($scope.selected_question.question_field == 'location') {
-                                        //If the question is for maps
-                                        $scope.selected_question.answers.push(
-                                            {
-                                                latitude : responseData['location:Latitude'],
-                                                longitude : responseData['location:Longitude'],
-                                                business_name : responseData['name_of_business'],
-                                                submitted_date: responseData['*meta-submission-date*']
-                                            });
-                                        $scope.selected_question.answer_format_type = 'location';
-                                    }else{
-                                        $scope.selected_question.answers.push({
-                                            value: responseData[$scope.selected_question.question_field],
-                                            submitted_date: responseData['*meta-submission-date*']
-                                        });
-                                        $scope.selected_question.answer_format_type = 'regular';
-                                    }
-                                }
-
-                            });
-                        }
-                    });
-
-                }
-
-            };
-
-            $scope.changeChartType = function (chartType) {
-                if ($scope.chartObject.data.rows.length) {
-                    $scope.chartObject.type = chartType;
-                    if (chartType != 'BarChart') {
-                        $scope.chartObject.options.vAxis =  {
-                            "title": "Responses"
-                            //"gridlines": {"count": 6}
-                        };
-                        $scope.chartObject.options.hAxis =  {
-                            "title": "Possible Answers"
-                        }
-                    }else{
-                        $scope.chartObject.options.vAxis =  {
-                            "title": "Possible Answers"
-                            //"gridlines": {"count": 6}
-                        };
-                        $scope.chartObject.options.hAxis =  {
-                            "title": "Responses"
-                        }
-                    }
-                }
-            };
-
-            $scope.reloadSurvey = function(){
-                cfpLoadingBar.start();
-                growl.info("Reloading survey", {});
-                cfpLoadingBar.set(0.3);
-                $timeout(function () {
-                    growl.info("Checking available survey submissions", {});
-                    console.log("before");
-                    console.log($scope.submittedResponsesData);
-                    cfpLoadingBar.set(0.6);
-                    surveyService.getAllResponses()
-                        .success(function (dataReturned) {
-                            growl.success("Refresh complete", {});
-                            $timeout(function () {
-                                cfpLoadingBar.complete();
-                            }, 2500);
-                            $scope.submittedResponsesData = dataReturned;
-                            console.log("dataReturned");
-                            console.log(dataReturned);
-                            console.log("AFTER");
-                            console.log($scope.submittedResponsesData);
-                            if (questionHolder.question && indexHolder != null) {
-                                $scope.selectQuestion(questionHolder, indexHolder);
-                                console.log("reloaded submission and reassigned");
-                            }
-                            //$scope.$apply();
-                        });
-                }, 2000)
-            };
-
-
-
-        }])
-
     .controller('prDetailedAnalyticsSurveyController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl',
-        'questionData','submittedResponsesData','$stateParams','uiGmapGoogleMapApi','cfpLoadingBar','$timeout',
-        function($rootScope, $scope, homeService, surveyService, growl, questionData, submittedResponsesData, $stateParams, uiGmapGoogleMapApi, cfpLoadingBar, $timeout ){
+        '$stateParams','cfpLoadingBar','$timeout',
+        function($rootScope, $scope, homeService, surveyService, growl, $stateParams, cfpLoadingBar, $timeout ){
 
-            $scope.surveyData = questionData.data;
 
-            $scope.selected_question = $scope.surveyData.questions_details[ $stateParams.index ];
 
-            $scope.submittedResponsesData = submittedResponsesData.data;
+        }]);
 
-            $scope.$on('updateSubmissions', function (evt, data) {
-                if (!$scope.mapAccordionIsOpen) {
-                    $scope.submittedResponsesData = data;
-                    $scope.selectQuestion($scope.selected_question, $stateParams.index);
-                }
-            });
+/**
+ * Created by Kaygee on 24/02/2015.
+ */
 
-            //This is the object to be sent to google charts
-            $scope.chartObject = {
-                data : {
-                    cols : [],
-                    rows : []
-                }
-            };
-
-
-            $scope.selectQuestion = function(question, index){
-                //Empty the scope object or declare if undefined
-                $scope.selected_question = {};
-
-                //Assign the selected/clicked question to the declared scope variable
-                $scope.selected_question = question;
-
-                //Assign the index too for detailed analytics view
-                $scope.selected_question.index = index;
-
-                //for close ended questions,
-                if ($scope.selected_question.question_type == 'close_ended') {
-
-                    //Get the individual answers value
-                    $scope.selected_question.answer_values = $scope.selected_question.possible_answers.split(',');
-                    $scope.selected_question.answer_labels = $scope.selected_question.possible_answers_labels.split(',');
-                    $scope.selected_question.answers = {};
-                    $scope.chartObject.data= {
-                        cols: [
-                            {id: 'A', label: 'question_field', type: 'string'},
-                            {id: 'B', label: 'Responses', type: 'number'}
-                        ],
-                        rows : []
-                    };
-                    //Assign the split answer value as a key in a property of the selected question's answer object
-                    angular.forEach($scope.selected_question.answer_values, function (option, index) {
-
-                        //In the selected question object, assign each possible answer to a property in the "answer" property of the question
-                        if ($.trim(option) != '') {
-                            $scope.selected_question.answers[ $.trim(option) ] = 0;
-
-                        }
-                    });
-
-                    //Loop over the submitted responses submitted
-                    angular.forEach($scope.submittedResponsesData.submissions, function (responseObject, indexObject) {
-
-                        if (responseObject.formId == $stateParams['form_id'] ) {
-
-                            //Loop over the data field in the responses submitted
-                            angular.forEach(responseObject.data, function (responseData, indexData) {
-
-                                //if the supplied answer is a multiple choice one, loop over and increment each option
-                                if (typeof (responseData[$scope.selected_question.question_field]) == 'object') {
-                                    angular.forEach(responseData[$scope.selected_question.question_field], function (choice, index) {
-
-                                        //And Increment the answer chosen in the chosen question's answer object
-                                        $scope.selected_question.answers [choice]++
-                                    });
-                                } else {
-                                    //Increment the answer chosen in the chosen question's answer object
-                                    $scope.selected_question.answers [responseData[$scope.selected_question.question_field]]++
-                                }
-                            })
-                        }
-
-                    });
-
-                    //Assign answer count to chart rows for chart display
-                    angular.forEach($scope.selected_question.answer_values, function (option, indexOption) {
-                        if ($.trim(option) != '') {
-
-                            $scope.chartObject.data.rows.push({
-                                c : [ {v: $scope.selected_question.answer_labels[indexOption]},
-                                    {v : $scope.selected_question.answers[option],   f: $scope.selected_question.answers[option].toString() }]
-                            });
-                        }
-
-                    });
-
-
-
-                    // $routeParams.chartType == BarChart or PieChart or ColumnChart...
-                    $scope.chartObject.type = 'BarChart';
-                    $scope.chartObject.options = {
-                        "title": $scope.selected_question.question,
-                        "fill": 20,
-                        "displayExactValues": true
-                        //"is3D": true,
-
-                    };
-                }
-                else{
-                    $scope.chartObject = {
-                        data : {
-                            cols : [],
-                            rows : []
-                        }
-                    };
-
-
-                    //Empty answer variable or declare if undefined
-                    $scope.selected_question.answers = [];
-                    var answersHolder = [];
-
-                    //Loop over the submitted responses submitted
-                    angular.forEach($scope.submittedResponsesData.submissions, function (responseObject, indexObject) {
-
-                        if (responseObject.formId == $stateParams['form_id'] ) {
-
-                            //Loop over the data field in the responses submitted
-                            angular.forEach(responseObject.data, function (responseData, indexData) {
-
-                                //Check if the content of the answer is a media one
-                                if (typeof (responseData[$scope.selected_question.question_field]) == 'object') {
-
-
-                                    $scope.selected_question.answers.push({
-                                        url: responseData[$scope.selected_question.question_field].url,
-                                        type: responseData[$scope.selected_question.question_field].type,
-                                        filename: responseData[$scope.selected_question.question_field].filename,
-                                        submitted_date: responseData['*meta-submission-date*']
-                                    });
-                                    $scope.selected_question.answer_format_type = 'image';
-
-
-                                }else{
-                                    $scope.selected_question.answers.push({
-                                        value: responseData[$scope.selected_question.question_field],
-                                        submitted_date: responseData['*meta-submission-date*']
-                                    });
-                                    //Double Hold the dat so we can slice one into another when paginating
-                                    answersHolder.push({
-                                        value: responseData[$scope.selected_question.question_field],
-                                        submitted_date: responseData['*meta-submission-date*']
-                                    });
-
-                                    //pagination start
-                                    $scope.totalItems =    $scope.selected_question.answers.length;
-                                    $scope.currentPage = 1;
-                                    $scope.maxSize = 5;
-                                    $scope.nextPage = 0;
-                                    //pagination end
-
-
-                                    $scope.pageChanged = function(currentPage) {
-                                        $scope.nextPage = ($scope.maxSize  * currentPage) - $scope.maxSize;
-                                        $scope.selected_question.answers =  answersHolder.slice($scope.nextPage , ($scope.nextPage + $scope.maxSize) );
-                                    };
-
-                                    $scope.pageChanged($scope.currentPage);
-                                }
-
-
-                            });
-                        }
-                    });
-
-                }
-
-                $scope.loadMarkers();
-            };
-
-
-            $scope.loadMarkers =  function  (){
-                if ($scope.selected_question){
-
-                    $scope.markers = [];
-                    var uniqueMapCounter = 23;
-
-                    //These variable will determine the center of the map
-                    var centerLatitude =  5.5912087;
-                    var centerLongitude = -0.1797294;
-
-                    //Loop over the data field in the responses submitted
-                    angular.forEach($scope.submittedResponsesData.submissions, function (responseObject, indexObject) {
-
-                        if (responseObject.formId == $stateParams['form_id'] ) {
-
-                            uniqueMapCounter ++;
-                            //Loop over the data field in the responses submitted
-                            angular.forEach(responseObject.data, function (responseData, indexData) {
-                                if (responseData['location:Latitude'] && responseData['location:Longitude'] ) {
-                                    $scope.markers.push({
-                                        id : parseInt(uniqueMapCounter) + 1,
-                                        points : {latitude: responseData['location:Latitude'], longitude: responseData['location:Longitude'] }
-                                    });
-                                }
-
-                                //Assign the center variables to the last point in the array pf submissions
-                                centerLatitude = responseData['location:Latitude'];
-                                centerLongitude = responseData['location:Longitude'];
-                            });
-
-                            console.log($scope.markers);
-
-                        }
-
-                    });
-                    $scope.map = { center:
-                    { latitude: centerLatitude, longitude: centerLongitude },
-                        zoom: 8,
-                        style : {
-                            height : '500px',
-                            width : '100%'
-                        }
-                    }
-                }
-            };
-
-            $scope.mapAccordionIsOpen = true;
-
-            $scope.selectQuestion($scope.selected_question, $stateParams.index);
-
-            $scope.changeChartType = function (chartType) {
-
-                if ($scope.chartObject.data.rows.length) {
-                    $scope.chartObject.type = chartType;
-                    if (chartType != 'BarChart') {
-                        $scope.chartObject.options.vAxis =  {
-                            "title": "Responses"
-                            //"gridlines": {"count": 6}
-                        };
-                        $scope.chartObject.options.hAxis =  {
-                            "title": "Possible Answers"
-                        }
-                    }else{
-                        $scope.chartObject.options.vAxis =  {
-                            "title": "Possible Answers"
-                            //"gridlines": {"count": 6}
-                        };
-                        $scope.chartObject.options.hAxis =  {
-                            "title": "Responses"
-                        }
-                    }
-                }
-                $rootScope.$broadcast('resizeMsg');
-            };
-
-            $scope.resizeChart = function () {
-                $rootScope.$broadcast('resizeMsg');
-            };
-
-            $scope.callSuperBoxGallery = function () {
-                $timeout(function () {
-                    $('.superbox').SuperBox();
-                }, 500, 3)
-            };
-
-
-            // uiGmapGoogleMapApi is a promise.
-            // The "then" callback function provides the google.maps object.
-            //uiGmapGoogleMapApi.then(function(maps) {
-            //
-            //});
-
-            $scope.colourTypeSelectionClass = function (question, $index) {
-                if ( question.question_type == 'open_ended') {
-                    return $index == $scope.selected_question.index ? 'blue_bg' : 'list-group-item-success';
-                }
-                if ( question.question_type == 'close_ended') {
-                    return $index == $scope.selected_question.index ? 'blue_bg' : 'list-group-item-danger';
-                }
-            };
-
-
-            $scope.reloadSubmissions = function(){
-                cfpLoadingBar.start();
-                growl.info("Reloading survey submissions", {});
-                cfpLoadingBar.set(0.5);
-                surveyService.getAllResponses()
-                    .success(function (dataReturned) {
-                        $timeout(function () {
-                            cfpLoadingBar.complete();
-                            growl.success("Reloaded successfully", {});
-                        }, 1500);
-                        $scope.submittedResponsesData = dataReturned;
-                        $scope.selectQuestion($scope.selected_question, $stateParams.index);
-                    });
-            };
-
-        }])
-
-    .controller('prSurveyRespondentsController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl',
-        'questionData','submittedResponsesData','surveysList','$location','$timeout',
-        function($rootScope, $scope, homeService,surveyService, growl, questionData, submittedResponsesData, surveysList, $location, $timeout ){
-
-            //get email address of logged in user from the backend
-            var from = $('#user_logged_in_email').text();
-
-            $scope.surveyData = questionData.data;
-
-            $scope.listOfSurveys = surveysList.data;
-
-            $scope.surveyName = $location.search().survey;
-
-            /*
-             *Email Respondent Section
-             * */
-            $scope.respondent_form = {
-                emails  : [],
-                recipients  : [],
-                from : from,
-                survey :  $scope.surveyName
-            };
-
-            $scope.sendEmail = function(){
-                if ($scope.respondent_form.emails.length > 0) {
-                    $scope.respondent_form.recipients = [];
-                    angular.forEach($scope.respondent_form.emails, function (email, index) {
-                        $scope.respondent_form.recipients.push(email.text)
-                    });
-                    if ($scope.respondent_form.survey) {
-                        surveyService.sendRespondentEmail($scope.respondent_form)
-                            .success(function () {
-                                var plural = $scope.respondent_form.recipients.length > 1 ? 's' : '';
-                                var emailRecipientCount = $scope.respondent_form.recipients.length;
-                                growl.info("Email" + plural +" successfully queued on the server", {title : 'Email Queue'});
-
-                                angular.forEach( $scope.respondent_form.recipients, function (email, index) {
-                                    $timeout(function () {
-                                        growl.success("Email sent to " + email, {title : 'Email Success Notification'});
-                                        emailRecipientCount --;
-
-                                        if (emailRecipientCount == 0) {
-                                            $timeout(function () {
-                                                growl.info("No errors occurred in sending email" + plural, {title : 'Email Delivery Notice'});
-                                            }, 3000)
-                                        }
-                                    }, (3500 * (index + 1) ));
-                                });
-                                $scope.respondent_form = {
-                                    emails  : [],
-                                    recipients  : [],
-                                    from : from,
-                                    survey :  $scope.surveyName
-                                };
-                            })
-                            .error(function () {
-                                growl.error("Emails could not be sent", {});
-
-                            })
-                    }else{
-                        growl.warning("Please select a survey", {});
-                    }
-
-                }else{
-                    growl.warning("Please type at least one recipient email", {});
-                }
-            };
-
-            /*
-             * End email section
-             * */
-
-
-            /*
-             * SMS Send Section
-             * */
-            $scope.sms_respondent_form = {
-                phone_numbers  : [],
-                recipients  : [],
-                from : "PegasusRises",
-                survey :  $scope.surveyName
-            };
-
-            $scope.sendSMS = function(){
-                if ($scope.sms_respondent_form.phone_numbers.length > 0) {
-                    $scope.respondent_form.recipients = [];
-                    angular.forEach($scope.sms_respondent_form.phone_numbers, function (number, index) {
-                        $scope.sms_respondent_form.recipients.push(number.text)
-                    });
-                    if ($scope.sms_respondent_form.survey) {
-                        surveyService.sendRespondentSMS($scope.sms_respondent_form)
-                            .success(function () {
-                                growl.success("SMS sent successfully", {});
-                                $scope.respondent_form.recipients = [];
-                                $scope.respondent_form.phone_numbers = [];
-                            })
-                            .error(function () {
-                                growl.error("SMS could not be sent", {});
-
-                            })
-                    }else{
-                        growl.info("Please select a survey", {});
-                    }
-
-                }else{
-                    growl.info("Please type at least one recipient phone number", {});
-                }
-            };
-
-            /*
-             * Send SMS end
-             * */
-
-        }])
-    .controller('prCreateSurveyController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl','$location','$timeout',
-        function($rootScope, $scope, homeService, surveyService, growl, $location, $timeout ){
+angular.module('survey')
+    .controller('prCreateSurveyController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl','$state','$timeout',
+        function($rootScope, $scope, homeService, surveyService, growl, $state, $timeout ){
 
 
 
@@ -1413,7 +398,7 @@ angular.module('survey')
             };
 
             $scope.surveyDurationEntered = function () {
-                if (!$scope.createSurveyForm.startDate && !$scope.createSurveyForm.endDate) {
+                if (!$scope.createSurveyForm.start_date && !$scope.createSurveyForm.end_date) {
                     growl.warning("Please select a valid duration to proceed", {title : "Survey duration is required"});
                     return false;
                 }
@@ -1423,10 +408,15 @@ angular.module('survey')
             $scope.submitForm = function () {
                 surveyService.createSurvey($scope.createSurveyForm)
                     .success(function () {
-                        alert("success")
+                       growl.success('Survey created successfully');
+                        surveyService.loadAllSurveys()
+                            .then(function () {
+                                $state.go('surveys');
+                            })
                     })
                     .error(function () {
-                        alert("failed")
+                        growl.error('Survey creation failed');
+
                     })
             };
 
@@ -1438,46 +428,302 @@ angular.module('survey')
  */
 
 angular.module('survey')
-    .factory('surveyService' , [ '$http', function($http){
+    .controller('prFormBuilderController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl','$localStorage','$timeout',
+        function($rootScope, $scope, homeService, surveyService, growl, $localStorage, $timeout ){
+
+            var surveyData;
+            console.log("outside" ,$localStorage);
+            if ( $localStorage.survey ) {
+                var data = JSON.parse($localStorage.survey);
+                console.log(data);
+                surveyData = data.fields
+            }
+
+            var formbuilder  = new Formbuilder({
+                selector: '#formbuilder',
+                bootstrapData: surveyData
+            });
+
+            formbuilder.on('save', function(payload){
+
+                var data = JSON.parse(payload);
+
+                if (data.fields && data.fields.length) {
+                    $timeout(function () {
+                        $localStorage.survey = payload;
+                    });
+                }
+            });
+
+
+
+            $scope.saveQuestionnaire = function () {
+                console.log("$localStorage.survey", $localStorage.survey);
+                if ($localStorage.survey) {
+                    var surveyData = JSON.parse($localStorage.survey);
+                    console.log('surveyData', surveyData);
+                    var questionsArray = [];
+                    if (surveyData.fields.length) {
+                        console.log(surveyData.fields.length);
+                        for (var i = 0; i < surveyData.fields.length; i++) {
+                            var eachArrayItem = surveyData.fields[i];
+                            console.log('eachArrayItem', eachArrayItem);
+
+                            var question_type = 'open';
+                            if (eachArrayItem.field_type == 'radio') {
+                                question_type = 'close';
+                            }
+
+                            var question_position = 'middle';
+                            if ( i == 0) {
+                                question_position = 'beginning';
+                            }else if ( i  == (surveyData.fields.length - 1) && surveyData.fields.length > 1){
+                                question_position = 'end';
+                            }
+
+                            questionsArray.push({
+                                unique_question_id : eachArrayItem.cid,
+                                question_type : question_type, /*open, close'*/
+                                question_position : question_position, /*'beginning', 'middle', 'end' */
+                                question : eachArrayItem.label,
+                                entry_question_unique_id : '',
+                                exit_question_unique_id : ''
+                            });
+
+                        }
+                        console.log('questionsArray', questionsArray);
+
+                        surveyService.saveQuestions(questionsArray)
+                            .success(function (data) {
+                                if (data.code == '200' && data.status.toLowerCase() == 'ok') {
+                                    growl.success('Questions saved successfully on the server');
+                                }
+                            })
+                            .error(function () {
+                                growl.error('An error occurred while attempting to save');
+
+                            })
+                    }
+
+                }
+            };
+
+            $('#saveQuestionnaire').click(function () {
+                $scope.saveQuestionnaire();
+            });
+
+        }]);
+
+
+/**
+ * Created by Kaygee on 24/02/2015.
+ */
+
+angular.module('survey')
+
+    .controller('prSurveyController', ['$rootScope', '$scope', 'growl','surveyService',
+        function($rootScope, $scope, growl, surveyService){
+
+            $scope.loadingSurveys = true;
+
+            function loadSurveys() {
+                $scope.surveys = surveyService.surveys;
+                $scope.loadingSurveys = false;
+            }
+
+            if (surveyService.surveys) {
+                loadSurveys();
+            }
+
+            $scope.$on('surveysLoadedAndPrepped', function(){
+                loadSurveys();
+            });
+
+        }]);
+
+/**
+ * Created by Kaygee on 24/02/2015.
+ */
+
+angular.module('survey')
+
+    .controller('prSurveyRespondentsController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl',
+      '$location','$timeout',
+        function($rootScope, $scope, homeService,surveyService, growl, $location, $timeout ){
+
+
+        }]);
+
+/**
+ * Created by Kaygee on 24/02/2015.
+ */
+
+angular.module('survey')
+
+       .controller('prSelectedSurveyController', ['$rootScope', '$scope', 'homeService','surveyService', 'growl',
+        '$stateParams','cfpLoadingBar','$timeout',
+        function($rootScope, $scope, homeService, surveyService, growl,
+                 $stateParams, cfpLoadingBar, $timeout){
+
+
+
+
+
+        }]);
+
+
+
+/**
+ * Created by Kaygee on 24/02/2015.
+ */
+
+angular.module('survey')
+    .factory('surveyService' , ['$rootScope', '$http', '$q','prRoutes', function($rootScope, $http, $q, prRoutes){
         var surveyService = {};
 
         surveyService.createSurvey = function(form){
-            return $http.post('/create/survey', form)
+            return $http.post(prRoutes.createSurvey, form)
         };
 
-        surveyService.getAllSurveys = function(){
-            return $http.get('/user/surveys/read')
+        surveyService.editSurvey = function(form){
+            return $http.post(prRoutes.editSurvey, form)
         };
 
-        surveyService.getSurveyQuestionDetails = function( ){
-            return $http.get('/questions/properties/read');
-            //return $http.get('/frontend/dummyloader/questions.json')
+        surveyService.deleteSurvey = function(surveyId){
+            return $http.post(prRoutes.deleteSurvey, {survey_id : surveyId})
+        };
+
+        surveyService.retrieveAllSurveys = function(){
+            return $http.get(prRoutes.retrieveAllSurveys, {params : { admin_id : 1}})
+        };
+
+        surveyService.retrieveOneSurvey = function(){
+            return $http.get(prRoutes.retrieveOneSurvey)
         };
 
         surveyService.getAllResponses = function( ){
-            return $http.get('/data/submissions/read');
-            //return $http.get('/frontend/dummyloader/submissions.json')
+            return $http.get(prRoutes.createSurvey);
         };
 
-        surveyService.sendRespondentEmail = function(data){
-            return $http.post('/sendmail', data)
+        surveyService.retrieveQuestions = function(form){
+            return $http.get(prRoutes.saveQuestions, form)
         };
 
-        surveyService.sendRespondentSMS = function(data){
-            return $http.post('/send/sms', data)
+        surveyService.saveQuestions = function(form){
+            return $http.post(prRoutes.saveQuestions, form)
         };
 
-        surveyService.deleteSurvey = function(data){
-            return $http.post('/delete/user/surveys', data)
+        surveyService.editQuestions = function(form){
+            return $http.post(prRoutes.editQuestions, form)
         };
+
+        surveyService.deleteQuestions = function(form){
+            return $http.post(prRoutes.deleteQuestions, form)
+        };
+
+
+
+
+
+
+        function initObjectsAndArrays(){
+            surveyService.surveys = [];
+            surveyService.surveyLookup = {};
+        }
+
+
+
+        function initiateSurveys() {
+            for (var i = 0; i <  surveyService.surveys.length; i++){
+                var each =  surveyService.surveys[i];
+                surveyService.surveyLookup[each.id] = each;
+            }
+            $rootScope.$broadcast('surveysLoadedAndPrepped');
+        }
+
+
+        surveyService.loadAllSurveys = function () {
+            var defer = $q.defer();
+            initObjectsAndArrays();
+
+
+            this.retrieveAllSurveys()
+                .success(function (data) {
+                    if (data.code == '200' && data.status.toLowerCase() == 'ok') {
+                        surveyService.surveys = data.data;
+                        initiateSurveys();
+                        defer.resolve(true);
+                    }
+                })
+                .error(function () {
+                    defer.reject(false);
+
+                });
+
+            return defer.promise;
+
+        };
+
+
 
         return surveyService;
+    }]);
+/**
+ * Created by Kaygee on 03/10/2015.
+ */
+
+angular.module('directives', []);
+
+
+angular.module('directives')
+    .directive('deleteSurvey', ['surveyService','$modal', function (surveyService, $modal) {
+
+        return {
+            scope: {
+                survey_id : '@deleteSurvey'
+            },
+
+            link : function ($scope, elem, attrs) {
+                elem.bind('click', function () {
+                    $modal.open({
+                        controller : ['$scope','$modalInstance','growl', DeleteSurveyModalController],
+                        templateUrl : 'common/modals/deleteSurveyModal.tpl.html',
+                        size : 'sm'
+                    });
+
+                    function DeleteSurveyModalController($scope,$modalInstance, growl){
+                        $scope.close = function () {
+                            $modalInstance.dismiss();
+                        };
+
+                        $scope.selected_survey = surveyService.surveyLookup[attrs.deleteSurvey];
+
+                        $scope.deleteSurvey = function () {
+                            surveyService.deleteSurvey(attrs.deleteSurvey)
+                                .success(function (data) {
+                                    if (data.code == '200') {
+                                        growl.success('Survey deleted successfully');
+                                        surveyService.loadAllSurveys()
+                                            .then(function (status) {
+                                                if (status) {
+                                                    $scope.close()
+                                                }
+                                            })
+                                    }
+                                })
+                        };
+;
+                    }
+                })
+            }
+        }
+
     }]);
 /**
  * Created by Kaygee on 07/03/2015.
  */
 
-angular.module('directives', []);
+
 
 
 angular.module('directives')

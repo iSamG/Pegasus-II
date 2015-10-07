@@ -21,48 +21,8 @@ class Helpers
 {
 
 
-    public static function generateAuctionCode() {
 
-
-        $random_string_length = 5;
-
-        $characters = 'a0bc1de2fg3hi4jkl5mno6pqr7stu8vw9xyz';
-
-        $string = '';
-
-        for ($i = 0; $i < $random_string_length; $i++) {
-
-            $string .= $characters[rand(0, strlen($characters) - 1)];
-
-        }
-
-        $auction_code = strtoupper($string);
-
-       $check_if_auction_code_already_exist = DB::table('auctions')->where('auction_code', $auction_code)->first();
-
-        if (count($check_if_auction_code_already_exist) > 0) {
-
-            generateAuctionCode();
-
-        }else{
-
-            return $auction_code;
-        }
-
-    }
-
-
-
-    public static function generateRandomNumbersWithinRange() {
-
-        $numbers = mt_rand(10000,99999);
-
-        return $numbers;
-
-    }
-
-
-    public static function generateUniqueCode($table  = 'users', $column = 'mobile_request_code'){
+    public static function generateQuestionUniqueCode($table  = 'questions', $column = 'question_unique_code'){
 
         $uniqueCode = str_random(16);
 
@@ -70,12 +30,14 @@ class Helpers
 
         if($exist){
 
-            generateUserMobileRequestCode();
+            generateQuestionUniqueCode();
 
         }
 
         return $uniqueCode;
     }
+
+
 
 
     public static function responseToView($code = 200, $status = "OK", $message = "An Unexplained Error occurred on the server", $data = NULL)
@@ -88,6 +50,7 @@ class Helpers
 
         return $response;
     }
+
 
 
 
@@ -106,6 +69,7 @@ class Helpers
         return $file_saved_on_s3;
 
     }
+
 
 
     //this function deletes the file whose path is given
@@ -199,7 +163,7 @@ class Helpers
     }
 
 
-    public static function uploadProfilePuctureViaAndroidRequest($imageFile)
+    public static function uploadProfilePictureViaAndroidRequest($imageFile)
     {
         //checking to see if there is a file posted
         if (file_exists($imageFile)){

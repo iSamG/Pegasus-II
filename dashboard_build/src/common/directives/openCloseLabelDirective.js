@@ -2,7 +2,7 @@
  * Created by Kaygee on 07/03/2015.
  */
 
-angular.module('directives', []);
+
 
 
 angular.module('directives')
