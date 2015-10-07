@@ -1,14 +1,32 @@
 <div class="row">
 
-    <div class="col-lg-12 center">
+    <div class="col-lg-12">
         <section class="panel default blue_title h2">
 
             <div class="panel-heading border">
-                <span ng-click="$state.go('surveys')"  tooltip-placement="right" tooltip="Back to survey list" class="pointer pull-left label label-info"><i class="fa fa-arrow-left"></i></span>
+                <span ng-click="$state.go('surveys')"  tooltip-placement="right" tooltip="Back to survey list" class="pointer pull-left label label-info">
+                    <i class="fa fa-arrow-left"></i>
+                </span>
 
-                {{ surveyName || 'Demo Survey'}}
+                <span class="center">{{ selected_survey.survey_name || 'Survey'}}</span>
 
-                <span ng-click="reloadSurvey()"  tooltip-placement="left" tooltip="Refresh" class="pointer pull-right label label-success"><i class="fa fa-refresh"></i></span>
+                <div class="dropdown pull-right">
+                    <button class="btn btn-primary dropdown-toggle" style="color: white !important;" type="button" data-toggle="dropdown">  Options
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu" style="text-transform : none !important;">
+
+                        <li ><a ui-sref="surveys.respondents({survey_id : selected_survey.id })"><i class="fa fa-send"></i> Send Survey</a></li>
+                        <li class="divider"></li>
+                        <li ><a ui-sref="surveys.form_builder({survey_id : selected_survey.id })"><i class="fa fa-pencil"></i> Add/Edit Questionnaire</a></li>
+                        <li class="divider"></li>
+                        <li edit-survey="{{ selected_survey.id }}"><a href=""><i class="fa fa-edit"></i> Edit Survey</a></li>
+                        <li delete-survey="{{ selected_survey.id }}"><a href=""><i class="fa fa-times"></i> Delete Survey</a></li>
+                        <li class="divider"></li>
+                        <li ng-click="reloadSurveyData()"><a href=""><i class="fa fa-refresh"></i> Refresh</a></li>
+                    </ul>
+                </div>
+                <!--<span   tooltip-placement="left" tooltip="Refresh" class="pointer pull-right label label-success">-->
+                    <!--</span>-->
 
             </div>
         </section>
@@ -18,12 +36,16 @@
         <div class="widget_inbox">
             <perfect-scrollbar class="scroller" wheel-propagation="true" wheel-speed="2" min-scrollbar-length="6">
                 <ul>
-                    <li ng-repeat="question_item in surveyData.questions_details | filter : { survey_name : $stateParams.survey}"> <a href="" ng-class="{'active' : question_item.question_field == selected_question.question_field}" ng-click="selectQuestion(question_item, $index)">
+                    <li ng-repeat="question_item in selected_survey.question_tree">
+                        <a href="" ><!--ng-class="{'active' : question_item.question_field == selected_question.question_field}"-->
                         <div class="widget_inbox_header">
-                            <span class="pull-left widget_inbox_time"><b>{{ $index + 1 }}</b></span>
-                            <span class="pull-right widget_inbox_time" open-closed="" type="{{ question_item.question_type }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Question
+                            <span class="pull-left widget_inbox_time badge"><b>{{ $index + 1 }}</b>.</span>
+                            <span class="widget_inbox_time">
+                                &nbsp;&nbsp;
+                            {{ formatFieldType[question_item.field_type] }}
+                            </span>
                         </div>
-                        {{ question_item.question }}</a></li>
+                        <span style="font-size: large; margin-left: 25px">{{ question_item.label }}</span></a></li>
                 </ul>
             </perfect-scrollbar>
         </div>

@@ -7,6 +7,29 @@ angular.module('pegasusrises')
         google_api_key: 'AIzaSyDSBIljWNHZ9xMXuaROc4oAypA8LT5xmaU',
         google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com'
     })
+    .constant('prFieldTypes', {
+        google_api_key: 'AIzaSyDSBIljWNHZ9xMXuaROc4oAypA8LT5xmaU',
+        google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com',
+
+        /*[string, number(numbers, including floating numbers), integer, boolean, array, object ]*/
+        radio : 'boolean', /*'boolean',*/
+        checkboxes : 'array',
+        text : 'string',
+        paragraph : 'string',
+        date : 'string',
+        dropdown : 'string',
+        time : 'string',
+        number : 'number',
+        website : 'string',
+        email : 'string',
+        price : 'string',
+        address : 'string',
+        gps : 'string',
+        image : 'string',
+        video : 'string',
+        file : 'string'
+    })
+
     .constant('prRoutes', {
         createSurvey : '/create/survey',
         editSurvey : '/edit/survey',
@@ -14,10 +37,10 @@ angular.module('pegasusrises')
         retrieveAllSurveys : '/retrieve/all/surveys',
         retrieveOneSurvey : '/retrieve/a/survey',
 
-        saveQuestions : '/retrieve/a/survey',
-        editQuestions : '/retrieve/a/survey',
-        deleteQuestions : '/retrieve/a/survey',
-        retrieveQuestions : '/retrieve/a/survey',
+        saveQuestions : '/create/a/survey/question',
+        editQuestions : '/edit/a/survey/question',
+        deleteQuestions : '/delete/a/survey/question',
 
-        saveAnswers : '/retrieve/a/survey'
+        retrieveQuestions : '/retrieve/a/survey/with/questions'
+
     });

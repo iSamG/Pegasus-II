@@ -42,7 +42,6 @@ angular.module('directives')
                                     }
                                 })
                         };
-;
                     }
                 })
             }

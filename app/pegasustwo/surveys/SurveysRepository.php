@@ -59,7 +59,7 @@ class SurveysRepository {
         $edited_details_of_survey = array_except($edit_survey_details,['survey_id']);
 
 
-        $update_survey = \DB::table('users')->where('id', 1)->update($edited_details_of_survey);
+        $update_survey = \DB::table('surveys')->where('id', $survey_id)->update($edited_details_of_survey);
 
         if ($update_survey) {
 

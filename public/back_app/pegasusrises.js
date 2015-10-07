@@ -201,6 +201,30 @@ angular.module('pegasusrises')
                 return moment(datetime).fromNow();
             };
 
+            $rootScope.formatDate = function(datetime){
+                //return moment(datetime).format('Do, MMMM  YYYY, h:mm:ss a');
+                return moment(datetime).format('Do, MMM  YYYY');
+            };
+            //$table->enum('input_type', ['radio', 'checkboxes','text','date','dropdown','time','number','website','email','price','address','gps','image','video']);
+            $rootScope.formatFieldType = {
+                radio : 'Single Choice',
+                checkboxes : 'Multiple Choice',
+                text : 'Text field',
+                paragraph : 'Text field',
+                date : 'Date',
+                dropdown : 'Single Choice',
+                time : 'Time',
+                number : 'Number',
+                website : 'Website',
+                email : 'Email Address',
+                price : 'Currency',
+                address : 'Address',
+                gps : 'Location',
+                image : 'Image',
+                video : 'Video',
+                file : 'File'
+            };
+
             $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
                 cfpLoadingBar.start();
                 $rootScope.loading = true;
@@ -231,6 +255,29 @@ angular.module('pegasusrises')
         google_api_key: 'AIzaSyDSBIljWNHZ9xMXuaROc4oAypA8LT5xmaU',
         google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com'
     })
+    .constant('prFieldTypes', {
+        google_api_key: 'AIzaSyDSBIljWNHZ9xMXuaROc4oAypA8LT5xmaU',
+        google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com',
+
+        /*[string, number(numbers, including floating numbers), integer, boolean, array, object ]*/
+        radio : 'boolean', /*'boolean',*/
+        checkboxes : 'array',
+        text : 'string',
+        paragraph : 'string',
+        date : 'string',
+        dropdown : 'string',
+        time : 'string',
+        number : 'number',
+        website : 'string',
+        email : 'string',
+        price : 'string',
+        address : 'string',
+        gps : 'string',
+        image : 'string',
+        video : 'string',
+        file : 'string'
+    })
+
     .constant('prRoutes', {
         createSurvey : '/create/survey',
         editSurvey : '/edit/survey',
@@ -238,10 +285,12 @@ angular.module('pegasusrises')
         retrieveAllSurveys : '/retrieve/all/surveys',
         retrieveOneSurvey : '/retrieve/a/survey',
 
-        saveQuestions : '/retrieve/a/survey',
-        editQuestions : '/retrieve/a/survey',
-        deleteQuestions : '/retrieve/a/survey',
-        retrieveQuestions : '/retrieve/a/survey'
+        saveQuestions : '/create/a/survey/question',
+        editQuestions : '/edit/a/survey/question',
+        deleteQuestions : '/delete/a/survey/question',
+
+        retrieveQuestions : '/retrieve/a/survey/with/questions'
+
     });
 /**
  * Home Template
@@ -316,7 +365,7 @@ angular.module('survey', [])
                 metadata : "Respondents"
             })
             .state('surveys.selected_survey', {
-                url : '/select/:form_id/:survey',
+                url : '/select/:survey_id',
                 templateUrl : 'app/survey/selected/selected_survey.tpl.html',
                 controller : 'prSelectedSurveyController',
                 metadata : 'View Survey'
@@ -328,7 +377,7 @@ angular.module('survey', [])
                 metadata : 'Create Survey'
             })
             .state('surveys.form_builder', {
-                url : '/build/questionnaire/form',
+                url : '/:survey_id/build/questionnaire/form',
                 templateUrl : 'app/survey/forms/design_formbuilder/design_form.tpl.html',
                 controller : 'prFormBuilderController',
                 metadata : 'Survey Form Builder'
@@ -428,89 +477,159 @@ angular.module('survey')
  */
 
 angular.module('survey')
-    .controller('prFormBuilderController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl','$localStorage','$timeout',
-        function($rootScope, $scope, homeService, surveyService, growl, $localStorage, $timeout ){
+    .controller('prFormBuilderController', ['$rootScope', '$scope','$state', 'homeService', 'surveyService', 'growl','$localStorage','$timeout',
+        function($rootScope, $scope,$state,  homeService, surveyService, growl, $localStorage, $timeout ){
 
-            var surveyData;
-            console.log("outside" ,$localStorage);
-            if ( $localStorage.survey ) {
-                var data = JSON.parse($localStorage.survey);
-                console.log(data);
-                surveyData = data.fields
+            var surveyPayLoad;
+            function loadSurveys() {
+                $scope.surveys = surveyService.surveys;
+                $scope.loadingSurveys = false;
+
+                var surveyData;
+                $scope.selected_survey = surveyService.surveyLookup[$scope.$stateParams.survey_id];
+
+                if ($scope.selected_survey && $scope.selected_survey.question_tree && $scope.selected_survey.question_tree.length) {
+                    surveyData =$scope.selected_survey.question_tree;
+                }
+                //else if ( $localStorage.survey ) {
+                //    surveyData = JSON.parse($localStorage.survey).fields;
+                //}
+
+                var formbuilder  = new Formbuilder({
+                    selector: '#formbuilder',
+                    bootstrapData: surveyData
+                });
+
+                formbuilder.on('save', function(payload){
+                    var data = JSON.parse(payload);
+                    if (data.fields && data.fields.length) {
+                        $timeout(function () {
+                            surveyPayLoad = payload;
+                        });
+                    }
+                });
+
+                $timeout(function () {
+                    $('#saveQuestionnaire').click(function () {
+                        console.log('log');
+                        $scope.saveQuestionnaire();
+                    });
+                });
             }
 
-            var formbuilder  = new Formbuilder({
-                selector: '#formbuilder',
-                bootstrapData: surveyData
+            if (surveyService.surveys) {
+                loadSurveys();
+            }
+
+            $scope.$on('surveysLoadedAndPrepped', function(){
+                loadSurveys();
             });
 
-            formbuilder.on('save', function(payload){
 
-                var data = JSON.parse(payload);
-
-                if (data.fields && data.fields.length) {
-                    $timeout(function () {
-                        $localStorage.survey = payload;
-                    });
-                }
-            });
 
 
 
             $scope.saveQuestionnaire = function () {
-                console.log("$localStorage.survey", $localStorage.survey);
-                if ($localStorage.survey) {
-                    var surveyData = JSON.parse($localStorage.survey);
-                    console.log('surveyData', surveyData);
-                    var questionsArray = [];
+
+                if (surveyPayLoad) {
+                    var surveyData = JSON.parse(surveyPayLoad);
+                    var questionsArray = [], answerArray = [];
+
                     if (surveyData.fields.length) {
-                        console.log(surveyData.fields.length);
+
                         for (var i = 0; i < surveyData.fields.length; i++) {
                             var eachArrayItem = surveyData.fields[i];
-                            console.log('eachArrayItem', eachArrayItem);
 
-                            var question_type = 'open';
-                            if (eachArrayItem.field_type == 'radio') {
+                            var question_type = 'open',
+                                question_position = 'middle',
+                                exit_question_unique_id = '',
+                                entry_question_unique_id = '';
+
+                            if (eachArrayItem.field_type == 'radio' || eachArrayItem.field_type == 'checkboxes') {
                                 question_type = 'close';
+
+                                for(var a = 0; a < eachArrayItem.field_options.options.length; a++){
+                                    answerArray.push({
+                                        question_id : eachArrayItem.cid,
+                                        answer_option : eachArrayItem.field_options.options[a].label
+                                    })
+                                }
                             }
 
-                            var question_position = 'middle';
+                            /*position of question*/
                             if ( i == 0) {
                                 question_position = 'beginning';
                             }else if ( i  == (surveyData.fields.length - 1) && surveyData.fields.length > 1){
                                 question_position = 'end';
                             }
 
+                            /*next question's id*/
+                            if ( i == 0 && surveyData.fields.length == 1) {
+                                exit_question_unique_id = eachArrayItem.cid;
+
+                            }else if ( i == 0 && surveyData.fields.length > 1){
+                                exit_question_unique_id = surveyData.fields[i + 1].cid;
+                            }
+
+                            else if ( question_position == 'middle'){
+                                entry_question_unique_id = surveyData.fields[i - 1].cid;
+                                exit_question_unique_id = surveyData.fields[i + 1].cid;
+                            }
+
+                            else if ( question_position == 'end'){
+                                entry_question_unique_id = surveyData.fields[i - 1].cid;
+                                exit_question_unique_id = '';
+                            }
+
+
+
+
                             questionsArray.push({
+                                survey_id : $scope.$stateParams.survey_id,
+                                question_type : question_type, /*open_ended, close_ended'*/
                                 unique_question_id : eachArrayItem.cid,
-                                question_type : question_type, /*open, close'*/
+                                //question_unique_code : '',
                                 question_position : question_position, /*'beginning', 'middle', 'end' */
+                                input_type : eachArrayItem.field_type,/*'radio', 'checkboxes','text','date','dropdown','time','number','website','email','price','address','gps','image','video'*/
                                 question : eachArrayItem.label,
-                                entry_question_unique_id : '',
-                                exit_question_unique_id : ''
+                                answer_options : JSON.stringify(answerArray)
+                                //entry_question_unique_id : entry_question_unique_id,
+                                //exit_question_unique_id : exit_question_unique_id
                             });
 
-                        }
-                        console.log('questionsArray', questionsArray);
 
-                        surveyService.saveQuestions(questionsArray)
+
+                        }
+
+                        surveyService.editSurvey({
+                            survey_id : $scope.$stateParams.survey_id,
+                            question_tree : surveyPayLoad
+                        })
                             .success(function (data) {
                                 if (data.code == '200' && data.status.toLowerCase() == 'ok') {
-                                    growl.success('Questions saved successfully on the server');
+                                    growl.success('Uploading and processing questions to the server...');
+
+                                    surveyService.loadAllSurveys()
+                                        .then(function (status) {
+                                            growl.success("Survey reloaded successfully");
+                                            $state.go('surveys');
+                                        });
                                 }
                             })
                             .error(function () {
-                                growl.error('An error occurred while attempting to save');
+                                growl.error('An error occurred while attempting to upload');
 
-                            })
+                            });
+
+
                     }
 
+                }else{
+                    console.log("nothing");
                 }
             };
 
-            $('#saveQuestionnaire').click(function () {
-                $scope.saveQuestionnaire();
-            });
+
 
         }]);
 
@@ -560,13 +679,25 @@ angular.module('survey')
 
 angular.module('survey')
 
-       .controller('prSelectedSurveyController', ['$rootScope', '$scope', 'homeService','surveyService', 'growl',
+    .controller('prSelectedSurveyController', ['$rootScope', '$scope', 'homeService','surveyService', 'growl',
         '$stateParams','cfpLoadingBar','$timeout',
         function($rootScope, $scope, homeService, surveyService, growl,
                  $stateParams, cfpLoadingBar, $timeout){
 
+            function loadSurveys() {
+                $scope.loadingSurveys = false;
 
+                $scope.selected_survey = surveyService.surveyLookup[$stateParams.survey_id];
 
+            }
+
+            if (surveyService.surveys) {
+                loadSurveys();
+            }
+
+            $scope.$on('surveysLoadedAndPrepped', function(){
+                loadSurveys();
+            });
 
 
         }]);
@@ -606,7 +737,7 @@ angular.module('survey')
         };
 
         surveyService.retrieveQuestions = function(form){
-            return $http.get(prRoutes.saveQuestions, form)
+            return $http.get(prRoutes.retrieveQuestions, form)
         };
 
         surveyService.saveQuestions = function(form){
@@ -636,6 +767,17 @@ angular.module('survey')
         function initiateSurveys() {
             for (var i = 0; i <  surveyService.surveys.length; i++){
                 var each =  surveyService.surveys[i];
+
+                if (typeof each.question_tree == 'string') {
+                    try{
+                        each.question_tree = JSON.parse(each.question_tree).fields;
+                    }catch(e){
+                        each.question_tree = [];
+                    }
+                }else{
+                    console.log("each.question_tree", each.question_tree);
+                }
+
                 surveyService.surveyLookup[each.id] = each;
             }
             $rootScope.$broadcast('surveysLoadedAndPrepped');
@@ -712,7 +854,76 @@ angular.module('directives')
                                     }
                                 })
                         };
-;
+                    }
+                })
+            }
+        }
+
+    }]);
+/**
+ * Created by Kaygee on 03/10/2015.
+ */
+
+angular.module('directives')
+    .directive('editSurvey', ['surveyService','$modal', function (surveyService, $modal) {
+
+        return {
+            scope: {
+                survey_id : '@editSurvey'
+            },
+
+            link : function ($scope, elem, attrs) {
+                elem.bind('click', function () {
+                    $modal.open({
+                        controller : ['$scope','$modalInstance','growl', EditSurveyModalController],
+                        templateUrl : 'common/modals/editSurveyModal.tpl.html',
+                        size : 'md'
+                    });
+
+                    function EditSurveyModalController($scope,$modalInstance, growl){
+                        $scope.close = function () {
+                            $modalInstance.dismiss();
+                        };
+
+                        $scope.toggleMin = function() {
+                            $scope.minDate = $scope.minDate ? null : new Date();
+                        };
+                        $scope.toggleMin();
+                        $scope.maxDate = new Date(2020, 5, 22);
+
+                        $scope.status = {
+                            opened : false
+                        };
+
+                        $scope.open = function($event) {
+                            $scope.status.opened = true;
+                        };
+
+                        $scope.dateOptions = {
+                            formatYear: 'yy',
+                            startingDay: 1
+                        };
+
+                        $scope.format = "dd-MMMM-yyyy";
+
+
+                        $scope.selected_survey = angular.copy(surveyService.surveyLookup[attrs.editSurvey]);
+
+                        $scope.selected_survey.survey_id = attrs.editSurvey;
+                        $scope.selected_survey.question_tree = JSON.stringify($scope.selected_survey.question_tree);
+
+                        $scope.editSurvey = function () {
+                            surveyService.editSurvey($scope.selected_survey)
+                                .success(function (data) {
+                                    if (data.code == '200') {
+                                        growl.success('Survey edited successfully');
+                                        surveyService.loadAllSurveys()
+                                            .then(function (status) {
+                                                $scope.close()
+                                            })
+                                    }
+                                })
+                        };
                     }
                 })
             }
@@ -750,4 +961,191 @@ angular.module('directives')
 
             template: '<span class="label" ng-title="{{  label [ type ] - ENDED }}" ng-class="class[ type ]" style="font-size: smaller">{{ label [ type ] }}</span>'
         }
+    }]);
+/**
+ * Created by Kaygee on 03/10/2015.
+ */
+
+angular.module('directives')
+    .directive('previewSurvey', ['surveyService','$modal', function (surveyService, $modal) {
+
+        return {
+            scope: {
+                survey_id : '@previewSurvey'
+            },
+
+            link : function ($scope, elem, attrs) {
+                elem.bind('click', function () {
+                    $modal.open({
+                        controller : ['$scope','$modalInstance','growl','prFieldTypes', PreviewSurveyModalController],
+                        templateUrl : 'common/modals/previewSurveyFormModal.tpl.html',
+                        size : 'md'
+                    });
+
+                    function PreviewSurveyModalController($scope,$modalInstance, growl, prFieldTypes){
+                        $scope.close = function () {
+                            $modalInstance.dismiss();
+                        };
+                        var surveyData, formArray = [], schema = {};
+
+                        var prepFormComponents = function () {
+                            $scope.selected_survey = surveyService.surveyLookup[attrs.previewSurvey];
+
+                            if ($scope.selected_survey && $scope.selected_survey.question_tree && $scope.selected_survey.question_tree.length) {
+                                surveyData =$scope.selected_survey.question_tree;
+                                console.log(surveyData);
+                            }else{
+                                $scope.close();
+                                growl.warning('Add questions and save the survey before viewing preview');
+                                return;
+                            }
+
+                            if (surveyData) {
+                                for(var i = 0; i < surveyData.length; i++){
+                                    var itemInLoop = surveyData[i], enumholder = [];
+
+                                    schema[itemInLoop.cid] = {
+                                        type: prFieldTypes[itemInLoop.field_type], /*[string, number(numbers, including floating numbers), integer, boolean, array, object ]*/
+                                        title: itemInLoop.label,
+                                        "default" : '',
+                                        //maxLength : itemInLoop.field_options.maxlength,
+                                        //minimum : itemInLoop.field_options.minlength,
+                                        //readOnly : true,
+                                        required: itemInLoop.required,
+                                        "description": itemInLoop.field_options.description
+                                        //"enum": ["male","female","alien"]/*minItems , maxItems*/
+                                    };
+
+                                    if (itemInLoop.field_type == "radio" || itemInLoop.field_type == "checkboxes" ||  itemInLoop.field_type == "dropdown"){
+
+                                        if (itemInLoop.field_options.options && itemInLoop.field_options.options.length) {
+
+                                            for(var e = 0; e < itemInLoop.field_options.options.length; e++) {
+                                                enumholder.push( itemInLoop.field_options.options[e].label);
+                                            }
+
+                                            if (itemInLoop.field_type == 'radio') {
+                                                formArray.push({
+                                                    key: itemInLoop.cid,
+                                                    type: "radios"
+                                                });
+                                                schema[itemInLoop.cid].enum = enumholder;
+
+                                            }else if (itemInLoop.field_type == 'checkboxes') {
+                                                formArray.push({
+                                                    key: itemInLoop.cid,
+                                                    type: "checkboxes"
+                                                });
+                                                schema[itemInLoop.cid].items = {
+                                                    "type": "string",
+                                                    "title": itemInLoop.label,
+                                                    "enum": enumholder
+                                                };
+                                            }else if (itemInLoop.field_type == 'dropdown') {
+                                                schema[itemInLoop.cid].enum = enumholder;
+                                                formArray.push({
+                                                    key: itemInLoop.cid,
+                                                    type: "select"
+                                                });
+                                            }
+                                        }
+                                    }else{
+                                        //price : 'string',
+                                        //address : 'string',
+                                        //gps : 'string',
+                                        //image : 'string',
+                                        //video : 'string',
+                                        //file : 'string'
+                                        switch(itemInLoop.field_type)  {
+                                            case 'text' :  formArray.push({
+                                                key: itemInLoop.cid,
+                                                type: "text"
+                                            }); break;
+
+                                            case  "paragraph" :  formArray.push({
+                                                key: itemInLoop.cid,
+                                                type: "textarea"
+                                            }); break;
+
+                                            case  "email" :  formArray.push({
+                                                key: itemInLoop.cid,
+                                                type: "email"
+                                            }); break;
+
+                                            case  "date" :  formArray.push({
+                                                key: itemInLoop.cid,
+                                                type: "date"
+                                            }); break;
+
+                                            case  "time" :  formArray.push({
+                                                key: itemInLoop.cid,
+                                                type: "time"
+                                            }); break;
+
+                                            case  "number" :  formArray.push({
+                                                key: itemInLoop.cid,
+                                                type: "time"
+                                            }); break;
+
+                                            case  "website" :  formArray.push({
+                                                key: itemInLoop.cid,
+                                                type: "url"
+                                            }); break;
+
+                                            case  "price" :  formArray.push({
+                                                key: itemInLoop.cid,
+                                                type: "text"
+                                            }); break;
+
+                                            default :  formArray.push({
+                                                key: itemInLoop.cid,
+                                                type: "text"
+                                            })
+                                        }
+                                    }
+
+                                }
+                            }
+                            console.log('formArray', formArray);
+                            console.log('schema', schema);
+
+                            $('form').jsonForm({
+                                schema: schema,
+                                form: formArray,
+                                onSubmit: function (errors, values) {
+                                    if (errors) {
+                                        $('#res').html('<p>I beg your pardon?</p>');
+                                    }
+                                    else {
+                                        $('#res').html('<p>Hello ' + values.name + '.' +
+                                            (values.age ? '<br/>You are ' + values.age + '.' : '') +
+                                            '</p>');
+                                    }
+                                }
+                            })
+
+                        };
+
+                        $scope.initJSForm = function () {
+                            prepFormComponents();
+                            console.log("LOG schema  " , schema);
+                        };
+
+                        $scope.sendSurvey = function () {
+                            surveyService.editSurvey($scope.selected_survey)
+                                .success(function (data) {
+                                    if (data.code == '200') {
+                                        growl.success('Survey edited successfully');
+                                        surveyService.loadAllSurveys()
+                                            .then(function (status) {
+                                                $scope.close()
+                                            })
+                                    }
+                                })
+                        };
+                    }
+                })
+            }
+        }
+
     }]);

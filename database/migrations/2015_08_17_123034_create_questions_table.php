@@ -14,11 +14,12 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function(Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigIncrements('survey_id');
+            $table->string('survey_id');
             $table->enum('question_type', ['open_ended', 'close_ended']);
             $table->enum('input_type', ['radio', 'checkboxes','text','date','dropdown','time','number','website','email','price','address','gps','image','video']);
             $table->string('question');
-            $table->string('question_unique_code');/*i will post this one from the front end. No need to generate from the server*/
+            $table->string('question_unique_code');/*@Aliu use this for any server needs*/
+            $table->string('unique_question_id');/*i will post this one from the front end.*/
             $table->string('answer_options');/*should be able to contain large number of characters*/
             $table->timestamps();
         });

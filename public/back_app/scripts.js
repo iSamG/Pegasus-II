@@ -79065,6 +79065,7298 @@ angular.module('lk-google-picker', [])
 
 })(document, window, window.angular);
 
+// This is a build of https://github.com/garycourt/JSV at 0aa11852537069b0830569ef1eab11a36b65b3ab with jsv.js, schema03 and URI.js appended.
+// The build contains a few lines of custom code to handle format validation.
+// Custom code is wrapped in comments that start with "JOSHFIRE"
+(function(global, require) {
+var exports = {};
+
+
+
+/**
+ * URI.js
+ * 
+ * @fileoverview An RFC 3986 compliant, scheme extendable URI parsing/validating/resolving library for JavaScript.
+ * @author <a href="mailto:gary.court@gmail.com">Gary Court</a>
+ * @version 1.2
+ * @see http://github.com/garycourt/uri-js
+ * @license URI.js v1.2 (c) 2010 Gary Court. License: http://github.com/garycourt/uri-js
+ */
+
+/**
+ * Copyright 2010 Gary Court. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, are
+ * permitted provided that the following conditions are met:
+ * 
+ *    1. Redistributions of source code must retain the above copyright notice, this list of
+ *       conditions and the following disclaimer.
+ * 
+ *    2. Redistributions in binary form must reproduce the above copyright notice, this list
+ *       of conditions and the following disclaimer in the documentation and/or other materials
+ *       provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY GARY COURT ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL GARY COURT OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * The views and conclusions contained in the software and documentation are those of the
+ * authors and should not be interpreted as representing official policies, either expressed
+ * or implied, of Gary Court.
+ */
+
+/*jslint white: true, sub: true, onevar: true, undef: true, eqeqeq: true, newcap: true, immed: true, indent: 4 */
+/*global exports:true, require:true */
+
+if (typeof exports === "undefined") {
+	exports = {}; 
+}
+if (typeof require !== "function") {
+	require = function (id) {
+		return exports;
+	};
+}
+(function () {
+	var	
+		/**
+		 * @param {...string} sets
+		 * @return {string}
+		 */
+		mergeSet = function (sets) {
+			var set = arguments[0],
+				x = 1,
+				nextSet = arguments[x];
+
+			while (nextSet) {
+				set = set.slice(0, -1) + nextSet.slice(1);
+				nextSet = arguments[++x];
+			}
+
+			return set;
+		},
+
+		/**
+		 * @param {string} str
+		 * @return {string}
+		 */
+		subexp = function (str) {
+			return "(?:" + str + ")";
+		},
+
+		ALPHA$$ = "[A-Za-z]",
+		CR$ = "[\\x0D]",
+		DIGIT$$ = "[0-9]",
+		DQUOTE$$ = "[\\x22]",
+		HEXDIG$$ = mergeSet(DIGIT$$, "[A-Fa-f]"),  //case-insensitive
+		LF$$ = "[\\x0A]",
+		SP$$ = "[\\x20]",
+		PCT_ENCODED$ = subexp("%" + HEXDIG$$ + HEXDIG$$),
+		GEN_DELIMS$$ = "[\\:\\/\\?\\#\\[\\]\\@]",
+		SUB_DELIMS$$ = "[\\!\\$\\&\\'\\(\\)\\*\\+\\,\\;\\=]",
+		RESERVED$$ = mergeSet(GEN_DELIMS$$, SUB_DELIMS$$),
+		UNRESERVED$$ = mergeSet(ALPHA$$, DIGIT$$, "[\\-\\.\\_\\~]"),
+		SCHEME$ = subexp(ALPHA$$ + mergeSet(ALPHA$$, DIGIT$$, "[\\+\\-\\.]") + "*"),
+		USERINFO$ = subexp(subexp(PCT_ENCODED$ + "|" + mergeSet(UNRESERVED$$, SUB_DELIMS$$, "[\\:]")) + "*"),
+		DEC_OCTET$ = subexp(subexp("25[0-5]") + "|" + subexp("2[0-4]" + DIGIT$$) + "|" + subexp("1" + DIGIT$$ + DIGIT$$) + "|" + subexp("[1-9]" + DIGIT$$) + "|" + DIGIT$$),
+		IPV4ADDRESS$ = subexp(DEC_OCTET$ + "\\." + DEC_OCTET$ + "\\." + DEC_OCTET$ + "\\." + DEC_OCTET$),
+		H16$ = subexp(HEXDIG$$ + "{1,4}"),
+		LS32$ = subexp(subexp(H16$ + "\\:" + H16$) + "|" + IPV4ADDRESS$),
+		IPV6ADDRESS$ = subexp(mergeSet(UNRESERVED$$, SUB_DELIMS$$, "[\\:]") + "+"),  //FIXME
+		IPVFUTURE$ = subexp("v" + HEXDIG$$ + "+\\." + mergeSet(UNRESERVED$$, SUB_DELIMS$$, "[\\:]") + "+"),
+		IP_LITERAL$ = subexp("\\[" + subexp(IPV6ADDRESS$ + "|" + IPVFUTURE$) + "\\]"),
+		REG_NAME$ = subexp(subexp(PCT_ENCODED$ + "|" + mergeSet(UNRESERVED$$, SUB_DELIMS$$)) + "*"),
+		HOST$ = subexp(IP_LITERAL$ + "|" + IPV4ADDRESS$ + "|" + REG_NAME$),
+		PORT$ = subexp(DIGIT$$ + "*"),
+		AUTHORITY$ = subexp(subexp(USERINFO$ + "@") + "?" + HOST$ + subexp("\\:" + PORT$) + "?"),
+		PCHAR$ = subexp(PCT_ENCODED$ + "|" + mergeSet(UNRESERVED$$, SUB_DELIMS$$, "[\\:\\@]")),
+		SEGMENT$ = subexp(PCHAR$ + "*"),
+		SEGMENT_NZ$ = subexp(PCHAR$ + "+"),
+		SEGMENT_NZ_NC$ = subexp(subexp(PCT_ENCODED$ + "|" + mergeSet(UNRESERVED$$, SUB_DELIMS$$, "[\\@]")) + "+"),
+		PATH_ABEMPTY$ = subexp(subexp("\\/" + SEGMENT$) + "*"),
+		PATH_ABSOLUTE$ = subexp("\\/" + subexp(SEGMENT_NZ$ + PATH_ABEMPTY$) + "?"),  //simplified
+		PATH_NOSCHEME$ = subexp(SEGMENT_NZ_NC$ + PATH_ABEMPTY$),  //simplified
+		PATH_ROOTLESS$ = subexp(SEGMENT_NZ$ + PATH_ABEMPTY$),  //simplified
+		PATH_EMPTY$ = subexp(""),  //simplified
+		PATH$ = subexp(PATH_ABEMPTY$ + "|" + PATH_ABSOLUTE$ + "|" + PATH_NOSCHEME$ + "|" + PATH_ROOTLESS$ + "|" + PATH_EMPTY$),
+		QUERY$ = subexp(subexp(PCHAR$ + "|[\\/\\?]") + "*"),
+		FRAGMENT$ = subexp(subexp(PCHAR$ + "|[\\/\\?]") + "*"),
+		HIER_PART$ = subexp(subexp("\\/\\/" + AUTHORITY$ + PATH_ABEMPTY$) + "|" + PATH_ABSOLUTE$ + "|" + PATH_ROOTLESS$ + "|" + PATH_EMPTY$),
+		URI$ = subexp(SCHEME$ + "\\:" + HIER_PART$ + subexp("\\?" + QUERY$) + "?" + subexp("\\#" + FRAGMENT$) + "?"),
+		RELATIVE_PART$ = subexp(subexp("\\/\\/" + AUTHORITY$ + PATH_ABEMPTY$) + "|" + PATH_ABSOLUTE$ + "|" + PATH_NOSCHEME$ + "|" + PATH_EMPTY$),
+		RELATIVE_REF$ = subexp(RELATIVE_PART$ + subexp("\\?" + QUERY$) + "?" + subexp("\\#" + FRAGMENT$) + "?"),
+		URI_REFERENCE$ = subexp(URI$ + "|" + RELATIVE_REF$),
+		ABSOLUTE_URI$ = subexp(SCHEME$ + "\\:" + HIER_PART$ + subexp("\\?" + QUERY$) + "?"),
+
+		URI_REF = new RegExp("^" + subexp("(" + URI$ + ")|(" + RELATIVE_REF$ + ")") + "$"),
+		GENERIC_REF  = new RegExp("^(" + SCHEME$ + ")\\:" + subexp(subexp("\\/\\/(" + subexp("(" + USERINFO$ + ")@") + "?(" + HOST$ + ")" + subexp("\\:(" + PORT$ + ")") + "?)") + "?(" + PATH_ABEMPTY$ + "|" + PATH_ABSOLUTE$ + "|" + PATH_ROOTLESS$ + "|" + PATH_EMPTY$ + ")") + subexp("\\?(" + QUERY$ + ")") + "?" + subexp("\\#(" + FRAGMENT$ + ")") + "?$"),
+		RELATIVE_REF = new RegExp("^(){0}" + subexp(subexp("\\/\\/(" + subexp("(" + USERINFO$ + ")@") + "?(" + HOST$ + ")" + subexp("\\:(" + PORT$ + ")") + "?)") + "?(" + PATH_ABEMPTY$ + "|" + PATH_ABSOLUTE$ + "|" + PATH_NOSCHEME$ + "|" + PATH_EMPTY$ + ")") + subexp("\\?(" + QUERY$ + ")") + "?" + subexp("\\#(" + FRAGMENT$ + ")") + "?$"),
+		ABSOLUTE_REF = new RegExp("^(" + SCHEME$ + ")\\:" + subexp(subexp("\\/\\/(" + subexp("(" + USERINFO$ + ")@") + "?(" + HOST$ + ")" + subexp("\\:(" + PORT$ + ")") + "?)") + "?(" + PATH_ABEMPTY$ + "|" + PATH_ABSOLUTE$ + "|" + PATH_ROOTLESS$ + "|" + PATH_EMPTY$ + ")") + subexp("\\?(" + QUERY$ + ")") + "?$"),
+		SAMEDOC_REF = new RegExp("^" + subexp("\\#(" + FRAGMENT$ + ")") + "?$"),
+		AUTHORITY = new RegExp("^" + subexp("(" + USERINFO$ + ")@") + "?(" + HOST$ + ")" + subexp("\\:(" + PORT$ + ")") + "?$"),
+
+		NOT_SCHEME = new RegExp(mergeSet("[^]", ALPHA$$, DIGIT$$, "[\\+\\-\\.]"), "g"),
+		NOT_USERINFO = new RegExp(mergeSet("[^\\%\\:]", UNRESERVED$$, SUB_DELIMS$$), "g"),
+		NOT_HOST = new RegExp(mergeSet("[^\\%]", UNRESERVED$$, SUB_DELIMS$$), "g"),
+		NOT_PATH = new RegExp(mergeSet("[^\\%\\/\\:\\@]", UNRESERVED$$, SUB_DELIMS$$), "g"),
+		NOT_PATH_NOSCHEME = new RegExp(mergeSet("[^\\%\\/\\@]", UNRESERVED$$, SUB_DELIMS$$), "g"),
+		NOT_QUERY = new RegExp(mergeSet("[^\\%]", UNRESERVED$$, SUB_DELIMS$$, "[\\:\\@\\/\\?]"), "g"),
+		NOT_FRAGMENT = NOT_QUERY,
+		ESCAPE = new RegExp(mergeSet("[^]", UNRESERVED$$, SUB_DELIMS$$), "g"),
+		UNRESERVED = new RegExp(UNRESERVED$$, "g"),
+		OTHER_CHARS = new RegExp(mergeSet("[^\\%]", UNRESERVED$$, RESERVED$$), "g"),
+		PCT_ENCODEDS = new RegExp(PCT_ENCODED$ + "+", "g"),
+		URI_PARSE = /^(?:([^:\/?#]+):)?(?:\/\/((?:([^\/?#@]*)@)?([^\/?#:]*)(?:\:(\d*))?))?([^?#]*)(?:\?([^#]*))?(?:#(.*))?/i,
+		RDS1 = /^\.\.?\//,
+		RDS2 = /^\/\.(\/|$)/,
+		RDS3 = /^\/\.\.(\/|$)/,
+		RDS4 = /^\.\.?$/,
+		RDS5 = /^\/?.*?(?=\/|$)/,
+		NO_MATCH_IS_UNDEFINED = ("").match(/(){0}/)[1] === undefined,
+
+		/**
+		 * @param {string} chr
+		 * @return {string}
+		 */
+		pctEncChar = function (chr) {
+			var c = chr.charCodeAt(0);
+ 
+			if (c < 128) {
+				return "%" + c.toString(16).toUpperCase();
+			}
+			else if ((c > 127) && (c < 2048)) {
+				return "%" + ((c >> 6) | 192).toString(16).toUpperCase() + "%" + ((c & 63) | 128).toString(16).toUpperCase();
+			}
+			else {
+				return "%" + ((c >> 12) | 224).toString(16).toUpperCase() + "%" + (((c >> 6) & 63) | 128).toString(16).toUpperCase() + "%" + ((c & 63) | 128).toString(16).toUpperCase();
+			}
+		},
+
+		/**
+		 * @param {string} str
+		 * @return {string}
+		 */
+		pctDecUnreserved = function (str) {
+			var newStr = "", 
+				i = 0,
+				c, s;
+
+			while (i < str.length) {
+				c = parseInt(str.substr(i + 1, 2), 16);
+
+				if (c < 128) {
+					s = String.fromCharCode(c);
+					if (s.match(UNRESERVED)) {
+						newStr += s;
+					} else {
+						newStr += str.substr(i, 3);
+					}
+					i += 3;
+				}
+				else if ((c > 191) && (c < 224)) {
+					newStr += str.substr(i, 6);
+					i += 6;
+				}
+				else {
+					newStr += str.substr(i, 9);
+					i += 9;
+				}
+			}
+
+			return newStr;
+		},
+
+		/**
+		 * @param {string} str
+		 * @return {string}
+		 */
+		pctDecChars = function (str) {
+			var newStr = "", 
+				i = 0,
+				c, c2, c3;
+
+			while (i < str.length) {
+				c = parseInt(str.substr(i + 1, 2), 16);
+
+				if (c < 128) {
+					newStr += String.fromCharCode(c);
+					i += 3;
+				}
+				else if ((c > 191) && (c < 224)) {
+					c2 = parseInt(str.substr(i + 4, 2), 16);
+					newStr += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+					i += 6;
+				}
+				else {
+					c2 = parseInt(str.substr(i + 4, 2), 16);
+					c3 = parseInt(str.substr(i + 7, 2), 16);
+					newStr += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+					i += 9;
+				}
+			}
+
+			return newStr;
+		},
+
+		/**
+		 * @return {string}
+		 */
+		typeOf = function (o) {
+			return o === undefined ? "undefined" : (o === null ? "null" : Object.prototype.toString.call(o).split(" ").pop().split("]").shift().toLowerCase());
+		},
+
+		/**
+		 * @constructor
+		 * @implements URIComponents
+		 */
+		Components = function () {
+			this.errors = [];
+		}, 
+
+		/** @namespace */ 
+		URI = {};
+
+	/**
+	 * Components
+	 */
+
+	Components.prototype = {
+		/**
+		 * @type String
+		 */
+
+		scheme : undefined,
+
+		/**
+		 * @type String
+		 */
+
+		authority : undefined,
+
+		/**
+		 * @type String
+		 */
+
+		userinfo : undefined,
+
+		/**
+		 * @type String
+		 */
+
+		host : undefined,
+
+		/**
+		 * @type number
+		 */
+
+		port : undefined,
+
+		/**
+		 * @type string
+		 */
+
+		path : undefined,
+
+		/**
+		 * @type string
+		 */
+
+		query : undefined,
+
+		/**
+		 * @type string
+		 */
+
+		fragment : undefined,
+
+		/**
+		 * @type string
+		 * @values "uri", "absolute", "relative", "same-document"
+		 */
+
+		reference : undefined,
+
+		/**
+		 * @type Array
+		 */
+
+		errors : undefined
+	};
+
+	/**
+	 * URI
+	 */
+
+	/**
+	 * @namespace
+	 */
+
+	URI.SCHEMES = {};
+
+	/**
+	 * @param {string} uriString
+	 * @param {Options} [options]
+	 * @returns {URIComponents}
+	 */
+
+	URI.parse = function (uriString, options) {
+		var matches, 
+			components = new Components(),
+			schemeHandler;
+
+		uriString = uriString ? uriString.toString() : "";
+		options = options || {};
+
+		if (options.reference === "suffix") {
+			uriString = (options.scheme ? options.scheme + ":" : "") + "//" + uriString;
+		}
+
+		matches = uriString.match(URI_REF);
+
+		if (matches) {
+			if (matches[1]) {
+				//generic URI
+				matches = uriString.match(GENERIC_REF);
+			} else {
+				//relative URI
+				matches = uriString.match(RELATIVE_REF);
+			}
+		} 
+
+		if (!matches) {
+			if (!options.tolerant) {
+				components.errors.push("URI is not strictly valid.");
+			}
+			matches = uriString.match(URI_PARSE);
+		}
+
+		if (matches) {
+			if (NO_MATCH_IS_UNDEFINED) {
+				//store each component
+				components.scheme = matches[1];
+				components.authority = matches[2];
+				components.userinfo = matches[3];
+				components.host = matches[4];
+				components.port = parseInt(matches[5], 10);
+				components.path = matches[6] || "";
+				components.query = matches[7];
+				components.fragment = matches[8];
+
+				//fix port number
+				if (isNaN(components.port)) {
+					components.port = matches[5];
+				}
+			} else {  //IE FIX for improper RegExp matching
+				//store each component
+				components.scheme = matches[1] || undefined;
+				components.authority = (uriString.indexOf("//") !== -1 ? matches[2] : undefined);
+				components.userinfo = (uriString.indexOf("@") !== -1 ? matches[3] : undefined);
+				components.host = (uriString.indexOf("//") !== -1 ? matches[4] : undefined);
+				components.port = parseInt(matches[5], 10);
+				components.path = matches[6] || "";
+				components.query = (uriString.indexOf("?") !== -1 ? matches[7] : undefined);
+				components.fragment = (uriString.indexOf("#") !== -1 ? matches[8] : undefined);
+
+				//fix port number
+				if (isNaN(components.port)) {
+					components.port = (uriString.match(/\/\/.*\:(?:\/|\?|\#|$)/) ? matches[4] : undefined);
+				}
+			}
+
+			//determine reference type
+			if (!components.scheme && !components.authority && !components.path && !components.query) {
+				components.reference = "same-document";
+			} else if (!components.scheme) {
+				components.reference = "relative";
+			} else if (!components.fragment) {
+				components.reference = "absolute";
+			} else {
+				components.reference = "uri";
+			}
+
+			//check for reference errors
+			if (options.reference && options.reference !== "suffix" && options.reference !== components.reference) {
+				components.errors.push("URI is not a " + options.reference + " reference.");
+			}
+
+			//check if a handler for the scheme exists
+			schemeHandler = URI.SCHEMES[components.scheme || options.scheme];
+			if (schemeHandler && schemeHandler.parse) {
+				//perform extra parsing
+				schemeHandler.parse(components, options);
+			}
+		} else {
+			components.errors.push("URI can not be parsed.");
+		}
+
+		return components;
+	};
+
+	/**
+	 * @private
+	 * @param {URIComponents} components
+	 * @returns {string|undefined}
+	 */
+
+	URI._recomposeAuthority = function (components) {
+		var uriTokens = [];
+
+		if (components.userinfo !== undefined || components.host !== undefined || typeof components.port === "number") {
+			if (components.userinfo !== undefined) {
+				uriTokens.push(components.userinfo.toString().replace(NOT_USERINFO, pctEncChar));
+				uriTokens.push("@");
+			}
+			if (components.host !== undefined) {
+				uriTokens.push(components.host.toString().toLowerCase().replace(NOT_HOST, pctEncChar));
+			}
+			if (typeof components.port === "number") {
+				uriTokens.push(":");
+				uriTokens.push(components.port.toString(10));
+			}
+		}
+
+		return uriTokens.length ? uriTokens.join("") : undefined;
+	};
+
+	/**
+	 * @param {string} input
+	 * @returns {string}
+	 */
+
+	URI.removeDotSegments = function (input) {
+		var output = [], s;
+
+		while (input.length) {
+			if (input.match(RDS1)) {
+				input = input.replace(RDS1, "");
+			} else if (input.match(RDS2)) {
+				input = input.replace(RDS2, "/");
+			} else if (input.match(RDS3)) {
+				input = input.replace(RDS3, "/");
+				output.pop();
+			} else if (input === "." || input === "..") {
+				input = "";
+			} else {
+				s = input.match(RDS5)[0];
+				input = input.slice(s.length);
+				output.push(s);
+			}
+		}
+
+		return output.join("");
+	};
+
+	/**
+	 * @param {URIComponents} components
+	 * @param {Options} [options]
+	 * @returns {string}
+	 */
+
+	URI.serialize = function (components, options) {
+		var uriTokens = [], 
+			schemeHandler, 
+			s;
+		options = options || {};
+
+		//check if a handler for the scheme exists
+		schemeHandler = URI.SCHEMES[components.scheme || options.scheme];
+		if (schemeHandler && schemeHandler.serialize) {
+			//perform extra serialization
+			schemeHandler.serialize(components, options);
+		}
+
+		if (options.reference !== "suffix" && components.scheme) {
+			uriTokens.push(components.scheme.toString().toLowerCase().replace(NOT_SCHEME, ""));
+			uriTokens.push(":");
+		}
+
+		components.authority = URI._recomposeAuthority(components);
+		if (components.authority !== undefined) {
+			if (options.reference !== "suffix") {
+				uriTokens.push("//");
+			}
+
+			uriTokens.push(components.authority);
+
+			if (components.path && components.path.charAt(0) !== "/") {
+				uriTokens.push("/");
+			}
+		}
+
+		if (components.path) {
+			s = URI.removeDotSegments(components.path.toString().replace(/%2E/ig, "."));
+
+			if (components.scheme) {
+				s = s.replace(NOT_PATH, pctEncChar);
+			} else {
+				s = s.replace(NOT_PATH_NOSCHEME, pctEncChar);
+			}
+
+			if (components.authority === undefined) {
+				s = s.replace(/^\/\//, "/%2F");  //don't allow the path to start with "//"
+			}
+			uriTokens.push(s);
+		}
+
+		if (components.query) {
+			uriTokens.push("?");
+			uriTokens.push(components.query.toString().replace(NOT_QUERY, pctEncChar));
+		}
+
+		if (components.fragment) {
+			uriTokens.push("#");
+			uriTokens.push(components.fragment.toString().replace(NOT_FRAGMENT, pctEncChar));
+		}
+
+		return uriTokens
+			.join('')  //merge tokens into a string
+			.replace(PCT_ENCODEDS, pctDecUnreserved)  //undecode unreserved characters
+			//.replace(OTHER_CHARS, pctEncChar)  //replace non-URI characters
+			.replace(/%[0-9A-Fa-f]{2}/g, function (str) {  //uppercase percent encoded characters
+				return str.toUpperCase();
+			})
+		;
+	};
+
+	/**
+	 * @param {URIComponents} base
+	 * @param {URIComponents} relative
+	 * @param {Options} [options]
+	 * @param {boolean} [skipNormalization]
+	 * @returns {URIComponents}
+	 */
+
+	URI.resolveComponents = function (base, relative, options, skipNormalization) {
+		var target = new Components();
+
+		if (!skipNormalization) {
+			base = URI.parse(URI.serialize(base, options), options);  //normalize base components
+			relative = URI.parse(URI.serialize(relative, options), options);  //normalize relative components
+		}
+		options = options || {};
+
+		if (!options.tolerant && relative.scheme) {
+			target.scheme = relative.scheme;
+			target.authority = relative.authority;
+			target.userinfo = relative.userinfo;
+			target.host = relative.host;
+			target.port = relative.port;
+			target.path = URI.removeDotSegments(relative.path);
+			target.query = relative.query;
+		} else {
+			if (relative.authority !== undefined) {
+				target.authority = relative.authority;
+				target.userinfo = relative.userinfo;
+				target.host = relative.host;
+				target.port = relative.port;
+				target.path = URI.removeDotSegments(relative.path);
+				target.query = relative.query;
+			} else {
+				if (!relative.path) {
+					target.path = base.path;
+					if (relative.query !== undefined) {
+						target.query = relative.query;
+					} else {
+						target.query = base.query;
+					}
+				} else {
+					if (relative.path.charAt(0) === "/") {
+						target.path = URI.removeDotSegments(relative.path);
+					} else {
+						if (base.authority !== undefined && !base.path) {
+							target.path = "/" + relative.path;
+						} else if (!base.path) {
+							target.path = relative.path;
+						} else {
+							target.path = base.path.slice(0, base.path.lastIndexOf("/") + 1) + relative.path;
+						}
+						target.path = URI.removeDotSegments(target.path);
+					}
+					target.query = relative.query;
+				}
+				target.authority = base.authority;
+				target.userinfo = base.userinfo;
+				target.host = base.host;
+				target.port = base.port;
+			}
+			target.scheme = base.scheme;
+		}
+
+		target.fragment = relative.fragment;
+
+		return target;
+	};
+
+	/**
+	 * @param {string} baseURI
+	 * @param {string} relativeURI
+	 * @param {Options} [options]
+	 * @returns {string}
+	 */
+
+	URI.resolve = function (baseURI, relativeURI, options) {
+		return URI.serialize(URI.resolveComponents(URI.parse(baseURI, options), URI.parse(relativeURI, options), options, true), options);
+	};
+
+	/**
+	 * @param {string|URIComponents} uri
+	 * @param {Options} options
+	 * @returns {string|URIComponents}
+	 */
+
+	URI.normalize = function (uri, options) {
+		if (typeof uri === "string") {
+			return URI.serialize(URI.parse(uri, options), options);
+		} else if (typeOf(uri) === "object") {
+			return URI.parse(URI.serialize(uri, options), options);
+		}
+
+		return uri;
+	};
+
+	/**
+	 * @param {string|URIComponents} uriA
+	 * @param {string|URIComponents} uriB
+	 * @param {Options} options
+	 */
+
+	URI.equal = function (uriA, uriB, options) {
+		if (typeof uriA === "string") {
+			uriA = URI.serialize(URI.parse(uriA, options), options);
+		} else if (typeOf(uriA) === "object") {
+			uriA = URI.serialize(uriA, options);
+		}
+
+		if (typeof uriB === "string") {
+			uriB = URI.serialize(URI.parse(uriB, options), options);
+		} else if (typeOf(uriB) === "object") {
+			uriB = URI.serialize(uriB, options);
+		}
+
+		return uriA === uriB;
+	};
+
+	/**
+	 * @param {string} str
+	 * @returns {string}
+	 */
+
+	URI.escapeComponent = function (str) {
+		return str && str.toString().replace(ESCAPE, pctEncChar);
+	};
+
+	/**
+	 * @param {string} str
+	 * @returns {string}
+	 */
+
+	URI.unescapeComponent = function (str) {
+		return str && str.toString().replace(PCT_ENCODEDS, pctDecChars);
+	};
+
+	//export API
+	exports.Components = Components;
+	exports.URI = URI;
+
+	//name-safe export API
+	exports["URI"] = {
+		"SCHEMES" : URI.SCHEMES,
+		"parse" : URI.parse,
+		"removeDotSegments" : URI.removeDotSegments,
+		"serialize" : URI.serialize,
+		"resolveComponents" : URI.resolveComponents,
+		"resolve" : URI.resolve,
+		"normalize" : URI.normalize,
+		"equal" : URI.equal,
+		"escapeComponent" : URI.escapeComponent,
+		"unescapeComponent" : URI.unescapeComponent
+	};
+
+}());
+
+
+
+	/**
+ * JSV: JSON Schema Validator
+ * 
+ * @fileOverview A JavaScript implementation of a extendable, fully compliant JSON Schema validator.
+ * @author <a href="mailto:gary.court@gmail.com">Gary Court</a>
+ * @version 3.5
+ * @see http://github.com/garycourt/JSV
+ */
+
+/*
+ * Copyright 2010 Gary Court. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, are
+ * permitted provided that the following conditions are met:
+ * 
+ *    1. Redistributions of source code must retain the above copyright notice, this list of
+ *       conditions and the following disclaimer.
+ * 
+ *    2. Redistributions in binary form must reproduce the above copyright notice, this list
+ *       of conditions and the following disclaimer in the documentation and/or other materials
+ *       provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY GARY COURT ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL GARY COURT OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * The views and conclusions contained in the software and documentation are those of the
+ * authors and should not be interpreted as representing official policies, either expressed
+ * or implied, of Gary Court or the JSON Schema specification.
+ */
+
+/*jslint white: true, sub: true, onevar: true, undef: true, eqeqeq: true, newcap: true, immed: true, indent: 4 */
+
+var exports = exports || this,
+	require = require || function () {
+		return exports;
+	};
+
+(function () {
+
+	var URI = require("./uri/uri").URI,
+		O = {},
+		I2H = "0123456789abcdef".split(""),
+		mapArray, filterArray, searchArray,
+
+		JSV;
+
+	//
+	// Utility functions
+	//
+
+	function typeOf(o) {
+		return o === undefined ? "undefined" : (o === null ? "null" : Object.prototype.toString.call(o).split(" ").pop().split("]").shift().toLowerCase());
+	}
+
+	/** @inner */
+	function F() {}
+
+	function createObject(proto) {
+		F.prototype = proto || {};
+		return new F();
+	}
+
+	function mapObject(obj, func, scope) {
+		var newObj = {}, key;
+		for (key in obj) {
+			if (obj[key] !== O[key]) {
+				newObj[key] = func.call(scope, obj[key], key, obj);
+			}
+		}
+		return newObj;
+	}
+
+	/** @ignore */
+	mapArray = function (arr, func, scope) {
+		var x = 0, xl = arr.length, newArr = new Array(xl);
+		for (; x < xl; ++x) {
+			newArr[x] = func.call(scope, arr[x], x, arr);
+		}
+		return newArr;
+	};
+
+	if (Array.prototype.map) {
+		/** @ignore */
+		mapArray = function (arr, func, scope) {
+			return Array.prototype.map.call(arr, func, scope);
+		};
+	}
+
+	/** @ignore */
+	filterArray = function (arr, func, scope) {
+		var x = 0, xl = arr.length, newArr = [];
+		for (; x < xl; ++x) {
+			if (func.call(scope, arr[x], x, arr)) {
+				newArr[newArr.length] = arr[x];
+			}
+		}
+		return newArr;
+	};
+
+	if (Array.prototype.filter) {
+		/** @ignore */
+		filterArray = function (arr, func, scope) {
+			return Array.prototype.filter.call(arr, func, scope);
+		};
+	}
+
+	/** @ignore */
+	searchArray = function (arr, o) {
+		var x = 0, xl = arr.length;
+		for (; x < xl; ++x) {
+			if (arr[x] === o) {
+				return x;
+			}
+		}
+		return -1;
+	};
+
+	if (Array.prototype.indexOf) {
+		/** @ignore */
+		searchArray = function (arr, o) {
+			return Array.prototype.indexOf.call(arr, o);
+		};
+	}
+
+	function toArray(o) {
+		return o !== undefined && o !== null ? (o instanceof Array && !o.callee ? o : (typeof o.length !== "number" || o.split || o.setInterval || o.call ? [ o ] : Array.prototype.slice.call(o))) : [];
+	}
+
+	function keys(o) {
+		var result = [], key;
+
+		switch (typeOf(o)) {
+		case "object":
+			for (key in o) {
+				if (o[key] !== O[key]) {
+					result[result.length] = key;
+				}
+			}
+			break;
+		case "array":
+			for (key = o.length - 1; key >= 0; --key) {
+				result[key] = key;
+			}
+			break;
+		}
+
+		return result;
+	}
+
+	function pushUnique(arr, o) {
+		if (searchArray(arr, o) === -1) {
+			arr.push(o);
+		}
+		return arr;
+	}
+
+	function popFirst(arr, o) {
+		var index = searchArray(arr, o);
+		if (index > -1) {
+			arr.splice(index, 1);
+		}
+		return arr;
+	}
+
+	function randomUUID() {
+		return [
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			"-",
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			"-4",  //set 4 high bits of time_high field to version
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			"-",
+			I2H[(Math.floor(Math.random() * 0x10) & 0x3) | 0x8],  //specify 2 high bits of clock sequence
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			"-",
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)],
+			I2H[Math.floor(Math.random() * 0x10)]
+		].join("");
+	}
+
+	function escapeURIComponent(str) {
+		return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\*/g, '%2A');
+	}
+
+	function formatURI(uri) {
+		if (typeof uri === "string" && uri.indexOf("#") === -1) {
+			uri += "#";
+		}
+		return uri;
+	}
+
+	/**
+	 * Defines an error, found by a schema, with an instance.
+	 * This class can only be instantiated by {@link Report#addError}. 
+	 * 
+	 * @name ValidationError
+	 * @class
+	 * @see Report#addError
+	 */
+
+	/**
+	 * The URI of the instance that has the error.
+	 * 
+	 * @name ValidationError.prototype.uri
+	 * @type String
+	 */
+
+	/**
+	 * The URI of the schema that generated the error.
+	 * 
+	 * @name ValidationError.prototype.schemaUri
+	 * @type String
+	 */
+
+	/**
+	 * The name of the schema attribute that generated the error.
+	 * 
+	 * @name ValidationError.prototype.attribute
+	 * @type String
+	 */
+
+	/**
+	 * An user-friendly (English) message about what failed to validate.
+	 * 
+	 * @name ValidationError.prototype.message
+	 * @type String
+	 */
+
+	/**
+	 * The value of the schema attribute that generated the error.
+	 * 
+	 * @name ValidationError.prototype.details
+	 * @type Any
+	 */
+
+	/**
+	 * Reports are returned from validation methods to describe the result of a validation.
+	 * 
+	 * @name Report
+	 * @class
+	 * @see JSONSchema#validate
+	 * @see Environment#validate
+	 */
+
+	function Report() {
+		/**
+		 * An array of {@link ValidationError} objects that define all the errors generated by the schema against the instance.
+		 * 
+		 * @name Report.prototype.errors
+		 * @type Array
+		 * @see Report#addError
+		 */
+		this.errors = [];
+
+		/**
+		 * A hash table of every instance and what schemas were validated against it.
+		 * <p>
+		 * The key of each item in the table is the URI of the instance that was validated.
+		 * The value of this key is an array of strings of URIs of the schema that validated it.
+		 * </p>
+		 * 
+		 * @name Report.prototype.validated
+		 * @type Object
+		 * @see Report#registerValidation
+		 * @see Report#isValidatedBy
+		 */
+		this.validated = {};
+
+		/**
+		 * If the report is generated by {@link Environment#validate}, this field is the generated instance.
+		 * 
+		 * @name Report.prototype.instance
+		 * @type JSONInstance
+		 * @see Environment#validate
+		 */
+
+		/**
+		 * If the report is generated by {@link Environment#validate}, this field is the generated schema.
+		 * 
+		 * @name Report.prototype.schema
+		 * @type JSONSchema
+		 * @see Environment#validate
+		 */
+
+		/**
+		 * If the report is generated by {@link Environment#validate}, this field is the schema's schema.
+		 * This value is the same as calling <code>schema.getSchema()</code>.
+		 * 
+		 * @name Report.prototype.schemaSchema
+		 * @type JSONSchema
+		 * @see Environment#validate
+		 * @see JSONSchema#getSchema
+		 */
+	}
+
+	/**
+	 * Adds a {@link ValidationError} object to the <a href="#errors"><code>errors</code></a> field.
+	 * 
+	 * @param {JSONInstance|String} instance The instance (or instance URI) that is invalid
+	 * @param {JSONSchema|String} schema The schema (or schema URI) that was validating the instance
+	 * @param {String} attr The attribute that failed to validated
+	 * @param {String} message A user-friendly message on why the schema attribute failed to validate the instance
+	 * @param {Any} details The value of the schema attribute
+	 */
+
+	Report.prototype.addError = function (instance, schema, attr, message, details) {
+		this.errors.push({
+			uri : instance instanceof JSONInstance ? instance.getURI() : instance,
+			schemaUri : schema instanceof JSONInstance ? schema.getURI() : schema,
+			attribute : attr,
+			message : message,
+			details : details
+		});
+	};
+
+	/**
+	 * Registers that the provided instance URI has been validated by the provided schema URI. 
+	 * This is recorded in the <a href="#validated"><code>validated</code></a> field.
+	 * 
+	 * @param {String} uri The URI of the instance that was validated
+	 * @param {String} schemaUri The URI of the schema that validated the instance
+	 */
+
+	Report.prototype.registerValidation = function (uri, schemaUri) {
+		if (!this.validated[uri]) {
+			this.validated[uri] = [ schemaUri ];
+		} else {
+			this.validated[uri].push(schemaUri);
+		}
+	};
+
+	/**
+	 * Returns if an instance with the provided URI has been validated by the schema with the provided URI. 
+	 * 
+	 * @param {String} uri The URI of the instance
+	 * @param {String} schemaUri The URI of a schema
+	 * @returns {Boolean} If the instance has been validated by the schema.
+	 */
+
+	Report.prototype.isValidatedBy = function (uri, schemaUri) {
+		return !!this.validated[uri] && searchArray(this.validated[uri], schemaUri) !== -1;
+	};
+
+	/**
+	 * A wrapper class for binding an Environment, URI and helper methods to an instance. 
+	 * This class is most commonly instantiated with {@link Environment#createInstance}.
+	 * 
+	 * @name JSONInstance
+	 * @class
+	 * @param {Environment} env The environment this instance belongs to
+	 * @param {JSONInstance|Any} json The value of the instance
+	 * @param {String} [uri] The URI of the instance. If undefined, the URI will be a randomly generated UUID. 
+	 * @param {String} [fd] The fragment delimiter for properties. If undefined, uses the environment default.
+	 */
+
+	function JSONInstance(env, json, uri, fd) {
+		if (json instanceof JSONInstance) {
+			if (typeof fd !== "string") {
+				fd = json._fd;
+			}
+			if (typeof uri !== "string") {
+				uri = json._uri;
+			}
+			json = json._value;
+		}
+
+		if (typeof uri !== "string") {
+			uri = "urn:uuid:" + randomUUID() + "#";
+		} else if (uri.indexOf(":") === -1) {
+			uri = formatURI(URI.resolve("urn:uuid:" + randomUUID() + "#", uri));
+		}
+
+		this._env = env;
+		this._value = json;
+		this._uri = uri;
+		this._fd = fd || this._env._options["defaultFragmentDelimiter"];
+	}
+
+	/**
+	 * Returns the environment the instance is bound to.
+	 * 
+	 * @returns {Environment} The environment of the instance
+	 */
+
+	JSONInstance.prototype.getEnvironment = function () {
+		return this._env;
+	};
+
+	/**
+	 * Returns the name of the type of the instance.
+	 * 
+	 * @returns {String} The name of the type of the instance
+	 */
+
+	JSONInstance.prototype.getType = function () {
+		return typeOf(this._value);
+	};
+
+	/**
+	 * Returns the JSON value of the instance.
+	 * 
+	 * @returns {Any} The actual JavaScript value of the instance
+	 */
+
+	JSONInstance.prototype.getValue = function () {
+		return this._value;
+	};
+
+	/**
+	 * Returns the URI of the instance.
+	 * 
+	 * @returns {String} The URI of the instance
+	 */
+
+	JSONInstance.prototype.getURI = function () {
+		return this._uri;
+	};
+
+	/**
+	 * Returns a resolved URI of a provided relative URI against the URI of the instance.
+	 * 
+	 * @param {String} uri The relative URI to resolve
+	 * @returns {String} The resolved URI
+	 */
+
+	JSONInstance.prototype.resolveURI = function (uri) {
+		return formatURI(URI.resolve(this._uri, uri));
+	};
+
+	/**
+	 * Returns an array of the names of all the properties.
+	 * 
+	 * @returns {Array} An array of strings which are the names of all the properties
+	 */
+
+	JSONInstance.prototype.getPropertyNames = function () {
+		return keys(this._value);
+	};
+
+	/**
+	 * Returns a {@link JSONInstance} of the value of the provided property name. 
+	 * 
+	 * @param {String} key The name of the property to fetch
+	 * @returns {JSONInstance} The instance of the property value
+	 */
+
+	JSONInstance.prototype.getProperty = function (key) {
+		var value = this._value ? this._value[key] : undefined;
+		if (value instanceof JSONInstance) {
+			return value;
+		}
+		//else
+		return new JSONInstance(this._env, value, this._uri + this._fd + escapeURIComponent(key), this._fd);
+	};
+
+	/**
+	 * Returns all the property instances of the target instance.
+	 * <p>
+	 * If the target instance is an Object, then the method will return a hash table of {@link JSONInstance}s of all the properties. 
+	 * If the target instance is an Array, then the method will return an array of {@link JSONInstance}s of all the items.
+	 * </p> 
+	 * 
+	 * @returns {Object|Array|undefined} The list of instances for all the properties
+	 */
+
+	JSONInstance.prototype.getProperties = function () {
+		var type = typeOf(this._value),
+			self = this;
+
+		if (type === "object") {
+			return mapObject(this._value, function (value, key) {
+				if (value instanceof JSONInstance) {
+					return value;
+				}
+				return new JSONInstance(self._env, value, self._uri + self._fd + escapeURIComponent(key), self._fd);
+			});
+		} else if (type === "array") {
+			return mapArray(this._value, function (value, key) {
+				if (value instanceof JSONInstance) {
+					return value;
+				}
+				return new JSONInstance(self._env, value, self._uri + self._fd + escapeURIComponent(key), self._fd);
+			});
+		}
+	};
+
+	/**
+	 * Returns the JSON value of the provided property name. 
+	 * This method is a faster version of calling <code>instance.getProperty(key).getValue()</code>.
+	 * 
+	 * @param {String} key The name of the property
+	 * @returns {Any} The JavaScript value of the instance
+	 * @see JSONInstance#getProperty
+	 * @see JSONInstance#getValue
+	 */
+
+	JSONInstance.prototype.getValueOfProperty = function (key) {
+		if (this._value) {
+			if (this._value[key] instanceof JSONInstance) {
+				return this._value[key]._value;
+			}
+			return this._value[key];
+		}
+	};
+
+	/**
+	 * Return if the provided value is the same as the value of the instance.
+	 * 
+	 * @param {JSONInstance|Any} instance The value to compare
+	 * @returns {Boolean} If both the instance and the value match
+	 */
+
+	JSONInstance.prototype.equals = function (instance) {
+		if (instance instanceof JSONInstance) {
+			return this._value === instance._value;
+		}
+		//else
+		return this._value === instance;
+	};
+
+	/**
+	 * Warning: Not a generic clone function
+	 * Produces a JSV acceptable clone
+	 */
+
+	function clone(obj, deep) {
+		var newObj, x;
+
+		if (obj instanceof JSONInstance) {
+			obj = obj.getValue();
+		}
+
+		switch (typeOf(obj)) {
+		case "object":
+			if (deep) {
+				newObj = {};
+				for (x in obj) {
+					if (obj[x] !== O[x]) {
+						newObj[x] = clone(obj[x], deep);
+					}
+				}
+				return newObj;
+			} else {
+				return createObject(obj);
+			}
+			break;
+		case "array":
+			if (deep) {
+				newObj = new Array(obj.length);
+				x = obj.length;
+				while (--x >= 0) {
+					newObj[x] = clone(obj[x], deep);
+				}
+				return newObj;
+			} else {
+				return Array.prototype.slice.call(obj);
+			}
+			break;
+		default:
+			return obj;
+		}
+	}
+
+	/**
+	 * This class binds a {@link JSONInstance} with a {@link JSONSchema} to provided context aware methods. 
+	 * 
+	 * @name JSONSchema
+	 * @class
+	 * @param {Environment} env The environment this schema belongs to
+	 * @param {JSONInstance|Any} json The value of the schema
+	 * @param {String} [uri] The URI of the schema. If undefined, the URI will be a randomly generated UUID. 
+	 * @param {JSONSchema|Boolean} [schema] The schema to bind to the instance. If <code>undefined</code>, the environment's default schema will be used. If <code>true</code>, the instance's schema will be itself.
+	 * @extends JSONInstance
+	 */
+
+	function JSONSchema(env, json, uri, schema) {
+		var fr;
+		JSONInstance.call(this, env, json, uri);
+
+		if (schema === true) {
+			this._schema = this;
+		} else if (json instanceof JSONSchema && !(schema instanceof JSONSchema)) {
+			this._schema = json._schema;  //TODO: Make sure cross environments don't mess everything up
+		} else {
+			this._schema = schema instanceof JSONSchema ? schema : this._env.getDefaultSchema() || JSONSchema.createEmptySchema(this._env);
+		}
+
+		//determine fragment delimiter from schema
+		fr = this._schema.getValueOfProperty("fragmentResolution");
+		if (fr === "dot-delimited") {
+			this._fd = ".";
+		} else if (fr === "slash-delimited") {
+			this._fd = "/";
+		}
+	}
+
+	JSONSchema.prototype = createObject(JSONInstance.prototype);
+
+	/**
+	 * Creates an empty schema.
+	 * 
+	 * @param {Environment} env The environment of the schema
+	 * @returns {JSONSchema} The empty schema, who's schema is itself.
+	 */
+
+	JSONSchema.createEmptySchema = function (env) {
+		var schema = createObject(JSONSchema.prototype);
+		JSONInstance.call(schema, env, {}, undefined, undefined);
+		schema._schema = schema;
+		return schema;
+	};
+
+	/**
+	 * Returns the schema of the schema.
+	 * 
+	 * @returns {JSONSchema} The schema of the schema
+	 */
+
+	JSONSchema.prototype.getSchema = function () {
+		return this._schema;
+	};
+
+	/**
+	 * Returns the value of the provided attribute name.
+	 * <p>
+	 * This method is different from {@link JSONInstance#getProperty} as the named property 
+	 * is converted using a parser defined by the schema's schema before being returned. This
+	 * makes the return value of this method attribute dependent.
+	 * </p>
+	 * 
+	 * @param {String} key The name of the attribute
+	 * @param {Any} [arg] Some attribute parsers accept special arguments for returning resolved values. This is attribute dependent.
+	 * @returns {JSONSchema|Any} The value of the attribute
+	 */
+
+	JSONSchema.prototype.getAttribute = function (key, arg) {
+		var schemaProperty, parser, property, result;
+
+		if (!arg && this._attributes && this._attributes.hasOwnProperty(key)) {
+			return this._attributes[key];
+		}
+
+		schemaProperty = this._schema.getProperty("properties").getProperty(key);
+		parser = schemaProperty.getValueOfProperty("parser");
+		property = this.getProperty(key);
+		if (typeof parser === "function") {
+			result = parser(property, schemaProperty, arg);
+			if (!arg && this._attributes) {
+				this._attributes[key] = result;
+			}
+			return result;
+		}
+		//else
+		return property.getValue();
+	};
+
+	/**
+	 * Returns all the attributes of the schema.
+	 * 
+	 * @returns {Object} A map of all parsed attribute values
+	 */
+
+	JSONSchema.prototype.getAttributes = function () {
+		var properties, schemaProperties, key, schemaProperty, parser;
+
+		if (!this._attributes && this.getType() === "object") {
+			properties = this.getProperties();
+			schemaProperties = this._schema.getProperty("properties");
+			this._attributes = {};
+			for (key in properties) {
+				if (properties[key] !== O[key]) {
+					schemaProperty = schemaProperties && schemaProperties.getProperty(key);
+					parser = schemaProperty && schemaProperty.getValueOfProperty("parser");
+					if (typeof parser === "function") {
+						this._attributes[key] = parser(properties[key], schemaProperty);
+					} else {
+						this._attributes[key] = properties[key].getValue();
+					}
+				}
+			}
+		}
+
+		return clone(this._attributes, false);
+	};
+
+	/**
+	 * Convenience method for retrieving a link or link object from a schema. 
+	 * This method is the same as calling <code>schema.getAttribute("links", [rel, instance])[0];</code>.
+	 * 
+	 * @param {String} rel The link relationship
+	 * @param {JSONInstance} [instance] The instance to resolve any URIs from
+	 * @returns {String|Object|undefined} If <code>instance</code> is provided, a string containing the resolve URI of the link is returned.
+	 *   If <code>instance</code> is not provided, a link object is returned with details of the link.
+	 *   If no link with the provided relationship exists, <code>undefined</code> is returned.
+	 * @see JSONSchema#getAttribute
+	 */
+
+	JSONSchema.prototype.getLink = function (rel, instance) {
+		var schemaLinks = this.getAttribute("links", [rel, instance]);
+		if (schemaLinks && schemaLinks.length && schemaLinks[schemaLinks.length - 1]) {
+			return schemaLinks[schemaLinks.length - 1];
+		}
+	};
+
+	/**
+	 * Validates the provided instance against the target schema and returns a {@link Report}.
+	 * 
+	 * @param {JSONInstance|Any} instance The instance to validate; may be a {@link JSONInstance} or any JavaScript value
+	 * @param {Report} [report] A {@link Report} to concatenate the result of the validation to. If <code>undefined</code>, a new {@link Report} is created. 
+	 * @param {JSONInstance} [parent] The parent/containing instance of the provided instance
+	 * @param {JSONSchema} [parentSchema] The schema of the parent/containing instance
+	 * @param {String} [name] The name of the parent object's property that references the instance
+	 * @returns {Report} The result of the validation
+	 */
+
+	JSONSchema.prototype.validate = function (instance, report, parent, parentSchema, name) {
+		var validator = this._schema.getValueOfProperty("validator");
+
+		if (!(instance instanceof JSONInstance)) {
+			instance = this.getEnvironment().createInstance(instance);
+		}
+
+		if (!(report instanceof Report)) {
+			report = new Report();
+		}
+
+		if (typeof validator === "function" && !report.isValidatedBy(instance.getURI(), this.getURI())) {
+			report.registerValidation(instance.getURI(), this.getURI());
+			validator(instance, this, this._schema, report, parent, parentSchema, name);
+		}
+
+		return report;
+	};
+
+	/**
+	 * Merges two schemas/instances together.
+	 */
+
+	function inherits(base, extra, extension) {
+		var baseType = typeOf(base),
+			extraType = typeOf(extra),
+			child, x;
+
+		if (extraType === "undefined") {
+			return clone(base, true);
+		} else if (baseType === "undefined" || extraType !== baseType) {
+			return clone(extra, true);
+		} else if (extraType === "object") {
+			if (base instanceof JSONSchema) {
+				base = base.getAttributes();
+			}
+			if (extra instanceof JSONSchema) {
+				extra = extra.getAttributes();
+				if (extra["extends"] && extension && extra["extends"] instanceof JSONSchema) {
+					extra["extends"] = [ extra["extends"] ];
+				}
+			}
+			child = clone(base, true);  //this could be optimized as some properties get overwritten
+			for (x in extra) {
+				if (extra[x] !== O[x]) {
+					child[x] = inherits(base[x], extra[x], extension);
+				}
+			}
+			return child;
+		} else {
+			return clone(extra, true);
+		}
+	}
+
+	/**
+	 * An Environment is a sandbox of schemas thats behavior is different from other environments.
+	 * 
+	 * @name Environment
+	 * @class
+	 */
+
+	function Environment() {
+		this._id = randomUUID();
+		this._schemas = {};
+		this._options = {};
+	}
+
+	/**
+	 * Returns a clone of the target environment.
+	 * 
+	 * @returns {Environment} A new {@link Environment} that is a exact copy of the target environment 
+	 */
+
+	Environment.prototype.clone = function () {
+		var env = new Environment();
+		env._schemas = createObject(this._schemas);
+		env._options = createObject(this._options);
+
+		return env;
+	};
+
+	/**
+	 * Returns a new {@link JSONInstance} of the provided data.
+	 * 
+	 * @param {JSONInstance|Any} data The value of the instance
+	 * @param {String} [uri] The URI of the instance. If undefined, the URI will be a randomly generated UUID. 
+	 * @returns {JSONInstance} A new {@link JSONInstance} from the provided data
+	 */
+
+	Environment.prototype.createInstance = function (data, uri) {
+		var instance;
+		uri = formatURI(uri);
+
+		if (data instanceof JSONInstance && (!uri || data.getURI() === uri)) {
+			return data;
+		}
+		//else
+		instance = new JSONInstance(this, data, uri);
+
+		return instance;
+	};
+
+	/**
+	 * Creates a new {@link JSONSchema} from the provided data, and registers it with the environment. 
+	 * 
+	 * @param {JSONInstance|Any} data The value of the schema
+	 * @param {JSONSchema|Boolean} [schema] The schema to bind to the instance. If <code>undefined</code>, the environment's default schema will be used. If <code>true</code>, the instance's schema will be itself.
+	 * @param {String} [uri] The URI of the schema. If undefined, the URI will be a randomly generated UUID. 
+	 * @returns {JSONSchema} A new {@link JSONSchema} from the provided data
+	 * @throws {InitializationError} If a schema that is not registered with the environment is referenced 
+	 */
+
+	Environment.prototype.createSchema = function (data, schema, uri) {
+		var instance, 
+			initializer;
+		uri = formatURI(uri);
+
+		if (data instanceof JSONSchema && (!uri || data._uri === uri) && (!schema || data._schema.equals(schema))) {
+			return data;
+		}
+
+		instance = new JSONSchema(this, data, uri, schema);
+
+		initializer = instance.getSchema().getValueOfProperty("initializer");
+		if (typeof initializer === "function") {
+			instance = initializer(instance);
+		}
+
+		//register schema
+		this._schemas[instance._uri] = instance;
+		this._schemas[uri] = instance;
+
+		//build & cache the rest of the schema
+		instance.getAttributes();
+
+		return instance;
+	};
+
+	/**
+	 * Creates an empty schema.
+	 * 
+	 * @param {Environment} env The environment of the schema
+	 * @returns {JSONSchema} The empty schema, who's schema is itself.
+	 */
+
+	Environment.prototype.createEmptySchema = function () {
+		var schema = JSONSchema.createEmptySchema(this);
+		this._schemas[schema._uri] = schema;
+		return schema;
+	};
+
+	/**
+	 * Returns the schema registered with the provided URI.
+	 * 
+	 * @param {String} uri The absolute URI of the required schema
+	 * @returns {JSONSchema|undefined} The request schema, or <code>undefined</code> if not found
+	 */
+
+	Environment.prototype.findSchema = function (uri) {
+		return this._schemas[formatURI(uri)];
+	};
+
+	/**
+	 * Sets the specified environment option to the specified value.
+	 * 
+	 * @param {String} name The name of the environment option to set
+	 * @param {Any} value The new value of the environment option
+	 */
+
+	Environment.prototype.setOption = function (name, value) {
+		this._options[name] = value;
+	};
+
+	/**
+	 * Returns the specified environment option.
+	 * 
+	 * @param {String} name The name of the environment option to set
+	 * @returns {Any} The value of the environment option
+	 */
+
+	Environment.prototype.getOption = function (name) {
+		return this._options[name];
+	};
+
+	/**
+	 * Sets the default fragment delimiter of the environment.
+	 * 
+	 * @deprecated Use {@link Environment#setOption} with option "defaultFragmentDelimiter"
+	 * @param {String} fd The fragment delimiter character
+	 */
+
+	Environment.prototype.setDefaultFragmentDelimiter = function (fd) {
+		if (typeof fd === "string" && fd.length > 0) {
+			this._options["defaultFragmentDelimiter"] = fd;
+		}
+	};
+
+	/**
+	 * Returns the default fragment delimiter of the environment.
+	 * 
+	 * @deprecated Use {@link Environment#getOption} with option "defaultFragmentDelimiter"
+	 * @returns {String} The fragment delimiter character
+	 */
+
+	Environment.prototype.getDefaultFragmentDelimiter = function () {
+		return this._options["defaultFragmentDelimiter"];
+	};
+
+	/**
+	 * Sets the URI of the default schema for the environment.
+	 * 
+	 * @deprecated Use {@link Environment#setOption} with option "defaultSchemaURI"
+	 * @param {String} uri The default schema URI
+	 */
+
+	Environment.prototype.setDefaultSchemaURI = function (uri) {
+		if (typeof uri === "string") {
+			this._options["defaultSchemaURI"] = formatURI(uri);
+		}
+	};
+
+	/**
+	 * Returns the default schema of the environment.
+	 * 
+	 * @returns {JSONSchema} The default schema
+	 */
+
+	Environment.prototype.getDefaultSchema = function () {
+		return this.findSchema(this._options["defaultSchemaURI"]);
+	};
+
+	/**
+	 * Validates both the provided schema and the provided instance, and returns a {@link Report}. 
+	 * If the schema fails to validate, the instance will not be validated.
+	 * 
+	 * @param {JSONInstance|Any} instanceJSON The {@link JSONInstance} or JavaScript value to validate.
+	 * @param {JSONSchema|Any} schemaJSON The {@link JSONSchema} or JavaScript value to use in the validation. This will also be validated againt the schema's schema.
+	 * @returns {Report} The result of the validation
+	 */
+
+	Environment.prototype.validate = function (instanceJSON, schemaJSON) {
+		var instance,
+			schema,
+			schemaSchema,
+			report = new Report();
+
+		try {
+			instance = this.createInstance(instanceJSON);
+			report.instance = instance;
+		} catch (e) {
+			report.addError(e.uri, e.schemaUri, e.attribute, e.message, e.details);
+		}
+
+		try {
+			schema = this.createSchema(schemaJSON);
+			report.schema = schema;
+
+			schemaSchema = schema.getSchema();
+			report.schemaSchema = schemaSchema;
+		} catch (e) {
+			report.addError(e.uri, e.schemaUri, e.attribute, e.message, e.details);
+		}
+
+		if (schemaSchema) {
+			schemaSchema.validate(schema, report);
+		}
+
+		if (report.errors.length) {
+			return report;
+		}
+
+		return schema.validate(instance, report);
+	};
+
+	/**
+	 * @private
+	 */
+
+	Environment.prototype._checkForInvalidInstances = function (stackSize, schemaURI) {
+		var result = [],
+			stack = [
+				[schemaURI, this._schemas[schemaURI]]
+			], 
+			counter = 0,
+			item, uri, instance, schema, properties, key;
+
+		while (counter++ < stackSize && stack.length) {
+			item = stack.shift();
+			uri = item[0];
+			instance = item[1];
+
+			if (instance instanceof JSONSchema) {
+				if (this._schemas[instance._uri] !== instance) {
+					result.push("Instance " + uri + " does not match " + instance._uri);
+				} else {
+					//schema = instance.getSchema();
+					//stack.push([uri + "/{schema}", schema]);
+
+					properties = instance.getAttributes();
+					for (key in properties) {
+						if (properties[key] !== O[key]) {
+							stack.push([uri + "/" + escapeURIComponent(key), properties[key]]);
+						}
+					}
+				}
+			} else if (typeOf(instance) === "object") {
+				properties = instance;
+				for (key in properties) {
+					if (properties.hasOwnProperty(key)) {
+						stack.push([uri + "/" + escapeURIComponent(key), properties[key]]);
+					}
+				}
+			} else if (typeOf(instance) === "array") {
+				properties = instance;
+				for (key = 0; key < properties.length; ++key) {
+					stack.push([uri + "/" + escapeURIComponent(key), properties[key]]);
+				}
+			}
+		}
+
+		return result.length ? result : counter;
+	};
+
+	/**
+	 * A globaly accessible object that provides the ability to create and manage {@link Environments},
+	 * as well as providing utility methods.
+	 * 
+	 * @namespace
+	 */
+
+	JSV = {
+		_environments : {},
+		_defaultEnvironmentID : "",
+
+		/**
+		 * Returns if the provide value is an instance of {@link JSONInstance}.
+		 * 
+		 * @param o The value to test
+		 * @returns {Boolean} If the provide value is an instance of {@link JSONInstance}
+		 */
+
+		isJSONInstance : function (o) {
+			return o instanceof JSONInstance;
+		},
+
+		/**
+		 * Returns if the provide value is an instance of {@link JSONSchema}.
+		 * 
+		 * @param o The value to test
+		 * @returns {Boolean} If the provide value is an instance of {@link JSONSchema}
+		 */
+
+		isJSONSchema : function (o) {
+			return o instanceof JSONSchema;
+		},
+
+		/**
+		 * Creates and returns a new {@link Environment} that is a clone of the environment registered with the provided ID.
+		 * If no environment ID is provided, the default environment is cloned.
+		 * 
+		 * @param {String} [id] The ID of the environment to clone. If <code>undefined</code>, the default environment ID is used.
+		 * @returns {Environment} A newly cloned {@link Environment}
+		 * @throws {Error} If there is no environment registered with the provided ID
+		 */
+
+		createEnvironment : function (id) {
+			id = id || this._defaultEnvironmentID;
+
+			if (!this._environments[id]) {
+				throw new Error("Unknown Environment ID");
+			}
+			//else
+			return this._environments[id].clone();
+		},
+
+		Environment : Environment,
+
+		/**
+		 * Registers the provided {@link Environment} with the provided ID.
+		 * 
+		 * @param {String} id The ID of the environment
+		 * @param {Environment} env The environment to register
+		 */
+
+		registerEnvironment : function (id, env) {
+			id = id || (env || 0)._id;
+			if (id && !this._environments[id] && env instanceof Environment) {
+				env._id = id;
+				this._environments[id] = env;
+			}
+		},
+
+		/**
+		 * Sets which registered ID is the default environment.
+		 * 
+		 * @param {String} id The ID of the registered environment that is default
+		 * @throws {Error} If there is no registered environment with the provided ID
+		 */
+
+		setDefaultEnvironmentID : function (id) {
+			if (typeof id === "string") {
+				if (!this._environments[id]) {
+					throw new Error("Unknown Environment ID");
+				}
+
+				this._defaultEnvironmentID = id;
+			}
+		},
+
+		/**
+		 * Returns the ID of the default environment.
+		 * 
+		 * @returns {String} The ID of the default environment
+		 */
+
+		getDefaultEnvironmentID : function () {
+			return this._defaultEnvironmentID;
+		},
+
+		//
+		// Utility Functions
+		//
+
+		/**
+		 * Returns the name of the type of the provided value.
+		 *
+		 * @event //utility
+		 * @param {Any} o The value to determine the type of
+		 * @returns {String} The name of the type of the value
+		 */
+		typeOf : typeOf,
+
+		/**
+		 * Return a new object that inherits all of the properties of the provided object.
+		 *
+		 * @event //utility
+		 * @param {Object} proto The prototype of the new object
+		 * @returns {Object} A new object that inherits all of the properties of the provided object
+		 */
+		createObject : createObject,
+
+		/**
+		 * Returns a new object with each property transformed by the iterator.
+		 *
+		 * @event //utility
+		 * @param {Object} obj The object to transform
+		 * @param {Function} iterator A function that returns the new value of the provided property
+		 * @param {Object} [scope] The value of <code>this</code> in the iterator
+		 * @returns {Object} A new object with each property transformed
+		 */
+		mapObject : mapObject,
+
+		/**
+		 * Returns a new array with each item transformed by the iterator.
+		 * 
+		 * @event //utility
+		 * @param {Array} arr The array to transform
+		 * @param {Function} iterator A function that returns the new value of the provided item
+		 * @param {Object} scope The value of <code>this</code> in the iterator
+		 * @returns {Array} A new array with each item transformed
+		 */
+		mapArray : mapArray,
+
+		/**
+		 * Returns a new array that only contains the items allowed by the iterator.
+		 *
+		 * @event //utility
+		 * @param {Array} arr The array to filter
+		 * @param {Function} iterator The function that returns true if the provided property should be added to the array
+		 * @param {Object} scope The value of <code>this</code> within the iterator
+		 * @returns {Array} A new array that contains the items allowed by the iterator
+		 */
+		filterArray : filterArray,
+
+		/**
+		 * Returns the first index in the array that the provided item is located at.
+		 *
+		 * @event //utility
+		 * @param {Array} arr The array to search
+		 * @param {Any} o The item being searched for
+		 * @returns {Number} The index of the item in the array, or <code>-1</code> if not found
+		 */
+		searchArray : searchArray,
+
+		/**
+		 * Returns an array representation of a value.
+		 * <ul>
+		 * <li>For array-like objects, the value will be casted as an Array type.</li>
+		 * <li>If an array is provided, the function will simply return the same array.</li>
+		 * <li>For a null or undefined value, the result will be an empty Array.</li>
+		 * <li>For all other values, the value will be the first element in a new Array. </li>
+		 * </ul>
+		 *
+		 * @event //utility
+		 * @param {Any} o The value to convert into an array
+		 * @returns {Array} The value as an array
+		 */
+		toArray : toArray,
+
+		/**
+		 * Returns an array of the names of all properties of an object.
+		 * 
+		 * @event //utility
+		 * @param {Object|Array} o The object in question
+		 * @returns {Array} The names of all properties
+		 */
+		keys : keys,
+
+		/**
+		 * Mutates the array by pushing the provided value onto the array only if it is not already there.
+		 *
+		 * @event //utility
+		 * @param {Array} arr The array to modify
+		 * @param {Any} o The object to add to the array if it is not already there
+		 * @returns {Array} The provided array for chaining
+		 */
+		pushUnique : pushUnique,
+
+		/**
+		 * Mutates the array by removing the first item that matches the provided value in the array.
+		 *
+		 * @event //utility
+		 * @param {Array} arr The array to modify
+		 * @param {Any} o The object to remove from the array
+		 * @returns {Array} The provided array for chaining
+		 */
+		popFirst : popFirst,
+
+		/**
+		 * Creates a copy of the target object.
+		 * <p>
+		 * This method will create a new instance of the target, and then mixin the properties of the target.
+		 * If <code>deep</code> is <code>true</code>, then each property will be cloned before mixin.
+		 * </p>
+		 * <p><b>Warning</b>: This is not a generic clone function, as it will only properly clone objects and arrays.</p>
+		 * 
+		 * @event //utility
+		 * @param {Any} o The value to clone 
+		 * @param {Boolean} [deep=false] If each property should be recursively cloned
+		 * @returns A cloned copy of the provided value
+		 */
+		clone : clone,
+
+		/**
+		 * Generates a pseudo-random UUID.
+		 * 
+		 * @event //utility
+		 * @returns {String} A new universally unique ID
+		 */
+		randomUUID : randomUUID,
+
+		/**
+		 * Properly escapes a URI component for embedding into a URI string.
+		 * 
+		 * @event //utility
+		 * @param {String} str The URI component to escape
+		 * @returns {String} The escaped URI component
+		 */
+		escapeURIComponent : escapeURIComponent,
+
+		/**
+		 * Returns a URI that is formated for JSV. Currently, this only ensures that the URI ends with a hash tag (<code>#</code>).
+		 * 
+		 * @event //utility
+		 * @param {String} uri The URI to format
+		 * @returns {String} The URI formatted for JSV
+		 */
+		formatURI : formatURI,
+
+		/**
+		 * Merges two schemas/instance together.
+		 * 
+		 * @event //utility
+		 * @param {JSONSchema|Any} base The old value to merge
+		 * @param {JSONSchema|Any} extra The new value to merge
+		 * @param {Boolean} extension If the merge is a JSON Schema extension
+		 * @return {Any} The modified base value
+		 */
+
+		inherits : inherits
+	};
+
+	this.JSV = JSV;  //set global object
+	exports.JSV = JSV;  //export to CommonJS
+
+	require("./environments");  //load default environments
+
+}());
+
+
+
+
+
+/**
+ * json-schema-draft-03 Environment
+ * 
+ * @fileOverview Implementation of the third revision of the JSON Schema specification draft.
+ * @author <a href="mailto:gary.court@gmail.com">Gary Court</a>
+ * @version 1.3
+ * @see http://github.com/garycourt/JSV
+ */
+
+/*
+ * Copyright 2010 Gary Court. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, are
+ * permitted provided that the following conditions are met:
+ * 
+ *    1. Redistributions of source code must retain the above copyright notice, this list of
+ *       conditions and the following disclaimer.
+ * 
+ *    2. Redistributions in binary form must reproduce the above copyright notice, this list
+ *       of conditions and the following disclaimer in the documentation and/or other materials
+ *       provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY GARY COURT ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL GARY COURT OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * The views and conclusions contained in the software and documentation are those of the
+ * authors and should not be interpreted as representing official policies, either expressed
+ * or implied, of Gary Court or the JSON Schema specification.
+ */
+
+/*jslint white: true, sub: true, onevar: true, undef: true, eqeqeq: true, newcap: true, immed: true, indent: 4 */
+/*global require */
+
+(function () {
+	var O = {},
+		JSV = require('./jsv').JSV,
+		InitializationError,
+		TYPE_VALIDATORS,
+		ENVIRONMENT,
+		SCHEMA_00_JSON,
+		HYPERSCHEMA_00_JSON,
+		LINKS_00_JSON, 
+		SCHEMA_00,
+		HYPERSCHEMA_00,
+		LINKS_00, 
+		SCHEMA_01_JSON,
+		HYPERSCHEMA_01_JSON,
+		LINKS_01_JSON, 
+		SCHEMA_01,
+		HYPERSCHEMA_01,
+		LINKS_01, 
+		SCHEMA_02_JSON,
+		HYPERSCHEMA_02_JSON,
+		LINKS_02_JSON,
+		SCHEMA_02,
+		HYPERSCHEMA_02,
+		LINKS_02, 
+		SCHEMA_03_JSON,
+		HYPERSCHEMA_03_JSON,
+		LINKS_03_JSON,
+		SCHEMA_03,
+		HYPERSCHEMA_03,
+		LINKS_03;
+
+	InitializationError = function InitializationError(instance, schema, attr, message, details) {
+		Error.call(this, message);
+
+		this.uri = instance.getURI();
+		this.schemaUri = schema.getURI();
+		this.attribute = attr;
+		this.message = message;
+		this.description = message;  //IE
+		this.details = details;
+	}
+	InitializationError.prototype = new Error();
+	InitializationError.prototype.constructor = InitializationError;
+	InitializationError.prototype.name = "InitializationError";
+
+	TYPE_VALIDATORS = {
+		"string" : function (instance, report) {
+			return instance.getType() === "string";
+		},
+
+		"number" : function (instance, report) {
+			return instance.getType() === "number";
+		},
+
+		"integer" : function (instance, report) {
+			return instance.getType() === "number" && instance.getValue() % 1 === 0;
+		},
+
+		"boolean" : function (instance, report) {
+			return instance.getType() === "boolean";
+		},
+
+		"object" : function (instance, report) {
+			return instance.getType() === "object";
+		},
+
+		"array" : function (instance, report) {
+			return instance.getType() === "array";
+		},
+
+		"null" : function (instance, report) {
+			return instance.getType() === "null";
+		},
+
+		"any" : function (instance, report) {
+			return true;
+		}
+	};
+
+	ENVIRONMENT = new JSV.Environment();
+	ENVIRONMENT.setOption("strict", false);
+	ENVIRONMENT.setOption("validateReferences", false);  //updated later
+
+	//
+	// draft-00
+	//
+
+	SCHEMA_00_JSON = {
+		"$schema" : "http://json-schema.org/draft-00/hyper-schema#",
+		"id" : "http://json-schema.org/draft-00/schema#",
+		"type" : "object",
+
+		"properties" : {
+			"type" : {
+				"type" : ["string", "array"],
+				"items" : {
+					"type" : ["string", {"$ref" : "#"}]
+				},
+				"optional" : true,
+				"uniqueItems" : true,
+				"default" : "any",
+
+				"parser" : function (instance, self) {
+					var parser;
+
+					if (instance.getType() === "string") {
+						return instance.getValue();
+					} else if (instance.getType() === "object") {
+						return instance.getEnvironment().createSchema(
+							instance, 
+							self.getEnvironment().findSchema(self.resolveURI("#"))
+						);
+					} else if (instance.getType() === "array") {
+						parser = self.getValueOfProperty("parser");
+						return JSV.mapArray(instance.getProperties(), function (prop) {
+							return parser(prop, self);
+						});
+					}
+					//else
+					return "any";
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var requiredTypes = JSV.toArray(schema.getAttribute("type")),
+						x, xl, type, subreport, typeValidators;
+
+					//for instances that are required to be a certain type
+					if (instance.getType() !== "undefined" && requiredTypes && requiredTypes.length) {
+						typeValidators = self.getValueOfProperty("typeValidators") || {};
+
+						//ensure that type matches for at least one of the required types
+						for (x = 0, xl = requiredTypes.length; x < xl; ++x) {
+							type = requiredTypes[x];
+							if (JSV.isJSONSchema(type)) {
+								subreport = JSV.createObject(report);
+								subreport.errors = [];
+								subreport.validated = JSV.clone(report.validated);
+								if (type.validate(instance, subreport, parent, parentSchema, name).errors.length === 0) {
+									return true;  //instance matches this schema
+								}
+							} else {
+								if (typeValidators[type] !== O[type] && typeof typeValidators[type] === "function") {
+									if (typeValidators[type](instance, report)) {
+										return true;  //type is valid
+									}
+								} else {
+									return true;  //unknown types are assumed valid
+								}
+							}
+						}
+
+						//if we get to this point, type is invalid
+						report.addError(instance, schema, "type", "Instance is not a required type", requiredTypes);
+						return false;
+					}
+					//else, anything is allowed if no type is specified
+					return true;
+				},
+
+				"typeValidators" : TYPE_VALIDATORS
+			},
+
+			"properties" : {
+				"type" : "object",
+				"additionalProperties" : {"$ref" : "#"},
+				"optional" : true,
+				"default" : {},
+
+				"parser" : function (instance, self, arg) {
+					var env = instance.getEnvironment(),
+						selfEnv = self.getEnvironment();
+					if (instance.getType() === "object") {
+						if (arg) {
+							return env.createSchema(instance.getProperty(arg), selfEnv.findSchema(self.resolveURI("#")));
+						} else {
+							return JSV.mapObject(instance.getProperties(), function (instance) {
+								return env.createSchema(instance, selfEnv.findSchema(self.resolveURI("#")));
+							});
+						}
+					}
+					//else
+					return {};
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var propertySchemas, key;
+					//this attribute is for object type instances only
+					if (instance.getType() === "object") {
+						//for each property defined in the schema
+						propertySchemas = schema.getAttribute("properties");
+						for (key in propertySchemas) {
+							if (propertySchemas[key] !== O[key] && propertySchemas[key]) {
+								//ensure that instance property is valid
+								propertySchemas[key].validate(instance.getProperty(key), report, instance, schema, key);
+							}
+						}
+					}
+				}
+			},
+
+			"items" : {
+				"type" : [{"$ref" : "#"}, "array"],
+				"items" : {"$ref" : "#"},
+				"optional" : true,
+				"default" : {},
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "object") {
+						return instance.getEnvironment().createSchema(instance, self.getEnvironment().findSchema(self.resolveURI("#")));
+					} else if (instance.getType() === "array") {
+						return JSV.mapArray(instance.getProperties(), function (instance) {
+							return instance.getEnvironment().createSchema(instance, self.getEnvironment().findSchema(self.resolveURI("#")));
+						});
+					}
+					//else
+					return instance.getEnvironment().createEmptySchema();
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var properties, items, x, xl, itemSchema, additionalProperties;
+
+					if (instance.getType() === "array") {
+						properties = instance.getProperties();
+						items = schema.getAttribute("items");
+						additionalProperties = schema.getAttribute("additionalProperties");
+
+						if (JSV.typeOf(items) === "array") {
+							for (x = 0, xl = properties.length; x < xl; ++x) {
+								itemSchema = items[x] || additionalProperties;
+								if (itemSchema !== false) {
+									itemSchema.validate(properties[x], report, instance, schema, x);
+								} else {
+									report.addError(instance, schema, "additionalProperties", "Additional items are not allowed", itemSchema);
+								}
+							}
+						} else {
+							itemSchema = items || additionalProperties;
+							for (x = 0, xl = properties.length; x < xl; ++x) {
+								itemSchema.validate(properties[x], report, instance, schema, x);
+							}
+						}
+					}
+				}
+			},
+
+			"optional" : {
+				"type" : "boolean",
+				"optional" : true,
+				"default" : false,
+
+				"parser" : function (instance, self) {
+					return !!instance.getValue();
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					if (instance.getType() === "undefined" && !schema.getAttribute("optional")) {
+						report.addError(instance, schema, "optional", "Property is required", false);
+					}
+				},
+
+				"validationRequired" : true
+			},
+
+			"additionalProperties" : {
+				"type" : [{"$ref" : "#"}, "boolean"],
+				"optional" : true,
+				"default" : {},
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "object") {
+						return instance.getEnvironment().createSchema(instance, self.getEnvironment().findSchema(self.resolveURI("#")));
+					} else if (instance.getType() === "boolean" && instance.getValue() === false) {
+						return false;
+					}
+					//else
+					return instance.getEnvironment().createEmptySchema();
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var additionalProperties, propertySchemas, properties, key;
+					//we only need to check against object types as arrays do their own checking on this property
+					if (instance.getType() === "object") {
+						additionalProperties = schema.getAttribute("additionalProperties");
+						propertySchemas = schema.getAttribute("properties") || {};
+						properties = instance.getProperties();
+						for (key in properties) {
+							if (properties[key] !== O[key] && properties[key] && propertySchemas[key] === O[key]) {
+								if (JSV.isJSONSchema(additionalProperties)) {
+									additionalProperties.validate(properties[key], report, instance, schema, key);
+								} else if (additionalProperties === false) {
+									report.addError(instance, schema, "additionalProperties", "Additional properties are not allowed", additionalProperties);
+								}
+							}
+						}
+					}
+				}
+			},
+
+			"requires" : {
+				"type" : ["string", {"$ref" : "#"}],
+				"optional" : true,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "string") {
+						return instance.getValue();
+					} else if (instance.getType() === "object") {
+						return instance.getEnvironment().createSchema(instance, self.getEnvironment().findSchema(self.resolveURI("#")));
+					}
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var requires;
+					if (instance.getType() !== "undefined" && parent && parent.getType() !== "undefined") {
+						requires = schema.getAttribute("requires");
+						if (typeof requires === "string") {
+							if (parent.getProperty(requires).getType() === "undefined") {
+								report.addError(instance, schema, "requires", 'Property requires sibling property "' + requires + '"', requires);
+							}
+						} else if (JSV.isJSONSchema(requires)) {
+							requires.validate(parent, report);  //WATCH: A "requires" schema does not support the "requires" attribute
+						}
+					}
+				}
+			},
+
+			"minimum" : {
+				"type" : "number",
+				"optional" : true,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "number") {
+						return instance.getValue();
+					}
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var minimum, minimumCanEqual;
+					if (instance.getType() === "number") {
+						minimum = schema.getAttribute("minimum");
+						minimumCanEqual = schema.getAttribute("minimumCanEqual");
+						if (typeof minimum === "number" && (instance.getValue() < minimum || (minimumCanEqual === false && instance.getValue() === minimum))) {
+							report.addError(instance, schema, "minimum", "Number is less then the required minimum value", minimum);
+						}
+					}
+				}
+			},
+
+			"maximum" : {
+				"type" : "number",
+				"optional" : true,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "number") {
+						return instance.getValue();
+					}
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var maximum, maximumCanEqual;
+					if (instance.getType() === "number") {
+						maximum = schema.getAttribute("maximum");
+						maximumCanEqual = schema.getAttribute("maximumCanEqual");
+						if (typeof maximum === "number" && (instance.getValue() > maximum || (maximumCanEqual === false && instance.getValue() === maximum))) {
+							report.addError(instance, schema, "maximum", "Number is greater then the required maximum value", maximum);
+						}
+					}
+				}
+			},
+
+			"minimumCanEqual" : {
+				"type" : "boolean",
+				"optional" : true,
+				"requires" : "minimum",
+				"default" : true,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "boolean") {
+						return instance.getValue();
+					}
+					//else
+					return true;
+				}
+			},
+
+			"maximumCanEqual" : {
+				"type" : "boolean",
+				"optional" : true,
+				"requires" : "maximum",
+				"default" : true,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "boolean") {
+						return instance.getValue();
+					}
+					//else
+					return true;
+				}
+			},
+
+			"minItems" : {
+				"type" : "integer",
+				"optional" : true,
+				"minimum" : 0,
+				"default" : 0,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "number") {
+						return instance.getValue();
+					}
+					//else
+					return 0;
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var minItems;
+					if (instance.getType() === "array") {
+						minItems = schema.getAttribute("minItems");
+						if (typeof minItems === "number" && instance.getProperties().length < minItems) {
+							report.addError(instance, schema, "minItems", "The number of items is less then the required minimum", minItems);
+						}
+					}
+				}
+			},
+
+			"maxItems" : {
+				"type" : "integer",
+				"optional" : true,
+				"minimum" : 0,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "number") {
+						return instance.getValue();
+					}
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var maxItems;
+					if (instance.getType() === "array") {
+						maxItems = schema.getAttribute("maxItems");
+						if (typeof maxItems === "number" && instance.getProperties().length > maxItems) {
+							report.addError(instance, schema, "maxItems", "The number of items is greater then the required maximum", maxItems);
+						}
+					}
+				}
+			},
+
+			"pattern" : {
+				"type" : "string",
+				"optional" : true,
+				"format" : "regex",
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "string") {
+						try {
+							return new RegExp(instance.getValue());
+						} catch (e) {
+							return e;
+						}
+					}
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var pattern;
+					try {
+						pattern = schema.getAttribute("pattern");
+						if (pattern instanceof Error) {
+							report.addError(schema, self, "pattern", "Invalid pattern", schema.getValueOfProperty("pattern"));
+						} else if (instance.getType() === "string" && pattern && !pattern.test(instance.getValue())) {
+							report.addError(instance, schema, "pattern", "String does not match pattern", pattern.toString());
+						}
+					} catch (e) {
+						report.addError(schema, self, "pattern", "Invalid pattern", schema.getValueOfProperty("pattern"));
+					}
+				}
+			},
+
+			"minLength" : {
+				"type" : "integer",
+				"optional" : true,
+				"minimum" : 0,
+				"default" : 0,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "number") {
+						return instance.getValue();
+					}
+					//else
+					return 0;
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var minLength;
+					if (instance.getType() === "string") {
+						minLength = schema.getAttribute("minLength");
+						if (typeof minLength === "number" && instance.getValue().length < minLength) {
+							report.addError(instance, schema, "minLength", "String is less then the required minimum length", minLength);
+						}
+					}
+				}
+			},
+
+			"maxLength" : {
+				"type" : "integer",
+				"optional" : true,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "number") {
+						return instance.getValue();
+					}
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var maxLength;
+					if (instance.getType() === "string") {
+						maxLength = schema.getAttribute("maxLength");
+						if (typeof maxLength === "number" && instance.getValue().length > maxLength) {
+							report.addError(instance, schema, "maxLength", "String is greater then the required maximum length", maxLength);
+						}
+					}
+				}
+			},
+
+			"enum" : {
+				"type" : "array",
+				"optional" : true,
+				"minItems" : 1,
+				"uniqueItems" : true,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "array") {
+						return instance.getValue();
+					}
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var enums, x, xl;
+					if (instance.getType() !== "undefined") {
+						enums = schema.getAttribute("enum");
+						if (enums) {
+							for (x = 0, xl = enums.length; x < xl; ++x) {
+								if (instance.equals(enums[x])) {
+									return true;
+								}
+							}
+							report.addError(instance, schema, "enum", "Instance is not one of the possible values", enums);
+						}
+					}
+				}
+			},
+
+			"title" : {
+				"type" : "string",
+				"optional" : true
+			},
+
+			"description" : {
+				"type" : "string",
+				"optional" : true
+			},
+
+			"format" : {
+				"type" : "string",
+				"optional" : true,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "string") {
+						return instance.getValue();
+					}
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var format, formatValidators;
+					if (instance.getType() === "string") {
+						format = schema.getAttribute("format");
+						formatValidators = self.getValueOfProperty("formatValidators");
+						if (typeof format === "string" && formatValidators[format] !== O[format] && typeof formatValidators[format] === "function" && !formatValidators[format].call(this, instance, report)) {
+							report.addError(instance, schema, "format", "String is not in the required format", format);
+						}
+					}
+				},
+
+				// JOSHFIRE: added a couple of format validators for "uri" and "email"
+				"formatValidators" : {
+					"uri": function (instance, report) {
+						// Regular expression from @diegoperini taken from:
+						// http://mathiasbynens.be/demo/url-regex
+						// ... and only slightly adjusted for use in JavaScript
+						var reUri = /^(?:(?:https?):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+\-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+\-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i;
+						return !!reUri.test(instance._value);
+					},
+					"email": function (instance, report) {
+						// Regular expression taken from:
+						// http://www.regular-expressions.info/email.html
+						var reEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+						return !!reEmail.test(instance._value);
+					}
+				}
+				// JOSHFIRE: end of custom code
+				// "formatValidators": {}
+			},
+
+			"contentEncoding" : {
+				"type" : "string",
+				"optional" : true
+			},
+
+			"default" : {
+				"type" : "any",
+				"optional" : true
+			},
+
+			"maxDecimal" : {
+				"type" : "integer",
+				"optional" : true,
+				"minimum" : 0,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "number") {
+						return instance.getValue();
+					}
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var maxDecimal, decimals;
+					if (instance.getType() === "number") {
+						maxDecimal = schema.getAttribute("maxDecimal");
+						if (typeof maxDecimal === "number") {
+							decimals = instance.getValue().toString(10).split('.')[1];
+							if (decimals && decimals.length > maxDecimal) {
+								report.addError(instance, schema, "maxDecimal", "The number of decimal places is greater then the allowed maximum", maxDecimal);
+							}
+						}
+					}
+				}
+			},
+
+			"disallow" : {
+				"type" : ["string", "array"],
+				"items" : {"type" : "string"},
+				"optional" : true,
+				"uniqueItems" : true,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "string" || instance.getType() === "array") {
+						return instance.getValue();
+					}
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var disallowedTypes = JSV.toArray(schema.getAttribute("disallow")),
+						x, xl, key, typeValidators, subreport;
+
+					//for instances that are required to be a certain type
+					if (instance.getType() !== "undefined" && disallowedTypes && disallowedTypes.length) {
+						typeValidators = self.getValueOfProperty("typeValidators") || {};
+
+						//ensure that type matches for at least one of the required types
+						for (x = 0, xl = disallowedTypes.length; x < xl; ++x) {
+							key = disallowedTypes[x];
+							if (JSV.isJSONSchema(key)) {  //this is supported draft-03 and on
+								subreport = JSV.createObject(report);
+								subreport.errors = [];
+								subreport.validated = JSV.clone(report.validated);
+								if (key.validate(instance, subreport, parent, parentSchema, name).errors.length === 0) {
+									//instance matches this schema
+									report.addError(instance, schema, "disallow", "Instance is a disallowed type", disallowedTypes);
+									return false;  
+								}
+							} else if (typeValidators[key] !== O[key] && typeof typeValidators[key] === "function") {
+								if (typeValidators[key](instance, report)) {
+									report.addError(instance, schema, "disallow", "Instance is a disallowed type", disallowedTypes);
+									return false;
+								}
+							} 
+							/*
+							else {
+								report.addError(instance, schema, "disallow", "Instance may be a disallowed type", disallowedTypes);
+								return false;
+							}
+							*/
+						}
+
+						//if we get to this point, type is valid
+						return true;
+					}
+					//else, everything is allowed if no disallowed types are specified
+					return true;
+				},
+
+				"typeValidators" : TYPE_VALIDATORS
+			},
+
+			"extends" : {
+				"type" : [{"$ref" : "#"}, "array"],
+				"items" : {"$ref" : "#"},
+				"optional" : true,
+				"default" : {},
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "object") {
+						return instance.getEnvironment().createSchema(instance, self.getEnvironment().findSchema(self.resolveURI("#")));
+					} else if (instance.getType() === "array") {
+						return JSV.mapArray(instance.getProperties(), function (instance) {
+							return instance.getEnvironment().createSchema(instance, self.getEnvironment().findSchema(self.resolveURI("#")));
+						});
+					}
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var extensions = schema.getAttribute("extends"), x, xl;
+					if (extensions) {
+						if (JSV.isJSONSchema(extensions)) {
+							extensions.validate(instance, report, parent, parentSchema, name);
+						} else if (JSV.typeOf(extensions) === "array") {
+							for (x = 0, xl = extensions.length; x < xl; ++x) {
+								extensions[x].validate(instance, report, parent, parentSchema, name);
+							}
+						}
+					}
+				}
+			}
+		},
+
+		"optional" : true,
+		"default" : {},
+		"fragmentResolution" : "dot-delimited",
+
+		"parser" : function (instance, self) {
+			if (instance.getType() === "object") {
+				return instance.getEnvironment().createSchema(instance, self);
+			}
+		},
+
+		"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+			var propNames = schema.getPropertyNames(), 
+				x, xl,
+				attributeSchemas = self.getAttribute("properties"),
+				strict = instance.getEnvironment().getOption("strict"),
+				validator;
+
+			for (x in attributeSchemas) {
+				if (attributeSchemas[x] !== O[x]) {
+					if (attributeSchemas[x].getValueOfProperty("validationRequired")) {
+						JSV.pushUnique(propNames, x);
+					}
+					if (strict && attributeSchemas[x].getValueOfProperty("deprecated")) {
+						JSV.popFirst(propNames, x);
+					}
+				}
+			}
+
+			for (x = 0, xl = propNames.length; x < xl; ++x) {
+				if (attributeSchemas[propNames[x]] !== O[propNames[x]]) {
+					validator = attributeSchemas[propNames[x]].getValueOfProperty("validator");
+					if (typeof validator === "function") {
+						validator(instance, schema, attributeSchemas[propNames[x]], report, parent, parentSchema, name);
+					}
+				}
+			}
+		}
+	};
+
+	HYPERSCHEMA_00_JSON = {
+		"$schema" : "http://json-schema.org/draft-00/hyper-schema#",
+		"id" : "http://json-schema.org/draft-00/hyper-schema#",
+
+		"properties" : {
+			"links" : {
+				"type" : "array",
+				"items" : {"$ref" : "links#"},
+				"optional" : true,
+
+				"parser" : function (instance, self, arg) {
+					var links,
+						linkSchemaURI = self.getValueOfProperty("items")["$ref"],
+						linkSchema = self.getEnvironment().findSchema(linkSchemaURI),
+						linkParser = linkSchema && linkSchema.getValueOfProperty("parser"),
+						selfReferenceVariable;
+					arg = JSV.toArray(arg);
+
+					if (typeof linkParser === "function") {
+						links = JSV.mapArray(instance.getProperties(), function (link) {
+							return linkParser(link, linkSchema);
+						});
+					} else {
+						links = JSV.toArray(instance.getValue());
+					}
+
+					if (arg[0]) {
+						links = JSV.filterArray(links, function (link) {
+							return link["rel"] === arg[0];
+						});
+					}
+
+					if (arg[1]) {
+						selfReferenceVariable = self.getValueOfProperty("selfReferenceVariable");
+						links = JSV.mapArray(links, function (link) {
+							var instance = arg[1],
+								href = link["href"];
+							href = href.replace(/\{(.+)\}/g, function (str, p1, offset, s) {
+								var value; 
+								if (p1 === selfReferenceVariable) {
+									value = instance.getValue();
+								} else {
+									value = instance.getValueOfProperty(p1);
+								}
+								return value !== undefined ? String(value) : "";
+							});
+							return href ? JSV.formatURI(instance.resolveURI(href)) : href;
+						});
+					}
+
+					return links;
+				},
+
+				"selfReferenceVariable" : "-this"
+			},
+
+			"fragmentResolution" : {
+				"type" : "string",
+				"optional" : true,
+				"default" : "dot-delimited"
+			},
+
+			"root" : {
+				"type" : "boolean",
+				"optional" : true,
+				"default" : false
+			},
+
+			"readonly" : {
+				"type" : "boolean",
+				"optional" : true,
+				"default" : false
+			},
+
+			"pathStart" : {
+				"type" : "string",
+				"optional" : true,
+				"format" : "uri",
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var pathStart;
+					if (instance.getType() !== "undefined") {
+						pathStart = schema.getAttribute("pathStart");
+						if (typeof pathStart === "string") {
+							//TODO: Find out what pathStart is relative to
+							if (instance.getURI().indexOf(pathStart) !== 0) {
+								report.addError(instance, schema, "pathStart", "Instance's URI does not start with " + pathStart, pathStart);
+							}
+						}
+					}
+				}
+			},
+
+			"mediaType" : {
+				"type" : "string",
+				"optional" : true,
+				"format" : "media-type"
+			},
+
+			"alternate" : {
+				"type" : "array",
+				"items" : {"$ref" : "#"},
+				"optional" : true
+			}
+		},
+
+		"links" : [
+			{
+				"href" : "{$ref}",
+				"rel" : "full"
+			},
+
+			{
+				"href" : "{$schema}",
+				"rel" : "describedby"
+			},
+
+			{
+				"href" : "{id}",
+				"rel" : "self"
+			}
+		],
+
+		"initializer" : function (instance) {
+			var link, extension, extended;
+
+			//if there is a link to a different schema, update instance
+			link = instance._schema.getLink("describedby", instance);
+			if (link && instance._schema._uri !== link) {
+				if (instance._env._schemas[link]) {
+					instance._schema = instance._env._schemas[link];
+					initializer = instance._schema.getValueOfProperty("initializer");
+					if (typeof initializer === "function") {
+						return initializer(instance);  //this function will finish initialization
+					} else {
+						return instance;  //no further initialization
+					}
+				} else if (instance._env._options["validateReferences"]) {
+					throw new InitializationError(instance, instance._schema, "{link:describedby}", "Unknown schema reference", link);
+				}
+			}
+
+			//if there is a link to the full representation, replace instance
+			link = instance._schema.getLink("full", instance);
+			if (link && instance._uri !== link) {
+				if (instance._env._schemas[link]) {
+					instance = instance._env._schemas[link];
+					return instance;  //retrieved schemas are guaranteed to be initialized
+				} else if (instance._env._options["validateReferences"]) {
+					throw new InitializationError(instance, instance._schema, "{link:full}", "Unknown schema reference", link);
+				}
+			}
+
+			//extend schema
+			extension = instance.getAttribute("extends");
+			if (JSV.isJSONSchema(extension)) {
+				extended = JSV.inherits(extension, instance, true);
+				instance = instance._env.createSchema(extended, instance._schema, instance._uri);
+			}
+
+			//if instance has a URI link to itself, update it's own URI
+			link = instance._schema.getLink("self", instance);
+			if (JSV.typeOf(link) === "string") {
+				instance._uri = JSV.formatURI(link);
+			}
+
+			return instance;
+		}
+
+		//not needed as JSV.inherits does the job for us
+		//"extends" : {"$ref" : "http://json-schema.org/schema#"}
+	};
+
+	LINKS_00_JSON = {
+		"$schema" : "http://json-schema.org/draft-00/hyper-schema#",
+		"id" : "http://json-schema.org/draft-00/links#",
+		"type" : "object",
+
+		"properties" : {
+			"href" : {
+				"type" : "string"
+			},
+
+			"rel" : {
+				"type" : "string"
+			},
+
+			"method" : {
+				"type" : "string",
+				"default" : "GET",
+				"optional" : true
+			},
+
+			"enctype" : {
+				"type" : "string",
+				"requires" : "method",
+				"optional" : true
+			},
+
+			"properties" : {
+				"type" : "object",
+				"additionalProperties" : {"$ref" : "hyper-schema#"},
+				"optional" : true,
+
+				"parser" : function (instance, self, arg) {
+					var env = instance.getEnvironment(),
+						selfEnv = self.getEnvironment(),
+						additionalPropertiesSchemaURI = self.getValueOfProperty("additionalProperties")["$ref"];
+					if (instance.getType() === "object") {
+						if (arg) {
+							return env.createSchema(instance.getProperty(arg), selfEnv.findSchema(self.resolveURI(additionalPropertiesSchemaURI)));
+						} else {
+							return JSV.mapObject(instance.getProperties(), function (instance) {
+								return env.createSchema(instance, selfEnv.findSchema(self.resolveURI(additionalPropertiesSchemaURI)));
+							});
+						}
+					}
+				}
+			}
+		},
+
+		"parser" : function (instance, self) {
+			var selfProperties = self.getProperty("properties");
+			if (instance.getType() === "object") {
+				return JSV.mapObject(instance.getProperties(), function (property, key) {
+					var propertySchema = selfProperties.getProperty(key),
+						parser = propertySchema && propertySchema.getValueOfProperty("parser");
+					if (typeof parser === "function") {
+						return parser(property, propertySchema);
+					}
+					//else
+					return property.getValue();
+				});
+			}
+			return instance.getValue();
+		}
+	};
+
+	ENVIRONMENT.setOption("defaultFragmentDelimiter", ".");
+	ENVIRONMENT.setOption("defaultSchemaURI", "http://json-schema.org/draft-00/schema#");  //updated later
+
+	SCHEMA_00 = ENVIRONMENT.createSchema(SCHEMA_00_JSON, true, "http://json-schema.org/draft-00/schema#");
+	HYPERSCHEMA_00 = ENVIRONMENT.createSchema(JSV.inherits(SCHEMA_00, ENVIRONMENT.createSchema(HYPERSCHEMA_00_JSON, true, "http://json-schema.org/draft-00/hyper-schema#"), true), true, "http://json-schema.org/draft-00/hyper-schema#");
+
+	ENVIRONMENT.setOption("defaultSchemaURI", "http://json-schema.org/draft-00/hyper-schema#");
+
+	LINKS_00 = ENVIRONMENT.createSchema(LINKS_00_JSON, HYPERSCHEMA_00, "http://json-schema.org/draft-00/links#");
+
+	//We need to reinitialize these 3 schemas as they all reference each other
+	SCHEMA_00 = ENVIRONMENT.createSchema(SCHEMA_00.getValue(), HYPERSCHEMA_00, "http://json-schema.org/draft-00/schema#");
+	HYPERSCHEMA_00 = ENVIRONMENT.createSchema(HYPERSCHEMA_00.getValue(), HYPERSCHEMA_00, "http://json-schema.org/draft-00/hyper-schema#");
+	LINKS_00 = ENVIRONMENT.createSchema(LINKS_00.getValue(), HYPERSCHEMA_00, "http://json-schema.org/draft-00/links#");
+
+	//
+	// draft-01
+	//
+
+	SCHEMA_01_JSON = JSV.inherits(SCHEMA_00_JSON, {
+		"$schema" : "http://json-schema.org/draft-01/hyper-schema#",
+		"id" : "http://json-schema.org/draft-01/schema#"
+	});
+
+	HYPERSCHEMA_01_JSON = JSV.inherits(HYPERSCHEMA_00_JSON, {
+		"$schema" : "http://json-schema.org/draft-01/hyper-schema#",
+		"id" : "http://json-schema.org/draft-01/hyper-schema#"
+	});
+
+	LINKS_01_JSON = JSV.inherits(LINKS_00_JSON, {
+		"$schema" : "http://json-schema.org/draft-01/hyper-schema#",
+		"id" : "http://json-schema.org/draft-01/links#"
+	});
+
+	ENVIRONMENT.setOption("defaultSchemaURI", "http://json-schema.org/draft-01/schema#");  //update later
+
+	SCHEMA_01 = ENVIRONMENT.createSchema(SCHEMA_01_JSON, true, "http://json-schema.org/draft-01/schema#");
+	HYPERSCHEMA_01 = ENVIRONMENT.createSchema(JSV.inherits(SCHEMA_01, ENVIRONMENT.createSchema(HYPERSCHEMA_01_JSON, true, "http://json-schema.org/draft-01/hyper-schema#"), true), true, "http://json-schema.org/draft-01/hyper-schema#");
+
+	ENVIRONMENT.setOption("defaultSchemaURI", "http://json-schema.org/draft-01/hyper-schema#");
+
+	LINKS_01 = ENVIRONMENT.createSchema(LINKS_01_JSON, HYPERSCHEMA_01, "http://json-schema.org/draft-01/links#");
+
+	//We need to reinitialize these 3 schemas as they all reference each other
+	SCHEMA_01 = ENVIRONMENT.createSchema(SCHEMA_01.getValue(), HYPERSCHEMA_01, "http://json-schema.org/draft-01/schema#");
+	HYPERSCHEMA_01 = ENVIRONMENT.createSchema(HYPERSCHEMA_01.getValue(), HYPERSCHEMA_01, "http://json-schema.org/draft-01/hyper-schema#");
+	LINKS_01 = ENVIRONMENT.createSchema(LINKS_01.getValue(), HYPERSCHEMA_01, "http://json-schema.org/draft-01/links#");
+
+	//
+	// draft-02
+	//
+
+	SCHEMA_02_JSON = JSV.inherits(SCHEMA_01_JSON, {
+		"$schema" : "http://json-schema.org/draft-02/hyper-schema#",
+		"id" : "http://json-schema.org/draft-02/schema#",
+
+		"properties" : {
+			"uniqueItems" : {
+				"type" : "boolean",
+				"optional" : true,
+				"default" : false,
+
+				"parser" : function (instance, self) {
+					return !!instance.getValue();
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var value, x, xl, y, yl;
+					if (instance.getType() === "array" && schema.getAttribute("uniqueItems")) {
+						value = instance.getProperties();
+						for (x = 0, xl = value.length - 1; x < xl; ++x) {
+							for (y = x + 1, yl = value.length; y < yl; ++y) {
+								if (value[x].equals(value[y])) {
+									report.addError(instance, schema, "uniqueItems", "Array can only contain unique items", { x : x, y : y });
+								}
+							}
+						}
+					}
+				}
+			},
+
+			"maxDecimal" : {
+				"deprecated" : true
+			},
+
+			"divisibleBy" : {
+				"type" : "number",
+				"minimum" : 0,
+				"minimumCanEqual" : false,
+				"optional" : true,
+
+				"parser" : function (instance, self) {
+					if (instance.getType() === "number") {
+						return instance.getValue();
+					}
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var divisor;
+					if (instance.getType() === "number") {
+						divisor = schema.getAttribute("divisibleBy");
+						if (divisor === 0) {
+							report.addError(instance, schema, "divisibleBy", "Nothing is divisible by 0", divisor);
+						} else if (divisor !== 1 && ((instance.getValue() / divisor) % 1) !== 0) {
+							report.addError(instance, schema, "divisibleBy", "Number is not divisible by " + divisor, divisor);
+						}
+					}
+				}
+			}
+		},
+
+		"fragmentResolution" : "slash-delimited"
+	});
+
+	HYPERSCHEMA_02_JSON = JSV.inherits(HYPERSCHEMA_01_JSON, {
+		"id" : "http://json-schema.org/draft-02/hyper-schema#",
+
+		"properties" : {
+			"fragmentResolution" : {
+				"default" : "slash-delimited"
+			}
+		}
+	});
+
+	LINKS_02_JSON = JSV.inherits(LINKS_01_JSON, {
+		"$schema" : "http://json-schema.org/draft-02/hyper-schema#",
+		"id" : "http://json-schema.org/draft-02/links#",
+
+		"properties" : {
+			"targetSchema" : {
+				"$ref" : "hyper-schema#",
+
+				//need this here because parsers are run before links are resolved
+				"parser" : HYPERSCHEMA_01.getAttribute("parser")
+			}
+		}
+	});
+
+	ENVIRONMENT.setOption("defaultFragmentDelimiter", "/");
+	ENVIRONMENT.setOption("defaultSchemaURI", "http://json-schema.org/draft-02/schema#");  //update later
+
+	SCHEMA_02 = ENVIRONMENT.createSchema(SCHEMA_02_JSON, true, "http://json-schema.org/draft-02/schema#");
+	HYPERSCHEMA_02 = ENVIRONMENT.createSchema(JSV.inherits(SCHEMA_02, ENVIRONMENT.createSchema(HYPERSCHEMA_02_JSON, true, "http://json-schema.org/draft-02/hyper-schema#"), true), true, "http://json-schema.org/draft-02/hyper-schema#");
+
+	ENVIRONMENT.setOption("defaultSchemaURI", "http://json-schema.org/draft-02/hyper-schema#");
+
+	LINKS_02 = ENVIRONMENT.createSchema(LINKS_02_JSON, HYPERSCHEMA_02, "http://json-schema.org/draft-02/links#");
+
+	//We need to reinitialize these 3 schemas as they all reference each other
+	SCHEMA_02 = ENVIRONMENT.createSchema(SCHEMA_02.getValue(), HYPERSCHEMA_02, "http://json-schema.org/draft-02/schema#");
+	HYPERSCHEMA_02 = ENVIRONMENT.createSchema(HYPERSCHEMA_02.getValue(), HYPERSCHEMA_02, "http://json-schema.org/draft-02/hyper-schema#");
+	LINKS_02 = ENVIRONMENT.createSchema(LINKS_02.getValue(), HYPERSCHEMA_02, "http://json-schema.org/draft-02/links#");
+
+	//
+	// draft-03
+	//
+
+	function getMatchedPatternProperties(instance, schema, report, self) {
+		var matchedProperties = {}, patternProperties, pattern, regexp, properties, key;
+
+		if (instance.getType() === "object") {
+			patternProperties = schema.getAttribute("patternProperties");
+			properties = instance.getProperties();
+			for (pattern in patternProperties) {
+				if (patternProperties[pattern] !== O[pattern]) {
+					regexp = null;
+					try {
+						regexp = new RegExp(pattern);
+					} catch (e) {
+						if (report) {
+							report.addError(schema, self, "patternProperties", "Invalid pattern", pattern);
+						}
+					}
+
+					if (regexp) {
+						for (key in properties) {
+							if (properties[key] !== O[key]  && regexp.test(key)) {
+								matchedProperties[key] = matchedProperties[key] ? JSV.pushUnique(matchedProperties[key], patternProperties[pattern]) : [ patternProperties[pattern] ];
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return matchedProperties;
+	}
+
+	SCHEMA_03_JSON = JSV.inherits(SCHEMA_02_JSON, {
+		"$schema" : "http://json-schema.org/draft-03/schema#",
+		"id" : "http://json-schema.org/draft-03/schema#",
+
+		"properties" : {
+			"patternProperties" : {
+				"type" : "object",
+				"additionalProperties" : {"$ref" : "#"},
+				"default" : {},
+
+				"parser" : SCHEMA_02.getValueOfProperty("properties")["properties"]["parser"],
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var matchedProperties, key, x;
+					if (instance.getType() === "object") {
+						matchedProperties = getMatchedPatternProperties(instance, schema, report, self);
+						for (key in matchedProperties) {
+							if (matchedProperties[key] !== O[key]) {
+								x = matchedProperties[key].length;
+								while (x--) {
+									matchedProperties[key][x].validate(instance.getProperty(key), report, instance, schema, key);
+								}
+							}
+						}
+					}
+				}
+			},
+
+			"additionalProperties" : {
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var additionalProperties, propertySchemas, properties, matchedProperties, key;
+					if (instance.getType() === "object") {
+						additionalProperties = schema.getAttribute("additionalProperties");
+						propertySchemas = schema.getAttribute("properties") || {};
+						properties = instance.getProperties();
+						matchedProperties = getMatchedPatternProperties(instance, schema);
+						for (key in properties) {
+							if (properties[key] !== O[key] && properties[key] && propertySchemas[key] === O[key] && matchedProperties[key] === O[key]) {
+								if (JSV.isJSONSchema(additionalProperties)) {
+									additionalProperties.validate(properties[key], report, instance, schema, key);
+								} else if (additionalProperties === false) {
+									report.addError(instance, schema, "additionalProperties", "Additional properties are not allowed", additionalProperties);
+								}
+							}
+						}
+					}
+				}
+			},
+
+			"items" : {
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var properties, items, x, xl, itemSchema, additionalItems;
+
+					if (instance.getType() === "array") {
+						properties = instance.getProperties();
+						items = schema.getAttribute("items");
+						additionalItems = schema.getAttribute("additionalItems");
+
+						if (JSV.typeOf(items) === "array") {
+							for (x = 0, xl = properties.length; x < xl; ++x) {
+								itemSchema = items[x] || additionalItems;
+								if (itemSchema !== false) {
+									itemSchema.validate(properties[x], report, instance, schema, x);
+								} else {
+									report.addError(instance, schema, "additionalItems", "Additional items are not allowed", itemSchema);
+								}
+							}
+						} else {
+							itemSchema = items || additionalItems;
+							for (x = 0, xl = properties.length; x < xl; ++x) {
+								itemSchema.validate(properties[x], report, instance, schema, x);
+							}
+						}
+					}
+				}
+			},
+
+			"additionalItems" : {
+				"type" : [{"$ref" : "#"}, "boolean"],
+				"default" : {},
+
+				"parser" : SCHEMA_02.getValueOfProperty("properties")["additionalProperties"]["parser"],
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var additionalItems, properties, x, xl;
+					//only validate if the "items" attribute is undefined
+					if (instance.getType() === "array" && schema.getProperty("items").getType() === "undefined") {
+						additionalItems = schema.getAttribute("additionalItems");
+						properties = instance.getProperties();
+
+						if (additionalItems !== false) {
+							for (x = 0, xl = properties.length; x < xl; ++x) {
+								additionalItems.validate(properties[x], report, instance, schema, x);
+							}
+						} else if (properties.length) {
+							report.addError(instance, schema, "additionalItems", "Additional items are not allowed", additionalItems);
+						}
+					}
+				}
+			},
+
+			"optional" : {
+				"validationRequired" : false,
+				"deprecated" : true
+			},
+
+			"required" : {
+				"type" : "boolean",
+				"default" : false,
+
+				"parser" : function (instance, self) {
+					return !!instance.getValue();
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					if (instance.getType() === "undefined" && schema.getAttribute("required")) {
+						report.addError(instance, schema, "required", "Property is required", true);
+					}
+				}
+			},
+
+			"requires" : {
+				"deprecated" : true
+			},
+
+			"dependencies" : {
+				"type" : "object",
+				"additionalProperties" : {
+					"type" : ["string", "array", {"$ref" : "#"}],
+					"items" : {
+						"type" : "string"
+					}
+				},
+				"default" : {},
+
+				"parser" : function (instance, self, arg) {
+					function parseProperty(property) {
+						var type = property.getType();
+						if (type === "string" || type === "array") {
+							return property.getValue();
+						} else if (type === "object") {
+							return property.getEnvironment().createSchema(property, self.getEnvironment().findSchema(self.resolveURI("#")));
+						}
+					}
+
+					if (instance.getType() === "object") {
+						if (arg) {
+							return parseProperty(instance.getProperty(arg));
+						} else {
+							return JSV.mapObject(instance.getProperties(), parseProperty);
+						}
+					}
+					//else
+					return {};
+				},
+
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var dependencies, key, dependency, type, x, xl;
+					if (instance.getType() === "object") {
+						dependencies = schema.getAttribute("dependencies");
+						for (key in dependencies) {
+							if (dependencies[key] !== O[key] && instance.getProperty(key).getType() !== "undefined") {
+								dependency = dependencies[key];
+								type = JSV.typeOf(dependency);
+								if (type === "string") {
+									if (instance.getProperty(dependency).getType() === "undefined") {
+										report.addError(instance, schema, "dependencies", 'Property "' + key + '" requires sibling property "' + dependency + '"', dependencies);
+									}
+								} else if (type === "array") {
+									for (x = 0, xl = dependency.length; x < xl; ++x) {
+										if (instance.getProperty(dependency[x]).getType() === "undefined") {
+											report.addError(instance, schema, "dependencies", 'Property "' + key + '" requires sibling property "' + dependency[x] + '"', dependencies);
+										}
+									}
+								} else if (JSV.isJSONSchema(dependency)) {
+									dependency.validate(instance, report);
+								}
+							}
+						}
+					}
+				}
+			},
+
+			"minimumCanEqual" : {
+				"deprecated" : true
+			},
+
+			"maximumCanEqual" : {
+				"deprecated" : true
+			},
+
+			"exclusiveMinimum" : {
+				"type" : "boolean",
+				"default" : false,
+
+				"parser" : function (instance, self) {
+					return !!instance.getValue();
+				}
+			},
+
+			"exclusiveMaximum" : {
+				"type" : "boolean",
+				"default" : false,
+
+				"parser" : function (instance, self) {
+					return !!instance.getValue();
+				}
+			},
+
+			"minimum" : {
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var minimum, exclusiveMinimum;
+					if (instance.getType() === "number") {
+						minimum = schema.getAttribute("minimum");
+						exclusiveMinimum = schema.getAttribute("exclusiveMinimum") || (!instance.getEnvironment().getOption("strict") && !schema.getAttribute("minimumCanEqual"));
+						if (typeof minimum === "number" && (instance.getValue() < minimum || (exclusiveMinimum === true && instance.getValue() === minimum))) {
+							report.addError(instance, schema, "minimum", "Number is less then the required minimum value", minimum);
+						}
+					}
+				}
+			},
+
+			"maximum" : {
+				"validator" : function (instance, schema, self, report, parent, parentSchema, name) {
+					var maximum, exclusiveMaximum;
+					if (instance.getType() === "number") {
+						maximum = schema.getAttribute("maximum");
+						exclusiveMaximum = schema.getAttribute("exclusiveMaximum") || (!instance.getEnvironment().getOption("strict") && !schema.getAttribute("maximumCanEqual"));
+						if (typeof maximum === "number" && (instance.getValue() > maximum || (exclusiveMaximum === true && instance.getValue() === maximum))) {
+							report.addError(instance, schema, "maximum", "Number is greater then the required maximum value", maximum);
+						}
+					}
+				}
+			},
+
+			"contentEncoding" : {
+				"deprecated" : true
+			},
+
+			"divisibleBy" : {
+				"exclusiveMinimum" : true
+			},
+
+			"disallow" : {
+				"items" : {
+					"type" : ["string", {"$ref" : "#"}]
+				},
+
+				"parser" : SCHEMA_02_JSON["properties"]["type"]["parser"]
+			},
+
+			"id" : {
+				"type" : "string",
+				"format" : "uri"
+			},
+
+			"$ref" : {
+				"type" : "string",
+				"format" : "uri"
+			},
+
+			"$schema" : {
+				"type" : "string",
+				"format" : "uri"
+			}
+		},
+
+		"dependencies" : {
+			"exclusiveMinimum" : "minimum",
+			"exclusiveMaximum" : "maximum"
+		},
+
+		"initializer" : function (instance) {
+			var link, extension, extended,
+				schemaLink = instance.getValueOfProperty("$schema"),
+				refLink = instance.getValueOfProperty("$ref"),
+				idLink = instance.getValueOfProperty("id");
+
+			//if there is a link to a different schema, update instance
+			if (schemaLink) {
+				link = instance.resolveURI(schemaLink);
+				if (link && instance._schema._uri !== link) {
+					if (instance._env._schemas[link]) {
+						instance._schema = instance._env._schemas[link];
+						initializer = instance._schema.getValueOfProperty("initializer");
+						if (typeof initializer === "function") {
+							return initializer(instance);  //this function will finish initialization
+						} else {
+							return instance;  //no further initialization
+						}
+					} else if (instance._env._options["validateReferences"]) {
+						throw new InitializationError(instance, instance._schema, "$schema", "Unknown schema reference", link);
+					}
+				}
+			}
+
+			//if there is a link to the full representation, replace instance
+			if (refLink) {
+				link = instance.resolveURI(refLink);
+				if (link && instance._uri !== link) {
+					if (instance._env._schemas[link]) {
+						instance = instance._env._schemas[link];
+						return instance;  //retrieved schemas are guaranteed to be initialized
+					} else if (instance._env._options["validateReferences"]) {
+						throw new InitializationError(instance, instance._schema, "$ref", "Unknown schema reference", link);
+					}
+				}
+			}
+
+			//extend schema
+			extension = instance.getAttribute("extends");
+			if (JSV.isJSONSchema(extension)) {
+				extended = JSV.inherits(extension, instance, true);
+				instance = instance._env.createSchema(extended, instance._schema, instance._uri);
+			}
+
+			//if instance has a URI link to itself, update it's own URI
+			if (idLink) {
+				link = instance.resolveURI(idLink);
+				if (JSV.typeOf(link) === "string") {
+					instance._uri = JSV.formatURI(link);
+				}
+			}
+
+			return instance;
+		}
+	});
+
+	HYPERSCHEMA_03_JSON = JSV.inherits(HYPERSCHEMA_02_JSON, {
+		"$schema" : "http://json-schema.org/draft-03/hyper-schema#",
+		"id" : "http://json-schema.org/draft-03/hyper-schema#",
+
+		"properties" : {
+			"links" : {
+				"selfReferenceVariable" : "@"
+			},
+
+			"root" : {
+				"deprecated" : true
+			},
+
+			"contentEncoding" : {
+				"deprecated" : false  //moved from core to hyper
+			},
+
+			"alternate" : {
+				"deprecated" : true
+			}
+		}
+	});
+
+	LINKS_03_JSON = JSV.inherits(LINKS_02_JSON, {
+		"$schema" : "http://json-schema.org/draft-03/hyper-schema#",
+		"id" : "http://json-schema.org/draft-03/links#",
+
+		"properties" : {
+			"href" : {
+				"required" : true,
+				"format" : "link-description-object-template"
+			},
+
+			"rel" : {
+				"required" : true
+			},
+
+			"properties" : {
+				"deprecated" : true
+			},
+
+			"schema" : {"$ref" : "http://json-schema.org/draft-03/hyper-schema#"}
+		}
+	});
+
+	ENVIRONMENT.setOption("validateReferences", true);
+	ENVIRONMENT.setOption("defaultSchemaURI", "http://json-schema.org/draft-03/schema#");  //update later
+
+	//prevent reference errors
+	ENVIRONMENT.createSchema({}, true, "http://json-schema.org/draft-03/schema#");
+	ENVIRONMENT.createSchema({}, true, "http://json-schema.org/draft-03/hyper-schema#");
+	ENVIRONMENT.createSchema({}, true, "http://json-schema.org/draft-03/links#");
+
+	SCHEMA_03 = ENVIRONMENT.createSchema(SCHEMA_03_JSON, true, "http://json-schema.org/draft-03/schema#");
+	HYPERSCHEMA_03 = ENVIRONMENT.createSchema(JSV.inherits(SCHEMA_03, ENVIRONMENT.createSchema(HYPERSCHEMA_03_JSON, true, "http://json-schema.org/draft-03/hyper-schema#"), true), true, "http://json-schema.org/draft-03/hyper-schema#");
+	LINKS_03 = ENVIRONMENT.createSchema(LINKS_03_JSON, true, "http://json-schema.org/draft-03/links#");
+
+	ENVIRONMENT.setOption("defaultSchemaURI", "http://json-schema.org/draft-03/hyper-schema#");
+
+	//We need to reinitialize these schemas as they reference each other
+	HYPERSCHEMA_03 = ENVIRONMENT.createSchema(HYPERSCHEMA_03.getValue(), HYPERSCHEMA_03, "http://json-schema.org/draft-03/hyper-schema#");
+
+	ENVIRONMENT.setOption("latestJSONSchemaSchemaURI", "http://json-schema.org/draft-03/schema#");
+	ENVIRONMENT.setOption("latestJSONSchemaHyperSchemaURI", "http://json-schema.org/draft-03/hyper-schema#");
+	ENVIRONMENT.setOption("latestJSONSchemaLinksURI", "http://json-schema.org/draft-03/links#");
+
+	//
+	//Latest JSON Schema
+	//
+
+	//Hack, but WAY faster then instantiating a new schema
+	ENVIRONMENT._schemas["http://json-schema.org/schema#"] = SCHEMA_03;
+	ENVIRONMENT._schemas["http://json-schema.org/hyper-schema#"] = HYPERSCHEMA_03;
+	ENVIRONMENT._schemas["http://json-schema.org/links#"] = LINKS_03;
+
+	//
+	//register environment
+	//
+
+	JSV.registerEnvironment("json-schema-draft-03", ENVIRONMENT);
+	if (!JSV.getDefaultEnvironmentID() || JSV.getDefaultEnvironmentID() === "json-schema-draft-01" || JSV.getDefaultEnvironmentID() === "json-schema-draft-02") {
+		JSV.setDefaultEnvironmentID("json-schema-draft-03");
+	}
+
+}());
+
+
+global.JSONFormValidator = exports.JSV;
+})(this, false);
+/* Copyright (c) 2012 Joshfire - MIT license */
+/**
+ * @fileoverview Core of the JSON Form client-side library.
+ *
+ * Generates an HTML form from a structured data model and a layout description.
+ *
+ * The library may also validate inputs entered by the user against the data model
+ * upon form submission and create the structured data object initialized with the
+ * values that were submitted.
+ *
+ * The library depends on:
+ *  - jQuery
+ *  - the underscore library
+ *  - a JSON parser/serializer. Nothing to worry about in modern browsers.
+ *  - the JSONFormValidation library (in jsv.js) for validation purpose
+ *
+ * See documentation at:
+ * http://developer.joshfire.com/doc/dev/ref/jsonform
+ *
+ * The library creates and maintains an internal data tree along with the DOM.
+ * That structure is necessary to handle arrays (and nested arrays!) that are
+ * dynamic by essence.
+ */
+
+ /*global window*/
+
+(function(serverside, global, $, _, JSON) {
+  if (serverside) {
+    _ = require('underscore');
+  }
+
+  /**
+   * Regular expressions used to extract array indexes in input field names
+   */
+  var reArray = /\[([0-9]*)\](?=\[|\.|$)/g;
+
+  /**
+   * Template settings for form views
+   */
+  var fieldTemplateSettings = {
+    evaluate    : /<%([\s\S]+?)%>/g,
+    interpolate : /<%=([\s\S]+?)%>/g
+  };
+
+  /**
+   * Template settings for value replacement
+   */
+  var valueTemplateSettings = {
+    evaluate    : /\{\[([\s\S]+?)\]\}/g,
+    interpolate : /\{\{([\s\S]+?)\}\}/g
+  };
+
+  /**
+   * Returns true if given value is neither "undefined" nor null
+   */
+  var isSet = function (value) {
+    return !(_.isUndefined(value) || _.isNull(value));
+  };
+
+  /**
+   * The jsonform object whose methods will be exposed to the window object
+   */
+  var jsonform = {util:{}};
+
+
+  // From backbonejs
+  var escapeHTML = function (string) {
+    if (!isSet(string)) {
+      return '';
+    }
+    string = '' + string;
+    if (!string) {
+      return '';
+    }
+    return string
+      .replace(/&(?!\w+;|#\d+;|#x[\da-f]+;)/gi, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#x27;')
+      .replace(/\//g, '&#x2F;');
+  };
+
+/**
+ * Escapes selector name for use with jQuery
+ *
+ * All meta-characters listed in jQuery doc are escaped:
+ * http://api.jquery.com/category/selectors/
+ *
+ * @function
+ * @param {String} selector The jQuery selector to escape
+ * @return {String} The escaped selector.
+ */
+var escapeSelector = function (selector) {
+  return selector.replace(/([ \!\"\#\$\%\&\'\(\)\*\+\,\.\/\:\;<\=\>\?\@\[\\\]\^\`\{\|\}\~])/g, '\\$1');
+};
+
+
+/**
+ * Initializes tabular sections in forms. Such sections are generated by the
+ * 'selectfieldset' type of elements in JSON Form.
+ *
+ * Input fields that are not visible are automatically disabled
+ * not to appear in the submitted form. That's on purpose, as tabs
+ * are meant to convey an alternative (and not a sequence of steps).
+ *
+ * The tabs menu is not rendered as tabs but rather as a select field because
+ * it's easier to grasp that it's an alternative.
+ *
+ * Code based on bootstrap-tabs.js, updated to:
+ * - react to option selection instead of tab click
+ * - disable input fields in non visible tabs
+ * - disable the possibility to have dropdown menus (no meaning here)
+ * - act as a regular function instead of as a jQuery plug-in.
+ *
+ * @function
+ * @param {Object} tabs jQuery object that contains the tabular sections
+ *  to initialize. The object may reference more than one element.
+ */
+var initializeTabs = function (tabs) {
+  var activate = function (element, container) {
+    container
+      .find('> .active')
+      .removeClass('active');
+    element.addClass('active');
+  };
+
+  var enableFields = function ($target, targetIndex) {
+    // Enable all fields in the targeted tab
+    $target.find('input, textarea, select').removeAttr('disabled');
+
+    // Disable all fields in other tabs
+    $target.parent()
+      .children(':not([data-idx=' + targetIndex + '])')
+      .find('input, textarea, select')
+      .attr('disabled', 'disabled');
+  };
+
+  var optionSelected = function (e) {
+    var $option = $("option:selected", $(this)),
+      $select = $(this),
+      // do not use .attr() as it sometimes unexplicably fails
+      targetIdx = $option.get(0).getAttribute('data-idx') || $option.attr('value'),
+      $target;
+
+    e.preventDefault();
+    if ($option.hasClass('active')) {
+      return;
+    }
+
+    $target = $(this).parents('.tabbable').eq(0).find('.tab-content [data-idx=' + targetIdx + ']');
+
+    activate($option, $select);
+    activate($target, $target.parent());
+    enableFields($target, targetIdx);
+  };
+
+  var tabClicked = function (e) {
+    var $a = $('a', $(this));
+    var $content = $(this).parents('.tabbable').first()
+      .find('.tab-content').first();
+    var targetIdx = $(this).index();
+    var $target = $content.find('[data-idx=' + targetIdx + ']');
+
+    e.preventDefault();
+    activate($(this), $(this).parent());
+    activate($target, $target.parent());
+    if ($(this).parent().hasClass('jsonform-alternative')) {
+      enableFields($target, targetIdx);
+    }
+  };
+
+  tabs.each(function () {
+    $(this).delegate('select.nav', 'change', optionSelected);
+    $(this).find('select.nav').each(function () {
+      $(this).val($(this).find('.active').attr('value'));
+      // do not use .attr() as it sometimes unexplicably fails
+      var targetIdx = $(this).find('option:selected').get(0).getAttribute('data-idx') ||
+        $(this).find('option:selected').attr('value');
+      var $target = $(this).parents('.tabbable').eq(0).find('.tab-content [data-idx=' + targetIdx + ']');
+      enableFields($target, targetIdx);
+    });
+
+    $(this).delegate('ul.nav li', 'click', tabClicked);
+    $(this).find('ul.nav li.active').click();
+  });
+};
+
+
+// Twitter bootstrap-friendly HTML boilerplate for standard inputs
+jsonform.fieldTemplate = function(inner) {
+  return '<div class="form-group jsonform-error-<%= keydash %>' +
+    '<%= elt.htmlClass ? " " + elt.htmlClass : "" %>' +
+    '<%= (node.schemaElement && node.schemaElement.required && (node.schemaElement.type !== "boolean") ? " jsonform-required" : "") %>' +
+    '<%= (node.readOnly ? " jsonform-readonly" : "") %>' +
+    '<%= (node.disabled ? " jsonform-disabled" : "") %>' +
+    '">' +
+    '<% if (node.title && !elt.notitle) { %>' +
+      '<label class="control-label" for="<%= node.id %>"><%= node.title %></label>' +
+    '<% } %>' +
+    '<div class="controls">' +
+      '<% if (node.prepend || node.append) { %>' +
+      '<div class="<% if (node.prepend) { %>input-prepend<% } %>' +
+        '<% if (node.append) { %> input-append<% } %>">' +
+        '<% if (node.prepend) { %>' +
+          '<span class="add-on"><%= node.prepend %></span>' +
+        '<% } %>' +
+      '<% } %>' +
+      inner +
+      '<% if (node.append) { %>' +
+        '<span class="add-on"><%= node.append %></span>' +
+      '<% } %>' +
+      '<% if (node.prepend || node.append) { %>' +
+        '</div>' +
+      '<% } %>' +
+      '<% if (node.description) { %>' +
+        '<span class="help-block"><i class="fa fa-info-circle"></i>   <%= node.description %></span>' +
+      '<% } %>' +
+      '<span class="help-block jsonform-errortext" style="display:none;"></span>' +
+    '</div></div>';
+};
+
+var fileDisplayTemplate = '<div class="_jsonform-preview">' +
+  '<% if (value.type=="image") { %>' +
+  '<img class="jsonform-preview" id="jsonformpreview-<%= id %>" src="<%= value.url %>" />' +
+  '<% } else { %>' +
+  '<a href="<%= value.url %>"><%= value.name %></a> (<%= Math.ceil(value.size/1024) %>kB)' +
+  '<% } %>' +
+  '</div>' +
+  '<a href="#" class="btn _jsonform-delete"><i class="icon-remove" title="Remove"></i></a> ';
+
+var inputFieldTemplate = function (type) {
+  return {
+    'template': '<input type="' + type + '" ' +
+      '<%= (fieldHtmlClass ? "class=\'" + fieldHtmlClass + " form-control \' " : "") %>' +
+      'name="<%= node.name %>" value="<%= escape(value) %>" id="<%= id %>"' +
+      '<%= (node.disabled? " disabled" : "")%>' +
+      '<%= (node.readOnly ? " readonly=\'readonly\'" : "") %>' +
+      '<%= (node.schemaElement && node.schemaElement.maxLength ? " maxlength=\'" + node.schemaElement.maxLength + "\'" : "") %>' +
+      '<%= (node.schemaElement && node.schemaElement.required && (node.schemaElement.type !== "boolean") ? " required=\'required\'" : "") %>' +
+      '<%= (node.placeholder? "placeholder=" + \'"\' + escape(node.placeholder) + \'"\' : "")%>' +
+      ' />',
+    'fieldtemplate': true,
+    'inputfield': true
+  }
+};
+
+jsonform.elementTypes = {
+  'none': {
+    'template': ''
+  },
+  'root': {
+    'template': '<div><%= children %></div>'
+  },
+  'text': inputFieldTemplate('text'),
+  'password': inputFieldTemplate('password'),
+  'date': inputFieldTemplate('date'),
+  'datetime': inputFieldTemplate('datetime'),
+  'datetime-local': inputFieldTemplate('datetime-local'),
+  'email': inputFieldTemplate('email'),
+  'month': inputFieldTemplate('month'),
+  'number': inputFieldTemplate('number'),
+  'search': inputFieldTemplate('search'),
+  'tel': inputFieldTemplate('tel'),
+  'time': inputFieldTemplate('time'),
+  'url': inputFieldTemplate('url'),
+  'week': inputFieldTemplate('week'),
+  'range': {
+    'template': '<input type="range" ' +
+      '<%= (fieldHtmlClass ? "class=\'" + fieldHtmlClass + " form-control\' " : "") %>' +
+      'name="<%= node.name %>" value="<%= escape(value) %>" id="<%= id %>"' +
+      '<%= (node.disabled? " disabled" : "")%>' +
+      ' min=<%= range.min %>' +
+      ' max=<%= range.max %>' +
+      ' step=<%= range.step %>' +
+      '<%= (node.schemaElement && node.schemaElement.required ? " required=\'required\'" : "") %>' +
+      ' />',
+    'fieldtemplate': true,
+    'inputfield': true,
+    'onBeforeRender': function (data, node) {
+      data.range = {
+        min: 1,
+        max: 100,
+        step: 1
+      };
+      if (!node || !node.schemaElement) return;
+      if (node.formElement && node.formElement.step) {
+        data.range.step = node.formElement.step;
+      }
+      if (typeof node.schemaElement.minimum !== 'undefined') {
+        if (node.schemaElement.exclusiveMinimum) {
+          data.range.min = node.schemaElement.minimum + data.range.step;
+        }
+        else {
+          data.range.min = node.schemaElement.minimum;
+        }
+      }
+      if (typeof node.schemaElement.maximum !== 'undefined') {
+        if (node.schemaElement.exclusiveMaximum) {
+          data.range.max = node.schemaElement.maximum + data.range.step;
+        }
+        else {
+          data.range.max = node.schemaElement.maximum;
+        }
+      }
+    }
+  },
+  'color':{
+    'template':'<input type="text" ' +
+      '<%= (fieldHtmlClass ? "class=\'" + fieldHtmlClass + " form-control\' " : "") %>' +
+      'name="<%= node.name %>" value="<%= escape(value) %>" id="<%= id %>"' +
+      '<%= (node.disabled? " disabled" : "")%>' +
+      '<%= (node.schemaElement && node.schemaElement.required ? " required=\'required\'" : "") %>' +
+      ' />',
+    'fieldtemplate': true,
+    'inputfield': true,
+    'onInsert': function(evt, node) {
+      $(node.el).find('#' + escapeSelector(node.id)).spectrum({
+        preferredFormat: "hex",
+        showInput: true
+      });
+    }
+  },
+  'textarea':{
+    'template':'<textarea id="<%= id %>" name="<%= node.name %>" ' +
+      'style="height:<%= elt.height || "150px" %>;width:<%= elt.width || "100%" %>;"' +
+      '<%= (node.disabled? " disabled" : "")%>' +
+      '<%= (node.readOnly ? " readonly=\'readonly\'" : "") %>' +
+      '<%= (node.schemaElement && node.schemaElement.maxLength ? " maxlength=\'" + node.schemaElement.maxLength + "\'" : "") %>' +
+      '<%= (node.schemaElement && node.schemaElement.required ? " required=\'required\'" : "") %>' +
+      '<%= (node.placeholder? "placeholder=" + \'"\' + escape(node.placeholder) + \'"\' : "")%>' +
+      '><%= value %></textarea>',
+    'fieldtemplate': true,
+    'inputfield': true
+  },
+  'wysihtml5':{
+    'template':'<textarea id="<%= id %>" name="<%= node.name %>" style="height:<%= elt.height || "300px" %>;width:<%= elt.width || "100%" %>;"' +
+      '<%= (node.disabled? " disabled" : "")%>' +
+      '<%= (node.readOnly ? " readonly=\'readonly\'" : "") %>' +
+      '<%= (node.schemaElement && node.schemaElement.maxLength ? " maxlength=\'" + node.schemaElement.maxLength + "\'" : "") %>' +
+      '<%= (node.schemaElement && node.schemaElement.required ? " required=\'required\'" : "") %>' +
+      '<%= (node.placeholder? "placeholder=" + \'"\' + escape(node.placeholder) + \'"\' : "")%>' +
+      '><%= value %></textarea>',
+    'fieldtemplate': true,
+    'inputfield': true,
+    'onInsert': function (evt, node) {
+      var setup = function () {
+        //protect from double init
+        if ($(node.el).data("wysihtml5")) return;
+        $(node.el).data("wysihtml5_loaded",true);
+
+        $(node.el).find('#' + escapeSelector(node.id)).wysihtml5({
+          "html": true,
+          "link": true,
+          "font-styles":true,
+          "image": true,
+          "events": {
+            "load": function () {
+              // In chrome, if an element is required and hidden, it leads to
+              // the error 'An invalid form control with name='' is not focusable'
+              // See http://stackoverflow.com/questions/7168645/invalid-form-control-only-in-google-chrome
+              $(this.textareaElement).removeAttr('required');
+            }
+          }
+        });
+      };
+
+      // Is there a setup hook?
+      if (window.jsonform_wysihtml5_setup) {
+        window.jsonform_wysihtml5_setup(setup);
+        return;
+      }
+
+      // Wait until wysihtml5 is loaded
+      var itv = window.setInterval(function() {
+        if (window.wysihtml5) {
+          window.clearInterval(itv);
+          setup();
+        }
+      },1000);
+    }
+  },
+  'ace':{
+    'template':'<div id="<%= id %>" style="position:relative;height:<%= elt.height || "300px" %>;"><div id="<%= id %>__ace" style="width:<%= elt.width || "100%" %>;height:<%= elt.height || "300px" %>;"></div><input type="hidden" class="form-control" name="<%= node.name %>" id="<%= id %>__hidden" value="<%= escape(value) %>"/></div>',
+    'fieldtemplate': true,
+    'inputfield': true,
+    'onInsert': function (evt, node) {
+      var setup = function () {
+        var formElement = node.formElement || {};
+        var ace = window.ace;
+        var editor = ace.edit($(node.el).find('#' + escapeSelector(node.id) + '__ace').get(0));
+        var idSelector = '#' + escapeSelector(node.id) + '__hidden';
+        // Force editor to use "\n" for new lines, not to bump into ACE "\r" conversion issue
+        // (ACE is ok with "\r" on pasting but fails to return "\r" when value is extracted)
+        editor.getSession().setNewLineMode('unix');
+        editor.renderer.setShowPrintMargin(false);
+        editor.setTheme("ace/theme/"+(formElement.aceTheme||"twilight"));
+
+        if (formElement.aceMode) {
+          editor.getSession().setMode("ace/mode/"+formElement.aceMode);
+        }
+        editor.getSession().setTabSize(2);
+
+        // Set the contents of the initial manifest file
+        editor.getSession().setValue(node.value||"");
+
+        //TODO this is clearly sub-optimal
+        // 'Lazily' bind to the onchange 'ace' event to give
+        // priority to user edits
+        var lazyChanged = _.debounce(function () {
+          $(node.el).find(idSelector).val(editor.getSession().getValue());
+          $(node.el).find(idSelector).change();
+        }, 600);
+        editor.getSession().on('change', lazyChanged);
+        
+        editor.on('blur', function() {
+          $(node.el).find(idSelector).change();
+          $(node.el).find(idSelector).trigger("blur");
+        });
+        editor.on('focus', function() {
+          $(node.el).find(idSelector).trigger("focus");
+        });
+      };
+
+      // Is there a setup hook?
+      if (window.jsonform_ace_setup) {
+        window.jsonform_ace_setup(setup);
+        return;
+      }
+
+      // Wait until ACE is loaded
+      var itv = window.setInterval(function() {
+        if (window.ace) {
+          window.clearInterval(itv);
+          setup();
+        }
+      },1000);
+    }
+  },
+  'checkbox':{
+    'template': '<label class="checkbox"><input class="form-control" type="checkbox" id="<%= id %>" ' +
+      'name="<%= node.name %>" value="1" <% if (value) {%>checked<% } %>' +
+      '<%= (node.disabled? " disabled" : "")%>' +
+      '<%= (node.schemaElement && node.schemaElement.required && (node.schemaElement.type !== "boolean") ? " required=\'required\'" : "") %>' +
+      ' /><span><%= node.inlinetitle || "" %></span>' +
+      '</label>',
+    'fieldtemplate': true,
+    'inputfield': true,
+    'getElement': function (el) {
+      return $(el).parent().get(0);
+    }
+  },
+  'file':{
+    'template':'<input class="input-file form-control" id="<%= id %>" name="<%= node.name %>" type="file" ' +
+      '<%= (node.schemaElement && node.schemaElement.required ? " required=\'required\'" : "") %>' +
+      '/>',
+    'fieldtemplate': true,
+    'inputfield': true
+  },
+  'file-hosted-public':{
+    'template':'<span><% if (value && (value.type||value.url)) { %>'+fileDisplayTemplate+'<% } %><input class="input-file form-control" id="_transloadit_<%= id %>" type="file" name="<%= transloaditname %>" /><input data-transloadit-name="_transloadit_<%= transloaditname %>" type="hidden" id="<%= id %>" name="<%= node.name %>" value=\'<%= escape(JSON.stringify(node.value)) %>\' /></span>',
+    'fieldtemplate': true,
+    'inputfield': true,
+    'getElement': function (el) {
+      return $(el).parent().get(0);
+    },
+    'onBeforeRender': function (data, node) {
+
+      if (!node.ownerTree._transloadit_generic_public_index) {
+        node.ownerTree._transloadit_generic_public_index=1;
+      } else {
+        node.ownerTree._transloadit_generic_public_index++;
+      }
+      
+      data.transloaditname = "_transloadit_jsonform_genericupload_public_"+node.ownerTree._transloadit_generic_public_index;
+
+      if (!node.ownerTree._transloadit_generic_elts) node.ownerTree._transloadit_generic_elts = {};
+      node.ownerTree._transloadit_generic_elts[data.transloaditname] = node;
+    },
+    'onChange': function(evt,elt) {
+      // The "transloadit" function should be called only once to enable
+      // the service when the form is submitted. Has it already been done?
+      if (elt.ownerTree._transloadit_bound) {
+        return false;
+      }
+      elt.ownerTree._transloadit_bound = true;
+
+      // Call the "transloadit" function on the form element
+      var formElt = $(elt.ownerTree.domRoot);
+      formElt.transloadit({
+        autoSubmit: false,
+        wait: true,
+        onSuccess: function (assembly) {
+          // Image has been uploaded. Check the "results" property that
+          // contains the list of files that Transloadit produced. There
+          // should be one image per file input in the form at most.
+          // console.log(assembly.results);
+          var results = _.values(assembly.results);
+          results = _.flatten(results);
+          _.each(results, function (result) {
+            // Save the assembly result in the right hidden input field
+            var id = elt.ownerTree._transloadit_generic_elts[result.field].id;
+            var input = formElt.find('#' + escapeSelector(id));
+            var nonEmptyKeys = _.filter(_.keys(result.meta), function (key) {
+              return !!isSet(result.meta[key]);
+            });
+            result.meta = _.pick(result.meta, nonEmptyKeys);
+            input.val(JSON.stringify(result));
+          });
+
+          // Unbind transloadit from the form
+          elt.ownerTree._transloadit_bound = false;
+          formElt.unbind('submit.transloadit');
+
+          // Submit the form on next tick
+          _.delay(function () {
+            console.log('submit form');
+            elt.ownerTree.submit();
+          }, 10);
+        },
+        onError: function (assembly) {
+          // TODO: report the error to the user
+          console.log('assembly error', assembly);
+        }
+      });
+    },
+    'onInsert': function (evt, node) {
+      $(node.el).find('a._jsonform-delete').on('click', function (evt) {
+        $(node.el).find('._jsonform-preview').remove();
+        $(node.el).find('a._jsonform-delete').remove();
+        $(node.el).find('#' + escapeSelector(node.id)).val('');
+        evt.preventDefault();
+        return false;
+      });
+    },
+    'onSubmit':function(evt, elt) {
+      if (elt.ownerTree._transloadit_bound) {
+        return false;
+      }
+      return true;
+    }
+
+  },
+  'file-transloadit': {
+    'template': '<span><% if (value && (value.type||value.url)) { %>'+fileDisplayTemplate+'<% } %><input class="input-file form-control" id="_transloadit_<%= id %>" type="file" name="_transloadit_<%= node.name %>" /><input type="hidden" id="<%= id %>" name="<%= node.name %>" value=\'<%= escape(JSON.stringify(node.value)) %>\' /></span>',
+    'fieldtemplate': true,
+    'inputfield': true,
+    'getElement': function (el) {
+      return $(el).parent().get(0);
+    },
+    'onChange': function (evt, elt) {
+      // The "transloadit" function should be called only once to enable
+      // the service when the form is submitted. Has it already been done?
+      if (elt.ownerTree._transloadit_bound) {
+        return false;
+      }
+      elt.ownerTree._transloadit_bound = true;
+
+      // Call the "transloadit" function on the form element
+      var formElt = $(elt.ownerTree.domRoot);
+      formElt.transloadit({
+        autoSubmit: false,
+        wait: true,
+        onSuccess: function (assembly) {
+          // Image has been uploaded. Check the "results" property that
+          // contains the list of files that Transloadit produced. Note
+          // JSONForm only supports 1-to-1 associations, meaning it
+          // expects the "results" property to contain only one image
+          // per file input in the form.
+          // console.log(assembly.results);
+          var results = _.values(assembly.results);
+          results = _.flatten(results);
+          _.each(results, function (result) {
+            // Save the assembly result in the right hidden input field
+            var input = formElt.find('input[name="' +
+              result.field.replace(/^_transloadit_/, '') +
+              '"]');
+            var nonEmptyKeys = _.filter(_.keys(result.meta), function (key) {
+              return !!isSet(result.meta[key]);
+            });
+            result.meta = _.pick(result.meta, nonEmptyKeys);
+            input.val(JSON.stringify(result));
+          });
+
+          // Unbind transloadit from the form
+          elt.ownerTree._transloadit_bound = false;
+          formElt.unbind('submit.transloadit');
+
+          // Submit the form on next tick
+          _.delay(function () {
+            console.log('submit form');
+            elt.ownerTree.submit();
+          }, 10);
+        },
+        onError: function (assembly) {
+          // TODO: report the error to the user
+          console.log('assembly error', assembly);
+        }
+      });
+    },
+    'onInsert': function (evt, node) {
+      $(node.el).find('a._jsonform-delete').on('click', function (evt) {
+        $(node.el).find('._jsonform-preview').remove();
+        $(node.el).find('a._jsonform-delete').remove();
+        $(node.el).find('#' + escapeSelector(node.id)).val('');
+        evt.preventDefault();
+        return false;
+      });
+    },
+    'onSubmit': function (evt, elt) {
+      if (elt.ownerTree._transloadit_bound) {
+        return false;
+      }
+      return true;
+    }
+  },
+  'select':{
+    'template':'<select name="<%= node.name %>" id="<%= id %>"' +
+      '<%= (fieldHtmlClass ? " class=\'" + fieldHtmlClass + "\'" : "") %>' +
+      '<%= (node.disabled? " disabled" : "")%>' +
+      '<%= (node.schemaElement && node.schemaElement.required ? " required=\'required\'" : "") %>' +
+      '> ' +
+      '<% _.each(node.options, function(key, val) { if(key instanceof Object) { if (value === key.value) { %> <option selected value="<%= key.value %>"><%= key.title %></option> <% } else { %> <option value="<%= key.value %>"><%= key.title %></option> <% }} else { if (value === key) { %> <option selected value="<%= key %>"><%= key %></option> <% } else { %><option value="<%= key %>"><%= key %></option> <% }}}); %> ' +
+      '</select>',
+    'fieldtemplate': true,
+    'inputfield': true
+  },
+  'imageselect': {
+    'template': '<div>' +
+      '<input type="hidden" name="<%= node.name %>" id="<%= node.id %>" value="<%= value %>" />' +
+      '<div class="dropdown">' +
+      '<a class="btn<% if (buttonClass && node.value) { %> <%= buttonClass %><% } %>" data-toggle="dropdown" href="#"<% if (node.value) { %> style="max-width:<%= width %>px;max-height:<%= height %>px"<% } %>>' +
+        '<% if (node.value) { %><img src="<% if (!node.value.match(/^https?:/)) { %><%= prefix %><% } %><%= node.value %><%= suffix %>" alt="" /><% } else { %><%= buttonTitle %><% } %>' +
+      '</a>' +
+      '<div class="dropdown-menu navbar" id="<%= node.id %>_dropdown">' +
+        '<div>' +
+        '<% _.each(node.options, function(key, idx) { if ((idx > 0) && ((idx % columns) === 0)) { %></div><div><% } %><a class="btn<% if (buttonClass) { %> <%= buttonClass %><% } %>" style="max-width:<%= width %>px;max-height:<%= height %>px"><% if (key instanceof Object) { %><img src="<% if (!key.value.match(/^https?:/)) { %><%= prefix %><% } %><%= key.value %><%= suffix %>" alt="<%= key.title %>" /></a><% } else { %><img src="<% if (!key.match(/^https?:/)) { %><%= prefix %><% } %><%= key %><%= suffix %>" alt="" /><% } %></a> <% }); %>' +
+        '</div>' +
+        '<div class="pagination-right"><a class="btn">Reset</a></div>' +
+      '</div>' +
+      '</div>' +
+      '</div>',
+    'fieldtemplate': true,
+    'inputfield': true,
+    'onBeforeRender': function (data, node) {
+      var elt = node.formElement || {};
+      var nbRows = null;
+      var maxColumns = elt.imageSelectorColumns || 5;
+      data.buttonTitle = elt.imageSelectorTitle || 'Select...';
+      data.prefix = elt.imagePrefix || '';
+      data.suffix = elt.imageSuffix || '';
+      data.width = elt.imageWidth || 32;
+      data.height = elt.imageHeight || 32;
+      data.buttonClass = elt.imageButtonClass || false;
+      if (node.options.length > maxColumns) {
+        nbRows = Math.ceil(node.options.length / maxColumns);
+        data.columns = Math.ceil(node.options.length / nbRows);
+      }
+      else {
+        data.columns = maxColumns;
+      }
+    },
+    'getElement': function (el) {
+      return $(el).parent().get(0);
+    },
+    'onInsert': function (evt, node) {
+      $(node.el).on('click', '.dropdown-menu a', function (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        var img = (evt.target.nodeName.toLowerCase() === 'img') ?
+          $(evt.target) :
+          $(evt.target).find('img');
+        var value = img.attr('src');
+        var elt = node.formElement || {};
+        var prefix = elt.imagePrefix || '';
+        var suffix = elt.imageSuffix || '';
+        var width = elt.imageWidth || 32;
+        var height = elt.imageHeight || 32;
+        if (value) {
+          if (value.indexOf(prefix) === 0) {
+            value = value.substring(prefix.length);
+          }
+          value = value.substring(0, value.length - suffix.length);
+          $(node.el).find('input').attr('value', value);
+          $(node.el).find('a[data-toggle="dropdown"]')
+            .addClass(elt.imageButtonClass)
+            .attr('style', 'max-width:' + width + 'px;max-height:' + height + 'px')
+            .html('<img src="' + (!value.match(/^https?:/) ? prefix : '') + value + suffix + '" alt="" />');
+        }
+        else {
+          $(node.el).find('input').attr('value', '');
+          $(node.el).find('a[data-toggle="dropdown"]')
+            .removeClass(elt.imageButtonClass)
+            .removeAttr('style')
+            .html(elt.imageSelectorTitle || 'Select...');
+        }
+      });
+    }
+  },
+  'radios':{
+    'template': '<div id="<%= node.id %>"><% _.each(node.options, function(key, val) { %><label class="radio"><input class="" type="radio" <% if (((key instanceof Object) && (value === key.value)) || (value === key)) { %> checked="checked" <% } %> name="<%= node.name %>" value="<%= (key instanceof Object ? key.value : key) %>"' +
+      '<%= (node.disabled? " disabled" : "")%>' +
+      '<%= (node.schemaElement && node.schemaElement.required ? " required=\'required\'" : "") %>' +
+      '/><span><%= (key instanceof Object ? key.title : key) %></span></label> <% }); %></div>',
+    'fieldtemplate': true,
+    'inputfield': true
+  },
+  'radiobuttons': {
+    'template': '<div id="<%= node.id %>">' +
+      '<% _.each(node.options, function(key, val) { %>' +
+        '<label class="radio btn">' +
+        '<input type="radio" class="" style="position:absolute;left:-9999px;" ' +
+        '<% if (((key instanceof Object) && (value === key.value)) || (value === key)) { %> checked="checked" <% } %> name="<%= node.name %>" value="<%= (key instanceof Object ? key.value : key) %>" />' +
+        '<span><%= (key instanceof Object ? key.title : key) %></span></label> ' +
+        '<% }); %>' +
+      '</div>',
+    'fieldtempate': true,
+    'inputfield': true,
+    'onInsert': function (evt, node) {
+      var activeClass = 'active';
+      var elt = node.formElement || {};
+      if (elt.activeClass) {
+        activeClass += ' ' + elt.activeClass;
+      }
+      $(node.el).find('label').on('click', function () {
+        $(this).parent().find('label').removeClass(activeClass);
+        $(this).addClass(activeClass);
+      });
+    }
+  },
+  'checkboxes':{
+    'template': '<div><%= choiceshtml %></div>',
+    'fieldtemplate': true,
+    'inputfield': true,
+    'onBeforeRender': function (data, node) {
+      // Build up choices from the enumeration list
+      var choices = null;
+      var choiceshtml = null;
+      var template = '<label class="checkbox">' +
+        '<input type="checkbox" class="form-control" <% if (value) { %> checked="checked" <% } %> name="<%= name %>" value="1"' +
+        '<%= (node.disabled? " disabled" : "")%>' +
+        '/><span><%= title %></span></label>';
+      if (!node || !node.schemaElement || !node.schemaElement.items) return;
+      choices = node.schemaElement.items['enum'] ||
+        node.schemaElement.items[0]['enum'];
+      if (!choices) return;
+
+      choiceshtml = '';
+      _.each(choices, function (choice, idx) {
+        choiceshtml += _.template(template, {
+          name: node.key + '[' + idx + ']',
+          value: _.include(node.value, choice),
+          title: node.formElement.titleMap ? node.formElement.titleMap[choice] : choice,
+          node: node
+        }, fieldTemplateSettings);
+      });
+
+      data.choiceshtml = choiceshtml;
+    }
+  },
+  'array': {
+    'template': '<div id="<%= id %>"><ul class="_jsonform-array-ul" style="list-style-type:none;"><%= children %></ul>' +
+      '<span class="_jsonform-array-buttons">' +
+        '<a href="#" class="btn _jsonform-array-addmore"><i class="icon-plus-sign" title="Add new"></i></a> ' +
+        '<a href="#" class="btn _jsonform-array-deletelast"><i class="icon-minus-sign" title="Delete last"></i></a>' +
+      '</span>' +
+      '</div>',
+    'fieldtemplate': true,
+    'array': true,
+    'childTemplate': function (inner) {
+      if ($('').sortable) {
+        // Insert a "draggable" icon
+        // floating to the left of the main element
+        return '<li data-idx="<%= node.childPos %>">' +
+          '<span class="draggable line"><i class="icon-list" title="Move item"></i></span>' +
+          inner +
+          '</li>';
+      }
+      else {
+        return '<li data-idx="<%= node.childPos %>">' +
+          inner +
+          '</li>';
+      }
+    },
+    'onInsert': function (evt, node) {
+      var $nodeid = $(node.el).find('#' + escapeSelector(node.id));
+      var boundaries = node.getArrayBoundaries();
+
+      // Switch two nodes in an array
+      var moveNodeTo = function (fromIdx, toIdx) {
+        // Note "switchValuesWith" extracts values from the DOM since field
+        // values are not synchronized with the tree data structure, so calls
+        // to render are needed at each step to force values down to the DOM
+        // before next move.
+        // TODO: synchronize field values and data structure completely and
+        // call render only once to improve efficiency.
+        if (fromIdx === toIdx) return;
+        var incr = (fromIdx < toIdx) ? 1: -1;
+        var i = 0;
+        var parentEl = $('> ul', $nodeid);
+        for (i = fromIdx; i !== toIdx; i += incr) {
+          node.children[i].switchValuesWith(node.children[i + incr]);
+          node.children[i].render(parentEl.get(0));
+          node.children[i + incr].render(parentEl.get(0));
+        }
+
+        // No simple way to prevent DOM reordering with jQuery UI Sortable,
+        // so we're going to need to move sorted DOM elements back to their
+        // origin position in the DOM ourselves (we switched values but not
+        // DOM elements)
+        var fromEl = $(node.children[fromIdx].el);
+        var toEl = $(node.children[toIdx].el);
+        fromEl.detach();
+        toEl.detach();
+        if (fromIdx < toIdx) {
+          if (fromIdx === 0) parentEl.prepend(fromEl);
+          else $(node.children[fromIdx-1].el).after(fromEl);
+          $(node.children[toIdx-1].el).after(toEl);
+        }
+        else {
+          if (toIdx === 0) parentEl.prepend(toEl);
+          else $(node.children[toIdx-1].el).after(toEl);
+          $(node.children[fromIdx-1].el).after(fromEl);
+        }
+      };
+
+      $('> span > a._jsonform-array-addmore', $nodeid).click(function (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        var idx = node.children.length;
+        if (boundaries.maxItems >= 0) {
+          if (node.children.length > boundaries.maxItems - 2) {
+            $nodeid.find('> span > a._jsonform-array-addmore')
+              .addClass('disabled');
+          }
+          if (node.children.length > boundaries.maxItems - 1) {
+            return false;
+          }
+        }
+        node.insertArrayItem(idx, $('> ul', $nodeid).get(0));
+        if ((boundaries.minItems <= 0) ||
+            ((boundaries.minItems > 0) &&
+              (node.children.length > boundaries.minItems - 1))) {
+          $nodeid.find('> span > a._jsonform-array-deletelast')
+            .removeClass('disabled');
+        }
+      });
+
+      //Simulate Users click to setup the form with its minItems
+      var curItems = $('> ul > li', $nodeid).length;
+      if ((boundaries.minItems > 0) &&
+          (curItems < boundaries.minItems)) {
+        for (var i = 0; i < (boundaries.minItems - 1) && ($nodeid.find('> ul > li').length < boundaries.minItems); i++) {
+          //console.log('Calling click: ',$nodeid);
+          //$('> span > a._jsonform-array-addmore', $nodeid).click();
+          node.insertArrayItem(curItems, $nodeid.find('> ul').get(0));
+        }
+      }
+      if ((boundaries.minItems > 0) &&
+          (node.children.length <= boundaries.minItems)) {
+        $nodeid.find('> span > a._jsonform-array-deletelast')
+          .addClass('disabled');
+      }
+
+      $('> span > a._jsonform-array-deletelast', $nodeid).click(function (evt) {
+        var idx = node.children.length - 1;
+        evt.preventDefault();
+        evt.stopPropagation();
+        if (boundaries.minItems > 0) {
+          if (node.children.length < boundaries.minItems + 2) {
+            $nodeid.find('> span > a._jsonform-array-deletelast')
+              .addClass('disabled');
+          }
+          if (node.children.length <= boundaries.minItems) {
+            return false;
+          }
+        }
+        else if (node.children.length === 1) {
+          $nodeid.find('> span > a._jsonform-array-deletelast')
+            .addClass('disabled');
+        }
+        node.deleteArrayItem(idx);
+        if ((boundaries.maxItems >= 0) && (idx <= boundaries.maxItems - 1)) {
+          $nodeid.find('> span > a._jsonform-array-addmore')
+            .removeClass('disabled');
+        }
+      });
+
+      if ($(node.el).sortable) {
+        $('> ul', $nodeid).sortable();
+        $('> ul', $nodeid).bind('sortstop', function (event, ui) {
+          var idx = $(ui.item).data('idx');
+          var newIdx = $(ui.item).index();
+          moveNodeTo(idx, newIdx);
+        });
+      }
+    }
+  },
+  'tabarray': {
+    'template': '<div id="<%= id %>"><div class="tabbable tabs-left">' +
+      '<ul class="nav nav-tabs">' +
+        '<%= tabs %>' +
+      '</ul>' +
+      '<div class="tab-content">' +
+        '<%= children %>' +
+      '</div>' +
+      '</div>' +
+      '<a href="#" class="btn _jsonform-array-addmore"><i class="icon-plus-sign" title="Add new"></i></a> ' +
+      '<a href="#" class="btn _jsonform-array-deleteitem"><i class="icon-minus-sign" title="Delete item"></i></a></div>',
+    'fieldtemplate': true,
+    'array': true,
+    'childTemplate': function (inner) {
+      return '<div data-idx="<%= node.childPos %>" class="tab-pane">' +
+        inner +
+        '</div>';
+    },
+    'onBeforeRender': function (data, node) {
+      // Generate the initial 'tabs' from the children
+      var tabs = '';
+      _.each(node.children, function (child, idx) {
+        var title = child.legend ||
+          child.title ||
+          ('Item ' + (idx+1));
+        tabs += '<li data-idx="' + idx + '"' +
+          ((idx === 0) ? ' class="active"' : '') +
+          '><a class="draggable tab" data-toggle="tab">' +
+          escapeHTML(title) +
+          '</a></li>';
+      });
+      data.tabs = tabs;
+    },
+    'onInsert': function (evt, node) {
+      var $nodeid = $(node.el).find('#' + escapeSelector(node.id));
+      var boundaries = node.getArrayBoundaries();
+
+      var moveNodeTo = function (fromIdx, toIdx) {
+        // Note "switchValuesWith" extracts values from the DOM since field
+        // values are not synchronized with the tree data structure, so calls
+        // to render are needed at each step to force values down to the DOM
+        // before next move.
+        // TODO: synchronize field values and data structure completely and
+        // call render only once to improve efficiency.
+        if (fromIdx === toIdx) return;
+        var incr = (fromIdx < toIdx) ? 1: -1;
+        var i = 0;
+        var tabEl = $('> .tabbable > .tab-content', $nodeid).get(0);
+        for (i = fromIdx; i !== toIdx; i += incr) {
+          node.children[i].switchValuesWith(node.children[i + incr]);
+          node.children[i].render(tabEl);
+          node.children[i + incr].render(tabEl);
+        }
+      };
+
+
+      // Refreshes the list of tabs
+      var updateTabs = function (selIdx) {
+        var tabs = '';
+        var activateFirstTab = false;
+        if (selIdx === undefined) {
+          selIdx = $('> .tabbable > .nav-tabs .active', $nodeid).data('idx');
+          if (selIdx) {
+            selIdx = parseInt(selIdx, 10);
+          }
+          else {
+            activateFirstTab = true;
+            selIdx = 0;
+          }
+        }
+        if (selIdx >= node.children.length) {
+          selIdx = node.children.length - 1;
+        }
+        _.each(node.children, function (child, idx) {
+          var title = child.legend ||
+            child.title ||
+            ('Item ' + (idx+1));
+          tabs += '<li data-idx="' + idx + '">' +
+            '<a class="draggable tab" data-toggle="tab">' +
+            escapeHTML(title) +
+            '</a></li>';
+        });
+        $('> .tabbable > .nav-tabs', $nodeid).html(tabs);
+        if (activateFirstTab) {
+          $('> .tabbable > .nav-tabs [data-idx="0"]', $nodeid).addClass('active');
+        }
+        $('> .tabbable > .nav-tabs [data-toggle="tab"]', $nodeid).eq(selIdx).click();
+      };
+
+      $('> a._jsonform-array-deleteitem', $nodeid).click(function (evt) {
+        var idx = $('> .tabbable > .nav-tabs .active', $nodeid).data('idx');
+        evt.preventDefault();
+        evt.stopPropagation();
+        if (boundaries.minItems > 0) {
+          if (node.children.length < boundaries.minItems + 1) {
+            $nodeid.find('> a._jsonform-array-deleteitem')
+              .addClass('disabled');
+          }
+          if (node.children.length <= boundaries.minItems) return false;
+        }
+        node.deleteArrayItem(idx);
+        updateTabs();
+        if ((node.children.length < boundaries.minItems + 1) ||
+            (node.children.length === 0)) {
+          $nodeid.find('> a._jsonform-array-deleteitem').addClass('disabled');
+        }
+        if ((boundaries.maxItems >= 0) &&
+            (node.children.length <= boundaries.maxItems)) {
+          $nodeid.find('> a._jsonform-array-addmore').removeClass('disabled');
+        }
+      });
+
+      $('> a._jsonform-array-addmore', $nodeid).click(function (evt) {
+        var idx = node.children.length;
+        if (boundaries.maxItems>=0) {
+          if (node.children.length>boundaries.maxItems-2) {
+            $('> a._jsonform-array-addmore', $nodeid).addClass("disabled");
+          }
+          if (node.children.length > boundaries.maxItems - 1) {
+            return false;
+          }
+        }
+        evt.preventDefault();
+        evt.stopPropagation();
+        node.insertArrayItem(idx,
+          $nodeid.find('> .tabbable > .tab-content').get(0));
+        updateTabs(idx);
+        if ((boundaries.minItems <= 0) ||
+            ((boundaries.minItems > 0) && (idx > boundaries.minItems - 1))) {
+          $nodeid.find('> a._jsonform-array-deleteitem').removeClass('disabled');
+        }
+      });
+
+      $(node.el).on('legendUpdated', function (evt) {
+        updateTabs();
+        evt.preventDefault();
+        evt.stopPropagation();
+      });
+
+      if ($(node.el).sortable) {
+        $('> .tabbable > .nav-tabs', $nodeid).sortable({
+          containment: node.el,
+          tolerance: 'pointer'
+        });
+        $('> .tabbable > .nav-tabs', $nodeid).bind('sortstop', function (event, ui) {
+          var idx = $(ui.item).data('idx');
+          var newIdx = $(ui.item).index();
+          moveNodeTo(idx, newIdx);
+          updateTabs(newIdx);
+        });
+      }
+
+      // Simulate User's click to setup the form with its minItems
+      if (boundaries.minItems >= 0) {
+        for (var i = 0; i < (boundaries.minItems - 1); i++) {
+          $nodeid.find('> a._jsonform-array-addmore').click();
+        }
+        $nodeid.find('> a._jsonform-array-deleteitem').addClass('disabled');
+        updateTabs();
+      }
+
+      if ((boundaries.maxItems >= 0) &&
+          (node.children.length >= boundaries.maxItems)) {
+        $nodeid.find('> a._jsonform-array-addmore').addClass('disabled');
+      }
+      if ((boundaries.minItems >= 0) &&
+          (node.children.length <= boundaries.minItems)) {
+        $nodeid.find('> a._jsonform-array-deleteitem').addClass('disabled');
+      }
+    }
+  },
+  'help':{
+    'template':'<span class="help-block" style="padding-top:5px"><%= elt.helpvalue %></span>',
+    'fieldtemplate': true
+  },
+  'msg': {
+    'template': '<%= elt.msg %>'
+  },
+  'fieldset':{
+    'template': '<fieldset class="form-group jsonform-error-<%= keydash %> <% if (elt.expandable) { %>expandable<% } %> <%= elt.htmlClass?elt.htmlClass:"" %>" ' +
+      '<% if (id) { %> id="<%= id %>"<% } %>' +
+      '>' +
+      '<% if (node.title || node.legend) { %><legend><%= node.title || node.legend %></legend><% } %>' +
+      '<% if (elt.expandable) { %><div class="form-group"><% } %>' +
+      '<%= children %>' +
+      '<% if (elt.expandable) { %></div><% } %>' +
+      '</fieldset>'
+  },
+  'advancedfieldset': {
+    'template': '<fieldset' +
+      '<% if (id) { %> id="<%= id %>"<% } %>' +
+      ' class="expandable <%= elt.htmlClass?elt.htmlClass:"" %>">' +
+      '<legend>Advanced options</legend>' +
+      '<div class="form-group">' +
+      '<%= children %>' +
+      '</div>' +
+      '</fieldset>'
+  },
+  'authfieldset': {
+    'template': '<fieldset' +
+      '<% if (id) { %> id="<%= id %>"<% } %>' +
+      ' class="expandable <%= elt.htmlClass?elt.htmlClass:"" %>">' +
+      '<legend>Authentication settings</legend>' +
+      '<div class="form-group">' +
+      '<%= children %>' +
+      '</div>' +
+      '</fieldset>'
+  },
+  'submit':{
+    'template':'<input type="submit" <% if (id) { %> id="<%= id %>" <% } %> class="btn btn-primary <%= elt.htmlClass?elt.htmlClass:"" %>" value="<%= value || node.title %>"<%= (node.disabled? " disabled" : "")%>/>'
+  },
+  'button':{
+    'template':' <button <% if (id) { %> id="<%= id %>" <% } %> class="btn <%= elt.htmlClass?elt.htmlClass:"" %>"><%= node.title %></button> '
+  },
+  'actions':{
+    'template':'<div class="form-actions <%= elt.htmlClass?elt.htmlClass:"" %>"><%= children %></div>'
+  },
+  'hidden':{
+    'template':'<input type="hidden" id="<%= id %>" name="<%= node.name %>" value="<%= escape(value) %>" />',
+    'inputfield': true
+  },
+  'selectfieldset': {
+    'template': '<fieldset class="tab-container <%= elt.htmlClass?elt.htmlClass:"" %>">' +
+      '<% if (node.legend) { %><legend><%= node.legend %></legend><% } %>' +
+      '<% if (node.formElement.key) { %><input type="hidden" id="<%= node.id %>" name="<%= node.name %>" value="<%= escape(value) %>" /><% } else { %>' +
+        '<a id="<%= node.id %>"></a><% } %>' +
+      '<div class="tabbable">' +
+        '<div class="form-group<%= node.formElement.hideMenu ? " hide" : "" %>">' +
+          '<% if (node.title && !elt.notitle) { %><label class="control-label" for="<%= node.id %>"><%= node.title %></label><% } %>' +
+          '<div class="controls"><%= tabs %></div>' +
+        '</div>' +
+        '<div class="tab-content">' +
+          '<%= children %>' +
+        '</div>' +
+      '</div>' +
+      '</fieldset>',
+    'inputfield': true,
+    'getElement': function (el) {
+      return $(el).parent().get(0);
+    },
+    'childTemplate': function (inner) {
+      return '<div data-idx="<%= node.childPos %>" class="tab-pane' +
+        '<% if (node.active) { %> active<% } %>">' +
+        inner +
+        '</div>';
+    },
+    'onBeforeRender': function (data, node) {
+      // Before rendering, this function ensures that:
+      // 1. direct children have IDs (used to show/hide the tabs contents)
+      // 2. the tab to active is flagged accordingly. The active tab is
+      // the first one, except if form values are available, in which case
+      // it's the first tab for which there is some value available (or back
+      // to the first one if there are none)
+      // 3. the HTML of the select field used to select tabs is exposed in the
+      // HTML template data as "tabs"
+
+      var children = null;
+      var choices = [];
+      if (node.schemaElement) {
+        choices = node.schemaElement['enum'] || [];
+      }
+      if (node.options) {
+        children = _.map(node.options, function (option, idx) {
+          var child = node.children[idx];
+          if (option instanceof Object) {
+            option = _.extend({ node: child }, option);
+            option.title = option.title ||
+              child.legend ||
+              child.title ||
+              ('Option ' + (child.childPos+1));
+            option.value = isSet(option.value) ? option.value :
+              isSet(choices[idx]) ? choices[idx] : idx;
+            return option;
+          }
+          else {
+            return {
+              title: option,
+              value: isSet(choices[child.childPos]) ?
+                choices[child.childPos] :
+                child.childPos,
+              node: child
+            };
+          }
+        });
+      }
+      else {
+        children = _.map(node.children, function (child, idx) {
+          return {
+            title: child.legend || child.title || ('Option ' + (child.childPos+1)),
+            value: choices[child.childPos] || child.childPos,
+            node: child
+          };
+        });
+      }
+
+      var activeChild = null;
+      if (data.value) {
+        activeChild = _.find(children, function (child) {
+          return (child.value === node.value);
+        });
+      }
+      if (!activeChild) {
+        activeChild = _.find(children, function (child) {
+          return child.node.hasNonDefaultValue();
+        });
+      }
+      if (!activeChild) {
+        activeChild = children[0];
+      }
+      activeChild.node.active = true;
+      data.value = activeChild.value;
+
+      var elt = node.formElement;
+      var tabs = '<select class="nav"' +
+        (node.disabled ? ' disabled' : '') +
+        '>';
+      _.each(children, function (child, idx) {
+        tabs += '<option data-idx="' + idx + '" value="' + child.value + '"' +
+          (child.node.active ? ' class="active"' : '') +
+          '>' +
+          escapeHTML(child.title) +
+          '</option>';
+      });
+      tabs += '</select>';
+
+      data.tabs = tabs;
+      return data;
+    },
+    'onInsert': function (evt, node) {
+      $(node.el).find('select.nav').first().on('change', function (evt) {
+        var $option = $(this).find('option:selected');
+        $(node.el).find('input[type="hidden"]').first().val($option.attr('value'));
+      });
+    }
+  },
+  'optionfieldset': {
+    'template': '<div' +
+      '<% if (node.id) { %> id="<%= node.id %>"<% } %>' +
+      '>' +
+      '<%= children %>' +
+      '</div>'
+  },
+  'section': {
+    'template': '<div' +
+      '<% if (node.id) { %> id="<%= node.id %>"<% } %>' +
+      '><%= children %></div>'
+  },
+
+  /**
+   * A "questions" field renders a series of question fields and binds the
+   * result to the value of a schema key.
+   */
+  'questions': {
+    'template': '<div>' +
+      '<input type="hidden" id="<%= node.id %>" name="<%= node.name %>" value="<%= escape(value) %>" />' +
+      '<%= children %>' +
+      '</div>',
+    'fieldtempate': true,
+    'inputfield': true,
+    'getElement': function (el) {
+      return $(el).parent().get(0);
+    },
+    'onInsert': function (evt, node) {
+      if (!node.children || (node.children.length === 0)) return;
+      _.each(node.children, function (child) {
+        $(child.el).hide();
+      });
+      $(node.children[0].el).show();
+    }
+  },
+
+  /**
+   * A "question" field lets user choose a response among possible choices.
+   * The field is not associated with any schema key. A question should be
+   * part of a "questions" field that binds a series of questions to a
+   * schema key.
+   */
+  'question': {
+    'template': '<div id="<%= node.id %>"><% _.each(node.options, function(key, val) { %><label class="radio<%= (node.formElement.optionsType === "radiobuttons") ? " btn" : "" %><%= ((key instanceof Object && key.htmlClass) ? " " + key.htmlClass : "") %>"><input class="" type="radio" <% if (node.formElement.optionsType === "radiobuttons") { %> style="position:absolute;left:-9999px;" <% } %>name="<%= node.id %>" value="<%= val %>"<%= (node.disabled? " disabled" : "")%>/><span><%= (key instanceof Object ? key.title : key) %></span></label> <% }); %></div>',
+    'fieldtemplate': true,
+    'onInsert': function (evt, node) {
+      var activeClass = 'active';
+      var elt = node.formElement || {};
+      if (elt.activeClass) {
+        activeClass += ' ' + elt.activeClass;
+      }
+
+      // Bind to change events on radio buttons
+      $(node.el).find('input[type="radio"]').on('change', function (evt) {
+        var questionNode = null;
+        var option = node.options[$(this).val()];
+        if (!node.parentNode || !node.parentNode.el) return;
+
+        $(this).parent().parent().find('label').removeClass(activeClass);
+        $(this).parent().addClass(activeClass);
+        $(node.el).nextAll().hide();
+        $(node.el).nextAll().find('input[type="radio"]').prop('checked', false);
+
+        // Execute possible actions (set key value, form submission, open link,
+        // move on to next question)
+        if (option.value) {
+          // Set the key of the 'Questions' parent
+          $(node.parentNode.el).find('input[type="hidden"]').val(option.value);
+        }
+        if (option.next) {
+          questionNode = _.find(node.parentNode.children, function (child) {
+            return (child.formElement && (child.formElement.qid === option.next));
+          });
+          $(questionNode.el).show();
+          $(questionNode.el).nextAll().hide();
+          $(questionNode.el).nextAll().find('input[type="radio"]').prop('checked', false);
+        }
+        if (option.href) {
+          if (option.target) {
+            window.open(option.href, option.target);
+          }
+          else {
+            window.location = option.href;
+          }
+        }
+        if (option.submit) {
+          setTimeout(function () {
+            node.ownerTree.submit();
+          }, 0);
+        }
+      });
+    }
+  }
+};
+
+
+//Allow to access subproperties by splitting "."
+/**
+ * Retrieves the key identified by a path selector in the structured object.
+ *
+ * Levels in the path are separated by a dot. Array items are marked
+ * with [x]. For instance:
+ *  foo.bar[3].baz
+ *
+ * @function
+ * @param {Object} obj Structured object to parse
+ * @param {String} key Path to the key to retrieve
+ * @param {boolean} ignoreArrays True to use first element in an array when
+ *   stucked on a property. This parameter is basically only useful when
+ *   parsing a JSON schema for which the "items" property may either be an
+ *   object or an array with one object (only one because JSON form does not
+ *   support mix of items for arrays).
+ * @return {Object} The key's value.
+ */
+jsonform.util.getObjKey = function (obj, key, ignoreArrays) {
+  var innerobj = obj;
+  var keyparts = key.split(".");
+  var subkey = null;
+  var arrayMatch = null;
+  var prop = null;
+
+  for (var i = 0; i < keyparts.length; i++) {
+    if ((innerobj === null) || (typeof innerobj !== "object")) return null;
+    subkey = keyparts[i];
+    prop = subkey.replace(reArray, '');
+    reArray.lastIndex = 0;
+    arrayMatch = reArray.exec(subkey);
+    if (arrayMatch) {
+      while (true) {
+        if (!_.isArray(innerobj[prop])) return null;
+        innerobj = innerobj[prop][parseInt(arrayMatch[1], 10)];
+        arrayMatch = reArray.exec(subkey);
+        if (!arrayMatch) break;
+      }
+    }
+    else if (ignoreArrays &&
+        !innerobj[prop] &&
+        _.isArray(innerobj) &&
+        innerobj[0]) {
+      innerobj = innerobj[0][prop];
+    }
+    else {
+      innerobj = innerobj[prop];
+    }
+  }
+
+  if (ignoreArrays && _.isArray(innerobj) && innerobj[0]) {
+    return innerobj[0];
+  }
+  else {
+    return innerobj;
+  }
+};
+
+
+/**
+ * Sets the key identified by a path selector to the given value.
+ *
+ * Levels in the path are separated by a dot. Array items are marked
+ * with [x]. For instance:
+ *  foo.bar[3].baz
+ *
+ * The hierarchy is automatically created if it does not exist yet.
+ *
+ * @function
+ * @param {Object} obj The object to build
+ * @param {String} key The path to the key to set where each level
+ *  is separated by a dot, and array items are flagged with [x].
+ * @param {Object} value The value to set, may be of any type.
+ */
+jsonform.util.setObjKey = function(obj,key,value) {
+  var innerobj = obj;
+  var keyparts = key.split(".");
+  var subkey = null;
+  var arrayMatch = null;
+  var prop = null;
+
+  for (var i = 0; i < keyparts.length-1; i++) {
+    subkey = keyparts[i];
+    prop = subkey.replace(reArray, '');
+    reArray.lastIndex = 0;
+    arrayMatch = reArray.exec(subkey);
+    if (arrayMatch) {
+      // Subkey is part of an array
+      while (true) {
+        if (!_.isArray(innerobj[prop])) {
+          innerobj[prop] = [];
+        }
+        innerobj = innerobj[prop];
+        prop = parseInt(arrayMatch[1], 10);
+        arrayMatch = reArray.exec(subkey);
+        if (!arrayMatch) break;
+      }
+      if ((typeof innerobj[prop] !== 'object') ||
+        (innerobj[prop] === null)) {
+        innerobj[prop] = {};
+      }
+      innerobj = innerobj[prop];
+    }
+    else {
+      // "Normal" subkey
+      if ((typeof innerobj[prop] !== 'object') ||
+        (innerobj[prop] === null)) {
+        innerobj[prop] = {};
+      }
+      innerobj = innerobj[prop];
+    }
+  }
+
+  // Set the final value
+  subkey = keyparts[keyparts.length - 1];
+  prop = subkey.replace(reArray, '');
+  reArray.lastIndex = 0;
+  arrayMatch = reArray.exec(subkey);
+  if (arrayMatch) {
+    while (true) {
+      if (!_.isArray(innerobj[prop])) {
+        innerobj[prop] = [];
+      }
+      innerobj = innerobj[prop];
+      prop = parseInt(arrayMatch[1], 10);
+      arrayMatch = reArray.exec(subkey);
+      if (!arrayMatch) break;
+    }
+    innerobj[prop] = value;
+  }
+  else {
+    innerobj[prop] = value;
+  }
+};
+
+
+/**
+ * Retrieves the key definition from the given schema.
+ *
+ * The key is identified by the path that leads to the key in the
+ * structured object that the schema would generate. Each level is
+ * separated by a '.'. Array levels are marked with []. For instance:
+ *  foo.bar[].baz
+ * ... to retrieve the definition of the key at the following location
+ * in the JSON schema (using a dotted path notation):
+ *  foo.properties.bar.items.properties.baz
+ *
+ * @function
+ * @param {Object} schema The JSON schema to retrieve the key from
+ * @param {String} key The path to the key, each level being separated
+ *  by a dot and array items being flagged with [].
+ * @return {Object} The key definition in the schema, null if not found.
+ */
+var getSchemaKey = function(schema,key) {
+  var schemaKey = key
+    .replace(/\./g, '.properties.')
+    .replace(/\[[0-9]*\]/g, '.items');
+  var schemaDef = jsonform.util.getObjKey(schema, schemaKey, true);
+  if (schemaDef && schemaDef.$ref) {
+    throw new Error('JSONForm does not yet support schemas that use the ' +
+      '$ref keyword. See: https://github.com/joshfire/jsonform/issues/54');
+  }
+  return schemaDef;
+};
+
+
+/**
+ * Truncates the key path to the requested depth.
+ *
+ * For instance, if the key path is:
+ *  foo.bar[].baz.toto[].truc[].bidule
+ * and the requested depth is 1, the returned key will be:
+ *  foo.bar[].baz.toto
+ *
+ * Note the function includes the path up to the next depth level.
+ *
+ * @function
+ * @param {String} key The path to the key in the schema, each level being
+ *  separated by a dot and array items being flagged with [].
+ * @param {Number} depth The array depth
+ * @return {String} The path to the key truncated to the given depth.
+ */
+var truncateToArrayDepth = function (key, arrayDepth) {
+  var depth = 0;
+  var pos = 0;
+  if (!key) return null;
+
+  if (arrayDepth > 0) {
+    while (depth < arrayDepth) {
+      pos = key.indexOf('[]', pos);
+      if (pos === -1) {
+        // Key path is not "deep" enough, simply return the full key
+        return key;
+      }
+      pos = pos + 2;
+      depth += 1;
+    }
+  }
+
+  // Move one step further to the right without including the final []
+  pos = key.indexOf('[]', pos);
+  if (pos === -1) return key;
+  else return key.substring(0, pos);
+};
+
+/**
+ * Applies the array path to the key path.
+ *
+ * For instance, if the key path is:
+ *  foo.bar[].baz.toto[].truc[].bidule
+ * and the arrayPath [4, 2], the returned key will be:
+ *  foo.bar[4].baz.toto[2].truc[].bidule
+ *
+ * @function
+ * @param {String} key The path to the key in the schema, each level being
+ *  separated by a dot and array items being flagged with [].
+ * @param {Array(Number)} arrayPath The array path to apply, e.g. [4, 2]
+ * @return {String} The path to the key that matches the array path.
+ */
+var applyArrayPath = function (key, arrayPath) {
+  var depth = 0;
+  if (!key) return null;
+  if (!arrayPath || (arrayPath.length === 0)) return key;
+  var newKey = key.replace(reArray, function (str, p1) {
+    // Note this function gets called as many times as there are [x] in the ID,
+    // from left to right in the string. The goal is to replace the [x] with
+    // the appropriate index in the new array path, if defined.
+    var newIndex = str;
+    if (isSet(arrayPath[depth])) {
+      newIndex = '[' + arrayPath[depth] + ']';
+    }
+    depth += 1;
+    return newIndex;
+  });
+  return newKey;
+};
+
+
+/**
+ * Returns the initial value that a field identified by its key
+ * should take.
+ *
+ * The "initial" value is defined as:
+ * 1. the previously submitted value if already submitted
+ * 2. the default value defined in the layout of the form
+ * 3. the default value defined in the schema
+ *
+ * The "value" returned is intended for rendering purpose,
+ * meaning that, for fields that define a titleMap property,
+ * the function returns the label, and not the intrinsic value.
+ *
+ * The function handles values that contains template strings,
+ * e.g. {{values.foo[].bar}} or {{idx}}.
+ *
+ * When the form is a string, the function truncates the resulting string
+ * to meet a potential "maxLength" constraint defined in the schema, using
+ * "..." to mark the truncation. Note it does not validate the resulting
+ * string against other constraints (e.g. minLength, pattern) as it would
+ * be hard to come up with an automated course of action to "fix" the value.
+ *
+ * @function
+ * @param {Object} formObject The JSON Form object
+ * @param {String} key The generic key path (e.g. foo[].bar.baz[])
+ * @param {Array(Number)} arrayPath The array path that identifies
+ *  the unique value in the submitted form (e.g. [1, 3])
+ * @param {Object} tpldata Template data object
+ * @param {Boolean} usePreviousValues true to use previously submitted values
+ *  if defined.
+ */
+var getInitialValue = function (formObject, key, arrayPath, tpldata, usePreviousValues) {
+  var value = null;
+
+  // Complete template data for template function
+  tpldata = tpldata || {};
+  tpldata.idx = tpldata.idx ||
+    (arrayPath ? arrayPath[arrayPath.length-1] : 1);
+  tpldata.value = isSet(tpldata.value) ? tpldata.value : '';
+  tpldata.getValue = tpldata.getValue || function (key) {
+    return getInitialValue(formObject, key, arrayPath, tpldata, usePreviousValues);
+  };
+
+  // Helper function that returns the form element that explicitly
+  // references the given key in the schema.
+  var getFormElement = function (elements, key) {
+    var formElement = null;
+    if (!elements || !elements.length) return null;
+    _.each(elements, function (elt) {
+      if (formElement) return;
+      if (elt === key) {
+        formElement = { key: elt };
+        return;
+      }
+      if (_.isString(elt)) return;
+      if (elt.key === key) {
+        formElement = elt;
+      }
+      else if (elt.items) {
+        formElement = getFormElement(elt.items, key);
+      }
+    });
+    return formElement;
+  };
+  var formElement = getFormElement(formObject.form || [], key);
+  var schemaElement = getSchemaKey(formObject.schema.properties, key);
+
+  if (usePreviousValues && formObject.value) {
+    // If values were previously submitted, use them directly if defined
+    value = jsonform.util.getObjKey(formObject.value, applyArrayPath(key, arrayPath));
+  }
+  if (!isSet(value)) {
+    if (formElement && (typeof formElement['value'] !== 'undefined')) {
+      // Extract the definition of the form field associated with
+      // the key as it may override the schema's default value
+      // (note a "null" value overrides a schema default value as well)
+      value = formElement['value'];
+    }
+    else if (schemaElement) {
+      // Simply extract the default value from the schema
+      if (isSet(schemaElement['default'])) {
+        value = schemaElement['default'];
+      }
+    }
+    if (value && value.indexOf('{{values.') !== -1) {
+      // This label wants to use the value of another input field.
+      // Convert that construct into {{getValue(key)}} for
+      // Underscore to call the appropriate function of formData
+      // when template gets called (note calling a function is not
+      // exactly Mustache-friendly but is supported by Underscore).
+      value = value.replace(
+        /\{\{values\.([^\}]+)\}\}/g,
+        '{{getValue("$1")}}');
+    }
+    if (value) {
+      value = _.template(value, tpldata, valueTemplateSettings);
+    }
+  }
+
+  // Apply titleMap if needed
+  if (isSet(value) && formElement &&
+      formElement.titleMap &&
+      formElement.titleMap[value]) {
+    value = _.template(formElement.titleMap[value],
+      tpldata, valueTemplateSettings);
+  }
+
+  // Check maximum length of a string
+  if (value && _.isString(value) &&
+    schemaElement && schemaElement.maxLength) {
+    if (value.length > schemaElement.maxLength) {
+      // Truncate value to maximum length, adding continuation dots
+      value = value.substr(0, schemaElement.maxLength - 1) + '…';
+    }
+  }
+
+  if (!isSet(value)) {
+    return null;
+  }
+  else {
+    return value;
+  }
+};
+
+
+/**
+ * Represents a node in the form.
+ *
+ * Nodes that have an ID are linked to the corresponding DOM element
+ * when rendered
+ *
+ * Note the form element and the schema elements that gave birth to the
+ * node may be shared among multiple nodes (in the case of arrays).
+ *
+ * @class
+ */
+var formNode = function () {
+  /**
+   * The node's ID (may not be set)
+   */
+  this.id = null;
+
+  /**
+   * The node's key path (may not be set)
+   */
+  this.key = null;
+
+  /**
+   * DOM element associated witht the form element.
+   *
+   * The DOM element is set when the form element is rendered.
+   */
+  this.el = null;
+
+  /**
+   * Link to the form element that describes the node's layout
+   * (note the form element is shared among nodes in arrays)
+   */
+  this.formElement = null;
+
+  /**
+   * Link to the schema element that describes the node's value constraints
+   * (note the schema element is shared among nodes in arrays)
+   */
+  this.schemaElement = null;
+
+  /**
+   * Pointer to the "view" associated with the node, typically the right
+   * object in jsonform.elementTypes
+   */
+  this.view = null;
+
+  /**
+   * Node's subtree (if one is defined)
+   */
+  this.children = [];
+
+  /**
+   * A pointer to the form tree the node is attached to
+   */
+  this.ownerTree = null;
+
+  /**
+   * A pointer to the parent node of the node in the tree
+   */
+  this.parentNode = null;
+
+  /**
+   * Child template for array-like nodes.
+   *
+   * The child template gets cloned to create new array items.
+   */
+  this.childTemplate = null;
+
+
+  /**
+   * Direct children of array-like containers may use the value of a
+   * specific input field in their subtree as legend. The link to the
+   * legend child is kept here and initialized in computeInitialValues
+   * when a child sets "valueInLegend"
+   */
+  this.legendChild = null;
+
+
+  /**
+   * The path of indexes that lead to the current node when the
+   * form element is not at the root array level.
+   *
+   * Note a form element may well be nested element and still be
+   * at the root array level. That's typically the case for "fieldset"
+   * elements. An array level only gets created when a form element
+   * is of type "array" (or a derivated type such as "tabarray").
+   *
+   * The array path of a form element linked to the foo[2].bar.baz[3].toto
+   * element in the submitted values is [2, 3] for instance.
+   *
+   * The array path is typically used to compute the right ID for input
+   * fields. It is also used to update positions when an array item is
+   * created, moved around or suppressed.
+   *
+   * @type {Array(Number)}
+   */
+  this.arrayPath = [];
+
+  /**
+   * Position of the node in the list of children of its parents
+   */
+  this.childPos = 0;
+};
+
+
+/**
+ * Clones a node
+ *
+ * @function
+ * @param {formNode} New parent node to attach the node to
+ * @return {formNode} Cloned node
+ */
+formNode.prototype.clone = function (parentNode) {
+  var node = new formNode();
+  node.arrayPath = _.clone(this.arrayPath);
+  node.ownerTree = this.ownerTree;
+  node.parentNode = parentNode || this.parentNode;
+  node.formElement = this.formElement;
+  node.schemaElement = this.schemaElement;
+  node.view = this.view;
+  node.children = _.map(this.children, function (child) {
+    return child.clone(node);
+  });
+  if (this.childTemplate) {
+    node.childTemplate = this.childTemplate.clone(node);
+  }
+  return node;
+};
+
+
+/**
+ * Returns true if the subtree that starts at the current node
+ * has some non empty value attached to it
+ */
+formNode.prototype.hasNonDefaultValue = function () {
+
+  // hidden elements don't count because they could make the wrong selectfieldset element active
+  if (this.formElement && this.formElement.type=="hidden") {
+    return false;
+  }
+  
+  if (this.value && !this.defaultValue) {
+    return true;
+  }
+  var child = _.find(this.children, function (child) {
+    return child.hasNonDefaultValue();
+  });
+  return !!child;
+};
+
+
+/**
+ * Attaches a child node to the current node.
+ *
+ * The child node is appended to the end of the list.
+ *
+ * @function
+ * @param {formNode} node The child node to append
+ * @return {formNode} The inserted node (same as the one given as parameter)
+ */
+formNode.prototype.appendChild = function (node) {
+  node.parentNode = this;
+  node.childPos = this.children.length;
+  this.children.push(node);
+  return node;
+};
+
+
+/**
+ * Removes the last child of the node.
+ *
+ * @function
+ */
+formNode.prototype.removeChild = function () {
+  var child = this.children[this.children.length-1];
+  if (!child) return;
+
+  // Remove the child from the DOM
+  $(child.el).remove();
+
+  // Remove the child from the array
+  return this.children.pop();
+};
+
+
+/**
+ * Moves the user entered values set in the current node's subtree to the
+ * given node's subtree.
+ *
+ * The target node must follow the same structure as the current node
+ * (typically, they should have been generated from the same node template)
+ *
+ * The current node MUST be rendered in the DOM.
+ *
+ * TODO: when current node is not in the DOM, extract values from formNode.value
+ * properties, so that the function be available even when current node is not
+ * in the DOM.
+ *
+ * Moving values around allows to insert/remove array items at arbitrary
+ * positions.
+ *
+ * @function
+ * @param {formNode} node Target node.
+ */
+formNode.prototype.moveValuesTo = function (node) {
+  var values = this.getFormValues(node.arrayPath);
+  node.resetValues();
+  node.computeInitialValues(values, true);
+};
+
+
+/**
+ * Switches nodes user entered values.
+ *
+ * The target node must follow the same structure as the current node
+ * (typically, they should have been generated from the same node template)
+ *
+ * Both nodes MUST be rendered in the DOM.
+ *
+ * TODO: update getFormValues to work even if node is not rendered, using
+ * formNode's "value" property.
+ *
+ * @function
+ * @param {formNode} node Target node
+ */
+formNode.prototype.switchValuesWith = function (node) {
+  var values = this.getFormValues(node.arrayPath);
+  var nodeValues = node.getFormValues(this.arrayPath);
+  node.resetValues();
+  node.computeInitialValues(values, true);
+  this.resetValues();
+  this.computeInitialValues(nodeValues, true);
+};
+
+
+/**
+ * Resets all DOM values in the node's subtree.
+ *
+ * This operation also drops all array item nodes.
+ * Note values are not reset to their default values, they are rather removed!
+ *
+ * @function
+ */
+formNode.prototype.resetValues = function () {
+  var params = null;
+  var idx = 0;
+
+  // Reset value
+  this.value = null;
+
+  // Propagate the array path from the parent node
+  // (adding the position of the child for nodes that are direct
+  // children of array-like nodes)
+  if (this.parentNode) {
+    this.arrayPath = _.clone(this.parentNode.arrayPath);
+    if (this.parentNode.view && this.parentNode.view.array) {
+      this.arrayPath.push(this.childPos);
+    }
+  }
+  else {
+    this.arrayPath = [];
+  }
+
+  if (this.view && this.view.inputfield) {
+    // Simple input field, extract the value from the origin,
+    // set the target value and reset the origin value
+    params = $(':input', this.el).serializeArray();
+    _.each(params, function (param) {
+      // TODO: check this, there may exist corner cases with this approach
+      // (with multiple checkboxes for instance)
+      $('[name="' + escapeSelector(param.name) + '"]', $(this.el)).val('');
+    }, this);
+  }
+  else if (this.view && this.view.array) {
+    // The current node is an array, drop all children
+    while (this.children.length > 0) {
+      this.removeChild();
+    }
+  }
+
+  // Recurse down the tree
+  _.each(this.children, function (child) {
+    child.resetValues();
+  });
+};
+
+
+/**
+ * Sets the child template node for the current node.
+ *
+ * The child template node is used to create additional children
+ * in an array-like form element. The template is never rendered.
+ *
+ * @function
+ * @param {formNode} node The child template node to set
+ */
+formNode.prototype.setChildTemplate = function (node) {
+  this.childTemplate = node;
+  node.parentNode = this;
+};
+
+
+/**
+ * Recursively sets values to all nodes of the current subtree
+ * based on previously submitted values, or based on default
+ * values when the submitted values are not enough
+ *
+ * The function should be called once in the lifetime of a node
+ * in the tree. It expects its parent's arrayPath to be up to date.
+ *
+ * Three cases may arise:
+ * 1. if the form element is a simple input field, the value is
+ * extracted from previously submitted values of from default values
+ * defined in the schema.
+ * 2. if the form element is an array-like node, the child template
+ * is used to create as many children as possible (and at least one).
+ * 3. the function simply recurses down the node's subtree otherwise
+ * (this happens when the form element is a fieldset-like element).
+ *
+ * @function
+ * @param {Object} values Previously submitted values for the form
+ * @param {Boolean} ignoreDefaultValues Ignore default values defined in the
+ *  schema when set.
+ */
+formNode.prototype.computeInitialValues = function (values, ignoreDefaultValues) {
+  var self = this;
+  var node = null;
+  var nbChildren = 1;
+  var i = 0;
+  var formData = this.ownerTree.formDesc.tpldata || {};
+
+  // Propagate the array path from the parent node
+  // (adding the position of the child for nodes that are direct
+  // children of array-like nodes)
+  if (this.parentNode) {
+    this.arrayPath = _.clone(this.parentNode.arrayPath);
+    if (this.parentNode.view && this.parentNode.view.array) {
+      this.arrayPath.push(this.childPos);
+    }
+  }
+  else {
+    this.arrayPath = [];
+  }
+
+  // Prepare special data param "idx" for templated values
+  // (is is the index of the child in its wrapping array, starting
+  // at 1 since that's more human-friendly than a zero-based index)
+  formData.idx = (this.arrayPath.length > 0) ?
+    this.arrayPath[this.arrayPath.length-1] + 1 :
+    this.childPos + 1;
+
+  // Prepare special data param "value" for templated values
+  formData.value = '';
+
+  // Prepare special function to compute the value of another field
+  formData.getValue = function (key) {
+    return getInitialValue(self.ownerTree.formDesc,
+      key, self.arrayPath,
+      formData, !!values);
+  };
+
+  if (this.formElement) {
+    // Compute the ID of the field (if needed)
+    if (this.formElement.id) {
+      this.id = applyArrayPath(this.formElement.id, this.arrayPath);
+    }
+    else if (this.view && this.view.array) {
+      this.id = escapeSelector(this.ownerTree.formDesc.prefix) +
+        '-elt-counter-' + _.uniqueId();
+    }
+    else if (this.parentNode && this.parentNode.view &&
+      this.parentNode.view.array) {
+      // Array items need an array to associate the right DOM element
+      // to the form node when the parent is rendered.
+      this.id = escapeSelector(this.ownerTree.formDesc.prefix) +
+        '-elt-counter-' + _.uniqueId();
+    }
+    else if ((this.formElement.type === 'button') ||
+      (this.formElement.type === 'selectfieldset') ||
+      (this.formElement.type === 'question') ||
+      (this.formElement.type === 'buttonquestion')) {
+      // Buttons do need an id for "onClick" purpose
+      this.id = escapeSelector(this.ownerTree.formDesc.prefix) +
+        '-elt-counter-' + _.uniqueId();
+    }
+
+    // Compute the actual key (the form element's key is index-free,
+    // i.e. it looks like foo[].bar.baz[].truc, so we need to apply
+    // the array path of the node to get foo[4].bar.baz[2].truc)
+    if (this.formElement.key) {
+      this.key = applyArrayPath(this.formElement.key, this.arrayPath);
+      this.keydash = this.key.replace(/\./g, '---');
+    }
+
+    // Same idea for the field's name
+    this.name = applyArrayPath(this.formElement.name, this.arrayPath);
+
+    // Consider that label values are template values and apply the
+    // form's data appropriately (note we also apply the array path
+    // although that probably doesn't make much sense for labels...)
+    _.each([
+      'title',
+      'legend',
+      'description',
+      'append',
+      'prepend',
+      'inlinetitle',
+      'helpvalue',
+      'value',
+      'disabled',
+      'placeholder',
+      'readOnly'
+    ], function (prop) {
+      if (_.isString(this.formElement[prop])) {
+        if (this.formElement[prop].indexOf('{{values.') !== -1) {
+          // This label wants to use the value of another input field.
+          // Convert that construct into {{jsonform.getValue(key)}} for
+          // Underscore to call the appropriate function of formData
+          // when template gets called (note calling a function is not
+          // exactly Mustache-friendly but is supported by Underscore).
+          this[prop] = this.formElement[prop].replace(
+            /\{\{values\.([^\}]+)\}\}/g,
+            '{{getValue("$1")}}');
+        }
+        else {
+          // Note applying the array path probably doesn't make any sense,
+          // but some geek might want to have a label "foo[].bar[].baz",
+          // with the [] replaced by the appropriate array path.
+          this[prop] = applyArrayPath(this.formElement[prop], this.arrayPath);
+        }
+        if (this[prop]) {
+          this[prop] = _.template(this[prop], formData, valueTemplateSettings);
+        }
+      }
+      else {
+        this[prop] = this.formElement[prop];
+      }
+    }, this);
+
+    // Apply templating to options created with "titleMap" as well
+    if (this.formElement.options) {
+      this.options = _.map(this.formElement.options, function (option) {
+        var title = null;
+        if (_.isObject(option) && option.title) {
+          // See a few lines above for more details about templating
+          // preparation here.
+          if (option.title.indexOf('{{values.') !== -1) {
+            title = option.title.replace(
+              /\{\{values\.([^\}]+)\}\}/g,
+              '{{getValue("$1")}}');
+          }
+          else {
+            title = applyArrayPath(option.title, self.arrayPath);
+          }
+          return _.extend({}, option, {
+            value: (isSet(option.value) ? option.value : ''),
+            title: _.template(title, formData, valueTemplateSettings)
+          });
+        }
+        else {
+          return option;
+        }
+      });
+    }
+  }
+
+  if (this.view && this.view.inputfield && this.schemaElement) {
+    // Case 1: simple input field
+    if (values) {
+      // Form has already been submitted, use former value if defined.
+      // Note we won't set the field to its default value otherwise
+      // (since the user has already rejected it)
+      if (isSet(jsonform.util.getObjKey(values, this.key))) {
+        this.value = jsonform.util.getObjKey(values, this.key);
+      }
+    }
+    else if (!ignoreDefaultValues) {
+      // No previously submitted form result, use default value
+      // defined in the schema if it's available and not already
+      // defined in the form element
+      if (!isSet(this.value) && isSet(this.schemaElement['default'])) {
+        this.value = this.schemaElement['default'];
+        if (_.isString(this.value)) {
+          if (this.value.indexOf('{{values.') !== -1) {
+            // This label wants to use the value of another input field.
+            // Convert that construct into {{jsonform.getValue(key)}} for
+            // Underscore to call the appropriate function of formData
+            // when template gets called (note calling a function is not
+            // exactly Mustache-friendly but is supported by Underscore).
+            this.value = this.value.replace(
+              /\{\{values\.([^\}]+)\}\}/g,
+              '{{getValue("$1")}}');
+          }
+          else {
+            // Note applying the array path probably doesn't make any sense,
+            // but some geek might want to have a label "foo[].bar[].baz",
+            // with the [] replaced by the appropriate array path.
+            this.value = applyArrayPath(this.value, this.arrayPath);
+          }
+          if (this.value) {
+            this.value = _.template(this.value, formData, valueTemplateSettings);
+          }
+        }
+        this.defaultValue = true;
+      }
+    }
+  }
+  else if (this.view && this.view.array) {
+    // Case 2: array-like node
+    nbChildren = 0;
+    if (values) {
+      nbChildren = this.getPreviousNumberOfItems(values, this.arrayPath);
+    }
+    // TODO: use default values at the array level when form has not been
+    // submitted before. Note it's not that easy because each value may
+    // be a complex structure that needs to be pushed down the subtree.
+    // The easiest way is probably to generate a "values" object and
+    // compute initial values from that object
+    /*
+    else if (this.schemaElement['default']) {
+      nbChildren = this.schemaElement['default'].length;
+    }
+    */
+    else if (nbChildren === 0) {
+      // If form has already been submitted with no children, the array
+      // needs to be rendered without children. If there are no previously
+      // submitted values, the array gets rendered with one empty item as
+      // it's more natural from a user experience perspective. That item can
+      // be removed with a click on the "-" button.
+      nbChildren = 1;
+    }
+    for (i = 0; i < nbChildren; i++) {
+      this.appendChild(this.childTemplate.clone());
+    }
+  }
+
+  // Case 3 and in any case: recurse through the list of children
+  _.each(this.children, function (child) {
+    child.computeInitialValues(values, ignoreDefaultValues);
+  });
+
+  // If the node's value is to be used as legend for its "container"
+  // (typically the array the node belongs to), ensure that the container
+  // has a direct link to the node for the corresponding tab.
+  if (this.formElement && this.formElement.valueInLegend) {
+    node = this;
+    while (node) {
+      if (node.parentNode &&
+        node.parentNode.view &&
+        node.parentNode.view.array) {
+        node.legendChild = this;
+        if (node.formElement && node.formElement.legend) {
+          node.legend = applyArrayPath(node.formElement.legend, node.arrayPath);
+          formData.idx = (node.arrayPath.length > 0) ?
+            node.arrayPath[node.arrayPath.length-1] + 1 :
+            node.childPos + 1;
+          formData.value = isSet(this.value) ? this.value : '';
+          node.legend = _.template(node.legend, formData, valueTemplateSettings);
+          break;
+        }
+      }
+      node = node.parentNode;
+    }
+  }
+};
+
+
+/**
+ * Returns the number of items that the array node should have based on
+ * previously submitted values.
+ *
+ * The whole difficulty is that values may be hidden deep in the subtree
+ * of the node and may actually target different arrays in the JSON schema.
+ *
+ * @function
+ * @param {Object} values Previously submitted values
+ * @param {Array(Number)} arrayPath the array path we're interested in
+ * @return {Number} The number of items in the array
+ */
+formNode.prototype.getPreviousNumberOfItems = function (values, arrayPath) {
+  var key = null;
+  var arrayValue = null;
+  var childNumbers = null;
+  var idx = 0;
+
+  if (!values) {
+    // No previously submitted values, no need to go any further
+    return 0;
+  }
+
+  if (this.view.inputfield && this.schemaElement) {
+    // Case 1: node is a simple input field that links to a key in the schema.
+    // The schema key looks typically like:
+    //  foo.bar[].baz.toto[].truc[].bidule
+    // The goal is to apply the array path and truncate the key to the last
+    // array we're interested in, e.g. with an arrayPath [4, 2]:
+    //  foo.bar[4].baz.toto[2]
+    key = truncateToArrayDepth(this.formElement.key, arrayPath.length);
+    key = applyArrayPath(key, arrayPath);
+    arrayValue = jsonform.util.getObjKey(values, key);
+    if (!arrayValue) {
+      // No key? That means this field had been left empty
+      // in previous submit
+      return 0;
+    }
+    childNumbers = _.map(this.children, function (child) {
+      return child.getPreviousNumberOfItems(values, arrayPath);
+    });
+    return _.max([_.max(childNumbers) || 0, arrayValue.length]);
+  }
+  else if (this.view.array) {
+    // Case 2: node is an array-like node, look for input fields
+    // in its child template
+    return this.childTemplate.getPreviousNumberOfItems(values, arrayPath);
+  }
+  else {
+    // Case 3: node is a leaf or a container,
+    // recurse through the list of children and return the maximum
+    // number of items found in each subtree
+    childNumbers = _.map(this.children, function (child) {
+      return child.getPreviousNumberOfItems(values, arrayPath);
+    });
+    return _.max(childNumbers) || 0;
+  }
+};
+
+
+/**
+ * Returns the structured object that corresponds to the form values entered
+ * by the user for the node's subtree.
+ *
+ * The returned object follows the structure of the JSON schema that gave
+ * birth to the form.
+ *
+ * Obviously, the node must have been rendered before that function may
+ * be called.
+ *
+ * @function
+ * @param {Array(Number)} updateArrayPath Array path to use to pretend that
+ *  the entered values were actually entered for another item in an array
+ *  (this is used to move values around when an item is inserted/removed/moved
+ *  in an array)
+ * @return {Object} The object that follows the data schema and matches the
+ *  values entered by the user.
+ */
+formNode.prototype.getFormValues = function (updateArrayPath) {
+  // The values object that will be returned
+  var values = {};
+
+  if (!this.el) {
+    throw new Error('formNode.getFormValues can only be called on nodes that are associated with a DOM element in the tree');
+  }
+
+  // Form fields values
+  var formArray = $(':input', this.el).serializeArray();
+
+  // Set values to false for unset checkboxes and radio buttons
+  // because serializeArray() ignores them
+  formArray = formArray.concat(
+    $(':input[type=checkbox]:not(:disabled):not(:checked)', this.el).map( function() {
+      return {"name": this.name, "value": this.checked}
+    }).get()
+  );
+
+  if (updateArrayPath) {
+    _.each(formArray, function (param) {
+      param.name = applyArrayPath(param.name, updateArrayPath);
+    });
+  }
+
+  // The underlying data schema
+  var formSchema = this.ownerTree.formDesc.schema;
+
+  for (var i = 0; i < formArray.length; i++) {
+    // Retrieve the key definition from the data schema
+    var name = formArray[i].name;
+    var eltSchema = getSchemaKey(formSchema.properties, name);
+    var arrayMatch = null;
+    var cval = null;
+
+    // Skip the input field if it's not part of the schema
+    if (!eltSchema) continue;
+
+    // Handle multiple checkboxes separately as the idea is to generate
+    // an array that contains the list of enumeration items that the user
+    // selected.
+    if (eltSchema._jsonform_checkboxes_as_array) {
+      arrayMatch = name.match(/\[([0-9]*)\]$/);
+      if (arrayMatch) {
+        name = name.replace(/\[([0-9]*)\]$/, '');
+        cval = jsonform.util.getObjKey(values, name) || [];
+        if (formArray[i].value === '1') {
+          // Value selected, push the corresponding enumeration item
+          // to the data result
+          cval.push(eltSchema['enum'][parseInt(arrayMatch[1],10)]);
+        }
+        jsonform.util.setObjKey(values, name, cval);
+        continue;
+      }
+    }
+
+    // Type casting
+    if (eltSchema.type === 'boolean') {
+      if (formArray[i].value === '0') {
+        formArray[i].value = false;
+      } else {
+        formArray[i].value = !!formArray[i].value;
+      }
+    }
+    if ((eltSchema.type === 'number') ||
+      (eltSchema.type === 'integer')) {
+      if (_.isString(formArray[i].value)) {
+        if (!formArray[i].value.length) {
+          formArray[i].value = null;
+        } else if (!isNaN(Number(formArray[i].value))) {
+          formArray[i].value = Number(formArray[i].value);
+        }
+      }
+    }
+    if ((eltSchema.type === 'string') &&
+      (formArray[i].value === '') &&
+      !eltSchema._jsonform_allowEmpty) {
+      formArray[i].value=null;
+    }
+    if ((eltSchema.type === 'object') &&
+      _.isString(formArray[i].value) &&
+      (formArray[i].value.substring(0,1) === '{')) {
+      try {
+        formArray[i].value = JSON.parse(formArray[i].value);
+      } catch (e) {
+        formArray[i].value = {};
+      }
+    }
+    //TODO is this due to a serialization bug?
+    if ((eltSchema.type === 'object') &&
+      (formArray[i].value === 'null' || formArray[i].value === '')) {
+      formArray[i].value = null;
+    }
+
+    if (formArray[i].name && (formArray[i].value !== null)) {
+      jsonform.util.setObjKey(values, formArray[i].name, formArray[i].value);
+    }
+  }
+  // console.log("Form value",values);
+  return values;
+};
+
+
+
+/**
+ * Renders the node.
+ *
+ * Rendering is done in three steps: HTML generation, DOM element creation
+ * and insertion, and an enhance step to bind event handlers.
+ *
+ * @function
+ * @param {Node} el The DOM element where the node is to be rendered. The
+ *  node is inserted at the right position based on its "childPos" property.
+ */
+formNode.prototype.render = function (el) {
+  var html = this.generate();
+  this.setContent(html, el);
+  this.enhance();
+};
+
+
+/**
+ * Inserts/Updates the HTML content of the node in the DOM.
+ *
+ * If the HTML is an update, the new HTML content replaces the old one.
+ * The new HTML content is not moved around in the DOM in particular.
+ *
+ * The HTML is inserted at the right position in its parent's DOM subtree
+ * otherwise (well, provided there are enough children, but that should always
+ * be the case).
+ *
+ * @function
+ * @param {string} html The HTML content to render
+ * @param {Node} parentEl The DOM element that is to contain the DOM node.
+ *  This parameter is optional (the node's parent is used otherwise) and
+ *  is ignored if the node to render is already in the DOM tree.
+ */
+formNode.prototype.setContent = function (html, parentEl) {
+  var node = $(html);
+  var parentNode = parentEl ||
+    (this.parentNode ? this.parentNode.el : this.ownerTree.domRoot);
+  var nextSibling = null;
+
+  if (this.el) {
+    // Replace the contents of the DOM element if the node is already in the tree
+    $(this.el).replaceWith(node);
+  }
+  else {
+    // Insert the node in the DOM if it's not already there
+    nextSibling = $(parentNode).children().get(this.childPos);
+    if (nextSibling) {
+      $(nextSibling).before(node);
+    }
+    else {
+      $(parentNode).append(node);
+    }
+  }
+
+  // Save the link between the form node and the generated HTML
+  this.el = node;
+
+  // Update the node's subtree, extracting DOM elements that match the nodes
+  // from the generated HTML
+  this.updateElement(this.el);
+};
+
+
+/**
+ * Updates the DOM element associated with the node.
+ *
+ * Only nodes that have ID are directly associated with a DOM element.
+ *
+ * @function
+ */
+formNode.prototype.updateElement = function (domNode) {
+  if (this.id) {
+    this.el = $('#' + escapeSelector(this.id), domNode).get(0);
+    if (this.view && this.view.getElement) {
+      this.el = this.view.getElement(this.el);
+    }
+    if ((this.fieldtemplate !== false) &&
+      this.view && this.view.fieldtemplate) {
+      // The field template wraps the element two or three level deep
+      // in the DOM tree, depending on whether there is anything prepended
+      // or appended to the input field
+      this.el = $(this.el).parent().parent();
+      if (this.prepend || this.prepend) {
+        this.el = this.el.parent();
+      }
+      this.el = this.el.get(0);
+    }
+    if (this.parentNode && this.parentNode.view &&
+      this.parentNode.view.childTemplate) {
+      // TODO: the child template may introduce more than one level,
+      // so the number of levels introduced should rather be exposed
+      // somehow in jsonform.fieldtemplate.
+      this.el = $(this.el).parent().get(0);
+    }
+  }
+
+  _.each(this.children, function (child) {
+    child.updateElement(this.el || domNode);
+  });
+};
+
+
+/**
+ * Generates the view's HTML content for the underlying model.
+ *
+ * @function
+ */
+formNode.prototype.generate = function () {
+  var data = {
+    id: this.id,
+    keydash: this.keydash,
+    elt: this.formElement,
+    schema: this.schemaElement,
+    node: this,
+    value: isSet(this.value) ? this.value : '',
+    escape: escapeHTML
+  };
+  var template = null;
+  var html = '';
+
+  // Complete the data context if needed
+  if (this.ownerTree.formDesc.onBeforeRender) {
+    this.ownerTree.formDesc.onBeforeRender(data, this);
+  }
+  if (this.view.onBeforeRender) {
+    this.view.onBeforeRender(data, this);
+  }
+
+  // Use the template that 'onBeforeRender' may have set,
+  // falling back to that of the form element otherwise
+  if (this.template) {
+    template = this.template;
+  }
+  else if (this.formElement && this.formElement.template) {
+    template = this.formElement.template;
+  }
+  else {
+    template = this.view.template;
+  }
+
+  // Wrap the view template in the generic field template
+  // (note the strict equality to 'false', needed as we fallback
+  // to the view's setting otherwise)
+  if ((this.fieldtemplate !== false) &&
+    (this.fieldtemplate || this.view.fieldtemplate)) {
+    template = jsonform.fieldTemplate(template);
+  }
+
+  // Wrap the content in the child template of its parent if necessary.
+  if (this.parentNode && this.parentNode.view &&
+    this.parentNode.view.childTemplate) {
+    template = this.parentNode.view.childTemplate(template);
+  }
+
+  // Prepare the HTML of the children
+  var childrenhtml = '';
+  _.each(this.children, function (child) {
+    childrenhtml += child.generate();
+  });
+  data.children = childrenhtml;
+
+  data.fieldHtmlClass = '';
+  if (this.ownerTree &&
+      this.ownerTree.formDesc &&
+      this.ownerTree.formDesc.params &&
+      this.ownerTree.formDesc.params.fieldHtmlClass) {
+    data.fieldHtmlClass = this.ownerTree.formDesc.params.fieldHtmlClass;
+  }
+  if (this.formElement &&
+      (typeof this.formElement.fieldHtmlClass !== 'undefined')) {
+    data.fieldHtmlClass = this.formElement.fieldHtmlClass;
+  }
+
+  // Apply the HTML template
+  html = _.template(template, data, fieldTemplateSettings);
+  return html;
+};
+
+
+/**
+ * Enhances the view with additional logic, binding event handlers
+ * in particular.
+ *
+ * The function also runs the "insert" event handler of the view and
+ * form element if they exist (starting with that of the view)
+ *
+ * @function
+ */
+formNode.prototype.enhance = function () {
+  var node = this;
+  var handlers = null;
+  var handler = null;
+  var formData = _.clone(this.ownerTree.formDesc.tpldata) || {};
+
+  if (this.formElement) {
+    // Check the view associated with the node as it may define an "onInsert"
+    // event handler to be run right away
+    if (this.view.onInsert) {
+      this.view.onInsert({ target: $(this.el) }, this);
+    }
+
+    handlers = this.handlers || this.formElement.handlers;
+
+    // Trigger the "insert" event handler
+    handler = this.onInsert || this.formElement.onInsert;
+    if (handler) {
+      handler({ target: $(this.el) }, this);
+    }
+    if (handlers) {
+      _.each(handlers, function (handler, onevent) {
+        if (onevent === 'insert') {
+          handler({ target: $(this.el) }, this);
+        }
+      }, this);
+    }
+
+    // No way to register event handlers if the DOM element is unknown
+    // TODO: find some way to register event handlers even when this.el is not set.
+    if (this.el) {
+
+      // Register specific event handlers
+      // TODO: Add support for other event handlers
+      if (this.onChange)
+        $(this.el).bind('change', function(evt) { node.onChange(evt, node); });
+      if (this.view.onChange)
+        $(this.el).bind('change', function(evt) { node.view.onChange(evt, node); });
+      if (this.formElement.onChange)
+        $(this.el).bind('change', function(evt) { node.formElement.onChange(evt, node); });
+
+      if (this.onClick)
+        $(this.el).bind('click', function(evt) { node.onClick(evt, node); });
+      if (this.view.onClick)
+        $(this.el).bind('click', function(evt) { node.view.onClick(evt, node); });
+      if (this.formElement.onClick)
+        $(this.el).bind('click', function(evt) { node.formElement.onClick(evt, node); });
+
+      if (this.onKeyUp)
+        $(this.el).bind('keyup', function(evt) { node.onKeyUp(evt, node); });
+      if (this.view.onKeyUp)
+        $(this.el).bind('keyup', function(evt) { node.view.onKeyUp(evt, node); });
+      if (this.formElement.onKeyUp)
+        $(this.el).bind('keyup', function(evt) { node.formElement.onKeyUp(evt, node); });
+
+      if (handlers) {
+        _.each(handlers, function (handler, onevent) {
+          if (onevent !== 'insert') {
+            $(this.el).bind(onevent, function(evt) { handler(evt, node); });
+          }
+        }, this);
+      }
+    }
+
+    // Auto-update legend based on the input field that's associated with it
+    if (this.legendChild && this.legendChild.formElement) {
+      $(this.legendChild.el).bind('keyup', function (evt) {
+        if (node.formElement && node.formElement.legend && node.parentNode) {
+          node.legend = applyArrayPath(node.formElement.legend, node.arrayPath);
+          formData.idx = (node.arrayPath.length > 0) ?
+            node.arrayPath[node.arrayPath.length-1] + 1 :
+            node.childPos + 1;
+          formData.value = $(evt.target).val();
+          node.legend = _.template(node.legend, formData, valueTemplateSettings);
+          $(node.parentNode.el).trigger('legendUpdated');
+        }
+      });
+    }
+  }
+
+  // Recurse down the tree to enhance children
+  _.each(this.children, function (child) {
+    child.enhance();
+  });
+};
+
+
+
+/**
+ * Inserts an item in the array at the requested position and renders the item.
+ *
+ * @function
+ * @param {Number} idx Insertion index
+ */
+formNode.prototype.insertArrayItem = function (idx, domElement) {
+  var i = 0;
+
+  // Insert element at the end of the array if index is not given
+  if (idx === undefined) {
+    idx = this.children.length;
+  }
+
+  // Create the additional array item at the end of the list,
+  // using the item template created when tree was initialized
+  // (the call to resetValues ensures that 'arrayPath' is correctly set)
+  var child = this.childTemplate.clone();
+  this.appendChild(child);
+  child.resetValues();
+
+  // To create a blank array item at the requested position,
+  // shift values down starting at the requested position
+  // one to insert (note we start with the end of the array on purpose)
+  for (i = this.children.length-2; i >= idx; i--) {
+    this.children[i].moveValuesTo(this.children[i+1]);
+  }
+
+  // Initialize the blank node we've created with default values
+  this.children[idx].resetValues();
+  this.children[idx].computeInitialValues();
+
+  // Re-render all children that have changed
+  for (i = idx; i < this.children.length; i++) {
+    this.children[i].render(domElement);
+  }
+};
+
+
+/**
+ * Remove an item from an array
+ *
+ * @function
+ * @param {Number} idx The index number of the item to remove
+ */
+formNode.prototype.deleteArrayItem = function (idx) {
+  var i = 0;
+  var child = null;
+
+  // Delete last item if no index is given
+  if (idx === undefined) {
+    idx = this.children.length - 1;
+  }
+
+  // Move values up in the array
+  for (i = idx; i < this.children.length-1; i++) {
+    this.children[i+1].moveValuesTo(this.children[i]);
+    this.children[i].render();
+  }
+
+  // Remove the last array item from the DOM tree and from the form tree
+  this.removeChild();
+};
+
+/**
+ * Returns the minimum/maximum number of items that an array field
+ * is allowed to have according to the schema definition of the fields
+ * it contains.
+ *
+ * The function parses the schema definitions of the array items that
+ * compose the current "array" node and returns the minimum value of
+ * "maxItems" it encounters as the maximum number of items, and the
+ * maximum value of "minItems" as the minimum number of items.
+ *
+ * The function reports a -1 for either of the boundaries if the schema
+ * does not put any constraint on the number of elements the current
+ * array may have of if the current node is not an array.
+ *
+ * Note that array boundaries should be defined in the JSON Schema using
+ * "minItems" and "maxItems". The code also supports "minLength" and
+ * "maxLength" as a fallback, mostly because it used to by mistake (see #22)
+ * and because other people could make the same mistake.
+ *
+ * @function
+ * @return {Object} An object with properties "minItems" and "maxItems"
+ *  that reports the corresponding number of items that the array may
+ *  have (value is -1 when there is no constraint for that boundary)
+ */
+formNode.prototype.getArrayBoundaries = function () {
+  var boundaries = {
+    minItems: -1,
+    maxItems: -1
+  };
+  if (!this.view || !this.view.array) return boundaries;
+
+  var getNodeBoundaries = function (node, initialNode) {
+    var schemaKey = null;
+    var arrayKey = null;
+    var boundaries = {
+      minItems: -1,
+      maxItems: -1
+    };
+    initialNode = initialNode || node;
+
+    if (node.view && node.view.array && (node !== initialNode)) {
+      // New array level not linked to an array in the schema,
+      // so no size constraints
+      return boundaries;
+    }
+
+    if (node.key) {
+      // Note the conversion to target the actual array definition in the
+      // schema where minItems/maxItems may be defined. If we're still looking
+      // at the initial node, the goal is to convert from:
+      //  foo[0].bar[3].baz to foo[].bar[].baz
+      // If we're not looking at the initial node, the goal is to look at the
+      // closest array parent:
+      //  foo[0].bar[3].baz to foo[].bar
+      arrayKey = node.key.replace(/\[[0-9]+\]/g, '[]');
+      if (node !== initialNode) {
+        arrayKey = arrayKey.replace(/\[\][^\[\]]*$/, '');
+      }
+      schemaKey = getSchemaKey(
+        node.ownerTree.formDesc.schema.properties,
+        arrayKey
+      );
+      if (!schemaKey) return boundaries;
+      return {
+        minItems: schemaKey.minItems || schemaKey.minLength || -1,
+        maxItems: schemaKey.maxItems || schemaKey.maxLength || -1
+      };
+    }
+    else {
+      _.each(node.children, function (child) {
+        var subBoundaries = getNodeBoundaries(child, initialNode);
+        if (subBoundaries.minItems !== -1) {
+          if (boundaries.minItems !== -1) {
+            boundaries.minItems = Math.max(
+              boundaries.minItems,
+              subBoundaries.minItems
+            );
+          }
+          else {
+            boundaries.minItems = subBoundaries.minItems;
+          }
+        }
+        if (subBoundaries.maxItems !== -1) {
+          if (boundaries.maxItems !== -1) {
+            boundaries.maxItems = Math.min(
+              boundaries.maxItems,
+              subBoundaries.maxItems
+            );
+          }
+          else {
+            boundaries.maxItems = subBoundaries.maxItems;
+          }
+        }
+      });
+    }
+    return boundaries;
+  };
+  return getNodeBoundaries(this);
+};
+
+
+/**
+ * Form tree class.
+ *
+ * Holds the internal representation of the form.
+ * The tree is always in sync with the rendered form, this allows to parse
+ * it easily.
+ *
+ * @class
+ */
+var formTree = function () {
+  this.eventhandlers = [];
+  this.root = null;
+  this.formDesc = null;
+};
+
+/**
+ * Initializes the form tree structure from the JSONForm object
+ *
+ * This function is the main entry point of the JSONForm library.
+ *
+ * Initialization steps:
+ * 1. the internal tree structure that matches the JSONForm object
+ *  gets created (call to buildTree)
+ * 2. initial values are computed from previously submitted values
+ *  or from the default values defined in the JSON schema.
+ *
+ * When the function returns, the tree is ready to be rendered through
+ * a call to "render".
+ *
+ * @function
+ */
+formTree.prototype.initialize = function (formDesc) {
+  formDesc = formDesc || {};
+
+  // Keep a pointer to the initial JSONForm
+  // (note clone returns a shallow copy, only first-level is cloned)
+  this.formDesc = _.clone(formDesc);
+
+  // Compute form prefix if no prefix is given.
+  this.formDesc.prefix = this.formDesc.prefix ||
+    'jsonform-' + _.uniqueId();
+
+  // JSON schema shorthand
+  if (this.formDesc.schema && !this.formDesc.schema.properties) {
+    this.formDesc.schema = {
+      properties: this.formDesc.schema
+    };
+  }
+
+  // Ensure layout is set
+  this.formDesc.form = this.formDesc.form || [
+    '*',
+    {
+      type: 'actions',
+      items: [
+        {
+          type: 'submit',
+          value: 'Submit'
+        }
+      ]
+    }
+  ];
+  this.formDesc.form = (_.isArray(this.formDesc.form) ?
+    this.formDesc.form :
+    [this.formDesc.form]);
+
+  this.formDesc.params = this.formDesc.params || {};
+
+  // Create the root of the tree
+  this.root = new formNode();
+  this.root.ownerTree = this;
+  this.root.view = jsonform.elementTypes['root'];
+
+  // Generate the tree from the form description
+  this.buildTree();
+
+  // Compute the values associated with each node
+  // (for arrays, the computation actually creates the form nodes)
+  this.computeInitialValues();
+};
+
+
+/**
+ * Constructs the tree from the form description.
+ *
+ * The function must be called once when the tree is first created.
+ *
+ * @function
+ */
+formTree.prototype.buildTree = function () {
+  // Parse and generate the form structure based on the elements encountered:
+  // - '*' means "generate all possible fields using default layout"
+  // - a key reference to target a specific data element
+  // - a more complex object to generate specific form sections
+  _.each(this.formDesc.form, function (formElement) {
+    if (formElement === '*') {
+      _.each(this.formDesc.schema.properties, function (element, key) {
+        this.root.appendChild(this.buildFromLayout({
+          key: key
+        }));
+      }, this);
+    }
+    else {
+      if (_.isString(formElement)) {
+        formElement = {
+          key: formElement
+        };
+      }
+      this.root.appendChild(this.buildFromLayout(formElement));
+    }
+  }, this);
+};
+
+
+/**
+ * Builds the internal form tree representation from the requested layout.
+ *
+ * The function is recursive, generating the node children as necessary.
+ * The function extracts the values from the previously submitted values
+ * (this.formDesc.value) or from default values defined in the schema.
+ *
+ * @function
+ * @param {Object} formElement JSONForm element to render
+ * @param {Object} context The parsing context (the array depth in particular)
+ * @return {Object} The node that matches the element.
+ */
+formTree.prototype.buildFromLayout = function (formElement, context) {
+  var schemaElement = null;
+  var node = new formNode();
+  var view = null;
+  var key = null;
+
+  // The form element parameter directly comes from the initial
+  // JSONForm object. We'll make a shallow copy of it and of its children
+  // not to pollute the original object.
+  // (note JSON.parse(JSON.stringify()) cannot be used since there may be
+  // event handlers in there!)
+  formElement = _.clone(formElement);
+  if (formElement.items) {
+    if (_.isArray(formElement.items)) {
+      formElement.items = _.map(formElement.items, _.clone);
+    }
+    else {
+      formElement.items = [ _.clone(formElement.items) ];
+    }
+  }
+
+  if (formElement.key) {
+    // The form element is directly linked to an element in the JSON
+    // schema. The properties of the form element override those of the
+    // element in the JSON schema. Properties from the JSON schema complete
+    // those of the form element otherwise.
+
+    // Retrieve the element from the JSON schema
+    schemaElement = getSchemaKey(
+      this.formDesc.schema.properties,
+      formElement.key);
+    if (!schemaElement) {
+      // The JSON Form is invalid!
+      throw new Error('The JSONForm object references the schema key "' +
+        formElement.key + '" but that key does not exist in the JSON schema');
+    }
+
+    // Schema element has just been found, let's trigger the
+    // "onElementSchema" event
+    // (tidoust: not sure what the use case for this is, keeping the
+    // code for backward compatibility)
+    if (this.formDesc.onElementSchema) {
+      this.formDesc.onElementSchema(formElement, schemaElement);
+    }
+
+    formElement.name =
+      formElement.name ||
+      formElement.key;
+    formElement.title =
+      formElement.title ||
+      schemaElement.title;
+    formElement.description =
+      formElement.description ||
+      schemaElement.description;
+    formElement.readOnly =
+      formElement.readOnly ||
+      schemaElement.readOnly ||
+      formElement.readonly ||
+      schemaElement.readonly;
+
+    // Compute the ID of the input field
+    if (!formElement.id) {
+      formElement.id = escapeSelector(this.formDesc.prefix) +
+        '-elt-' + formElement.key;
+    }
+
+    // Should empty strings be included in the final value?
+    // TODO: it's rather unclean to pass it through the schema.
+    if (formElement.allowEmpty) {
+      schemaElement._jsonform_allowEmpty = true;
+    }
+
+    // If the form element does not define its type, use the type of
+    // the schema element.
+    if (!formElement.type) {
+      if ((schemaElement.type === 'string') &&
+        (schemaElement.format === 'color')) {
+        formElement.type = 'color';
+      } else if ((schemaElement.type === 'number' ||
+          schemaElement.type === 'integer' ||
+          schemaElement.type === 'string' ||
+          schemaElement.type === 'any') &&
+        !schemaElement['enum']) {
+        formElement.type = 'text';
+      } else if (schemaElement.type === 'boolean') {
+        formElement.type = 'checkbox';
+      } else if (schemaElement.type === 'object') {
+        if (schemaElement.properties) {
+          formElement.type = 'fieldset';
+        } else {
+          formElement.type = 'textarea';
+        }
+      } else if (!_.isUndefined(schemaElement['enum'])) {
+        formElement.type = 'select';
+      } else {
+        formElement.type = schemaElement.type;
+      }
+    }
+
+    // Unless overridden in the definition of the form element (or unless
+    // there's a titleMap defined), use the enumeration list defined in
+    // the schema
+    if (!formElement.options && schemaElement['enum']) {
+      if (formElement.titleMap) {
+        formElement.options = _.map(schemaElement['enum'], function (value) {
+          return {
+            value: value,
+            title: formElement.titleMap[value] || value
+          };
+        });
+      }
+      else {
+        formElement.options = schemaElement['enum'];
+      }
+    }
+
+    // Flag a list of checkboxes with multiple choices
+    if ((formElement.type === 'checkboxes') && schemaElement.items) {
+      var itemsEnum = schemaElement.items['enum'];
+      if (itemsEnum) {
+        schemaElement.items._jsonform_checkboxes_as_array = true;
+      }
+      if (!itemsEnum && schemaElement.items[0]) {
+        itemsEnum = schemaElement.items[0]['enum'];
+        if (itemsEnum) {
+          schemaElement.items[0]._jsonform_checkboxes_as_array = true;
+        }
+      }
+    }
+
+    // If the form element targets an "object" in the JSON schema,
+    // we need to recurse through the list of children to create an
+    // input field per child property of the object in the JSON schema
+    if (schemaElement.type === 'object') {
+      _.each(schemaElement.properties, function (prop, propName) {
+        node.appendChild(this.buildFromLayout({
+          key: formElement.key + '.' + propName
+        }));
+      }, this);
+    }
+  }
+
+  if (!formElement.type) {
+    formElement.type = 'none';
+  }
+  view = jsonform.elementTypes[formElement.type];
+  if (!view) {
+    throw new Error('The JSONForm contains an element whose type is unknown: "' +
+      formElement.type + '"');
+  }
+  
+
+  if (schemaElement) {
+    // The form element is linked to an element in the schema.
+    // Let's make sure the types are compatible.
+    // In particular, the element must not be a "container"
+    // (or must be an "object" or "array" container)
+    if (!view.inputfield && !view.array &&
+      (formElement.type !== 'selectfieldset') &&
+      (schemaElement.type !== 'object')) {
+      throw new Error('The JSONForm contains an element that links to an ' +
+        'element in the JSON schema (key: "' + formElement.key + '") ' +
+        'and that should not based on its type ("' + formElement.type + '")');
+    }
+  }
+  else {
+    // The form element is not linked to an element in the schema.
+    // This means the form element must be a "container" element,
+    // and must not define an input field.
+    if (view.inputfield && (formElement.type !== 'selectfieldset')) {
+      throw new Error('The JSONForm defines an element of type ' +
+        '"' + formElement.type + '" ' +
+        'but no "key" property to link the input field to the JSON schema');
+    }
+  }
+
+  // A few characters need to be escaped to use the ID as jQuery selector
+  formElement.iddot = escapeSelector(formElement.id || '');
+
+  // Initialize the form node from the form element and schema element
+  node.formElement = formElement;
+  node.schemaElement = schemaElement;
+  node.view = view;
+  node.ownerTree = this;
+
+  // Set event handlers
+  if (!formElement.handlers) {
+    formElement.handlers = {};
+  }
+
+  // Parse children recursively
+  if (node.view.array) {
+    // The form element is an array. The number of items in an array
+    // is by definition dynamic, up to the form user (through "Add more",
+    // "Delete" commands). The positions of the items in the array may
+    // also change over time (through "Move up", "Move down" commands).
+    //
+    // The form node stores a "template" node that serves as basis for
+    // the creation of an item in the array.
+    //
+    // Array items may be complex forms themselves, allowing for nesting.
+    //
+    // The initial values set the initial number of items in the array.
+    // Note a form element contains at least one item when it is rendered.
+    if (formElement.items) {
+      key = formElement.items[0] || formElement.items;
+    }
+    else {
+      key = formElement.key + '[]';
+    }
+    if (_.isString(key)) {
+      key = { key: key };
+    }
+    node.setChildTemplate(this.buildFromLayout(key));
+  }
+  else if (formElement.items) {
+    // The form element defines children elements
+    _.each(formElement.items, function (item) {
+      if (_.isString(item)) {
+        item = { key: item };
+      }
+      node.appendChild(this.buildFromLayout(item));
+    }, this);
+  }
+
+  return node;
+};
+
+
+/**
+ * Computes the values associated with each input field in the tree based
+ * on previously submitted values or default values in the JSON schema.
+ *
+ * For arrays, the function actually creates and inserts additional
+ * nodes in the tree based on previously submitted values (also ensuring
+ * that the array has at least one item).
+ *
+ * The function sets the array path on all nodes.
+ * It should be called once in the lifetime of a form tree right after
+ * the tree structure has been created.
+ *
+ * @function
+ */
+formTree.prototype.computeInitialValues = function () {
+  this.root.computeInitialValues(this.formDesc.value);
+};
+
+
+/**
+ * Renders the form tree
+ *
+ * @function
+ * @param {Node} domRoot The "form" element in the DOM tree that serves as
+ *  root for the form
+ */
+formTree.prototype.render = function (domRoot) {
+  if (!domRoot) return;
+  this.domRoot = domRoot;
+  this.root.render();
+
+  // If the schema defines required fields, flag the form with the
+  // "jsonform-hasrequired" class for styling purpose
+  // (typically so that users may display a legend)
+  if (this.hasRequiredField()) {
+    $(domRoot).addClass('jsonform-hasrequired');
+  }
+};
+
+/**
+ * Walks down the element tree with a callback
+ *
+ * @function
+ * @param {Function} callback The callback to call on each element
+ */
+formTree.prototype.forEachElement = function (callback) {
+  
+  var f = function(root) {
+    for (var i=0;i<root.children.length;i++) {
+      callback(root.children[i]);
+      f(root.children[i]);
+    }
+  };
+  f(this.root);
+
+};
+
+formTree.prototype.validate = function(noErrorDisplay) {
+
+  var values = jsonform.getFormValue(this.domRoot);
+  var errors = false;
+
+  var options = this.formDesc;
+
+  if (options.validate!==false) {
+    var validator = false;
+    if (typeof options.validate!="object") {
+      if (global.JSONFormValidator) {
+        validator = global.JSONFormValidator.createEnvironment("json-schema-draft-03");
+      }
+    } else {
+      validator = options.validate;
+    }
+    if (validator) {
+      var v = validator.validate(values, this.formDesc.schema);
+      $(this.domRoot).jsonFormErrors(false,options);
+      if (v.errors.length) {
+        if (!errors) errors = [];
+        errors = errors.concat(v.errors);
+      }
+    }
+  }
+
+  if (errors && !noErrorDisplay) {
+    if (options.displayErrors) {
+      options.displayErrors(errors,this.domRoot);
+    } else {
+      $(this.domRoot).jsonFormErrors(errors,options);
+    }
+  }
+
+  return {"errors":errors}
+
+}
+
+formTree.prototype.submit = function(evt) {
+
+  var stopEvent = function() {
+    if (evt) {
+      evt.preventDefault();
+      evt.stopPropagation();
+    }
+    return false;
+  };
+  var values = jsonform.getFormValue(this.domRoot);
+  var options = this.formDesc;
+
+  var brk=false;
+  this.forEachElement(function(elt) {
+    if (brk) return;
+    if (elt.view.onSubmit) {
+      brk = !elt.view.onSubmit(evt, elt); //may be called multiple times!!
+    }
+  });
+
+  if (brk) return stopEvent();
+
+  var validated = this.validate();
+
+  if (options.onSubmit && !options.onSubmit(validated.errors,values)) {
+    return stopEvent();
+  }
+
+  if (validated.errors) return stopEvent();
+
+  if (options.onSubmitValid && !options.onSubmitValid(values)) {
+    return stopEvent();
+  }
+
+  return false;
+
+};
+
+
+/**
+ * Returns true if the form displays a "required" field.
+ *
+ * To keep things simple, the function parses the form's schema and returns
+ * true as soon as it finds a "required" flag even though, in theory, that
+ * schema key may not appear in the final form.
+ *
+ * Note that a "required" constraint on a boolean type is always enforced,
+ * the code skips such definitions.
+ *
+ * @function
+ * @return {boolean} True when the form has some required field,
+ *  false otherwise.
+ */
+formTree.prototype.hasRequiredField = function () {
+  var parseElement = function (element) {
+    if (!element) return null;
+    if (element.required && (element.type !== 'boolean')) {
+      return element;
+    }
+
+    var prop = _.find(element.properties, function (property) {
+      return parseElement(property);
+    });
+    if (prop) {
+      return prop;
+    }
+
+    if (element.items) {
+      if (_.isArray(element.items)) {
+        prop = _.find(element.items, function (item) {
+          return parseElement(item);
+        });
+      }
+      else {
+        prop = parseElement(element.items);
+      }
+      if (prop) {
+        return prop;
+      }
+    }
+  };
+
+  return parseElement(this.formDesc.schema);
+};
+
+
+/**
+ * Returns the structured object that corresponds to the form values entered
+ * by the use for the given form.
+ *
+ * The form must have been previously rendered through a call to jsonform.
+ *
+ * @function
+ * @param {Node} The <form> tag in the DOM
+ * @return {Object} The object that follows the data schema and matches the
+ *  values entered by the user.
+ */
+jsonform.getFormValue = function (formelt) {
+  var form = $(formelt).data('jsonform-tree');
+  if (!form) return null;
+  return form.root.getFormValues();
+};
+
+
+/**
+ * Highlights errors reported by the JSON schema validator in the document.
+ *
+ * @function
+ * @param {Object} errors List of errors reported by the JSON schema validator
+ * @param {Object} options The JSON Form object that describes the form
+ *  (unused for the time being, could be useful to store example values or
+ *   specific error messages)
+ */
+$.fn.jsonFormErrors = function(errors, options) {
+  $(".error", this).removeClass("error");
+  $(".warning", this).removeClass("warning");
+
+  $(".jsonform-errortext", this).hide();
+  if (!errors) return;
+
+  var errorSelectors = [];
+  for (var i = 0; i < errors.length; i++) {
+    // Compute the address of the input field in the form from the URI
+    // returned by the JSON schema validator.
+    // These URIs typically look like:
+    //  urn:uuid:cccc265e-ffdd-4e40-8c97-977f7a512853#/pictures/1/thumbnail
+    // What we need from that is the path in the value object:
+    //  pictures[1].thumbnail
+    // ... and the jQuery-friendly class selector of the input field:
+    //  .jsonform-error-pictures\[1\]---thumbnail
+    var key = errors[i].uri
+      .replace(/.*#\//, '')
+      .replace(/\//g, '.')
+      .replace(/\.([0-9]+)(?=\.|$)/g, '[$1]');
+    var errormarkerclass = ".jsonform-error-" +
+      escapeSelector(key.replace(/\./g,"---"));
+    errorSelectors.push(errormarkerclass);
+
+    var errorType = errors[i].type || "error";
+    $(errormarkerclass, this).addClass(errorType);
+    $(errormarkerclass + " .jsonform-errortext", this).html(errors[i].message).show();
+  }
+
+  // Look for the first error in the DOM and ensure the element
+  // is visible so that the user understands that something went wrong
+  errorSelectors = errorSelectors.join(',');
+  var firstError = $(errorSelectors).get(0);
+  if (firstError && firstError.scrollIntoView) {
+    firstError.scrollIntoView(true, {
+      behavior: 'smooth'
+    });
+  }
+};
+
+
+/**
+ * Generates the HTML form from the given JSON Form object and renders the form.
+ *
+ * Main entry point of the library. Defined as a jQuery function that typically
+ * needs to be applied to a <form> element in the document.
+ *
+ * The function handles the following properties for the JSON Form object it
+ * receives as parameter:
+ * - schema (required): The JSON Schema that describes the form to render
+ * - form: The options form layout description, overrides default layout
+ * - prefix: String to use to prefix computed IDs. Default is an empty string.
+ *  Use this option if JSON Form is used multiple times in an application with
+ *  schemas that have overlapping parameter names to avoid running into multiple
+ *  IDs issues. Default value is "jsonform-[counter]".
+ * - transloadit: Transloadit parameters when transloadit is used
+ * - validate: Validates form against schema upon submission. Uses the value
+ * of the "validate" property as validator if it is an object.
+ * - displayErrors: Function to call with errors upon form submission.
+ *  Default is to render the errors next to the input fields.
+ * - submitEvent: Name of the form submission event to bind to.
+ *  Default is "submit". Set this option to false to avoid event binding.
+ * - onSubmit: Callback function to call when form is submitted
+ * - onSubmitValid: Callback function to call when form is submitted without
+ *  errors.
+ *
+ * @function
+ * @param {Object} options The JSON Form object to use as basis for the form
+ */
+$.fn.jsonForm = function(options) {
+  var formElt = this;
+
+  options = _.defaults({}, options, {submitEvent: 'submit'});
+
+  var form = new formTree();
+  form.initialize(options);
+  form.render(formElt.get(0));
+
+  // TODO: move that to formTree.render
+  if (options.transloadit) {
+    formElt.append('<input type="hidden" name="params" value=\'' +
+      escapeHTML(JSON.stringify(options.transloadit.params)) +
+      '\'>');
+  }
+
+  // Keep a direct pointer to the JSON schema for form submission purpose
+  formElt.data("jsonform-tree", form);
+
+  if (options.submitEvent) {
+    formElt.unbind((options.submitEvent)+'.jsonform');
+    formElt.bind((options.submitEvent)+'.jsonform', function(evt) {
+      form.submit(evt);
+    });
+  }
+
+  // Initialize tabs sections, if any
+  initializeTabs(formElt);
+
+  // Initialize expandable sections, if any
+  $('.expandable > div, .expandable > fieldset', formElt).hide();
+  $('.expandable > legend', formElt).click(function () {
+    var parent = $(this).parent();
+    parent.toggleClass('expanded');
+    $('> div', parent).slideToggle(100);
+  });
+
+  return form;
+};
+
+
+/**
+ * Retrieves the structured values object generated from the values
+ * entered by the user and the data schema that gave birth to the form.
+ *
+ * Defined as a jQuery function that typically needs to be applied to
+ * a <form> element whose content has previously been generated by a
+ * call to "jsonForm".
+ *
+ * Unless explicitly disabled, the values are automatically validated
+ * against the constraints expressed in the schema.
+ *
+ * @function
+ * @return {Object} Structured values object that matches the user inputs
+ *  and the data schema.
+ */
+$.fn.jsonFormValue = function() {
+  return jsonform.getFormValue(this);
+};
+
+// Expose the getFormValue method to the global object
+// (other methods exposed as jQuery functions)
+global.JSONForm = global.JSONForm || {util:{}};
+global.JSONForm.getFormValue = jsonform.getFormValue;
+global.JSONForm.fieldTemplate = jsonform.fieldTemplate;
+global.JSONForm.fieldTypes = jsonform.elementTypes;
+global.JSONForm.getInitialValue = getInitialValue;
+global.JSONForm.util.getObjKey = jsonform.util.getObjKey;
+global.JSONForm.util.setObjKey = jsonform.util.setObjKey;
+
+})((typeof exports !== 'undefined'),
+  ((typeof exports !== 'undefined') ? exports : window),
+  ((typeof jQuery !== 'undefined') ? jQuery : { fn: {} }),
+  ((typeof _ !== 'undefined') ? _ : null),
+  JSON);
+
 //! moment.js
 //! version : 2.9.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -85411,7 +92703,7 @@ angular.module('perfect_scrollbar', []).directive('perfectScrollbar',
       if (!!Formbuilder.options.AUTOSAVE) {
         setInterval(function() {
           return _this.saveForm.call(_this);
-        }, 5000);
+        }, 500);
       }
       return $(window).bind('beforeunload', function() {
         if (_this.formSaved) {

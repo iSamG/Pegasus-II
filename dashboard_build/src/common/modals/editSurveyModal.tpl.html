@@ -1,0 +1,56 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()" aria-hidden="true">×</button>
+        <h4 class="modal-title"> Edit Survey</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="survey_name">Survey Name</label>
+                    <input id="survey_name" ng-model="selected_survey.survey_name" type="text"
+                           class="form-control input-lg" name="survey_name" title="survey_name">
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px" class="row">
+
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="startDate">Start Date</label>
+                    <p class="input-group">
+                        <input type="text" class="form-control" datepicker-popup="{{format}}" id="startDate"
+                               ng-model="selected_survey.start_date" is-open="status.opened" min-date="minDate" max-date="selected_survey.end_date"
+                               datepicker-options="dateOptions" close-on-date-selection="false"
+                               ng-required="true" close-text="Close" />
+                                          <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
+                                          </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="endDate">End Date</label>
+                    <p class="input-group">
+                        <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="selected_survey.end_date"
+                               is-open="status.opened" min-date="selected_survey.start_date" max-date="maxDate" id="endDate"
+                               datepicker-options="dateOptions" close-on-date-selection="true"
+                               ng-required="true" close-text="Close" />
+                                          <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
+                                          </span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="close()">Close</button>
+        <button type="button" class="btn btn-warning" ng-click="editSurvey()">Edit Survey</button>
+    </div>
+</div>
