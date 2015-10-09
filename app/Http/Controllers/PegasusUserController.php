@@ -42,7 +42,10 @@ class PegasusUserController extends Controller
 
         }
 
-        return Helpers::responseToView($code = 401, $status = "Failed", $message = "Pegasus User authentication failed");
+        else{
+            return Helpers::responseToView($code = 401, $status = "Failed", $message = "Pegasus User authentication failed");
+
+        }
     }
 
     /**
