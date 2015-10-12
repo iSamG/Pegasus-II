@@ -73,32 +73,34 @@ Route::post('/retrieve/a/survey', [
 
 ]);
 
-Route::post('/retrieve/a/survey/with/questions', [
-
-    'as' => 'retrieve_a_survey_with_questions', 'uses' => 'SurveyController@retrieveASurveyWithItsQuestions'
-
-]);
 
 
-Route::post('/create/a/survey/question', [
+//Route::post('/retrieve/a/survey/with/questions', [
+//
+//    'as' => 'retrieve_a_survey_with_questions', 'uses' => 'SurveyController@retrieveASurveyWithItsQuestions'
+//
+//]);
+//
+//
+//Route::post('/create/a/survey/question', [
+//
+//    'as' => 'create_a_survey_question', 'uses' => 'QuestionsController@createQuestion'
+//
+//]);
+//
+//
+//Route::post('/edit/a/survey/question', [
+//
+//    'as' => 'edit_a_survey_question', 'uses' => 'QuestionsController@editQuestion'
+//
+//]);
+//
+//
+//Route::post('/delete/a/survey/question', [
+//
+//    'as' => 'delete_a_survey_question', 'uses' => 'QuestionsController@deleteQuestion'
+//
+//]);
 
-    'as' => 'create_a_survey_question', 'uses' => 'QuestionsController@createQuestion'
-
-]);
-
-
-
-Route::post('/edit/a/survey/question', [
-
-    'as' => 'edit_a_survey_question', 'uses' => 'QuestionsController@editQuestion'
-
-]);
-
-
-Route::post('/delete/a/survey/question', [
-
-    'as' => 'delete_a_survey_question', 'uses' => 'QuestionsController@deleteQuestion'
-
-]);
 
 
