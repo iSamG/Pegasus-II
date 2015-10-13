@@ -1,0 +1,13 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()" aria-hidden="true">×</button>
+        <h4 class="modal-title"> <small>Preview of </small> <i>{{ selected_survey.survey_name || 'Survey'}}</i></h4>
+    </div>
+    <div class="modal-body">
+        <form ng-init="initJSForm()"></form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="close()">Close</button>
+        <button type="button" class="btn btn-success" ng-click="sendSurvey()">Send Survey</button>
+    </div>
+</div>

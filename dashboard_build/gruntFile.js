@@ -50,6 +50,7 @@ module.exports = function (grunt) {
                 '!vendor/formbuilder/formbuilder.js'
             ],
             html: ['src/dashboard_index.html'],
+            email: ['src/email_template.html'],
             tpl: {
                 app: ['src/app/**/*.tpl.html', 'src/common/**/*.tpl.html']
             },
@@ -82,6 +83,13 @@ module.exports = function (grunt) {
             html: {
                 src: ['<%= src.html %>'],
                 dest: '<%= distdirHtml %>/dashboard.php',
+                options: {
+                    process: true
+                }
+            },
+            email: {
+                src: ['<%= src.email %>'],
+                dest: '<%= distdirHtml %>/email_template.php',
                 options: {
                     process: true
                 }

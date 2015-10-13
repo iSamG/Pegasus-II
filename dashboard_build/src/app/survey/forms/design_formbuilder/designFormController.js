@@ -3,39 +3,62 @@
  */
 
 angular.module('survey')
-    .controller('prFormBuilderController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl','$localStorage','$timeout',
-        function($rootScope, $scope, homeService, surveyService, growl, $localStorage, $timeout ){
+    .controller('prFormBuilderController', ['$rootScope', '$scope','$state', 'homeService', 'surveyService', 'growl','$localStorage','$timeout',
+        function($rootScope, $scope,$state,  homeService, surveyService, growl, $localStorage, $timeout ){
 
-            var surveyData;
-            console.log("outside" ,$localStorage);
-            if ( $localStorage.survey ) {
-                var data = JSON.parse($localStorage.survey);
-                console.log(data);
-                surveyData = data.fields
+            var surveyPayLoad;
+            function loadSurveys() {
+                $scope.surveys = surveyService.surveys;
+                $scope.loadingSurveys = false;
+
+                var surveyData;
+                $scope.selected_survey = surveyService.surveyLookup[$scope.$stateParams.survey_id];
+
+                if ($scope.selected_survey && $scope.selected_survey.question_tree && $scope.selected_survey.question_tree.length) {
+                    surveyData =$scope.selected_survey.question_tree;
+                }
+                //else if ( $localStorage.survey ) {
+                //    surveyData = JSON.parse($localStorage.survey).fields;
+                //}
+
+                var formbuilder  = new Formbuilder({
+                    selector: '#formbuilder',
+                    bootstrapData: surveyData
+                });
+
+                formbuilder.on('save', function(payload){
+                    var data = JSON.parse(payload);
+                    if (data.fields && data.fields.length) {
+                        $timeout(function () {
+                            surveyPayLoad = payload;
+                        });
+                    }
+                });
+
+                $timeout(function () {
+                    $('#saveQuestionnaire').click(function () {
+                        console.log('log');
+                        $scope.saveQuestionnaire();
+                    });
+                });
             }
 
-            var formbuilder  = new Formbuilder({
-                selector: '#formbuilder',
-                bootstrapData: surveyData
+            if (surveyService.surveys) {
+                loadSurveys();
+            }
+
+            $scope.$on('surveysLoadedAndPrepped', function(){
+                loadSurveys();
             });
 
-            formbuilder.on('save', function(payload){
 
-                var data = JSON.parse(payload);
-
-                if (data.fields && data.fields.length) {
-                    $timeout(function () {
-                        $localStorage.survey = payload;
-                    });
-                }
-            });
 
 
 
             $scope.saveQuestionnaire = function () {
 
-                if ($localStorage.survey) {
-                    var surveyData = JSON.parse($localStorage.survey);
+                if (surveyPayLoad) {
+                    var surveyData = JSON.parse(surveyPayLoad);
                     var questionsArray = [], answerArray = [];
 
                     if (surveyData.fields.length) {
@@ -85,52 +108,54 @@ angular.module('survey')
                             }
 
 
+
+
                             questionsArray.push({
+                                survey_id : $scope.$stateParams.survey_id,
+                                question_type : question_type, /*open_ended, close_ended'*/
                                 unique_question_id : eachArrayItem.cid,
-                                question_type : question_type, /*open, close'*/
+                                //question_unique_code : '',
                                 question_position : question_position, /*'beginning', 'middle', 'end' */
+                                input_type : eachArrayItem.field_type,/*'radio', 'checkboxes','text','date','dropdown','time','number','website','email','price','address','gps','image','video'*/
                                 question : eachArrayItem.label,
-                                entry_question_unique_id : entry_question_unique_id,
-                                exit_question_unique_id : exit_question_unique_id
+                                answer_options : JSON.stringify(answerArray)
+                                //entry_question_unique_id : entry_question_unique_id,
+                                //exit_question_unique_id : exit_question_unique_id
                             });
 
 
 
                         }
-                        console.log('questionsArray', questionsArray);
-                        console.log('answerArray', answerArray);
 
-                        surveyService.saveQuestions(questionsArray)
+                        surveyService.editSurvey({
+                            survey_id : $scope.$stateParams.survey_id,
+                            question_tree : surveyPayLoad
+                        })
                             .success(function (data) {
                                 if (data.code == '200' && data.status.toLowerCase() == 'ok') {
-                                    growl.success('Questions saved successfully on the server');
+                                    growl.success('Uploading and processing questions to the server...');
+
+                                    surveyService.loadAllSurveys()
+                                        .then(function (status) {
+                                            growl.success("Survey reloaded successfully");
+                                            $state.go('surveys');
+                                        });
                                 }
                             })
                             .error(function () {
-                                growl.error('An error occurred while attempting to save');
+                                growl.error('An error occurred while attempting to upload');
 
                             });
-                        if (answerArray.length) {
-                            surveyService.saveAnswers(answerArray)
-                                .success(function (data) {
-                                    if (data.code == '200' && data.status.toLowerCase() == 'ok') {
-                                        growl.success('Answers saved successfully on the server');
-                                    }
-                                })
-                                .error(function () {
-                                    growl.error('An error occurred while attempting to save');
 
-                                })
 
-                        }
                     }
 
+                }else{
+                    console.log("nothing");
                 }
             };
 
-            $('#saveQuestionnaire').click(function () {
-                $scope.saveQuestionnaire();
-            });
+
 
         }]);
 

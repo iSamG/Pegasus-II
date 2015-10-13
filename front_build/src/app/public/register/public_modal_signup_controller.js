@@ -57,23 +57,17 @@ angular.module('public')
                 //send form to the server to be saved
                 User.register($scope.user_register_form)
                     .success(function (successData) {
-                        $scope.cancel();
                         if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok' ) {
                             growl.success("You have successfully created an account on "+ PGConstants.app_name +". Thank you.", {title : "Registration"});
                             $scope.user_register_form = $localStorage.user_register_form = {};
+                            $scope.cancel();
 
-                            //the user came to registration page from trying to bid on an item, redirect back to the item page
-                            /*rf is reference id*/
-                            User.isAuthenticated = true;
+                            $location.path('/dashboard');
+
                             User.user = successData.data;
-                            $state.go('public_home', {}, {reload : true});
-                            //growl.error("Your submission could not be processed at this time. Please check internet connection and try again", {title: 'User Registration'});
-                            //$state.go('public_home', {}, {reload : true})
-                        }else{
-                            $timeout(function () {
-                                growl.success("You have successfully created an account on "+ PGConstants.app_name +". Thank you.", {title : "Registration 3seconds timer"});
-                                $state.go('public_home', {}, {reload : true});
-                            }, 3000)
+                        }else if(successData.code == '401'){
+                            growl.error("Some of the fields already exist.", {title : "Duplicate Credentials"});
+                            $scope.loginError = true;
                         }
                     })
                     .error(function (errorData) {

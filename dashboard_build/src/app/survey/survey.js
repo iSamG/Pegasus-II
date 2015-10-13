@@ -24,7 +24,7 @@ angular.module('survey', [])
                 metadata : "Respondents"
             })
             .state('surveys.selected_survey', {
-                url : '/select/:form_id/:survey',
+                url : '/select/:survey_id',
                 templateUrl : 'app/survey/selected/selected_survey.tpl.html',
                 controller : 'prSelectedSurveyController',
                 metadata : 'View Survey'
@@ -36,7 +36,7 @@ angular.module('survey', [])
                 metadata : 'Create Survey'
             })
             .state('surveys.form_builder', {
-                url : '/build/questionnaire/form',
+                url : '/:survey_id/build/questionnaire/form',
                 templateUrl : 'app/survey/forms/design_formbuilder/design_form.tpl.html',
                 controller : 'prFormBuilderController',
                 metadata : 'Survey Form Builder'

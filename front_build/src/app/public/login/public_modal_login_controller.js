@@ -31,18 +31,11 @@ angular.module('public')
                         .success(function (successData) {
                             if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok' ) {
                                 growl.success("Welcome, " + successData.data.username, {title : "Login Success"});
-                                User.checkIfUserIsAuthenticated();
-                                //the user came to registration page from trying to bid on an item, redirect back to the item page
-                                /*rf is reference id*/
-                                $scope.hidePopover();
-                                if ($location.search().rf) {
-                                    //Change authentication to true(briefly) so the redirect to the item select passes the check
-                                    $rootScope.authentication = true;
-                                    $state.go('public_home.item_select', {id : $location.search().rf})
-                                }else{
-                                    $state.go('public_home', {}, {reload : true});
-                                }
-                            }else if(successData.code == '400'){
+                                //User.checkIfUserIsAuthenticated();
+                                //$location.path('/dashboard');
+                                location.href ='/dashboard';
+
+                            }else if(successData.code == '401'){
                                 growl.error("Check your username and password.", {title : "Invalid Login Credentials"});
                                 $scope.loginError = true;
                             }

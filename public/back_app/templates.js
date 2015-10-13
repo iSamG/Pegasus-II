@@ -1,4 +1,4 @@
-angular.module('templates.app', ['app/admin/profile.tpl.html', 'app/admin/settings.tpl.html', 'app/home/home.tpl.html', 'app/survey/analytics/detailed_analytics.tpl.html', 'app/survey/create/create_server_wizard.tpl.html', 'app/survey/forms/design_formbuilder/design_form.tpl.html', 'app/survey/list_all/survey_list.tpl.html', 'app/survey/respondents/respondents.tpl.html', 'app/survey/selected/selected_survey.tpl.html', 'common/modals/deleteSurveyModal.tpl.html', 'common/partials/header.tpl.html']);
+angular.module('templates.app', ['app/admin/profile.tpl.html', 'app/admin/settings.tpl.html', 'app/home/home.tpl.html', 'app/survey/analytics/detailed_analytics.tpl.html', 'app/survey/create/create_server_wizard.tpl.html', 'app/survey/forms/design_formbuilder/design_form.tpl.html', 'app/survey/list_all/survey_list.tpl.html', 'app/survey/respondents/respondents.tpl.html', 'app/survey/selected/selected_survey.tpl.html', 'common/modals/deleteSurveyModal.tpl.html', 'common/modals/editSurveyModal.tpl.html', 'common/modals/previewSurveyFormModal.tpl.html', 'common/partials/header.tpl.html']);
 
 angular.module("app/admin/profile.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/admin/profile.tpl.html",
@@ -793,6 +793,7 @@ angular.module("app/survey/forms/design_formbuilder/design_form.tpl.html", []).r
     "            <h3 class=\"content-header\">Design Questionnaire</h3>\n" +
     "        </div>\n" +
     "        <div class=\"porlets-content\">\n" +
+    "            <div><button class=\"btn btn-primary pull-right\" preview-survey=\"{{ selected_survey.id }}\">Preview Survey</button></div>\n" +
     "            <div id='formbuilder'></div>\n" +
     "        </div>\n" +
     "    </div>\n" +
@@ -810,6 +811,7 @@ angular.module("app/survey/list_all/survey_list.tpl.html", []).run(["$templateCa
     "            <label>Search survey:</label>\n" +
     "            <input type=\"text\" class=\"task_form\" placeholder=\" Survey title...\" name=\"\" ng-model=\"searchSurvey\" ng-init=\"searchSurvey = ''\">\n" +
     "            <button type=\"button\" class=\"btn btn-primary btn-icon\"><i class=\"fa fa-search\"></i> </button>\n" +
+    "            <button type=\"button\" class=\"btn btn-success btn-icon\" ng-click=\"$state.go('surveys.create_new')\"><i class=\"fa fa-plus\" ></i> New Survey</button>\n" +
     "        </div>\n" +
     "        <div class=\"task_bar_right\">\n" +
     "            <label>Sorting:</label>\n" +
@@ -828,13 +830,16 @@ angular.module("app/survey/list_all/survey_list.tpl.html", []).run(["$templateCa
     "            <!--blue_border-->\n" +
     "            <section class=\"panel default blue_border vertical_border h1\" ng-show=\"surveys.length\" ng-repeat=\"survey in surveys | filter : { survey_name: searchSurvey } | orderBy : sortOrder : reverse\">\n" +
     "                <div class=\"task-header blue_task\">\n" +
-    "                    <a href=\"\">{{ survey.survey_name }}</a>\n" +
-    "                    <span title=\"{{ survey.created_at }}\" tooltip-placement=\"top\" tooltip=\"{{ survey.created_at | date : fullDate }}\"><i class=\"fa fa-clock-o\"></i>{{ fromNow(survey.created_at) }}</span> </div>\n" +
+    "                    <a href=\"\" ui-sref=\"surveys.selected_survey({survey_id : survey.id})\">{{ survey.survey_name }}</a>\n" +
+    "                    <span title=\"{{ survey.created_at }}\" tooltip-placement=\"top\" tooltip=\"{{ formatDate(survey.created_at) }}\"><i class=\"fa fa-clock-o\"></i>{{ fromNow(survey.created_at) }}</span> </div>\n" +
     "                <div class=\"row task_inner inner_padding\">\n" +
     "                    <div class=\"col-sm-9\">\n" +
-    "                        <p><em>Start Date : &nbsp;</em><span ng-bind=\"survey.start_date | date : mediumDate\"></span></p>\n" +
-    "                        <p><em>End Date : &nbsp;</em><span ng-bind=\"survey.end_date | date : shortDate\"></span></p>\n" +
-    "                        <p><em>Questions : &nbsp;</em><span ui-sref=\"surveys.form_builder\" class=\"pointer btn btn-link\">Click to add questions</span></p>\n" +
+    "                        <p><em>Start Date : &nbsp;</em><span ng-bind=\"formatDate(survey.start_date)\"></span></p>\n" +
+    "                        <p><em>End Date : &nbsp;</em><span ng-bind=\"formatDate(survey.end_date)\"></span></p>\n" +
+    "                        <p><em>Questions : &nbsp;</em>\n" +
+    "                            <span ng-hide=\"survey.question_tree\" ui-sref=\"surveys.form_builder({survey_id : survey.id})\" class=\"pointer btn btn-link\">Click to add questions</span>\n" +
+    "                            <span ng-show=\"survey.question_tree\" ui-sref=\"surveys.form_builder({survey_id : survey.id})\" tooltip=\"Click to add/edit question\" class=\"pointer\" ng-bind=\"survey.question_tree.length\"></span>\n" +
+    "                        </p>\n" +
     "                        <!--<p><em>Total Responses : &nbsp;</em><span ui-sref=\"surveys.demo_form\">Click to send survey</span></p>-->\n" +
     "                        <p><em>Total Responses : &nbsp;</em><span>No responses recorded</span></p>\n" +
     "                    </div>\n" +
@@ -856,8 +861,9 @@ angular.module("app/survey/list_all/survey_list.tpl.html", []).run(["$templateCa
     "                    <span class=\"label btn-primary hidden\">40%</span>\n" +
     "                    <div class=\"pull-right\">\n" +
     "                        <ul class=\"footer-icons-group\">\n" +
-    "                            <li tooltip-placement=\"top\" tooltip=\"Notify respondents\"><a ng-click=\"notifyRespondents(survey.survey_name)\" class=\"pointer\"><i class=\"fa fa-users\"></i></a></li>\n" +
-    "                            <li tooltip-placement=\"top\" tooltip=\"Edit Survey\"><a href=\"\"><i class=\"fa fa-pencil\"></i></a></li>\n" +
+    "                            <li tooltip-placement=\"top\" tooltip=\"Preview Survey\"><a preview-survey=\"{{ survey.id }}\" class=\"pointer\"><i class=\"fa fa-eye\"></i></a></li>\n" +
+    "                            <li tooltip-placement=\"top\" tooltip=\"Send respondents\"><a ui-sref=\"surveys.respondents({survey_id : survey.id })\" class=\"pointer\"><i class=\"fa fa-send-o\"></i></a></li>\n" +
+    "                            <li tooltip-placement=\"top\" tooltip=\"Edit Survey\"><a href=\"\" edit-survey=\"{{survey.id}}\"><i class=\"fa fa-pencil\"></i></a></li>\n" +
     "                            <li tooltip-placement=\"top\" tooltip=\"Delete Survey\"><a href=\"\" delete-survey=\"{{survey.id}}\"><i class=\"fa fa-trash-o\"></i></a></li>\n" +
     "                            <!--<li class=\"dropup\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"fa fa-wrench\"></i></a></li>-->\n" +
     "                        </ul>\n" +
@@ -866,7 +872,7 @@ angular.module("app/survey/list_all/survey_list.tpl.html", []).run(["$templateCa
     "            </section>\n" +
     "            <div class=\"bs-callout bs-callout-warning\" ng-hide=\"surveys.length\">\n" +
     "                <h4><i class=\"fa fa-warning\"></i> No Survey! </h4>\n" +
-    "                <p>You currently do not have a survey on the system. <button class=\"btn btn-success\" ng-click=\"$state.go('home')\">Click to create a server</button> and start surveying.</p>\n" +
+    "                <p>You currently do not have a survey on the system. <button class=\"btn btn-success\" ng-click=\"$state.go('surveys.create_new')\">Click to create a survey</button></p>\n" +
     "            </div>\n" +
     "\n" +
     "            <div ng-show=\"surveys.length\">\n" +
@@ -1030,15 +1036,33 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
   $templateCache.put("app/survey/selected/selected_survey.tpl.html",
     "<div class=\"row\">\n" +
     "\n" +
-    "    <div class=\"col-lg-12 center\">\n" +
+    "    <div class=\"col-lg-12\">\n" +
     "        <section class=\"panel default blue_title h2\">\n" +
     "\n" +
     "            <div class=\"panel-heading border\">\n" +
-    "                <span ng-click=\"$state.go('surveys')\"  tooltip-placement=\"right\" tooltip=\"Back to survey list\" class=\"pointer pull-left label label-info\"><i class=\"fa fa-arrow-left\"></i></span>\n" +
+    "                <span ng-click=\"$state.go('surveys')\"  tooltip-placement=\"right\" tooltip=\"Back to survey list\" class=\"pointer pull-left label label-info\">\n" +
+    "                    <i class=\"fa fa-arrow-left\"></i>\n" +
+    "                </span>\n" +
     "\n" +
-    "                {{ surveyName || 'Demo Survey'}}\n" +
+    "                <span class=\"center\">{{ selected_survey.survey_name || 'Survey'}}</span>\n" +
     "\n" +
-    "                <span ng-click=\"reloadSurvey()\"  tooltip-placement=\"left\" tooltip=\"Refresh\" class=\"pointer pull-right label label-success\"><i class=\"fa fa-refresh\"></i></span>\n" +
+    "                <div class=\"dropdown pull-right\">\n" +
+    "                    <button class=\"btn btn-primary dropdown-toggle\" style=\"color: white !important;\" type=\"button\" data-toggle=\"dropdown\">  Options\n" +
+    "                        <span class=\"caret\"></span></button>\n" +
+    "                    <ul class=\"dropdown-menu\" style=\"text-transform : none !important;\">\n" +
+    "\n" +
+    "                        <li ><a ui-sref=\"surveys.respondents({survey_id : selected_survey.id })\"><i class=\"fa fa-send\"></i> Send Survey</a></li>\n" +
+    "                        <li class=\"divider\"></li>\n" +
+    "                        <li ><a ui-sref=\"surveys.form_builder({survey_id : selected_survey.id })\"><i class=\"fa fa-pencil\"></i> Add/Edit Questionnaire</a></li>\n" +
+    "                        <li class=\"divider\"></li>\n" +
+    "                        <li edit-survey=\"{{ selected_survey.id }}\"><a href=\"\"><i class=\"fa fa-edit\"></i> Edit Survey</a></li>\n" +
+    "                        <li delete-survey=\"{{ selected_survey.id }}\"><a href=\"\"><i class=\"fa fa-times\"></i> Delete Survey</a></li>\n" +
+    "                        <li class=\"divider\"></li>\n" +
+    "                        <li ng-click=\"reloadSurveyData()\"><a href=\"\"><i class=\"fa fa-refresh\"></i> Refresh</a></li>\n" +
+    "                    </ul>\n" +
+    "                </div>\n" +
+    "                <!--<span   tooltip-placement=\"left\" tooltip=\"Refresh\" class=\"pointer pull-right label label-success\">-->\n" +
+    "                    <!--</span>-->\n" +
     "\n" +
     "            </div>\n" +
     "        </section>\n" +
@@ -1048,12 +1072,16 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "        <div class=\"widget_inbox\">\n" +
     "            <perfect-scrollbar class=\"scroller\" wheel-propagation=\"true\" wheel-speed=\"2\" min-scrollbar-length=\"6\">\n" +
     "                <ul>\n" +
-    "                    <li ng-repeat=\"question_item in surveyData.questions_details | filter : { survey_name : $stateParams.survey}\"> <a href=\"\" ng-class=\"{'active' : question_item.question_field == selected_question.question_field}\" ng-click=\"selectQuestion(question_item, $index)\">\n" +
+    "                    <li ng-repeat=\"question_item in selected_survey.question_tree\">\n" +
+    "                        <a href=\"\" ><!--ng-class=\"{'active' : question_item.question_field == selected_question.question_field}\"-->\n" +
     "                        <div class=\"widget_inbox_header\">\n" +
-    "                            <span class=\"pull-left widget_inbox_time\"><b>{{ $index + 1 }}</b></span>\n" +
-    "                            <span class=\"pull-right widget_inbox_time\" open-closed=\"\" type=\"{{ question_item.question_type }}\"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Question\n" +
+    "                            <span class=\"pull-left widget_inbox_time badge\"><b>{{ $index + 1 }}</b>.</span>\n" +
+    "                            <span class=\"widget_inbox_time\">\n" +
+    "                                &nbsp;&nbsp;\n" +
+    "                            {{ formatFieldType[question_item.field_type] }}\n" +
+    "                            </span>\n" +
     "                        </div>\n" +
-    "                        {{ question_item.question }}</a></li>\n" +
+    "                        <span style=\"font-size: large; margin-left: 25px\">{{ question_item.label }}</span></a></li>\n" +
     "                </ul>\n" +
     "            </perfect-scrollbar>\n" +
     "        </div>\n" +
@@ -1152,12 +1180,89 @@ angular.module("common/modals/deleteSurveyModal.tpl.html", []).run(["$templateCa
     "        <h4 class=\"modal-title\"> Delete Survey</h4>\n" +
     "    </div>\n" +
     "    <div class=\"modal-body\">\n" +
-    "        <h6>Are you sure you want to delete the survey with name : </h6>\n" +
-    "        <h5>{{ selected_survey.survey_name}}</h5>\n" +
+    "        <h6 class=\"center-block text-center\">Are you sure you want to delete the survey with name : </h6>\n" +
+    "        <h5 class=\"text-center center-block\">{{ selected_survey.survey_name}}</h5>\n" +
     "    </div>\n" +
     "    <div class=\"modal-footer\">\n" +
     "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"close()\">Close</button>\n" +
     "        <button type=\"button\" class=\"btn btn-danger\" ng-click=\"deleteSurvey()\">Delete Survey</button>\n" +
+    "    </div>\n" +
+    "</div>");
+}]);
+
+angular.module("common/modals/editSurveyModal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("common/modals/editSurveyModal.tpl.html",
+    "<div class=\"modal-content\">\n" +
+    "    <div class=\"modal-header\">\n" +
+    "        <button type=\"button\" class=\"close\" ng-click=\"close()\" aria-hidden=\"true\">×</button>\n" +
+    "        <h4 class=\"modal-title\"> Edit Survey</h4>\n" +
+    "    </div>\n" +
+    "    <div class=\"modal-body\">\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12\">\n" +
+    "                <div class=\"form-group\">\n" +
+    "                    <label for=\"survey_name\">Survey Name</label>\n" +
+    "                    <input id=\"survey_name\" ng-model=\"selected_survey.survey_name\" type=\"text\"\n" +
+    "                           class=\"form-control input-lg\" name=\"survey_name\" title=\"survey_name\">\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div style=\"margin-top: 20px\" class=\"row\">\n" +
+    "\n" +
+    "            <div class=\"col-xs-6\">\n" +
+    "                <div class=\"form-group\">\n" +
+    "                    <label for=\"startDate\">Start Date</label>\n" +
+    "                    <p class=\"input-group\">\n" +
+    "                        <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" id=\"startDate\"\n" +
+    "                               ng-model=\"selected_survey.start_date\" is-open=\"status.opened\" min-date=\"minDate\" max-date=\"selected_survey.end_date\"\n" +
+    "                               datepicker-options=\"dateOptions\" close-on-date-selection=\"false\"\n" +
+    "                               ng-required=\"true\" close-text=\"Close\" />\n" +
+    "                                          <span class=\"input-group-btn\">\n" +
+    "                                            <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                                          </span>\n" +
+    "                    </p>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "\n" +
+    "            <div class=\"col-xs-6\">\n" +
+    "                <div class=\"form-group\">\n" +
+    "                    <label for=\"endDate\">End Date</label>\n" +
+    "                    <p class=\"input-group\">\n" +
+    "                        <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"selected_survey.end_date\"\n" +
+    "                               is-open=\"status.opened\" min-date=\"selected_survey.start_date\" max-date=\"maxDate\" id=\"endDate\"\n" +
+    "                               datepicker-options=\"dateOptions\" close-on-date-selection=\"true\"\n" +
+    "                               ng-required=\"true\" close-text=\"Close\" />\n" +
+    "                                          <span class=\"input-group-btn\">\n" +
+    "                                            <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                                          </span>\n" +
+    "                    </p>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "\n" +
+    "        </div>\n" +
+    "\n" +
+    "    </div>\n" +
+    "    <div class=\"modal-footer\">\n" +
+    "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"close()\">Close</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-warning\" ng-click=\"editSurvey()\">Edit Survey</button>\n" +
+    "    </div>\n" +
+    "</div>");
+}]);
+
+angular.module("common/modals/previewSurveyFormModal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("common/modals/previewSurveyFormModal.tpl.html",
+    "<div class=\"modal-content\">\n" +
+    "    <div class=\"modal-header\">\n" +
+    "        <button type=\"button\" class=\"close\" ng-click=\"close()\" aria-hidden=\"true\">×</button>\n" +
+    "        <h4 class=\"modal-title\"> <small>Preview of </small> <i>{{ selected_survey.survey_name || 'Survey'}}</i></h4>\n" +
+    "    </div>\n" +
+    "    <div class=\"modal-body\">\n" +
+    "        <form ng-init=\"initJSForm()\"></form>\n" +
+    "    </div>\n" +
+    "    <div class=\"modal-footer\">\n" +
+    "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"close()\">Close</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-success\" ng-click=\"sendSurvey()\">Send Survey</button>\n" +
     "    </div>\n" +
     "</div>");
 }]);

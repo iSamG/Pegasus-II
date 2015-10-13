@@ -1,7 +1,10 @@
 <?php namespace App\Http\Controllers;
 
 
+use App\pegasustwo\Helpers;
 use App\User;
+use Carbon\Carbon;
+use Hash;
 use Illuminate\Support\Facades\Auth;
 use Input;
 
@@ -23,26 +26,26 @@ class PegasusUserController extends Controller
         $username = $user_details['username'];
         $password = $user_details['password'];
 
-        var_dump($username." ".$password);
         if (Auth::attempt(['username' => $username, 'password' => $password]))
         {
 
-            var_dump("it showwwwwwssss");
-            exit();
+
             $authenticated_user = Auth::User();
 
             $authenticated_user->last_login = Carbon::now();
 
             $authenticated_user->save();
 
+            \Redirect::route('dashboard_view')->with('user', $authenticated_user);
 
-            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully", $data = $authenticated_user);
+            //return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully", $data = $authenticated_user);
 
         }
 
-        return "baad";
+        else{
+            return Helpers::responseToView($code = 401, $status = "Failed", $message = "Pegasus User authentication failed");
 
-       // return Helpers::responseToView($code = 401, $status = "Failed", $message = "Pegasus User authentication failed");
+        }
     }
 
     /**
@@ -70,7 +73,7 @@ class PegasusUserController extends Controller
 
         $fields = array(
             'username'=>$user_name,
-            'password'=>$password,
+            'password'=> Hash::make($password),
             'email'=>$email,
             'phone_number'=>$phonenumber,
             'country'=>$country
@@ -87,9 +90,15 @@ class PegasusUserController extends Controller
         $input_is_valid = \Validator::make($fields, $validation_patterns);
         if($input_is_valid){
             $user = User::create($fields);
-            return Helpers::loginInfo($message="Pegasus user created successfully", $data= $user);
+
+            \Redirect::route('dashboard_view');
+
+//            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully",
+//                $data = $user);
         }
         else{
+
+            return Helpers::responseToView($code = 401, $status = "failed", $message = "User creation failed");
 
         }
 
@@ -154,12 +163,42 @@ class PegasusUserController extends Controller
     }
 
     public function logout(){
-        Auth::logout();
+        $logged_out = Auth::logout();
+        if($logged_out){
+
+            \Redirect::route('public_view');
+
+//            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged out successfully");
+        }
+        {
+            return Helpers::responseToView($code = 401, $status = "failed", $message = "Cannot log user out");
+
+        }
     }
 
     public function currentUser(){
         if(Auth::check()){
-            return Auth::user();
+            $user = Auth::user();
+            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully",
+                $data = $user);
+        }
+        {
+            return Helpers::responseToView($code = 401, $status = "failed", $message = "No user logged in currently");
+
         }
     }
+
+    public function renderDashboard()
+         {
+
+            // User::create(Request::all());
+             return redirect('dashboard');
+         }
+
+         public function renderPublicView()
+         {
+
+            // User::create(Request::all());
+             return redirect('public_home');
+         }
 }

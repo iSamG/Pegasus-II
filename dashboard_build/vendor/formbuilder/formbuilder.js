@@ -296,7 +296,7 @@
       if (!!Formbuilder.options.AUTOSAVE) {
         setInterval(function() {
           return _this.saveForm.call(_this);
-        }, 5000);
+        }, 500);
       }
       return $(window).bind('beforeunload', function() {
         if (_this.formSaved) {

@@ -31,7 +31,7 @@ angular.module('survey')
         };
 
         surveyService.retrieveQuestions = function(form){
-            return $http.get(prRoutes.saveQuestions, form)
+            return $http.get(prRoutes.retrieveQuestions, form)
         };
 
         surveyService.saveQuestions = function(form){
@@ -61,6 +61,17 @@ angular.module('survey')
         function initiateSurveys() {
             for (var i = 0; i <  surveyService.surveys.length; i++){
                 var each =  surveyService.surveys[i];
+
+                if (typeof each.question_tree == 'string') {
+                    try{
+                        each.question_tree = JSON.parse(each.question_tree).fields;
+                    }catch(e){
+                        each.question_tree = [];
+                    }
+                }else{
+                    console.log("each.question_tree", each.question_tree);
+                }
+
                 surveyService.surveyLookup[each.id] = each;
             }
             $rootScope.$broadcast('surveysLoadedAndPrepped');
