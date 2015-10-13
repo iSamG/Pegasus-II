@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\pegasustwo\Helpers;
+use App\Respondent;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -10,53 +12,35 @@ use App\Http\Controllers\Controller;
 class RespondentsController extends Controller
 {
 
-    public function uploadRespondentsViaCSV()
+    public function uploadSurveyRespondentsViaCSV()
     {
-        $school_reference_code = Input::get('user_id');
-
-        // echo "The school reference code is: ".$school_reference_code;
-        // exit();
+        $user_id = Input::get('user_id');
 
         $csv_file = Input::file('respondentscsv');
 
-        if (!empty($school_id) & is_file($csv_file)) {
-
+        if (is_file($csv_file)) {
 
             $csv_file_location = $csv_file->move(public_path() . '/csv/', time());
-            //return $csv_file_location;
-            //return "No file Uploaded";
 
-            $arrayOfCSVTeachers = Helper::csvToArray($csv_file_location);
-
-            //array that will contain errors generated when creating teachers from CSV file
-            // $array_of_errors = array('foo' => 'bar');
+            $arrayOfCSVRespondents = Helpers::csvToArray($csv_file_location);
 
 
-            foreach ($arrayOfCSVTeachers as $csvTeacherInfo) {
+
+            foreach ($arrayOfCSVRespondents as $respondent) {
 
                 $rowCount = 1;
 
-                $fields = array('school_reference_code' => $school_reference_code,
-                    'questions_category_reference_code' => 'STI',
-                    'first_name' => $csvTeacherInfo['first_name'],
-                    'last_name' => $csvTeacherInfo['last_name'],
-                    'gender' => $csvTeacherInfo['gender'],
-                    'level_taught' => $csvTeacherInfo['level_taught'],
-                    'class_subject_taught' => $csvTeacherInfo['class_subject_taught'],
-                    'class_taught' => $csvTeacherInfo['class_taught'],
-                    'category' => $csvTeacherInfo['category'],
-                    'staff_number' => $csvTeacherInfo['staff_number'],
-                    'rank' => $csvTeacherInfo['rank'],
-                    'highest_academic_qualification' => $csvTeacherInfo['highest_academic_qualification'],
-                    'highest_professional_qualification' => $csvTeacherInfo['highest_professional_qualification'],
-                    'years_in_the_school' => $csvTeacherInfo['years_in_the_school'],
-
+                $fields = array('user_id' => $user_id,
+                    'user_id' => $user_id,
+                    'name' => $respondent['first_name'],
+                    'email' => $respondent['last_name'],
+                    'phone_number' => $respondent['phone_number']
                 );
 
                 try {
 
                     //validating the input
-                    $validation = Teachers::create($fields);
+                    $create_respondents = Respondent::create($fields);
 
 
                 } catch (Exception $e) {
@@ -70,11 +54,13 @@ class RespondentsController extends Controller
             }
 
 
-            return 'success';
+            return Helpers::responseToView($code = 200, $status = "OK", $message = "Respondents with all required data created successfully");
 
         }
 
-        return 'failed';
+
+        return Helpers::responseToView($code = 401, $status = "Failed", $message = "The file you selected is not a valid csv file, please check and try again");
+
 
     }
 

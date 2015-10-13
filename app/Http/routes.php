@@ -60,12 +60,6 @@ Route::post('/edit/survey', [
 
 ]);
 
-Route::post('/delete/survey', [
-
-    'as' => 'delete_survey', 'uses' => 'SurveyController@deleteSurvey'
-
-]);
-
 Route::get('/retrieve/all/surveys', [
 
     'as' => 'retrieve_all_surveys', 'uses' => 'SurveyController@retrieveAllSurveysByAnAdmin'
@@ -77,6 +71,68 @@ Route::post('/retrieve/a/survey', [
     'as' => 'retrieve_a_survey', 'uses' => 'SurveyController@retrieveASurveyByAnAdmin'
 
 ]);
+
+
+
+Route::post('/upload/survey/respondents/via/csv', [
+
+    'as' => 'upload_survey_respondents_via_csv', 'uses' => 'RespondentsController@uploadSurveyRespondentsViaCSV'
+
+]);
+
+
+Route::post('/retrieve/answers/to/survey', [
+
+    'as' => 'retrieve_answers_to_survey', 'uses' => 'SurveyController@retrieveAnswersToSurveyQuestions'
+
+]);
+
+Route::post('/delete/survey', [
+
+    'as' => 'delete_survey', 'uses' => 'SurveyController@deleteSurvey'
+
+]);
+
+
+
+
+
+
+
+
+
+
+
+//Public Access URL
+
+Route::get('/answer/survey', [
+
+    'as' => 'public_view_survey_to_answer', 'uses' => 'SurveyController@publicViewSurveyWithItsQuestions'
+
+]);
+
+Route::post('/save/responses/to/survey', [
+
+    'as' => 'save_responses_to_survey', 'uses' => 'SurveyController@saveResponsesToSurvey'
+
+]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
