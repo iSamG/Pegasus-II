@@ -68,12 +68,6 @@ Route::post('/edit/survey', [
 
 ]);
 
-Route::post('/delete/survey', [
-
-    'as' => 'delete_survey', 'uses' => 'SurveyController@deleteSurvey'
-
-]);
-
 Route::get('/retrieve/all/surveys', [
 
     'as' => 'retrieve_all_surveys', 'uses' => 'SurveyController@retrieveAllSurveysByAnAdmin'
@@ -86,32 +80,96 @@ Route::post('/retrieve/a/survey', [
 
 ]);
 
-Route::post('/retrieve/a/survey/with/questions', [
-
-    'as' => 'retrieve_a_survey_with_questions', 'uses' => 'SurveyController@retrieveASurveyWithItsQuestions'
-
-]);
 
 
-Route::post('/create/a/survey/question', [
+Route::post('/upload/survey/respondents/via/csv', [
 
-    'as' => 'create_a_survey_question', 'uses' => 'QuestionsController@createQuestion'
+    'as' => 'upload_survey_respondents_via_csv', 'uses' => 'RespondentsController@uploadSurveyRespondentsViaCSV'
 
 ]);
 
 
+Route::post('/retrieve/answers/to/survey', [
 
-Route::post('/edit/a/survey/question', [
+    'as' => 'retrieve_answers_to_survey', 'uses' => 'SurveyController@retrieveAnswersToSurveyQuestions'
 
-    'as' => 'edit_a_survey_question', 'uses' => 'QuestionsController@editQuestion'
+]);
+
+Route::post('/delete/survey', [
+
+    'as' => 'delete_survey', 'uses' => 'SurveyController@deleteSurvey'
 
 ]);
 
 
-Route::post('/delete/a/survey/question', [
 
-    'as' => 'delete_a_survey_question', 'uses' => 'QuestionsController@deleteQuestion'
+
+
+
+
+
+
+
+
+//Public Access URL
+
+Route::get('/answer/survey', [
+
+    'as' => 'public_view_survey_to_answer', 'uses' => 'SurveyController@publicViewSurveyWithItsQuestions'
 
 ]);
+
+Route::post('/save/responses/to/survey', [
+
+    'as' => 'save_responses_to_survey', 'uses' => 'SurveyController@saveResponsesToSurvey'
+
+]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Route::post('/retrieve/a/survey/with/questions', [
+//
+//    'as' => 'retrieve_a_survey_with_questions', 'uses' => 'SurveyController@retrieveASurveyWithItsQuestions'
+//
+//]);
+//
+//
+//Route::post('/create/a/survey/question', [
+//
+//    'as' => 'create_a_survey_question', 'uses' => 'QuestionsController@createQuestion'
+//
+//]);
+//
+//
+//Route::post('/edit/a/survey/question', [
+//
+//    'as' => 'edit_a_survey_question', 'uses' => 'QuestionsController@editQuestion'
+//
+//]);
+//
+//
+//Route::post('/delete/a/survey/question', [
+//
+//    'as' => 'delete_a_survey_question', 'uses' => 'QuestionsController@deleteQuestion'
+//
+//]);
+
 
 
