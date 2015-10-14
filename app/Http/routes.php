@@ -15,23 +15,9 @@ Route::get('/', function(){
     return view('public_home');
 });
 
-Route::post('/', [
-            'as' => 'public_view', 'uses' => 'PegasusUserController@renderPublicView'
-]);
-
 Route::get('/survey', function(){
     return view('survey_page');
 });
-
-Route::post('/survey', [
-            'as' => 'public_view', 'uses' => 'PegasusUserController@renderPublicSurvey'
-]);
-
-
-
-//Route::get('/register', function(){
-//    return 'ok';
-//});
 
 Route::controllers([
     'password' => 'Auth\PasswordController',
@@ -41,9 +27,6 @@ Route::post('/register', 'PegasusUserController@create');
 Route::post('/login', 'PegasusUserController@authenticate');
 Route::get('/logout', 'PegasusUserController@logout');
 Route::get('/auth/user', 'PegasusUserController@currentUser');
-//Route::post('/register', 'PegasusUserController@store');
-
-
 
 Route::get('/dashboard', [
 
@@ -89,7 +72,7 @@ Route::post('/upload/survey/respondents/via/csv', [
 ]);
 
 
-Route::post('/retrieve/answers/to/survey', [
+Route::get('/retrieve/answers/to/survey', [
 
     'as' => 'retrieve_answers_to_survey', 'uses' => 'SurveyController@retrieveAnswersToSurveyQuestions'
 

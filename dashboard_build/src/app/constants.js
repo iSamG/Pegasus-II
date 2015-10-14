@@ -42,6 +42,7 @@ angular.module('pegasusrises')
         deleteQuestions : '/delete/a/survey/question',
 
         retrieveQuestions : '/retrieve/a/survey/with/questions',
+        retrieveAnswersToASurvey : '/retrieve/answers/to/survey',
 
 
         getAuthUser : '/auth/user',

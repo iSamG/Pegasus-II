@@ -46,7 +46,9 @@ angular.module('survey')
             return $http.post(prRoutes.deleteQuestions, form)
         };
 
-
+        surveyService.retrieveAnswersToASurvey = function(surveyId){
+            return $http.get(prRoutes.retrieveAnswersToASurvey, { params : { survey_id : surveyId }});
+        };
 
 
 

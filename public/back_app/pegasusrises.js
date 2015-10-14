@@ -333,6 +333,7 @@ angular.module('pegasusrises')
         deleteQuestions : '/delete/a/survey/question',
 
         retrieveQuestions : '/retrieve/a/survey/with/questions',
+        retrieveAnswersToASurvey : '/retrieve/answers/to/survey',
 
 
         getAuthUser : '/auth/user',
@@ -429,7 +430,14 @@ angular.module('survey', [])
                 url : '/select/:survey_id',
                 templateUrl : 'app/survey/selected/selected_survey.tpl.html',
                 controller : 'prSelectedSurveyController',
-                metadata : 'View Survey'
+                metadata : 'View Survey',
+                resolve : {
+                    '$stateParams' : '$stateParams',
+                    'surveyService' : 'surveyService',
+                    answersData : function ($stateParams, surveyService) {
+                        return surveyService.retrieveAnswersToASurvey($stateParams.survey_id)
+                    }
+                }
             })
             .state('surveys.create_new', {
                 url : '/create/new',
@@ -741,9 +749,9 @@ angular.module('survey')
 angular.module('survey')
 
     .controller('prSelectedSurveyController', ['$rootScope', '$scope', 'homeService','surveyService', 'growl',
-        '$stateParams','cfpLoadingBar','$timeout',
+        '$stateParams','cfpLoadingBar','$timeout','answersData',
         function($rootScope, $scope, homeService, surveyService, growl,
-                 $stateParams, cfpLoadingBar, $timeout){
+                 $stateParams, cfpLoadingBar, $timeout, answersData){
 
             function loadSurveys() {
                 $scope.loadingSurveys = false;
@@ -760,7 +768,7 @@ angular.module('survey')
                 loadSurveys();
             });
 
-
+            console.log(answersData);
         }]);
 
 
@@ -813,7 +821,9 @@ angular.module('survey')
             return $http.post(prRoutes.deleteQuestions, form)
         };
 
-
+        surveyService.retrieveAnswersToASurvey = function(surveyId){
+            return $http.get(prRoutes.retrieveAnswersToASurvey, { params : { survey_id : surveyId }});
+        };
 
 
 
@@ -1191,7 +1201,6 @@ angular.module('directives')
 
                         $scope.initJSForm = function () {
                             prepFormComponents();
-                            console.log("LOG schema  " , schema);
                         };
 
                         $scope.sendSurvey = function () {

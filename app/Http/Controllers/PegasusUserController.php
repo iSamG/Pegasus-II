@@ -185,17 +185,5 @@ class PegasusUserController extends Controller
              return redirect('dashboard');
          }
 
-         public function renderPublicView()
-         {
 
-            // User::create(Request::all());
-             return redirect('public_home');
-         }
-
-         public function renderPublicSurvey()
-         {
-
-            // User::create(Request::all());
-             return redirect('survey_page');
-         }
 }

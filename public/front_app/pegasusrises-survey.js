@@ -29,21 +29,32 @@ angular.module('pegasusrisesSurvey', [
     video : 'string',
     file : 'string'
 })
-    .service('PGTakeSurveyService', ['$rootScope','$http','$q',
-        function ($rootScope, $http, $q) {
+    .service('PGTakeSurveyService', ['$rootScope','$http','$q','$location',
+        function ($rootScope, $http, $q, $location) {
 
             var surveyService = {};
             var URL = {
-                getSurvey : '/retrieve/all/surveys',
-                submitSurvey : '/submit/survey/response'
+                getSurvey : '/answer/survey',
+                submitSurvey : '/save/responses/to/survey'
             };
 
+            function getURLParams(name){
+                var results = new RegExp('[\?&]'+ name + '=([^&#]*)').exec(window.location.href);
+                if (results == null) {
+                    return null
+                }else{
+                    return results[1] || null;
+                }
+            }
+
             surveyService.getSurvey = function () {
-                return $http.get(URL.getSurvey, {params : { admin_id : 4}})
+               var queryString = "http://pegasus2.app/answer/survey?unique_id=" + getURLParams('unique_id');
+
+                return $http.get(URL.getSurvey, {params : { unique_id : queryString }})
             };
 
             surveyService.submitSurvey = function (survey) {
-                return $http.post(URL.submitSurvey, {response : survey});
+                return $http.post(URL.submitSurvey,  survey);
             };
 
             return surveyService;
@@ -55,8 +66,9 @@ angular.module('pegasusrisesSurvey', [
             PGTakeSurveyService.getSurvey()
                 .success(function (successData) {
                     if(successData.code == '200' && successData.status.toLowerCase() == 'ok'){
-                        $scope.survey_name = successData.data[0].survey_name;
-                        prepFormComponents(successData.data[0].question_tree);
+                        console.log(successData);
+                        $scope.survey_name = successData.data.survey_name;
+                        prepFormComponents(successData.data.question_tree, successData.data.id);
                     }
                 })
                 .error(function () {
@@ -64,8 +76,8 @@ angular.module('pegasusrisesSurvey', [
                 });
 
 
-            var prepFormComponents = function (surveyText) {
-              var surveyData = JSON.parse(surveyText).fields, formArray = [], schema = {};
+            var prepFormComponents = function (surveyText, surveyId) {
+                var surveyData = JSON.parse(surveyText).fields, formArray = [], schema = {};
 
                 if (surveyData) {
                     for(var i = 0; i < surveyData.length; i++){
@@ -193,9 +205,34 @@ angular.module('pegasusrisesSurvey', [
                     schema: schema,
                     form: formArray,
                     onSubmit: function (errors, values) {
-                        growl.info('This is for preview purposes only.');
+                        /*  $table->bigInteger('survey_id');
+                         $table->bigInteger('name_of_respondent');/!*Make this nullable*!/
+                         $table->bigInteger('email');/!*Make this nullable*!/
+                         $table->bigInteger('phone_number');/!*Make this nullable*!/
+                         $table->string('answer_response');*/
+                        growl.info('Data submitting...', {ttl : 5000});
                         console.log("errors", errors);
                         console.log("values", values);
+                        var dataToSend = {
+                            survey_id : surveyId,
+                            name_of_respondent : '',
+                            email : '',
+                            phone_number : '',
+                            answer_response : JSON.stringify(values)
+                        };
+
+                        PGTakeSurveyService.submitSurvey(dataToSend)
+                            .success(function (successData) {
+                                if(successData.code == '200' && successData.status.toLowerCase() == 'ok'){
+                                    growl.success('Data submitted successfully.', {ttl : 5000});
+                                    console.log(successData);
+                                    return;
+                                }
+                            })
+                            .error(function () {
+
+                            });
+
                     }
                 })
 

@@ -84,12 +84,12 @@ class SurveysRepository {
 
         $survey = \DB::table('surveys')->where('survey_unique_public_url', $survey_unique_public_url)->first();
 
-        if ($survey > 0) {
+        if ($survey) {
 
             //TO DOs:
 //            1. check if survey is publi, if not public does this user have the right
 
-            return Helpers::responseToView($code=200, $status="OK",$message = "Survey retrieved successfully");
+            return Helpers::responseToView($code=200, $status="OK",$message = "Survey retrieved successfully", $data = $survey);
 
         }
 
