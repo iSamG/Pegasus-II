@@ -11,7 +11,7 @@ class EmailController extends Controller{
         $id = 'id';
         $title = 'title';
         $name='Hadi Mukaila';
-        $link = 'pegasus.dev'.'/'.$id;
+        $link = 'http://www.pegasus.dev'.'/'.$id;
         Mail::send(
             'email_template',
             ['name'=>$name, 'survey_id'=>$id, 'title'=>$title,'link'=>$link],
