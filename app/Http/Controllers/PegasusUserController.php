@@ -90,8 +90,12 @@ class PegasusUserController extends Controller
         $input_is_valid = \Validator::make($fields, $validation_patterns);
         if($input_is_valid){
             $user = User::create($fields);
+            if($user){
+                Auth::attempt(['username' => $user_name, 'password' => $password]);
+                \Redirect::route('dashboard_view');
+            }
 
-            \Redirect::route('dashboard_view');
+
 
 //            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully",
 //                $data = $user);
@@ -134,9 +138,12 @@ class PegasusUserController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit($id, $new_password)
     {
         //
+        DB::table('users')
+            ->where('id', $id)
+            ->update(['password' => $new_password]);
     }
 
     /**
