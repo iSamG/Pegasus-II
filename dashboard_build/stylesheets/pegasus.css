@@ -3086,6 +3086,16 @@ select, input[type="file"] { height: 34px !important;line-height: 30px;}
     width: 600px;
 }
 
-.help-block{
+#previewSurvey .help-block{
 font-size: x-small;
+}
+
+#previewSurvey input[type="radio"]{
+    margin-top : 3px !important;
+}
+
+#previewSurvey input[type="checkbox"]{
+    margin-top: -6px !important;
+    margin-right: 12px !important;
+
 }

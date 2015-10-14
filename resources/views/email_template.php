@@ -185,7 +185,9 @@ img
 
 											<td align="left" style="padding-left:20px; font-family: Helvetica, Arial, sans-serif; font-size: 9px; font-weight: normal; color: #9ca1a3; line-height: 13px; text-align: left;">
 												<span class="RespoHideMedium">You've been invited to participate in a survey<br />
-												<br /></span> <a href="#" style="text-decoration:none; color: #ffffff;">View Online &gt;</a>
+												<br /></span> <a href=<?=$link?> style="text-decoration:none; color: #ffffff;">View Online &gt;</a>
+												<?= $name?>
+												<?=$link?>
 											</td>
 										</tr>
 									</table>

@@ -349,7 +349,7 @@ angular.module("app/admin/settings.tpl.html", []).run(["$templateCache", functio
 
 angular.module("app/home/home.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/home/home.tpl.html",
-    "<div class=\"white_bg\">\n" +
+    "<div class=\"white_bg\" ng-hide=\"loadingSurveys\" ng-if=\"surveys.length < 1\">\n" +
     "    <h2 class=\"page-header text-center\">Welcome to Pegasusrises</h2>\n" +
     "    <div class=\"row\" style=\"padding-bottom: 50px\">\n" +
     "        <p class=\"h5 text-center\">Click the button below to create a survey on Pegasusrises</p>\n" +
@@ -364,8 +364,8 @@ angular.module("app/home/home.tpl.html", []).run(["$templateCache", function($te
     "    </div>\n" +
     "\n" +
     "</div>\n" +
-    "<!--ng-hide - first_timer ||-->\n" +
-    "<div class=\"container clear_both padding_fix\" ng-hide=\"true\">\n" +
+    "\n" +
+    "<div class=\"container clear_both padding_fix\" ng-hide=\"loadingSurveys\" ng-if=\"surveys.length > 0\">\n" +
     "    <!--\\\\\\\\\\\\\\ container  start \\\\\\\\\\\\-->\n" +
     "    <div class=\"row\">\n" +
     "        <div class=\"col-sm-3 col-sm-6\">\n" +
@@ -1039,55 +1039,65 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "    <div class=\"col-lg-12\">\n" +
     "        <section class=\"panel default blue_title h2\">\n" +
     "\n" +
-    "            <div class=\"panel-heading border\">\n" +
+    "            <div class=\"panel-heading border center\">\n" +
     "                <span ng-click=\"$state.go('surveys')\"  tooltip-placement=\"right\" tooltip=\"Back to survey list\" class=\"pointer pull-left label label-info\">\n" +
     "                    <i class=\"fa fa-arrow-left\"></i>\n" +
     "                </span>\n" +
     "\n" +
-    "                <span class=\"center\">{{ selected_survey.survey_name || 'Survey'}}</span>\n" +
+    "                {{ selected_survey.survey_name || 'Survey'}}\n" +
     "\n" +
-    "                <div class=\"dropdown pull-right\">\n" +
+    "                <div class=\"dropdown pull-right\" >\n" +
     "                    <button class=\"btn btn-primary dropdown-toggle\" style=\"color: white !important;\" type=\"button\" data-toggle=\"dropdown\">  Options\n" +
     "                        <span class=\"caret\"></span></button>\n" +
-    "                    <ul class=\"dropdown-menu\" style=\"text-transform : none !important;\">\n" +
+    "                    <ul class=\"dropdown-menu\" style=\"text-transform : none !important; text-align: left !important;\">\n" +
     "\n" +
-    "                        <li ><a ui-sref=\"surveys.respondents({survey_id : selected_survey.id })\"><i class=\"fa fa-send\"></i> Send Survey</a></li>\n" +
-    "                        <li class=\"divider\"></li>\n" +
+    "                        <li ng-show=\"selected_survey.question_tree\"><a ui-sref=\"surveys.respondents({survey_id : selected_survey.id })\"><i class=\"fa fa-send\"></i> Send Survey</a></li>\n" +
+    "                        <li class=\"divider\" ng-show=\"selected_survey.question_tree\"></li>\n" +
     "                        <li ><a ui-sref=\"surveys.form_builder({survey_id : selected_survey.id })\"><i class=\"fa fa-pencil\"></i> Add/Edit Questionnaire</a></li>\n" +
     "                        <li class=\"divider\"></li>\n" +
     "                        <li edit-survey=\"{{ selected_survey.id }}\"><a href=\"\"><i class=\"fa fa-edit\"></i> Edit Survey</a></li>\n" +
+    "                        <li class=\"divider\"></li>\n" +
     "                        <li delete-survey=\"{{ selected_survey.id }}\"><a href=\"\"><i class=\"fa fa-times\"></i> Delete Survey</a></li>\n" +
     "                        <li class=\"divider\"></li>\n" +
     "                        <li ng-click=\"reloadSurveyData()\"><a href=\"\"><i class=\"fa fa-refresh\"></i> Refresh</a></li>\n" +
     "                    </ul>\n" +
     "                </div>\n" +
     "                <!--<span   tooltip-placement=\"left\" tooltip=\"Refresh\" class=\"pointer pull-right label label-success\">-->\n" +
-    "                    <!--</span>-->\n" +
+    "                <!--</span>-->\n" +
     "\n" +
     "            </div>\n" +
     "        </section>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"col-md-6\">\n" +
+    "    <div class=\"col-md-12 fill_white\" ng-hide=\"selected_survey.question_tree\">\n" +
+    "        <div class=\"block-web\">\n" +
+    "            <h4 style=\"margin: 25px 0\" class=\"text-center\">No questions created for this survey.</h4>\n" +
+    "            <br>            <br>            <br>\n" +
+    "            <button class=\"btn btn-success center-block col-xs-2\" style=\"display: block\" ui-sref=\"surveys.form_builder({survey_id : selected_survey.id })\">\n" +
+    "                Add Questions</button>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"col-md-6\" ng-show=\"selected_survey.question_tree\">\n" +
     "        <div class=\"widget_inbox\">\n" +
     "            <perfect-scrollbar class=\"scroller\" wheel-propagation=\"true\" wheel-speed=\"2\" min-scrollbar-length=\"6\">\n" +
     "                <ul>\n" +
     "                    <li ng-repeat=\"question_item in selected_survey.question_tree\">\n" +
     "                        <a href=\"\" ><!--ng-class=\"{'active' : question_item.question_field == selected_question.question_field}\"-->\n" +
-    "                        <div class=\"widget_inbox_header\">\n" +
-    "                            <span class=\"pull-left widget_inbox_time badge\"><b>{{ $index + 1 }}</b>.</span>\n" +
+    "                            <div class=\"widget_inbox_header\">\n" +
+    "                                <span class=\"pull-left widget_inbox_time badge\"><b>{{ $index + 1 }}</b>.</span>\n" +
     "                            <span class=\"widget_inbox_time\">\n" +
     "                                &nbsp;&nbsp;\n" +
     "                            {{ formatFieldType[question_item.field_type] }}\n" +
     "                            </span>\n" +
-    "                        </div>\n" +
-    "                        <span style=\"font-size: large; margin-left: 25px\">{{ question_item.label }}</span></a></li>\n" +
+    "                            </div>\n" +
+    "                            <span style=\"font-size: large; margin-left: 25px\">{{ question_item.label }}</span></a></li>\n" +
     "                </ul>\n" +
     "            </perfect-scrollbar>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"col-md-6\" ng-show=\"selected_question\">\n" +
+    "    <div class=\"col-md-6\" ng-show=\"selected_survey.question_tree\">\n" +
     "        <div class=\"widget_inbox\" ng-show=\"chartObject.data.rows.length\">\n" +
     "            <tabset justified=\"true\">\n" +
     "                <tab select=\"changeChartType('BarChart')\">\n" +
@@ -1159,7 +1169,7 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "    <div class=\"col-md-6\" ng-hide=\"selected_question\">\n" +
+    "    <div class=\"col-md-6\" ng-show=\"selected_survey.question_tree\">\n" +
     "        <div class=\"widget_inbox\">\n" +
     "            <h3 style=\"margin-top: 30%\" class=\"text-center\" ><i class=\"fa fa-arrow-left\"></i>  Select a question on the left to preview</h3>\n" +
     "        </div>\n" +
@@ -1257,7 +1267,7 @@ angular.module("common/modals/previewSurveyFormModal.tpl.html", []).run(["$templ
     "        <button type=\"button\" class=\"close\" ng-click=\"close()\" aria-hidden=\"true\">×</button>\n" +
     "        <h4 class=\"modal-title\"> <small>Preview of </small> <i>{{ selected_survey.survey_name || 'Survey'}}</i></h4>\n" +
     "    </div>\n" +
-    "    <div class=\"modal-body\">\n" +
+    "    <div class=\"modal-body\" id=\"previewSurvey\">\n" +
     "        <form ng-init=\"initJSForm()\"></form>\n" +
     "    </div>\n" +
     "    <div class=\"modal-footer\">\n" +

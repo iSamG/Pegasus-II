@@ -7,7 +7,7 @@
 
 
 </head>
-<body class="light_theme  fixed_header left_nav_fixed">
+<body class="light_theme  fixed_header left_nav_fixed hidden">
 <div class="wrapper">
     <!--\\\\\\\ wrapper Start \\\\\\-->
     <div class="header_bar">
@@ -71,7 +71,7 @@
                 </div>
                 <div class="user_admin dropdown"> <a href="javascript:void(0);" data-toggle="dropdown" ng-controller="prBreadCrumbCtrl">
                     <img src="back_app/images/user.png" />
-                    <span class="user_adminname" id="user_logged_in_email">{{ username }}</span> <b class="caret"></b> </a>
+                    <span class="user_adminname" id="user_logged_in_email" ng-bind="user.username"></span> <b class="caret"></b> </a>
                     <ul class="dropdown-menu" style="left: -105px">
                         <div class="top_pointer"></div>
                         <li class="hidden"> <a ui-sref="profile"><i class="fa fa-user"></i> Profile</a> </li>

@@ -44,7 +44,7 @@ class Helpers
         //Base Url for Local Development
         $base_url = "http://pegasus2.app/";
 
-        $survey_public_url = $base_url . "/answer/survey?unique_id=".$unique_survey_code;
+        $survey_public_url = $base_url . "answer/survey?unique_id=".$unique_survey_code;
 
 
         $check_if_auction_code_already_exist = DB::table('surveys')->where('survey_unique_public_url', $survey_public_url)->first();

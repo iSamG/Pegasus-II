@@ -166,7 +166,6 @@ angular.module('directives')
 
                         $scope.initJSForm = function () {
                             prepFormComponents();
-                            console.log("LOG schema  " , schema);
                         };
 
                         $scope.sendSurvey = function () {

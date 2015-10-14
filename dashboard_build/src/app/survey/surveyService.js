@@ -19,7 +19,7 @@ angular.module('survey')
         };
 
         surveyService.retrieveAllSurveys = function(){
-            return $http.get(prRoutes.retrieveAllSurveys, {params : { admin_id : 1}})
+            return $http.get(prRoutes.retrieveAllSurveys, {params : { admin_id : $rootScope.user.id}})
         };
 
         surveyService.retrieveOneSurvey = function(){
@@ -46,7 +46,9 @@ angular.module('survey')
             return $http.post(prRoutes.deleteQuestions, form)
         };
 
-
+        surveyService.retrieveAnswersToASurvey = function(surveyId){
+            return $http.get(prRoutes.retrieveAnswersToASurvey, { params : { survey_id : surveyId }});
+        };
 
 
 

@@ -35,7 +35,7 @@ angular.module('survey')
             $scope.format = "dd-MMMM-yyyy";
 
             $scope.createSurveyForm = {
-                user_id : 1,
+                user_id : $scope.user.id,
                 survey_type : 'public',
                 survey_medium : 'email'
             };
