@@ -38,10 +38,6 @@ angular.module('pegasusrises')
                 file : 'File'
             };
 
-            $rootScope.logoutUser = function () {
-                adminService.logoutUser();
-            };
-
             $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
                 cfpLoadingBar.start();
                 $rootScope.loading = true;
@@ -56,9 +52,15 @@ angular.module('pegasusrises')
                 $rootScope.loading = false;
             });
 
-            adminService.getAuthUser();
+            adminService.getAuthUser()
+                .then(function (status) {
+                    if (status) {
+                        surveyService.loadAllSurveys();
+                    }
 
-            surveyService.loadAllSurveys();
+            });
+
+
             $rootScope.reloadSurveyData = function () {
                 surveyService.loadAllSurveys();
             }

@@ -97,15 +97,34 @@ angular.module('admin')
         var adminService = {};
 
         adminService.getAuthUser = function () {
+            var defer = $q.defer();
             $http.get(prRoutes.getAuthUser)
                 .success(function (successData) {
-                    $rootScope.user = successData.data;
+                    if (successData.code == '200' && successData.status.toLowerCase() == 'ok') {
+                        $('body').removeClass('hidden');
+                        $rootScope.user = successData.data;
+                        defer.resolve(true);
+                    }
+                    else{
+                        goToPublicHome();
+                        defer.reject(false);
+                    }
+                });
+            return defer.promise;
+        };
+
+        adminService.logoutUser =  $rootScope.logoutUser  = function () {
+            $http.get(prRoutes.logoutUser)
+                .success(function (successData) {
+                    if (successData.code == '200' && successData.status.toLowerCase() == 'ok') {
+                        goToPublicHome();
+                    }
                 })
         };
 
-        adminService.logoutUser = function () {
-            return $http.get(prRoutes.logoutUser)
-        };
+        function goToPublicHome(){
+            location.href='/';
+        }
 
         return adminService;
     }]);
@@ -242,10 +261,6 @@ angular.module('pegasusrises')
                 file : 'File'
             };
 
-            $rootScope.logoutUser = function () {
-                adminService.logoutUser();
-            };
-
             $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
                 cfpLoadingBar.start();
                 $rootScope.loading = true;
@@ -260,9 +275,15 @@ angular.module('pegasusrises')
                 $rootScope.loading = false;
             });
 
-            adminService.getAuthUser();
+            adminService.getAuthUser()
+                .then(function (status) {
+                    if (status) {
+                        surveyService.loadAllSurveys();
+                    }
 
-            surveyService.loadAllSurveys();
+            });
+
+
             $rootScope.reloadSurveyData = function () {
                 surveyService.loadAllSurveys();
             }
@@ -352,6 +373,20 @@ angular.module('home')
         function($rootScope, $scope, $state, homeService, surveyService, growl, cfpLoadingBar, $localStorage, $sessionStorage,
                  $timeout, $interval){
 
+            $scope.loadingSurveys = true;
+
+            function loadSurveys() {
+                $scope.surveys = surveyService.surveys;
+                $scope.loadingSurveys = false;
+            }
+
+            if (surveyService.surveys) {
+                loadSurveys();
+            }
+
+            $scope.$on('surveysLoadedAndPrepped', function(){
+                loadSurveys();
+            });
 
         }]);
 /**
@@ -459,7 +494,7 @@ angular.module('survey')
             $scope.format = "dd-MMMM-yyyy";
 
             $scope.createSurveyForm = {
-                user_id : 1,
+                user_id : $scope.user.id,
                 survey_type : 'public',
                 survey_medium : 'email'
             };
@@ -751,7 +786,7 @@ angular.module('survey')
         };
 
         surveyService.retrieveAllSurveys = function(){
-            return $http.get(prRoutes.retrieveAllSurveys, {params : { admin_id : 1}})
+            return $http.get(prRoutes.retrieveAllSurveys, {params : { admin_id : $rootScope.user.id}})
         };
 
         surveyService.retrieveOneSurvey = function(){

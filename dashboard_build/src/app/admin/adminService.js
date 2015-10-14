@@ -6,15 +6,34 @@ angular.module('admin')
         var adminService = {};
 
         adminService.getAuthUser = function () {
+            var defer = $q.defer();
             $http.get(prRoutes.getAuthUser)
                 .success(function (successData) {
-                    $rootScope.user = successData.data;
+                    if (successData.code == '200' && successData.status.toLowerCase() == 'ok') {
+                        $('body').removeClass('hidden');
+                        $rootScope.user = successData.data;
+                        defer.resolve(true);
+                    }
+                    else{
+                        goToPublicHome();
+                        defer.reject(false);
+                    }
+                });
+            return defer.promise;
+        };
+
+        adminService.logoutUser =  $rootScope.logoutUser  = function () {
+            $http.get(prRoutes.logoutUser)
+                .success(function (successData) {
+                    if (successData.code == '200' && successData.status.toLowerCase() == 'ok') {
+                        goToPublicHome();
+                    }
                 })
         };
 
-        adminService.logoutUser = function () {
-            return $http.get(prRoutes.logoutUser)
-        };
+        function goToPublicHome(){
+            location.href='/';
+        }
 
         return adminService;
     }]);

@@ -19,6 +19,14 @@ Route::post('/', [
             'as' => 'public_view', 'uses' => 'PegasusUserController@renderPublicView'
 ]);
 
+Route::get('/survey', function(){
+    return view('survey_page');
+});
+
+Route::post('/survey', [
+            'as' => 'public_view', 'uses' => 'PegasusUserController@renderPublicSurvey'
+]);
+
 
 
 //Route::get('/register', function(){
