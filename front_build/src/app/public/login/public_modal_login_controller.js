@@ -31,9 +31,8 @@ angular.module('public')
                         .success(function (successData) {
                             if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok' ) {
                                 growl.success("Welcome, " + successData.data.username, {title : "Login Success"});
-                                //User.checkIfUserIsAuthenticated();
-                                //$location.path('/dashboard');
                                 location.href ='/dashboard';
+                                $scope.cancel();
 
                             }else if(successData.code == '401'){
                                 growl.error("Check your username and password.", {title : "Invalid Login Credentials"});

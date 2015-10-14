@@ -21,6 +21,49 @@ class Helpers
 {
 
 
+    public static function generateSurveyUniquePublicUrl() {
+
+
+        $random_unique_string = 3;
+
+        $characters = 'a0bc1de2fg3hi4jkl5mno6pqr7stu8vw9xyz';
+
+        $unique_survey_code = '';
+
+        for ($i = 0; $i < $random_unique_string; $i++) {
+
+            $unique_survey_code .= $characters[rand(0, strlen($characters) - 1)];
+
+        }
+
+        $unique_survey_code = strtolower($unique_survey_code);
+
+        // Base Url for Production
+        //$base_url = "http://www.i-bid2win.com/account/confirmation/via/email";
+
+        //Base Url for Local Development
+        $base_url = "http://pegasus2.app/";
+
+        $survey_public_url = $base_url . "answer/survey?unique_id=".$unique_survey_code;
+
+
+        $check_if_auction_code_already_exist = DB::table('surveys')->where('survey_unique_public_url', $survey_public_url)->first();
+
+        if (count($check_if_auction_code_already_exist) > 0) {
+
+            generateSurveyUniquePublicUrl();
+
+        }else{
+
+            return $survey_public_url;
+        }
+
+    }
+
+
+
+
+
 
     public static function generateQuestionUniqueCode($table  = 'questions', $column = 'question_unique_code'){
 
@@ -121,13 +164,6 @@ class Helpers
     }
 
 
-    public static function calculateNumberOfBid2WinCredit($top_up_amount_in_ghana_cedis)
-    {
-        $bid2win_credit_of_the_money_given =  $top_up_amount_in_ghana_cedis * 100;
-
-        return $bid2win_credit_of_the_money_given;
-    }
-
 
     public static function logingInfo($message = "Just logging to see whether the route was hit",$data = null)
     {
@@ -135,32 +171,6 @@ class Helpers
     }
 
 
-
-    //this are rules for the creation of a new user
-    public static $punterCreationViaMobile = [
-        //This are the rules for creating a new punter
-        'email' => ['required', 'unique:users'],
-        'username' => ['required','unique:users'],
-        'password' => ['required', 'min:6'],
-        'phone_number' => ['required', 'min:10','unique:users']
-    ];
-
-    //this function validate the information entered to create a new user
-    public static function validate($input) {
-
-        $validation = Validator::make($input, static ::$punterCreationViaMobile);
-
-        if ($validation->fails()) {
-
-            return $validation->messages();
-
-        } else {
-
-            return true;
-
-        }
-
-    }
 
 
     public static function uploadProfilePictureViaAndroidRequest($imageFile)
@@ -216,6 +226,39 @@ class Helpers
 
 
 
+    }
+
+
+
+
+    public static function csvToArray($csv_file_location, $delimiter=',')
+    {
+        if(!file_exists($csv_file_location) || !is_readable($csv_file_location))
+            return FALSE;
+
+        $header = NULL;
+
+        $data = array();
+
+        if (($handle = fopen($csv_file_location, 'r')) !== FALSE)
+        {
+            while (($row = fgetcsv($handle, 250, $delimiter)) !== FALSE)
+            {
+                if(!$header){
+
+                    $header = $row;
+
+                }
+                else{
+
+                    $data[] = array_combine($header, $row);
+                }
+            }
+            fclose($handle);
+            unlink($csv_file_location);
+        }
+
+        return $data;
     }
 
 

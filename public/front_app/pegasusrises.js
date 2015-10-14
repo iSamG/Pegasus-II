@@ -1,4 +1,4 @@
-/* pegasusrises - v2.0 - 2015-10-07
+/* pegasusrises - v2.0 - 2015-10-11
  * pegasusrises.com
  * Copyright (c) 2015 BBG Digital Innovation Lab;
  * Licensed MIT
@@ -13,27 +13,20 @@ angular.module('pegasusApp', [
     'angular-growl',
     'oitozero.ngSweetAlert',
     'angularMoment',
-    'ngImgCrop',
-    'pasvaz.bindonce',
-    'angularFileUpload',
-    'angular-datepicker',
     'angular-cache',
     'doowb.angular-pusher',
     'angular-loading-bar',
-    'mgo-angular-wizard',
     'templates.app',
     'templates.common',
-    '720kb.socialshare',
-    'satellizer',
     'pegasusApp.services',
     'pegasusApp.directives',
     'pegasusApp.constants',
     'public'
 ])
     .config(['$stateProvider','$urlRouterProvider','PGConstants','growlProvider','CacheFactoryProvider',
-        '$rootScopeProvider', 'PusherServiceProvider','$locationProvider','$provide','$authProvider',
+        '$rootScopeProvider', 'PusherServiceProvider','$locationProvider','$provide',
         function($stateProvider, $urlRouterProvider, PGConstants, growlProvider, CacheFactoryProvider,
-                 $rootScopeProvider, PusherServiceProvider, $locationProvider, $provide, $authProvider){
+                 $rootScopeProvider, PusherServiceProvider, $locationProvider, $provide){
 
             $locationProvider.html5Mode(true);
 
@@ -76,22 +69,6 @@ angular.module('pegasusApp', [
                 storagePrefix : 'b2w',
                 //cacheFlushInterval: 60 * 60 * 1000, // This cache will clear itself every hour
                 deleteOnExpire: 'aggressive' // Items will be deleted from this cache when they expire
-            });
-
-            //$authProvider.facebook({
-            //    clientId: PGConstants.fbId,
-            //    url: '/facebook/callback',
-            //    redirectUri: window.location.origin + '/facebook/callback',
-            //    scope: ['public_profile', 'email'],
-            //    popupOptions: { width: 700, height: 450 }
-            //});
-
-            $authProvider.oauth2({
-                name: 'foursquare',
-                url: '/auth/foursquare',
-                redirectUri: window.location.origin,
-                clientId: 'MTCEJ3NGW2PNNB31WOSBFDSAD4MTHYVAZ1UKIULXZ2CVFC2K',
-                authorizationEndpoint: 'https://foursquare.com/oauth2/authenticate'
             });
 
         }]);
@@ -159,8 +136,8 @@ angular.module('public')
 
 angular.module('public')
 
-    .controller('BwAboutController', ['$rootScope', '$scope', '$state', '$stateParams','$location','growl','B2WAuth',
-        function ($rootScope, $scope, $state, $stateParams, $location, growl, B2WAuth) {
+    .controller('PGAboutController', ['$rootScope', '$scope', '$state', '$stateParams','$location','growl','PGAuth',
+        function ($rootScope, $scope, $state, $stateParams, $location, growl, PGAuth) {
 
 
         }]);
@@ -208,9 +185,8 @@ angular.module('public')
                         .success(function (successData) {
                             if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok' ) {
                                 growl.success("Welcome, " + successData.data.username, {title : "Login Success"});
-                                //User.checkIfUserIsAuthenticated();
-                                //$location.path('/dashboard');
                                 location.href ='/dashboard';
+                                $scope.cancel();
 
                             }else if(successData.code == '401'){
                                 growl.error("Check your username and password.", {title : "Invalid Login Credentials"});
@@ -294,11 +270,10 @@ angular.module('public')
                         if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok' ) {
                             growl.success("You have successfully created an account on "+ PGConstants.app_name +". Thank you.", {title : "Registration"});
                             $scope.user_register_form = $localStorage.user_register_form = {};
+                            location.href ='/dashboard';
                             $scope.cancel();
 
-                            $location.path('/dashboard');
 
-                            User.user = successData.data;
                         }else if(successData.code == '401'){
                             growl.error("Some of the fields already exist.", {title : "Duplicate Credentials"});
                             $scope.loginError = true;

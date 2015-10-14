@@ -5,9 +5,9 @@
 angular.module('survey')
 
     .controller('prSelectedSurveyController', ['$rootScope', '$scope', 'homeService','surveyService', 'growl',
-        '$stateParams','cfpLoadingBar','$timeout',
+        '$stateParams','cfpLoadingBar','$timeout','answersData',
         function($rootScope, $scope, homeService, surveyService, growl,
-                 $stateParams, cfpLoadingBar, $timeout){
+                 $stateParams, cfpLoadingBar, $timeout, answersData){
 
             function loadSurveys() {
                 $scope.loadingSurveys = false;
@@ -24,7 +24,7 @@ angular.module('survey')
                 loadSurveys();
             });
 
-
+            console.log(answersData);
         }]);
 
 

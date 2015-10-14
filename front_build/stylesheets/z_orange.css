@@ -27,7 +27,7 @@ a {
 }
 
 a.main-button, input[type="submit"] {
-	background-color: #f36510;
+	/*background-color: #f36510;*/
 }
 
 .navbar-default .navbar-nav > li:hover > a,

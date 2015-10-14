@@ -4,8 +4,8 @@
 
 angular.module('public')
 
-    .controller('BwAboutController', ['$rootScope', '$scope', '$state', '$stateParams','$location','growl','B2WAuth',
-        function ($rootScope, $scope, $state, $stateParams, $location, growl, B2WAuth) {
+    .controller('PGAboutController', ['$rootScope', '$scope', '$state', '$stateParams','$location','growl','PGAuth',
+        function ($rootScope, $scope, $state, $stateParams, $location, growl, PGAuth) {
 
 
         }]);

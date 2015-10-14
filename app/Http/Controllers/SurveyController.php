@@ -81,4 +81,33 @@ class SurveyController extends Controller
         return $delete_survey;
 
     }
+
+
+    public function publicViewSurveyWithItsQuestions()
+    {
+
+        $public_view_survey = $this->surveyRepository->publicViewSurveyWithItsQuestions($this->requestMade->get("unique_id"));
+
+        return $public_view_survey;
+
+    }
+
+
+    public function saveResponsesToSurvey()
+    {
+
+        $responses_to_survey_questions = $this->surveyRepository->saveAnswersToSurveyQuestions($this->requestMade->all());
+
+        return $responses_to_survey_questions;
+
+    }
+
+
+    public function retrieveAnswersToSurveyQuestions()
+    {
+
+        $retrieve_all_answers_to_a_survey = $this->surveyRepository->retrieveAllAnswersToASurvey($this->requestMade->get("survey_id"));
+
+        return $retrieve_all_answers_to_a_survey;
+    }
 }

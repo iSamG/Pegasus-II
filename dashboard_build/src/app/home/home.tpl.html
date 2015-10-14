@@ -1,4 +1,4 @@
-<div class="white_bg">
+<div class="white_bg" ng-hide="loadingSurveys" ng-if="surveys.length < 1">
     <h2 class="page-header text-center">Welcome to Pegasusrises</h2>
     <div class="row" style="padding-bottom: 50px">
         <p class="h5 text-center">Click the button below to create a survey on Pegasusrises</p>
@@ -13,8 +13,8 @@
     </div>
 
 </div>
-<!--ng-hide - first_timer ||-->
-<div class="container clear_both padding_fix" ng-hide="true">
+
+<div class="container clear_both padding_fix" ng-hide="loadingSurveys" ng-if="surveys.length > 0">
     <!--\\\\\\\ container  start \\\\\\-->
     <div class="row">
         <div class="col-sm-3 col-sm-6">

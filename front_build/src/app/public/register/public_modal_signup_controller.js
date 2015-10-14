@@ -60,11 +60,10 @@ angular.module('public')
                         if (successData.code == '200' && $.trim(successData.status.toLowerCase()) == 'ok' ) {
                             growl.success("You have successfully created an account on "+ PGConstants.app_name +". Thank you.", {title : "Registration"});
                             $scope.user_register_form = $localStorage.user_register_form = {};
+                            location.href ='/dashboard';
                             $scope.cancel();
 
-                            $location.path('/dashboard');
 
-                            User.user = successData.data;
                         }else if(successData.code == '401'){
                             growl.error("Some of the fields already exist.", {title : "Duplicate Credentials"});
                             $scope.loginError = true;

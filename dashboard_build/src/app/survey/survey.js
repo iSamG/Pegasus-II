@@ -27,7 +27,14 @@ angular.module('survey', [])
                 url : '/select/:survey_id',
                 templateUrl : 'app/survey/selected/selected_survey.tpl.html',
                 controller : 'prSelectedSurveyController',
-                metadata : 'View Survey'
+                metadata : 'View Survey',
+                resolve : {
+                    '$stateParams' : '$stateParams',
+                    'surveyService' : 'surveyService',
+                    answersData : function ($stateParams, surveyService) {
+                        return surveyService.retrieveAnswersToASurvey($stateParams.survey_id)
+                    }
+                }
             })
             .state('surveys.create_new', {
                 url : '/create/new',

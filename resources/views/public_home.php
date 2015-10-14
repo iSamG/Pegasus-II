@@ -142,7 +142,7 @@
                         <li><a href="">About</a></li>
                         <li><a href="" login-modal="">Login</a></li>
                         <li><a href="" signup-modal="">Signup</a></li>
-                        <li><a href="" ng-click="logoutUser()">Logout</a></li>
+                        <li><a href="/survey?sid=10">Test Survey</a></li>
                     </ul>
                     <!-- End Navigation List -->
                 </div>
@@ -1293,7 +1293,7 @@
 
 
 <!--This directive is for angular-growl-2-->
-<div growl></div>
+<div growl="" limit-messages="1"></div>
 <!--End of  angular-growl-2-->
 
 

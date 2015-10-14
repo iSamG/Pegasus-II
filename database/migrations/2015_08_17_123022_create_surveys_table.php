@@ -21,6 +21,7 @@ class CreateSurveysTable extends Migration
             $table->mediumText('question_tree')->nullable();/*Make this nullable; its should be able to contain large number of characters*/
             $table->timestamp('start_date');/*Make this nullable*/
             $table->timestamp('end_date');/*Make this nullable*/
+            $table->string('survey_unique_public_url');/*This is required*/
             $table->boolean('status')->default(0);
             $table->timestamps();
         });

@@ -40,9 +40,11 @@ module.exports = function (grunt) {
         ' * Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>\n */\n',
         src: {
             html: ['src/public_index.html'],
+            survey_html: ['src/public_survey.html'],
             css: ['stylesheets/**.css', 'stylesheets/responsive.css', 'vendor/**/*.css'],
             assets : ['assets'],
             app_files : ['src/app/**/*.js'],
+            take_survey_files : ['src/survey/**/*.js'],
             jsTpl: ['<%= distdir %>/templates/**/*.js'],
             tpl: {
                 app: ['src/app/**/*.tpl.html'],
@@ -51,7 +53,9 @@ module.exports = function (grunt) {
             jsCommon : ['src/common/**/*.js'],
             specs: ['test/**/*.spec.js'],
             scenarios: ['test/**/*.scenario.js'],
-            scripts : ['vendor/jquery/*.js', 'vendor/angular/*.js', 'vendor/**/*.js', 'scripts/*.js' ]
+            scripts : ['vendor/jquery/*.js', 'vendor/angular/*.js', 'vendor/**/*.js',
+                '!vendor/formbuilder/formbuilder.js',
+                'scripts/*.js' ]
         },
         destinations : {
             php_views : ['../resources/views']
@@ -96,6 +100,14 @@ module.exports = function (grunt) {
                     process: true
                 }
             },
+            survey_html: {
+                src: ['<%= src.survey_html %>'],
+                dest: '<%= destinations.php_views %>/survey_page.php',
+                options: {
+                    force : true,
+                    process: true
+                }
+            },
             stylesheets : {
                 options: {
                     banner: "<%= banner %>"
@@ -115,8 +127,12 @@ module.exports = function (grunt) {
                 options: {
                     banner: "<%= banner %>"
                 },
-                src:['<%= src.scripts %>'],
+                src:['<%= src.scripts %>','vendor/formbuilder/formbuilder.js'],
                 dest: '<%= distdir %>/scripts.js'
+            },
+            take_survey: {
+                src:['<%= src.take_survey_files %>'],
+                dest: '<%= distdir %>/<%= pkg.name %>-survey.js'
             }
         },
         uglify: {
@@ -124,7 +140,8 @@ module.exports = function (grunt) {
                 options: {
                     banner: "<%= banner %>"
                 },
-                src:['<%= distdir %>/**/*.js'],
+                //src:['<%= distdir %>/**/*.js'],
+                src:['<%= distdir %>/scripts.js'],
                 dest:'<%= distdir %>/<%= pkg.name %>min.js'
             }
         },

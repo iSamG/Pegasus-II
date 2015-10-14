@@ -29,16 +29,13 @@ class PegasusUserController extends Controller
         if (Auth::attempt(['username' => $username, 'password' => $password]))
         {
 
-
             $authenticated_user = Auth::User();
 
             $authenticated_user->last_login = Carbon::now();
 
             $authenticated_user->save();
 
-            \Redirect::route('dashboard_view')->with('user', $authenticated_user);
-
-            //return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully", $data = $authenticated_user);
+            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully", $data = $authenticated_user);
 
         }
 
@@ -97,8 +94,8 @@ class PegasusUserController extends Controller
 
 
 
-//            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully",
-//                $data = $user);
+            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully",
+                $data = $user);
         }
         else{
 
@@ -171,14 +168,11 @@ class PegasusUserController extends Controller
 
     public function logout(){
         $logged_out = Auth::logout();
-        if($logged_out){
-
-            \Redirect::route('public_view');
-
-//            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged out successfully");
+        if(!$logged_out){
+            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged out successfully");
         }
-        {
-            return Helpers::responseToView($code = 401, $status = "failed", $message = "Cannot log user out");
+        else{
+            return Helpers::responseToView($code = 401, $status = "failed", $message = $logged_out);
 
         }
     }
@@ -188,10 +182,8 @@ class PegasusUserController extends Controller
             $user = Auth::user();
             return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully",
                 $data = $user);
-        }
-        {
+        }else{
             return Helpers::responseToView($code = 401, $status = "failed", $message = "No user logged in currently");
-
         }
     }
 
@@ -202,10 +194,5 @@ class PegasusUserController extends Controller
              return redirect('dashboard');
          }
 
-         public function renderPublicView()
-         {
 
-            // User::create(Request::all());
-             return redirect('public_home');
-         }
 }
