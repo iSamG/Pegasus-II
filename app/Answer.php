@@ -26,11 +26,21 @@ class Answer extends Model
 
 
     /**
-     * Get the question that the answer belongs to.
-     */
+ * Get the question that the answer belongs to.
+ */
     public function answer_option()
     {
         return $this->belongsTo('\App\AnswerOption');
+    }
+
+
+
+    /**
+     * Get the question that the answer belongs to.
+     */
+    public function survey()
+    {
+        return $this->belongsTo('\App\Survey');
     }
 
 

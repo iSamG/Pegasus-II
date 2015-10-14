@@ -32,5 +32,14 @@ class Survey extends Model
     }
 
 
+    /**
+     * Get the questions under this survey.
+     */
+    public function answers()
+    {
+        return $this->hasMany('\App\Answers');
+    }
+
+
 
 }
