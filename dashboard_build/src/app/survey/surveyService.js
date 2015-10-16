@@ -50,6 +50,10 @@ angular.module('survey')
             return $http.get(prRoutes.retrieveAnswersToASurvey, { params : { survey_id : surveyId }});
         };
 
+        surveyService.sendEmail = function(){
+            return $http.post(prRoutes.sendEmail);
+        };
+
 
 
 

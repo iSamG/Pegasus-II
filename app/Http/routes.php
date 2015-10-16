@@ -28,7 +28,7 @@ Route::post('/login', 'PegasusUserController@authenticate');
 Route::get('/logout', 'PegasusUserController@logout');
 Route::get('/auth/user', 'PegasusUserController@currentUser');
 
-Route::get('/sendEmail','EmailController@sendSurveyEmail');
+Route::post('/sendEmail','EmailController@sendSurveyEmail');
 
 Route::get('/dashboard', [
 

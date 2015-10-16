@@ -336,6 +336,9 @@ angular.module('pegasusrises')
         retrieveAnswersToASurvey : '/retrieve/answers/to/survey',
 
 
+        sendEmail : '/sendEmail',
+
+
         getAuthUser : '/auth/user',
         logoutUser : '/logout'
 
@@ -739,6 +742,16 @@ angular.module('survey')
       '$location','$timeout',
         function($rootScope, $scope, homeService,surveyService, growl, $location, $timeout ){
 
+            $scope.sendEmail = function () {
+                surveyService.sendEmail()
+                    .success(function (successData) {
+                        console.log("success", successData);
+
+                    })
+                    .error(function () {
+                        console.log("error");
+                    })
+            }
 
         }]);
 
@@ -823,6 +836,10 @@ angular.module('survey')
 
         surveyService.retrieveAnswersToASurvey = function(surveyId){
             return $http.get(prRoutes.retrieveAnswersToASurvey, { params : { survey_id : surveyId }});
+        };
+
+        surveyService.sendEmail = function(){
+            return $http.post(prRoutes.sendEmail);
         };
 
 

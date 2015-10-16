@@ -18,7 +18,7 @@ class EmailController extends Controller{
             ['name'=>$name, 'survey_id'=>$id, 'title'=>$title,'link'=>$link],
             function($message){
 
-                $message->to('hadi@pegasusrises.com','Mukaila Hadi')->subject('PegasusRises Email Survey');
+                $message->to('lostsaux@gmail.com','Francis KayGee')->subject('PegasusRises Email Survey');
             }
         );
     }

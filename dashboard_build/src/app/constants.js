@@ -45,6 +45,9 @@ angular.module('pegasusrises')
         retrieveAnswersToASurvey : '/retrieve/answers/to/survey',
 
 
+        sendEmail : '/sendEmail',
+
+
         getAuthUser : '/auth/user',
         logoutUser : '/logout'
 

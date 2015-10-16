@@ -8,5 +8,15 @@ angular.module('survey')
       '$location','$timeout',
         function($rootScope, $scope, homeService,surveyService, growl, $location, $timeout ){
 
+            $scope.sendEmail = function () {
+                surveyService.sendEmail()
+                    .success(function (successData) {
+                        console.log("success", successData);
+
+                    })
+                    .error(function () {
+                        console.log("error");
+                    })
+            }
 
         }]);
