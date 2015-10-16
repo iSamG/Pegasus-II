@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Answer;
+use App\Question;
 
 class Survey extends Model
 {
@@ -37,7 +39,7 @@ class Survey extends Model
      */
     public function answers()
     {
-        return $this->hasMany('\App\Answers');
+        return $this->hasMany('\App\Answer');
     }
 
 
