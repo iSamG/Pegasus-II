@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Answer;
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -15,9 +16,12 @@ class NewSurveyResponse extends Event implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct()
+
+    protected $surveyResponseObject = [];
+
+    public function __construct(Answer $answerObject)
     {
-        //
+        $this->surveyResponseObject = $answerObject->toArray();
     }
 
     /**
