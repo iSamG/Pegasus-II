@@ -1,4 +1,4 @@
-/* pegasusrises - v2.0 - 2015-10-11
+/* pegasusrises - v2.0 - 2015-10-19
  * pegasusrises.com
  * Copyright (c) 2015 BBG Digital Innovation Lab;
  * Licensed MIT

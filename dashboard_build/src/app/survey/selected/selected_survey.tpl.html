@@ -44,10 +44,11 @@
 
     <div class="col-md-6" ng-show="selected_survey.question_tree">
         <div class="widget_inbox">
+
             <perfect-scrollbar class="scroller" wheel-propagation="true" wheel-speed="2" min-scrollbar-length="6">
                 <ul>
-                    <li ng-repeat="question_item in selected_survey.question_tree">
-                        <a href="" ><!--ng-class="{'active' : question_item.question_field == selected_question.question_field}"-->
+                    <li ng-repeat="question_item in selected_survey.question_tree track by $index">
+                        <a ng-click="selectQuestion(question_item)" href="" ng-class="{'active' : question_item.cid == selected_question.cid }">
                             <div class="widget_inbox_header">
                                 <span class="pull-left widget_inbox_time badge"><b>{{ $index + 1 }}</b>.</span>
                             <span class="widget_inbox_time">
@@ -55,34 +56,40 @@
                             {{ formatFieldType[question_item.field_type] }}
                             </span>
                             </div>
-                            <span style="font-size: large; margin-left: 25px">{{ question_item.label }}</span></a></li>
+                            <span style="font-size: large; margin-left: 25px">{{ question_item.label }}</span></a>
+                    </li>
                 </ul>
             </perfect-scrollbar>
+
         </div>
     </div>
 
     <div class="col-md-6" ng-show="selected_survey.question_tree">
-        <div class="widget_inbox" ng-show="chartObject.data.rows.length">
+        <div class="widget_inbox">
             <tabset justified="true">
-                <tab select="changeChartType('BarChart')">
+                <tab select="changeChartType('bar')">
                     <tab-heading>
                         <i class="fa fa-list-ul"></i> Bar Chart
                     </tab-heading>
-                    <div google-chart chart="chartObject" style="height:350px; width:100%;"></div>
+
+                    <span am-chart="" chart-type="bar"  chart-data="$parent.$parent.chartData" title-field="country" value-field="visits"></span>
+
+
                 </tab>
 
-                <tab select="changeChartType('PieChart')">
+                <tab select="changeChartType('pie')">
                     <tab-heading>
                         <i class="fa fa-pie-chart"></i> Pie Chart
                     </tab-heading>
-                    <div google-chart chart="chartObject" style="height:350px; width:100%;"></div>
+                    <span am-chart="" chart-type="pie" chart-data="chartData" title-field="country" value-field="visits"></span>
                 </tab>
 
-                <tab select="changeChartType('ColumnChart')">
+
+                <tab select="changeChartType('column')">
                     <tab-heading>
                         <i class="fa fa-bar-chart"></i> Column Chart
                     </tab-heading>
-                    <div google-chart chart="chartObject" style="height:350px; width:100%;"></div>
+                    <span am-chart=""  chart-type="column" chart-data="chartData" title-field="country" value-field="visits"></span>
                 </tab>
             </tabset>
 
@@ -135,7 +142,7 @@
     </div>
     <div class="col-md-6" ng-show="selected_survey.question_tree">
         <div class="widget_inbox">
-            <h3 style="margin-top: 30%" class="text-center" ><i class="fa fa-arrow-left"></i>  Select a question on the left to preview</h3>
+            <h3 style="margin-top: 30%" class="text-center hidden" ><i class="fa fa-arrow-left"></i>  Select a question on the left to preview</h3>
         </div>
     </div>
 

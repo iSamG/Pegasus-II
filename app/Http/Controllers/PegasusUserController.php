@@ -89,10 +89,7 @@ class PegasusUserController extends Controller
             $user = User::create($fields);
             if($user){
                 Auth::attempt(['username' => $user_name, 'password' => $password]);
-                \Redirect::route('dashboard_view');
             }
-
-
 
             return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully",
                 $data = $user);

@@ -2,9 +2,6 @@
  * Created by Kaygee on 03/10/2015.
  */
 
-angular.module('directives', []);
-
-
 angular.module('directives')
     .directive('deleteSurvey', ['surveyService','$modal', function (surveyService, $modal) {
 

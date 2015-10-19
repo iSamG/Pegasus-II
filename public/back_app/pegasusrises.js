@@ -195,28 +195,35 @@ angular.module('pegasusrises', [
     'admin',
     'survey',
     'directives',
-    //'lk-google-picker',
+    'doowb.angular-pusher',
     'cfp.loadingBar',
     'angular-growl',
     'angularFileUpload',
     'ngResource',
     'ngJoyRide',
     //'uiGmapgoogle-maps',
-    'googlechart',
     'ngStorage',
     'ngTagsInput',
     'perfect_scrollbar',
     'mgo-angular-wizard'
 ])
     .config(['$stateProvider','$urlRouterProvider',
-        'growlProvider', '$httpProvider','prConstantKeys',
+        'growlProvider', '$httpProvider','prConstantKeys','PusherServiceProvider',
         function($stateProvider, $urlRouterProvider,
-                 growlProvider, $httpProvider, prConstantKeys){
+                 growlProvider, $httpProvider, prConstantKeys, PusherServiceProvider){
             //for any unmatched url, redirect to the state '/home'
             $urlRouterProvider.otherwise('/');
 
             //globally time the growl toatser to stay visible for 5seconds
             growlProvider.globalTimeToLive(5000);
+
+            //Pusher token
+            //key = '21469ff0850de21291e1'
+            //secret = '750f5c48dfd5ad48adac'
+
+            PusherServiceProvider.setToken('21469ff0850de21291e1');
+            //            .setOptions({});
+
 
         }]);
 
@@ -299,9 +306,6 @@ angular.module('pegasusrises')
         google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com'
     })
     .constant('prFieldTypes', {
-        google_api_key: 'AIzaSyDSBIljWNHZ9xMXuaROc4oAypA8LT5xmaU',
-        google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com',
-
         /*[string, number(numbers, including floating numbers), integer, boolean, array, object ]*/
         radio : 'boolean', /*'boolean',*/
         checkboxes : 'array',
@@ -319,6 +323,11 @@ angular.module('pegasusrises')
         image : 'string',
         video : 'string',
         file : 'string'
+    })
+    .constant('prConstantOptions', {
+        colors : [
+            "#FF0F00", "#FF6600", "#FF9E01", "#FCD202","#F8FF01","#B0DE09", "#04D215", "#0D8ECF", "#0D52D1", "#2A0CD0",
+            "#8A0CCF", "#CD0D74", "#754DEB", "#DDDDDD", "#999999", "#333333",  "#000000"]
     })
 
     .constant('prRoutes', {
@@ -424,7 +433,7 @@ angular.module('survey', [])
                 metadata : "Survey Analytics"
             })
             .state('surveys.respondents', {
-                url : '/respondents',
+                url : '/respondents/:survey_id',
                 templateUrl : 'app/survey/respondents/respondents.tpl.html',
                 controller : 'prSurveyRespondentsController',
                 metadata : "Respondents"
@@ -739,8 +748,8 @@ angular.module('survey')
 angular.module('survey')
 
     .controller('prSurveyRespondentsController', ['$rootScope', '$scope', 'homeService', 'surveyService', 'growl',
-      '$location','$timeout',
-        function($rootScope, $scope, homeService,surveyService, growl, $location, $timeout ){
+        '$stateParams','$timeout',
+        function($rootScope, $scope, homeService, surveyService, growl, $stateParams, $timeout ){
 
             $scope.sendEmail = function () {
                 surveyService.sendEmail()
@@ -751,7 +760,33 @@ angular.module('survey')
                     .error(function () {
                         console.log("error");
                     })
+            };
+
+            $scope.loadingSurveys = true;
+
+            function loadSurveys() {
+
+                $scope.sms_respondent_form = {
+                    from : $scope.user.phone_number,
+                    survey : $stateParams.survey_id || 0
+
+                };
+                $scope.respondent_form = {
+                    from : $scope.user.email,
+                    survey : $stateParams.survey_id || 0
+                };
+
+                $scope.loadingSurveys = false;
+                $scope.surveys = surveyService.surveys;
             }
+
+            if (surveyService.surveys && surveyService.surveys.length) {
+                loadSurveys();
+            }
+
+            $scope.$on('surveysLoadedAndPrepped', function(){
+                loadSurveys();
+            });
 
         }]);
 
@@ -762,18 +797,71 @@ angular.module('survey')
 angular.module('survey')
 
     .controller('prSelectedSurveyController', ['$rootScope', '$scope', 'homeService','surveyService', 'growl',
-        '$stateParams','cfpLoadingBar','$timeout','answersData',
+        '$stateParams','cfpLoadingBar','$timeout','answersData', 'prConstantOptions',
         function($rootScope, $scope, homeService, surveyService, growl,
-                 $stateParams, cfpLoadingBar, $timeout, answersData){
+                 $stateParams, cfpLoadingBar, $timeout, answersData, prConstantOptions){
+            //prConstantOptions.colors[0];
+            $scope.chartData = [];
 
+            var questionHolder = {};
             function loadSurveys() {
                 $scope.loadingSurveys = false;
 
                 $scope.selected_survey = surveyService.surveyLookup[$stateParams.survey_id];
 
+                /*loop through the questions and use their c-ids to form a key with the answers as values*/
+                for (var q = 0; q < $scope.selected_survey.question_tree.length; q++){/*q = question*/
+                    var questionItem = $scope.selected_survey.question_tree[q];
+                    questionHolder[questionItem.cid] = {
+                        field_type : questionItem.field_type,
+                        label : questionItem.label,
+                        answer_options : []
+                    };
+                    if (questionItem.field_type == 'checkboxes' || questionItem.field_type == 'radio' || questionItem.field_type == 'dropdown' ) {
+                        questionHolder[questionItem.cid].answer_options = {};
+                        /*prepare the options for checkboxes*/
+                        for (var a = 0; a < questionItem.field_options.options.length; a++ ){/*a = answer*/
+                            var option = questionItem.field_options.options[a];
+                            questionHolder[questionItem.cid].answer_options[$.trim(option.label)] = 0;
+                        }
+                    }
+                }
+
+                for (var i = 0; i < answersData.data.data.answers.length; i++) {
+                    var response = answersData.data.data.answers[i];
+
+                    /*Parse the response string to JSON*/
+                    var userAnswers = JSON.parse(response.answer_response);
+
+                    /*loop through each of the answer keys of the json object*/
+                    angular.forEach(userAnswers, function (value, prop) {
+
+                        //get the question of the answer in the loop and find the type of response required
+                        /*if check boxes, update the count of each option in the array*/
+                        if (questionHolder[prop].field_type == 'checkboxes' || questionHolder[prop].field_type == 'radio') {
+                            for(var a_o = 0; a_o < value.length; a_o++){/* a_o = answer option*/
+                                questionHolder[prop].answer_options[ value[a_o] ] ++ ;
+                            }
+                        }else if(questionHolder[prop].field_type == 'dropdown'){
+                            for(var d_a_o = 0; d_a_o < value.length; d_a_o++){/*d_a_o = dropdown answer option*/
+                                questionHolder[prop].answer_options[ value ] ++ ;
+                            }
+                        }else{
+                            questionHolder[prop].answer_options.push({
+                                name : userAnswers.name_of_respondent,
+                                email : userAnswers.email,
+                                phone_number : userAnswers.phone_number,
+                                created_at : userAnswers.created_at,
+                                content : value
+                            }) ;
+                        }
+                    });
+                }
+
+                console.log(questionHolder);
             }
 
-            if (surveyService.surveys) {
+            if (surveyService.surveys && surveyService.surveys.length) {
                 loadSurveys();
             }
 
@@ -781,7 +869,29 @@ angular.module('survey')
                 loadSurveys();
             });
 
-            console.log(answersData);
+            $scope.changeChartType = function (chartType) {
+
+            };
+
+            $scope.selectQuestion = function (question_clicked) {
+                $scope.selected_question = question_clicked;
+                $scope.chartData = [];
+                if (questionHolder[question_clicked.cid].field_type == 'checkboxes' ||
+                    questionHolder[question_clicked.cid].field_type == 'radio'||
+                    questionHolder[question_clicked.cid].field_type == 'dropdown'){
+                    var colorOptionTracker = 0;
+                    angular.forEach(questionHolder[question_clicked.cid].answer_options, function (value, key) {
+                        $scope.chartData.push({
+                            "country": key,
+                            "visits": value,
+                            "color": prConstantOptions.colors[colorOptionTracker++]
+                        })
+                    });
+                    console.log($scope.chartData);
+                }
+
+            }
+
         }]);
 
 
@@ -899,11 +1009,154 @@ angular.module('survey')
         return surveyService;
     }]);
 /**
- * Created by Kaygee on 03/10/2015.
+ * Created by Kaygee on 07/03/2015.
  */
+
+
 
 angular.module('directives', []);
 
+
+angular.module('directives')
+    .directive('amChart', [function(){
+        return {
+
+            replace: true,
+
+            scope: {
+                chartData: '=',
+                chartType : '@',
+                titleField : '@',
+                valueField : '@'
+            },
+
+            controller : function ($scope) {
+                $scope.$watch('chartData', function (newVal, oldVal) {
+                    $scope.doChart();
+                })
+
+            },
+
+            link : function (scope, elem, attrs) {
+                var chart, graph;
+                scope.doChart = function(){
+                    if (!scope.chartData || !scope.chartData.length) {
+                        $('#barChartDiv').hide();
+                        $('#pieChartDiv').hide();
+                        $('#columnChartDiv').hide();
+                        return;
+                    }
+                    switch (scope.chartType) {
+                        case 'bar' :
+                            chart = new AmCharts.AmSerialChart();
+                            chart.dataProvider = scope.chartData;
+                            chart.categoryField = scope.titleField || "option";
+                            chart.angle = 30;
+                            chart.depth3D = 15;
+                            chart.creditsPosition = "top-right";
+                            chart.rotate = true;
+
+
+                            graph = new AmCharts.AmGraph();
+                            graph.valueField = scope.valueField || "response";
+                            graph.type = "column";
+                            graph.balloonText = "[[category]]: <b>[[value]]</b>";
+                            graph.fillAlphas = 0.8;
+                            graph.colorField = "color";
+                            graph.lineAlpha = 0;
+
+                            chart.addGraph(graph);
+                            $('#barChartDiv').show();
+                            chart.write('barChartDiv');
+                            break;
+
+                        case 'pie' :
+                            // PIE CHART
+                            chart = new AmCharts.AmPieChart();
+                            chart.dataProvider = scope.chartData;
+                            chart.titleField = scope.titleField || "option";
+                            chart.valueField = scope.valueField || "response";
+                            chart.outlineColor = "#FFFFFF";
+                            chart.outlineAlpha = 0.8;
+                            chart.outlineThickness = 2;
+                            chart.balloonText = "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>";
+                            // this makes the chart 3D
+                            chart.depth3D = 15;
+                            chart.angle = 30;
+                            chart.creditsPosition = "top-right";
+
+                            // WRITE
+                            $('#pieChartDiv').show();
+                            chart.write("pieChartDiv");
+                            break;
+
+                        case 'column' :
+                            // SERIAL CHART
+                            chart = new AmCharts.AmSerialChart();
+                            chart.dataProvider =  scope.chartData;
+                            chart.categoryField = scope.titleField || "option";
+                            // the following two lines makes chart 3D
+                            chart.depth3D = 20;
+                            chart.angle = 30;
+
+                            // AXES
+                            // category
+                            var categoryAxis = chart.categoryAxis;
+                            categoryAxis.labelRotation = 90;
+                            categoryAxis.dashLength = 5;
+                            categoryAxis.gridPosition = "start";
+
+                            // value
+                            var valueAxis = new AmCharts.ValueAxis();
+                            valueAxis.title = "Visitors";
+                            valueAxis.dashLength = 5;
+                            chart.addValueAxis(valueAxis);
+
+                            // GRAPH
+                            graph = new AmCharts.AmGraph();
+                            graph.valueField = scope.valueField || "response";
+                            graph.colorField = "color";
+                            graph.balloonText = "<span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>";
+                            graph.type = "column";
+                            graph.lineAlpha = 0;
+                            graph.fillAlphas = 1;
+                            chart.addGraph(graph);
+
+                            // CURSOR
+                            var chartCursor = new AmCharts.ChartCursor();
+                            chartCursor.cursorAlpha = 0;
+                            chartCursor.zoomable = false;
+                            chartCursor.categoryBalloonEnabled = false;
+                            chart.addChartCursor(chartCursor);
+
+                            chart.creditsPosition = "top-right";
+
+
+                            // WRITE
+                            $('#columnChartDiv').show();
+                            chart.write("columnChartDiv");
+
+                            break;
+
+
+                    }
+                };
+            },
+
+            template: function (template, scope) {
+                if(scope.chartType == 'bar'){
+                    return '<div id="barChartDiv" style="width: 100%; height: 400px;"></div>'
+                }else if(scope.chartType == 'pie'){
+                    return '<div id="pieChartDiv" style="width: 100%; height: 400px;"></div>'
+                }else {
+                    return '<div id="columnChartDiv" style="width: 100%; height: 400px;"></div>'
+                }
+            }
+        }
+    }]);
+/**
+ * Created by Kaygee on 03/10/2015.
+ */
 
 angular.module('directives')
     .directive('deleteSurvey', ['surveyService','$modal', function (surveyService, $modal) {

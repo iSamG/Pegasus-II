@@ -18,7 +18,7 @@ angular.module('survey', [])
                 metadata : "Survey Analytics"
             })
             .state('surveys.respondents', {
-                url : '/respondents',
+                url : '/respondents/:survey_id',
                 templateUrl : 'app/survey/respondents/respondents.tpl.html',
                 controller : 'prSurveyRespondentsController',
                 metadata : "Respondents"

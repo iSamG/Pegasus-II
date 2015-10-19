@@ -910,57 +910,60 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                </tab-heading>\n" +
     "                <div class=\"porlets-content\">\n" +
     "                    <h3 class=\"page-header\" style=\"margin-top: 3px !important;\">Email Respondents</h3>\n" +
-    "                    <form role=\"form\" class=\"form-horizontal\" ng-submit=\"sendEmail()\">\n" +
-    "                        <div class=\"form-group\">\n" +
-    "                            <label class=\"col-sm-2 control-label \" for=\"from\">From</label>\n" +
-    "                            <div class=\"col-sm-9\">\n" +
-    "                                <input type=\"email\" ng-disabled=\"true\" ng-model=\"respondent_form.from\" id=\"from\" class=\" form-control\" >\n" +
-    "                            </div>\n" +
-    "                        </div><!--/form-group-->\n" +
-    "                        <br>\n" +
-    "                        <br>\n" +
-    "                        <br>\n" +
-    "                        <div class=\"form-group\">\n" +
-    "                            <label class=\"col-sm-2 control-label\">Survey</label>\n" +
-    "                            <div class=\"col-sm-9\">\n" +
-    "                                <select id=\"source\" data-ng-model=\"respondent_form.survey\" class=\" form-control\"\n" +
-    "                                        ng-options=\"survey.survey_name as survey.survey_name for survey in listOfSurveys.surveys\">\n" +
-    "                                    <option value=\"\">Select a survey</option>\n" +
-    "                                </select>\n" +
-    "                            </div><!--/col-sm-9-->\n" +
-    "                        </div><!--/form-group-->\n" +
-    "                        <br>\n" +
-    "                        <br>\n" +
-    "                        <br>\n" +
-    "                        <div class=\"form-group\">\n" +
-    "                            <label class=\"col-sm-2 control-label\" for=\"emails\">Recipients</label>\n" +
-    "                            <div class=\"col-sm-9\">\n" +
-    "                                <tags-input\n" +
-    "                                        ng-model=\"respondent_form.emails\"\n" +
-    "                                        displayProperty=\"email\"\n" +
-    "                                        type=\"email\"\n" +
-    "                                        placeholder=\"Add recipient email\"\n" +
-    "                                        add-on-enter=\"true\"\n" +
-    "                                        add-on-space=\"true\"\n" +
-    "                                        add-on-comma=\"true\"\n" +
-    "                                        add-on-blur=\"true\"\n" +
-    "                                        add-on-paste=\"true\"\n" +
-    "                                        allowed-tags-pattern=\"^([\\w\\-\\.]+)@((\\[([0-9]{1,3}\\.){3}[0-9]{1,3}\\])|(([\\w\\-]+\\.)+)([a-zA-Z]{2,4}))$\"\n" +
-    "                                        id=\"emails\" class=\"\"></tags-input>\n" +
-    "                                <span class=\"help-block text-primary\" style=\"font-style: italic\">Separate multiple email addresses with [COMMA] or [SPACE] or [TAB]</span>\n" +
-    "                            </div>\n" +
+    "\n" +
+    "                    <div class=\"row\">\n" +
+    "                        <form  role=\"form\" class=\"col-md-6 col-sm-8 col-xs-12 center-block form-horizontal\" ng-submit=\"sendEmail()\">\n" +
+    "                            <div class=\"form-group\">\n" +
+    "                                <label class=\"col-sm-4 col-xs-12 control-label text-left \" for=\"from\">From</label>\n" +
+    "                                <div class=\"col-sm-8 col-xs-12\">\n" +
+    "                                    <input type=\"email\" ng-disabled=\"true\" ng-model=\"respondent_form.from\" id=\"from\" class=\" form-control\" >\n" +
+    "                                </div>\n" +
+    "                            </div><!--/form-group-->\n" +
+    "                            <br>\n" +
+    "                            <br>\n" +
+    "                            <br>\n" +
+    "                            <div class=\"form-group\">\n" +
+    "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\">Survey</label>\n" +
+    "                                <div class=\"col-sm-8 col-xs-12\">\n" +
+    "                                    <select title=\"selectSurvey\" name=\"selectSurvey\" data-ng-model=\"respondent_form.survey\" class=\" form-control\"\n" +
+    "                                            ng-options=\"survey.id as survey.survey_name for survey in surveys\">\n" +
+    "                                        <option value=\"\">Select a survey</option>\n" +
+    "                                    </select>\n" +
+    "                                </div><!--/col-sm-9-->\n" +
+    "                            </div><!--/form-group-->\n" +
+    "                            <br>\n" +
+    "                            <br>\n" +
+    "                            <br>\n" +
+    "                            <div class=\"form-group\">\n" +
+    "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\" for=\"emails\">Recipients</label>\n" +
+    "                                <div class=\"col-sm-8 col-xs-12\">\n" +
+    "                                    <tags-input\n" +
+    "                                            ng-model=\"respondent_form.emails\"\n" +
+    "                                            displayProperty=\"email\"\n" +
+    "                                            type=\"email\"\n" +
+    "                                            placeholder=\"Add recipient email\"\n" +
+    "                                            add-on-enter=\"true\"\n" +
+    "                                            add-on-space=\"true\"\n" +
+    "                                            add-on-comma=\"true\"\n" +
+    "                                            add-on-blur=\"true\"\n" +
+    "                                            add-on-paste=\"true\"\n" +
+    "                                            allowed-tags-pattern=\"^([\\w\\-\\.]+)@((\\[([0-9]{1,3}\\.){3}[0-9]{1,3}\\])|(([\\w\\-]+\\.)+)([a-zA-Z]{2,4}))$\"\n" +
+    "                                            id=\"emails\" class=\"\"></tags-input>\n" +
+    "                                    <span class=\"help-block text-primary\" style=\"font-style: italic\">Separate multiple email addresses with [COMMA] or [SPACE] or [TAB]</span>\n" +
+    "                                </div>\n" +
     "\n" +
     "\n" +
-    "                        </div><!--/form-group-->\n" +
+    "                            </div><!--/form-group-->\n" +
     "\n" +
     "\n" +
-    "                        <div class=\"form-group\">\n" +
-    "                            <div class=\" col-sm-2 pull-right\">\n" +
-    "                                <button class=\"hidden btn btn-default\" type=\"reset\" ng-click=\"resetRespondentForm()\">Cancel</button>\n" +
-    "                                <button class=\"btn btn-primary\" type=\"submit\">Send</button>\n" +
-    "                            </div>\n" +
-    "                        </div><!--/form-group-->\n" +
-    "                    </form>\n" +
+    "                            <div class=\"form-group\">\n" +
+    "                                <div class=\"col-sm-4 col-xs-6 pull-right\">\n" +
+    "                                    <button class=\"hidden btn btn-default\" type=\"reset\" ng-click=\"resetRespondentForm()\">Cancel</button>\n" +
+    "                                    <button class=\"btn btn-primary pull-right\" type=\"submit\">Send</button>\n" +
+    "                                </div>\n" +
+    "                            </div><!--/form-group-->\n" +
+    "                        </form>\n" +
+    "                    </div>\n" +
     "                </div><!--/porlets-content-->\n" +
     "            </tab>\n" +
     "\n" +
@@ -970,66 +973,67 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                </tab-heading>\n" +
     "                <div class=\"porlets-content\">\n" +
     "                    <h3 class=\"page-header\" style=\"margin-top: 3px !important;\">SMS Respondents</h3>\n" +
-    "                    <form role=\"form\" class=\"form-horizontal\" ng-submit=\"sendSMS()\">\n" +
-    "                        <div class=\"form-group\">\n" +
-    "                            <label class=\"col-sm-2 control-label \" for=\"sms_from\">From</label>\n" +
-    "                            <div class=\"col-sm-9\">\n" +
-    "                                <input type=\"text\" ng-disabled=\"true\" ng-model=\"sms_respondent_form.from\" id=\"sms_from\" class=\" form-control\" >\n" +
-    "                            </div>\n" +
-    "                        </div><!--/form-group-->\n" +
-    "                        <br>\n" +
-    "                        <br>\n" +
-    "                        <br>\n" +
-    "                        <div class=\"form-group\">\n" +
-    "                            <label class=\"col-sm-2 control-label\">Survey</label>\n" +
-    "                            <div class=\"col-sm-9\">\n" +
-    "                                <select data-ng-model=\"sms_respondent_form.survey\" class=\" form-control\"\n" +
-    "                                        ng-options=\"survey.survey_name as survey.survey_name for survey in listOfSurveys.surveys\">\n" +
-    "                                    <option value=\"\">Select a survey</option>\n" +
-    "                                </select>\n" +
-    "                            </div><!--/col-sm-9-->\n" +
-    "                        </div><!--/form-group-->\n" +
-    "                        <br>\n" +
-    "                        <br>\n" +
-    "                        <br>\n" +
-    "                        <div class=\"form-group\">\n" +
-    "                            <label class=\"col-sm-2 control-label\" for=\"phone_numbers\">Recipients</label>\n" +
-    "                            <div class=\"col-sm-9\">\n" +
-    "                                <tags-input\n" +
-    "                                        ng-model=\"sms_respondent_form.phone_numbers\"\n" +
-    "                                        displayProperty=\"number\"\n" +
-    "                                        type=\"text\"\n" +
-    "                                        placeholder=\"Add phone number\"\n" +
-    "                                        add-on-enter=\"true\"\n" +
-    "                                        add-on-space=\"true\"\n" +
-    "                                        add-on-comma=\"true\"\n" +
-    "                                        add-on-blur=\"true\"\n" +
-    "                                        add-on-paste=\"true\"\n" +
-    "                                        allowed-tags-pattern=\"^\\+(?:[0-9]●?){6,14}[0-9]$\"\n" +
-    "                                        id=\"phone_numbers\" class=\"\">\n" +
-    "                                </tags-input>\n" +
-    "                                <span class=\"help-block text-primary\" style=\"font-style: italic\"><b>Numbers should start with a plus sign(+), followed by the country code and national number</b></span><br>\n" +
-    "                                <span class=\"help-block text-primary\" style=\"font-style: italic\">Separate multiple phone numbers with [COMMA] or [SPACE] or [TAB]</span>\n" +
-    "                            </div>\n" +
+    "                    <div class=\"row\">\n" +
+    "                        <form role=\"form\" class=\"col-md-6 col-sm-8 col-xs-12 center-block form-horizontal\" ng-submit=\"sendSMS()\">\n" +
+    "                            <div class=\"form-group\">\n" +
+    "                                <label class=\"col-sm-4 col-xs-12 control-label text-left \" for=\"sms_from\">From</label>\n" +
+    "                                <div class=\"col-sm-8 col-xs-12\">\n" +
+    "                                    <input type=\"text\" ng-disabled=\"true\" ng-model=\"sms_respondent_form.from\" id=\"sms_from\" class=\" form-control\" >\n" +
+    "                                </div>\n" +
+    "                            </div><!--/form-group-->\n" +
+    "                            <br>\n" +
+    "                            <br>\n" +
+    "                            <br>\n" +
+    "                            <div class=\"form-group\">\n" +
+    "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\">Survey</label>\n" +
+    "                                <div class=\"col-sm-8 col-xs-12\">\n" +
+    "                                    <select data-ng-model=\"sms_respondent_form.survey\" class=\" form-control\"\n" +
+    "                                            ng-options=\"survey.id as survey.survey_name for survey in surveys\">\n" +
+    "                                        <option value=\"\">Select a survey</option>\n" +
+    "                                    </select>\n" +
+    "                                </div><!--/col-sm-9-->\n" +
+    "                            </div><!--/form-group-->\n" +
+    "                            <br>\n" +
+    "                            <br>\n" +
+    "                            <br>\n" +
+    "                            <div class=\"form-group\">\n" +
+    "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\" for=\"phone_numbers\">Recipients</label>\n" +
+    "                                <div class=\"col-sm-8 col-xs-12\">\n" +
+    "                                    <tags-input\n" +
+    "                                            ng-model=\"sms_respondent_form.phone_numbers\"\n" +
+    "                                            displayProperty=\"number\"\n" +
+    "                                            type=\"text\"\n" +
+    "                                            placeholder=\"Add phone number\"\n" +
+    "                                            add-on-enter=\"true\"\n" +
+    "                                            add-on-space=\"true\"\n" +
+    "                                            add-on-comma=\"true\"\n" +
+    "                                            add-on-blur=\"true\"\n" +
+    "                                            add-on-paste=\"true\"\n" +
+    "                                            allowed-tags-pattern=\"^\\+(?:[0-9]●?){6,14}[0-9]$\"\n" +
+    "                                            id=\"phone_numbers\" class=\"\">\n" +
+    "                                    </tags-input>\n" +
+    "                                    <span class=\"help-block text-primary\" style=\"font-style: italic\"><b>Numbers should start with a plus sign(+), followed by the country code and national number</b></span><br>\n" +
+    "                                    <span class=\"help-block text-primary\" style=\"font-style: italic\">Separate multiple phone numbers with [COMMA] or [SPACE] or [TAB]</span>\n" +
+    "                                </div>\n" +
     "\n" +
     "\n" +
-    "                        </div><!--/form-group-->\n" +
+    "                            </div><!--/form-group-->\n" +
     "\n" +
     "\n" +
-    "                        <div class=\"form-group\">\n" +
-    "                            <div class=\" col-sm-2 pull-right\">\n" +
-    "                                <button class=\"hidden btn btn-default\" type=\"reset\" ng-click=\"resetRespondentForm()\">Cancel</button>\n" +
-    "                                <button class=\"btn btn-primary\" type=\"submit\">Send</button>\n" +
-    "                            </div>\n" +
-    "                        </div><!--/form-group-->\n" +
-    "                    </form>\n" +
+    "                            <div class=\"form-group\">\n" +
+    "                                <div class=\"col-sm-4 col-xs-6 pull-right\">\n" +
+    "                                    <button class=\"hidden btn btn-default\" type=\"reset\" ng-click=\"resetRespondentForm()\">Cancel</button>\n" +
+    "                                    <button class=\"btn btn-primary pull-right\" type=\"submit\">Send</button>\n" +
+    "                                </div>\n" +
+    "                            </div><!--/form-group-->\n" +
+    "                        </form>\n" +
+    "                    </div>\n" +
     "                </div><!--/porlets-content-->\n" +
     "            </tab>\n" +
     "        </tabset>\n" +
     "    </div><!--/block-web-->\n" +
     "</div>\n" +
-    "\n" +
-    "<!--<pre>{{ sms_respondent_form | json }}</pre>-->");
+    "");
 }]);
 
 angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -1080,10 +1084,11 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "\n" +
     "    <div class=\"col-md-6\" ng-show=\"selected_survey.question_tree\">\n" +
     "        <div class=\"widget_inbox\">\n" +
+    "\n" +
     "            <perfect-scrollbar class=\"scroller\" wheel-propagation=\"true\" wheel-speed=\"2\" min-scrollbar-length=\"6\">\n" +
     "                <ul>\n" +
-    "                    <li ng-repeat=\"question_item in selected_survey.question_tree\">\n" +
-    "                        <a href=\"\" ><!--ng-class=\"{'active' : question_item.question_field == selected_question.question_field}\"-->\n" +
+    "                    <li ng-repeat=\"question_item in selected_survey.question_tree track by $index\">\n" +
+    "                        <a ng-click=\"selectQuestion(question_item)\" href=\"\" ng-class=\"{'active' : question_item.cid == selected_question.cid }\">\n" +
     "                            <div class=\"widget_inbox_header\">\n" +
     "                                <span class=\"pull-left widget_inbox_time badge\"><b>{{ $index + 1 }}</b>.</span>\n" +
     "                            <span class=\"widget_inbox_time\">\n" +
@@ -1091,34 +1096,40 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "                            {{ formatFieldType[question_item.field_type] }}\n" +
     "                            </span>\n" +
     "                            </div>\n" +
-    "                            <span style=\"font-size: large; margin-left: 25px\">{{ question_item.label }}</span></a></li>\n" +
+    "                            <span style=\"font-size: large; margin-left: 25px\">{{ question_item.label }}</span></a>\n" +
+    "                    </li>\n" +
     "                </ul>\n" +
     "            </perfect-scrollbar>\n" +
+    "\n" +
     "        </div>\n" +
     "    </div>\n" +
     "\n" +
     "    <div class=\"col-md-6\" ng-show=\"selected_survey.question_tree\">\n" +
-    "        <div class=\"widget_inbox\" ng-show=\"chartObject.data.rows.length\">\n" +
+    "        <div class=\"widget_inbox\">\n" +
     "            <tabset justified=\"true\">\n" +
-    "                <tab select=\"changeChartType('BarChart')\">\n" +
+    "                <tab select=\"changeChartType('bar')\">\n" +
     "                    <tab-heading>\n" +
     "                        <i class=\"fa fa-list-ul\"></i> Bar Chart\n" +
     "                    </tab-heading>\n" +
-    "                    <div google-chart chart=\"chartObject\" style=\"height:350px; width:100%;\"></div>\n" +
+    "\n" +
+    "                    <span am-chart=\"\" chart-type=\"bar\"  chart-data=\"$parent.$parent.chartData\" title-field=\"country\" value-field=\"visits\"></span>\n" +
+    "\n" +
+    "\n" +
     "                </tab>\n" +
     "\n" +
-    "                <tab select=\"changeChartType('PieChart')\">\n" +
+    "                <tab select=\"changeChartType('pie')\">\n" +
     "                    <tab-heading>\n" +
     "                        <i class=\"fa fa-pie-chart\"></i> Pie Chart\n" +
     "                    </tab-heading>\n" +
-    "                    <div google-chart chart=\"chartObject\" style=\"height:350px; width:100%;\"></div>\n" +
+    "                    <span am-chart=\"\" chart-type=\"pie\" chart-data=\"chartData\" title-field=\"country\" value-field=\"visits\"></span>\n" +
     "                </tab>\n" +
     "\n" +
-    "                <tab select=\"changeChartType('ColumnChart')\">\n" +
+    "\n" +
+    "                <tab select=\"changeChartType('column')\">\n" +
     "                    <tab-heading>\n" +
     "                        <i class=\"fa fa-bar-chart\"></i> Column Chart\n" +
     "                    </tab-heading>\n" +
-    "                    <div google-chart chart=\"chartObject\" style=\"height:350px; width:100%;\"></div>\n" +
+    "                    <span am-chart=\"\"  chart-type=\"column\" chart-data=\"chartData\" title-field=\"country\" value-field=\"visits\"></span>\n" +
     "                </tab>\n" +
     "            </tabset>\n" +
     "\n" +
@@ -1171,7 +1182,7 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "    </div>\n" +
     "    <div class=\"col-md-6\" ng-show=\"selected_survey.question_tree\">\n" +
     "        <div class=\"widget_inbox\">\n" +
-    "            <h3 style=\"margin-top: 30%\" class=\"text-center\" ><i class=\"fa fa-arrow-left\"></i>  Select a question on the left to preview</h3>\n" +
+    "            <h3 style=\"margin-top: 30%\" class=\"text-center hidden\" ><i class=\"fa fa-arrow-left\"></i>  Select a question on the left to preview</h3>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "\n" +

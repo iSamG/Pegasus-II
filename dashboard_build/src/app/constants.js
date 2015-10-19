@@ -8,9 +8,6 @@ angular.module('pegasusrises')
         google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com'
     })
     .constant('prFieldTypes', {
-        google_api_key: 'AIzaSyDSBIljWNHZ9xMXuaROc4oAypA8LT5xmaU',
-        google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com',
-
         /*[string, number(numbers, including floating numbers), integer, boolean, array, object ]*/
         radio : 'boolean', /*'boolean',*/
         checkboxes : 'array',
@@ -28,6 +25,11 @@ angular.module('pegasusrises')
         image : 'string',
         video : 'string',
         file : 'string'
+    })
+    .constant('prConstantOptions', {
+        colors : [
+            "#FF0F00", "#FF6600", "#FF9E01", "#FCD202","#F8FF01","#B0DE09", "#04D215", "#0D8ECF", "#0D52D1", "#2A0CD0",
+            "#8A0CCF", "#CD0D74", "#754DEB", "#DDDDDD", "#999999", "#333333",  "#000000"]
     })
 
     .constant('prRoutes', {

@@ -1,4 +1,4 @@
-/* pegasusrises - v2.0 - 2015-10-12
+/* pegasusrises - v2.0 - 2015-10-19
  * pegasusrises.com
  * Copyright (c) 2015 BBG Digital Innovation Lab;
  * Licensed MIT
@@ -43506,7 +43506,7 @@ jsonform.elementTypes = {
     }
   },
   'select':{
-    'template':'<select name="<%= node.name %>" id="<%= id %>"' +
+    'template':'<select class="form-control" name="<%= node.name %>" id="<%= id %>"' +
       '<%= (fieldHtmlClass ? " class=\'" + fieldHtmlClass + "\'" : "") %>' +
       '<%= (node.disabled? " disabled" : "")%>' +
       '<%= (node.schemaElement && node.schemaElement.required ? " required=\'required\'" : "") %>' +

@@ -505,6 +505,7 @@ jsonform.elementTypes = {
               return !!isSet(result.meta[key]);
             });
             result.meta = _.pick(result.meta, nonEmptyKeys);
+
             input.val(JSON.stringify(result));
           });
 
@@ -615,7 +616,7 @@ jsonform.elementTypes = {
     }
   },
   'select':{
-    'template':'<select name="<%= node.name %>" id="<%= id %>"' +
+    'template':'<select  class="form-control" name="<%= node.name %>" id="<%= id %>"' +
       '<%= (fieldHtmlClass ? " class=\'" + fieldHtmlClass + "\'" : "") %>' +
       '<%= (node.disabled? " disabled" : "")%>' +
       '<%= (node.schemaElement && node.schemaElement.required ? " required=\'required\'" : "") %>' +
