@@ -7,17 +7,22 @@ use Illuminate\Support\Facades\Mail;
 class EmailController extends Controller{
 
     public function sendSurveyEmail(){
-        $name = 'name';
+        $all_inputs = \Input::all();
+        var_dump($all_inputs);
+
+        $from = $all_inputs['from_email'];
+        $link = $all_inputs['survey_url'];
         $id = 'id';
         $title = 'title';
         $name='Emmanuel';
-        $link = 'http://pegasusrises.com/survey?unique_id=i7r';
-        Mail::send(
+        Mail::queue(
             'email_template',
             ['name'=>$name, 'survey_id'=>$id, 'title'=>$title,'link'=>$link],
             function($message){
 
-                $message->to('francis@pollafrique.com','Emmanuel')->subject('PegasusRises Email Survey');
+                $message->from('dinli@pollafrique.com','Boss');
+                $message->to('hadi@pollafrique.com','Emmanuel');
+                $message->subject('PegasusRises Email Survey');
             }
         );
     }
