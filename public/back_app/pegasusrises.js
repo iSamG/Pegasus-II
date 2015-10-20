@@ -752,28 +752,37 @@ angular.module('survey')
         function($rootScope, $scope, homeService, surveyService, growl, $stateParams, $timeout ){
 
             $scope.sendEmail = function () {
-                surveyService.sendEmail()
+                if (!$scope.respondent_form.survey_url) {
+                    growl.info('Select a survey to be sent', {title : 'No Survey Selected', ttl : 5000});
+                    return
+                }
+                if (!$scope.respondent_form.emails) {
+                    growl.info('Specify at least one email recipient', {title : 'No Email Recipient', ttl : 5000});
+                    return
+                }
+
+                surveyService.sendEmail($scope.respondent_form)
                     .success(function (successData) {
-                        console.log("success", successData);
+                        if (successData) {
+                            growl.success('Email Sent Successfully', {title : 'Email Sent', ttl : 5000});
+                        }
 
                     })
                     .error(function () {
-                        console.log("error");
+                        growl.error('Email can not be sent at this time. Check internet connection', {title : 'Email Not Sent', ttl : 5000});
+
                     })
             };
 
             $scope.loadingSurveys = true;
 
             function loadSurveys() {
-
                 $scope.sms_respondent_form = {
-                    from : $scope.user.phone_number,
-                    survey : $stateParams.survey_id || 0
-
+                    from_phone_number : $scope.user.phone_number
                 };
+
                 $scope.respondent_form = {
-                    from : $scope.user.email,
-                    survey : $stateParams.survey_id || 0
+                    from_email : $scope.user.email
                 };
 
                 $scope.loadingSurveys = false;
@@ -948,8 +957,8 @@ angular.module('survey')
             return $http.get(prRoutes.retrieveAnswersToASurvey, { params : { survey_id : surveyId }});
         };
 
-        surveyService.sendEmail = function(){
-            return $http.post(prRoutes.sendEmail);
+        surveyService.sendEmail = function(form){
+            return $http.post(prRoutes.sendEmail, form);
         };
 
 

@@ -916,7 +916,7 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                            <div class=\"form-group\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left \" for=\"from\">From</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
-    "                                    <input type=\"email\" ng-disabled=\"true\" ng-model=\"respondent_form.from\" id=\"from\" class=\" form-control\" >\n" +
+    "                                    <input type=\"text\" ng-disabled=\"true\" ng-model=\"respondent_form.from_email\" id=\"from\" class=\" form-control\" >\n" +
     "                                </div>\n" +
     "                            </div><!--/form-group-->\n" +
     "                            <br>\n" +
@@ -925,8 +925,8 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                            <div class=\"form-group\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\">Survey</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
-    "                                    <select title=\"selectSurvey\" name=\"selectSurvey\" data-ng-model=\"respondent_form.survey\" class=\" form-control\"\n" +
-    "                                            ng-options=\"survey.id as survey.survey_name for survey in surveys\">\n" +
+    "                                    <select title=\"selectSurvey\" name=\"selectSurvey\" data-ng-model=\"respondent_form.survey_url\" class=\" form-control\"\n" +
+    "                                            ng-options=\"survey.survey_unique_public_url as survey.survey_name for survey in surveys\">\n" +
     "                                        <option value=\"\">Select a survey</option>\n" +
     "                                    </select>\n" +
     "                                </div><!--/col-sm-9-->\n" +
@@ -978,7 +978,7 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                            <div class=\"form-group\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left \" for=\"sms_from\">From</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
-    "                                    <input type=\"text\" ng-disabled=\"true\" ng-model=\"sms_respondent_form.from\" id=\"sms_from\" class=\" form-control\" >\n" +
+    "                                    <input type=\"text\" ng-disabled=\"true\" ng-model=\"sms_respondent_form.from_phone_number\" id=\"sms_from\" class=\" form-control\" >\n" +
     "                                </div>\n" +
     "                            </div><!--/form-group-->\n" +
     "                            <br>\n" +
@@ -987,8 +987,8 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                            <div class=\"form-group\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\">Survey</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
-    "                                    <select data-ng-model=\"sms_respondent_form.survey\" class=\" form-control\"\n" +
-    "                                            ng-options=\"survey.id as survey.survey_name for survey in surveys\">\n" +
+    "                                    <select data-ng-model=\"sms_respondent_form.survey_url\" class=\" form-control\"\n" +
+    "                                            ng-options=\"survey.survey_unique_public_url as survey.survey_name for survey in surveys\">\n" +
     "                                        <option value=\"\">Select a survey</option>\n" +
     "                                    </select>\n" +
     "                                </div><!--/col-sm-9-->\n" +

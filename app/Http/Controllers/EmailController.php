@@ -11,13 +11,13 @@ class EmailController extends Controller{
         $id = 'id';
         $title = 'title';
         $name='Emmanuel';
-        $link = 'http://pegasusrises.app/?unique_id=i7r';
+        $link = 'http://pegasusrises.com/survey?unique_id=i7r';
         Mail::send(
             'email_template',
             ['name'=>$name, 'survey_id'=>$id, 'title'=>$title,'link'=>$link],
             function($message){
 
-                $message->to('francsi@pollafrique.com','Emmanuel')->subject('PegasusRises Email Survey');
+                $message->to('francis@pollafrique.com','Emmanuel')->subject('PegasusRises Email Survey');
             }
         );
     }
