@@ -8,23 +8,31 @@ class EmailController extends Controller{
 
     public function sendSurveyEmail(){
         $all_inputs = \Input::all();
-        var_dump($all_inputs);
+
 
         $from = $all_inputs['from_email'];
         $link = $all_inputs['survey_url'];
-        $id = 'id';
+        $recipients = $all_inputs['emails'];
         $title = 'title';
         $name='Emmanuel';
-        Mail::queue(
-            'email_template',
-            ['name'=>$name, 'survey_id'=>$id, 'title'=>$title,'link'=>$link],
-            function($message){
+        $GLOBALS["name"] = '';
 
-                $message->from('dinli@pollafrique.com','Boss');
-                $message->to('hadi@pollafrique.com','Emmanuel');
-                $message->subject('PegasusRises Email Survey');
-            }
-        );
+        foreach($recipients as $address){
+
+            $GLOBALS["name"] = $address;
+            var_dump($GLOBALS["name"]);
+
+            Mail::queue(
+                'email_template',
+                ['name'=>$name, 'survey_id'=>'', 'title'=>$title,'link'=>$link],
+                function($message){
+
+                    $message->from('instant@pollafrique.com','Pegasus User');
+                    $message->to($GLOBALS["name"]['text'],'Respondent');
+                    $message->subject('PegasusRises Email Survey');
+                }
+            );
+        }
     }
 
 
