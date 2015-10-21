@@ -1,7 +1,7 @@
 angular.module('pegasusApp')
-    .run(['$rootScope', '$state', '$stateParams','$localStorage','$sessionStorage','PGConstants', 'Pusher', 'sortDate','User',
+    .run(['$rootScope', '$state', '$stateParams','$localStorage','$sessionStorage','PGConstants', 'sortDate','User',
         function($rootScope, $state, $stateParams ,$localStorage, $sessionStorage, PGConstants,
-                 Pusher, sortDate, User){
+                 sortDate, User){
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 

@@ -1,4 +1,4 @@
-/* pegasusrises - v2.0 - 2015-10-19
+/* pegasusrises - v2.0 - 2015-10-21
  * pegasusrises.com
  * Copyright (c) 2015 BBG Digital Innovation Lab;
  * Licensed MIT
@@ -14,7 +14,6 @@ angular.module('pegasusApp', [
     'oitozero.ngSweetAlert',
     'angularMoment',
     'angular-cache',
-    'doowb.angular-pusher',
     'angular-loading-bar',
     'templates.app',
     'templates.common',
@@ -24,9 +23,9 @@ angular.module('pegasusApp', [
     'public'
 ])
     .config(['$stateProvider','$urlRouterProvider','PGConstants','growlProvider','CacheFactoryProvider',
-        '$rootScopeProvider', 'PusherServiceProvider','$locationProvider','$provide',
+        '$rootScopeProvider','$locationProvider','$provide',
         function($stateProvider, $urlRouterProvider, PGConstants, growlProvider, CacheFactoryProvider,
-                 $rootScopeProvider, PusherServiceProvider, $locationProvider, $provide){
+                 $rootScopeProvider, $locationProvider, $provide){
 
             $locationProvider.html5Mode(true);
 
@@ -317,9 +316,9 @@ angular.module('pegasusApp.constants', [])
         logout : '/logout'
     });
 angular.module('pegasusApp')
-    .run(['$rootScope', '$state', '$stateParams','$localStorage','$sessionStorage','PGConstants', 'Pusher', 'sortDate','User',
+    .run(['$rootScope', '$state', '$stateParams','$localStorage','$sessionStorage','PGConstants', 'sortDate','User',
         function($rootScope, $state, $stateParams ,$localStorage, $sessionStorage, PGConstants,
-                 Pusher, sortDate, User){
+                 sortDate, User){
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 

@@ -64,7 +64,10 @@
                             <div class="form-group">
                                 <div class="col-sm-4 col-xs-6 pull-right">
                                     <button class="hidden btn btn-default" type="reset" ng-click="resetRespondentForm()">Cancel</button>
-                                    <button class="btn btn-primary pull-right" type="submit">Send</button>
+                                    <button class="btn  pull-right" ng-class="{true : 'btn-default', false : 'btn-primary'}[sendingEmails]" type="submit" data-ng-disabled="sendingEmails">
+                                        <span ng-if="!(sendingEmails)">Send Mail</span>
+                                        <span ng-if="sendingEmails">Sending mails, hang on...</span>
+                                    </button>
                                 </div>
                             </div><!--/form-group-->
                         </form>

@@ -349,7 +349,7 @@ angular.module("app/admin/settings.tpl.html", []).run(["$templateCache", functio
 
 angular.module("app/home/home.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/home/home.tpl.html",
-    "<div class=\"white_bg\" ng-hide=\"loadingSurveys\" ng-if=\"surveys.length < 1\">\n" +
+    "<div class=\"white_bg\" ng-hide=\"loadingSurveys\" ng-if=\"true\"><!--surveys.length < 1-->\n" +
     "    <h2 class=\"page-header text-center\">Welcome to Pegasusrises</h2>\n" +
     "    <div class=\"row\" style=\"padding-bottom: 50px\">\n" +
     "        <p class=\"h5 text-center\">Click the button below to create a survey on Pegasusrises</p>\n" +
@@ -365,7 +365,7 @@ angular.module("app/home/home.tpl.html", []).run(["$templateCache", function($te
     "\n" +
     "</div>\n" +
     "\n" +
-    "<div class=\"container clear_both padding_fix\" ng-hide=\"loadingSurveys\" ng-if=\"surveys.length > 0\">\n" +
+    "<div class=\"container clear_both padding_fix\" ng-hide=\"loadingSurveys\" ng-if=\"false\">\n" +
     "    <!--\\\\\\\\\\\\\\ container  start \\\\\\\\\\\\-->\n" +
     "    <div class=\"row\">\n" +
     "        <div class=\"col-sm-3 col-sm-6\">\n" +
@@ -959,7 +959,10 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                            <div class=\"form-group\">\n" +
     "                                <div class=\"col-sm-4 col-xs-6 pull-right\">\n" +
     "                                    <button class=\"hidden btn btn-default\" type=\"reset\" ng-click=\"resetRespondentForm()\">Cancel</button>\n" +
-    "                                    <button class=\"btn btn-primary pull-right\" type=\"submit\">Send</button>\n" +
+    "                                    <button class=\"btn  pull-right\" ng-class=\"{true : 'btn-default', false : 'btn-primary'}[sendingEmails]\" type=\"submit\" data-ng-disabled=\"sendingEmails\">\n" +
+    "                                        <span ng-if=\"!(sendingEmails)\">Send Mail</span>\n" +
+    "                                        <span ng-if=\"sendingEmails\">Sending mails, hang on...</span>\n" +
+    "                                    </button>\n" +
     "                                </div>\n" +
     "                            </div><!--/form-group-->\n" +
     "                        </form>\n" +

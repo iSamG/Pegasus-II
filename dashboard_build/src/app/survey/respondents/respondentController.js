@@ -9,6 +9,7 @@ angular.module('survey')
         function($rootScope, $scope, homeService, surveyService, growl, $stateParams, $timeout ){
 
             $scope.sendEmail = function () {
+                $scope.sendingEmails = true;
                 if (!$scope.respondent_form.survey_url) {
                     growl.info('Select a survey to be sent', {title : 'No Survey Selected', ttl : 5000});
                     return
@@ -22,12 +23,16 @@ angular.module('survey')
                     .success(function (successData) {
                         if (successData) {
                             growl.success('Email Sent Successfully', {title : 'Email Sent', ttl : 5000});
+                            $scope.sendingEmails = false;
+                            $timeout(function () {
+                                loadSurveys();
+                            });
                         }
 
                     })
                     .error(function () {
                         growl.error('Email can not be sent at this time. Check internet connection', {title : 'Email Not Sent', ttl : 5000});
-
+                        $scope.sendingEmails = false;
                     })
             };
 

@@ -26,7 +26,6 @@ class EmailController extends Controller{
                 'email_template',
                 ['name'=>$name, 'survey_id'=>'', 'title'=>$title,'link'=>$link],
                 function($message){
-
                     $message->from('instant@pollafrique.com','Pegasus User');
                     $message->to($GLOBALS["name"]['text'],'Respondent');
                     $message->subject('PegasusRises Email Survey');
