@@ -753,7 +753,7 @@ angular.module('survey')
 
             $scope.sendEmail = function () {
                 $scope.sendingEmails = true;
-                if (!$scope.respondent_form.survey_url) {
+                if (!$scope.respondent_form.survey_id) {
                     growl.info('Select a survey to be sent', {title : 'No Survey Selected', ttl : 5000});
                     return
                 }
@@ -761,6 +761,8 @@ angular.module('survey')
                     growl.info('Specify at least one email recipient', {title : 'No Email Recipient', ttl : 5000});
                     return
                 }
+                $scope.respondent_form.survey_url = surveyService.surveyLookup[$scope.respondent_form.survey_id].survey_unique_public_url;
+                $scope.respondent_form.survey_name = surveyService.surveyLookup[$scope.respondent_form.survey_id].survey_name;
 
                 surveyService.sendEmail($scope.respondent_form)
                     .success(function (successData) {
@@ -776,7 +778,6 @@ angular.module('survey')
                     .error(function () {
                         growl.error('Email can not be sent at this time. Check internet connection', {title : 'Email Not Sent', ttl : 5000});
                         $scope.sendingEmails = false;
-
                     })
             };
 

@@ -2,6 +2,7 @@
 
 
 
+use App\pegasustwo\Helpers;
 use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller{
@@ -10,27 +11,39 @@ class EmailController extends Controller{
         $all_inputs = \Input::all();
 
 
-        $from = $all_inputs['from_email'];
+        $GLOBALS['from'] = $all_inputs['from_email'];
         $link = $all_inputs['survey_url'];
         $recipients = $all_inputs['emails'];
-        $title = 'title';
-        $name='Emmanuel';
+        $survey_name = $all_inputs['survey_name'];
+        $survey_description = $all_inputs['survey_description'];
+        $name='Pegasus';
         $GLOBALS["name"] = '';
 
         foreach($recipients as $address){
 
             $GLOBALS["name"] = $address;
-            var_dump($GLOBALS["name"]);
 
-            Mail::queue(
+            $send_mail = Mail::queue(
                 'email_template',
-                ['name'=>$name, 'survey_id'=>'', 'title'=>$title,'link'=>$link],
+                ['name'=>$name, 'survey_id'=>'', 'survey_name'=>$survey_name, 'survey_description'=>$survey_description, 'link'=>$link],
                 function($message){
-                    $message->from('instant@pollafrique.com','Pegasus User');
+                    $message->from($GLOBALS['from'],'Pegasus');
                     $message->to($GLOBALS["name"]['text'],'Respondent');
-                    $message->subject('PegasusRises Email Survey');
+                    $message->subject('Pegasus Email Survey');
                 }
             );
+                            return Helpers::responseToView($code = 200, $status = "OK", $message = "Survey email sent successfully");
+
+
+            //var_dump($send_mail);
+//            if($send_mail){
+//                return Helpers::responseToView($code = 200, $status = "OK", $message = "Survey email sent successfully");
+//
+//            }
+//            else{
+//                return Helpers::responseToView($code = 400, $status = "Error", $message = "An error occured whiles sending to ".$GLOBALS["name"]['text']);
+//
+//            }
         }
     }
 

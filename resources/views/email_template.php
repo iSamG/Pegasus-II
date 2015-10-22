@@ -3,6 +3,7 @@ if (!isset($link)){ $link = 'http://www.pegasusrises.com';}
 if (!isset($survey_name)){ $survey_name = 'Election 2016 Survey';}
 if (!isset($survey_description)){ $survey_description = "This survey is aimed at collecting information on citizen\'s opinion on the upcoming 2016 elections in Ghana";}
 ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -237,11 +238,11 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 																</tr><!-- // Horizontal Spacer \\ -->
 
 																<tr>
-																	<td style="font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: normal; font-style: normal; color: #6f7579; line-height: 26px; text-align: left;"><a href="<?=$link?>">Survey Name</a></td>
+																	<td style="font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: normal; font-style: normal; color: #6f7579; line-height: 26px; text-align: left;"><a href="<?=$link?>"><?=$survey_name ?></a></td>
 																</tr>
 
 																<tr>
-																	<td style="font-family: Helvetica, Arial, sans-serif; font-size: 9px; font-weight: normal; color: #9ca1a3; line-height: 13px; text-align: left;">Survey description</td>
+																	<td style="font-family: Helvetica, Arial, sans-serif; font-size: 9px; font-weight: normal; color: #9ca1a3; line-height: 13px; text-align: left;"><?=$survey_description ?></td>
 																</tr>
 															</table>
 														</td>
@@ -252,7 +253,15 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 
 														<td class="RespoHideSmall" width="16">
 															<a href="<?=$link?>">
-																<button style="border: none; padding: 5px; background-color: #00b3ee; color: white">Take Survey</button>
+
+																<div><!--[if mso]>
+																	<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="<?=$link?>" style="height:40px;v-text-anchor:middle;width:150px;" arcsize="10%"  fillcolor="#46a8b9">
+																		<w:anchorlock/>
+																		<center style="color:#ffffff;font-family:sans-serif;font-size:13px;font-weight:bold;">Take Survey</center>
+																	</v:roundrect>
+																	<![endif]-->
+																	<a href="<?=$link?>"
+																				   style="background-color:#46a8b9;border-radius:4px;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:150px;-webkit-text-size-adjust:none;mso-hide:all;">Take Survey</a></div>
 															</a>
 														</td>
 
@@ -286,9 +295,18 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 
 									<table align="center" cellpadding="0" cellspacing="0" width="100%">
 										<tr>
-											<td class="RespoImage_FullW" width="600">
-												<a href="#" style="border: none;">
-													<img alt="" border="0" class="RespoImage_Full" height="200" src="http://placehold.it/600x200?text=Pegasus%20Surveys" style="width: 600px; height: 200px; display: block;" width="600" /></a>
+											<td class="RespoImage_FullW" width="600" style="position: relative">
+												<a href="#" style="border: none; margin: 0 auto; display: block">
+													<img alt="" border="0" class="RespoImage_Full" height="200" src="http://placehold.it/600x200?text=Pegasus%20Surveys" style="width: 600px; height: 200px; display: block;" width="600" />
+													<div style="position: absolute; top: 160px; right : 225px"><!--[if mso]>
+														<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="<?=$link?>" style="height:40px;v-text-anchor:middle;width:150px;" arcsize="10%" fillcolor="#46a8b9">
+															<w:anchorlock/>
+															<center style="color:#ffffff;font-family:sans-serif;font-size:13px;font-weight:bold;">Take Survey</center>
+														</v:roundrect>
+														<![endif]-->
+														<a href="<?=$link?>"
+														   style=" margin: 0 auto; display: block; background-color:#46a8b9;border-radius:4px;color:#ffffff;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:150px;-webkit-text-size-adjust:none;mso-hide:all;">Take Survey</a></div>
+												</a>
 											</td>
 										</tr>
 
@@ -318,7 +336,7 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 										</tr><!-- // Horizontal Spacer \\ -->
 
 										<tr>
-											<td style="padding-left:20px; padding-right:20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;" valign="top" width="100%">With very few clicks, anyone can create an account on Pegaasus and deploy surveys to gather relavant information</td>
+											<td style="padding-left:20px; padding-right:20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;" valign="top" width="100%">With very few clicks, anyone can create an account on Pegasus and deploy surveys to gather relevant information</td>
 										</tr>
 									</table><!-- // List Item \\ -->
 									<!-- Footer -->
@@ -328,18 +346,14 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 											<td height="15" width="100%"></td>
 										</tr><!-- // Horizontal Spacer \\ -->
 
-										<tr>
-											<td bgcolor="#e4ded8" height="15" style="background-color: #e4ded8"></td>
-										</tr><!-- // Horizontal Spacer \\ -->
-
-										<tr>
-											<td width="50%" bgcolor="#e4ded8" style="background-color: #e4ded8; padding-left: 20px; padding-right: 20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;">&copy; Pegasus 2015</td>
-											<td width="50%" bgcolor="#e4ded8" style="background-color: #e4ded8; padding-left: 20px; padding-right: 20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;"><a href="http://www.pegasusrises.com/unsubscribe">Unsubcribe form the service</a></td>
+										<tr style="min-height: 20px">
+											<td height="25" width="40" bgcolor="#e4ded8" style="background-color: #e4ded8; padding: 20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;">&copy; Pegasus 2015</td>
+											<td height="25" width="30" bgcolor="#e4ded8" style="background-color: #e4ded8; padding: 20px;font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: right;">
+												<a href="http://www.pegasusrises.com/unsubscribe">Unsubscribe</a>
+											</td>
+											<td width="20" height="25"></td>
 										</tr>
 
-										<tr>
-											<td bgcolor="#e4ded8" height="15" style="background-color: #e4ded8"></td>
-										</tr><!-- // Horizontal Spacer \\ -->
 									</table><!-- Footer -->
 								</td>
 							</tr>

@@ -912,7 +912,7 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                    <h3 class=\"page-header\" style=\"margin-top: 3px !important;\">Email Respondents</h3>\n" +
     "\n" +
     "                    <div class=\"row\">\n" +
-    "                        <form  role=\"form\" class=\"col-md-6 col-sm-8 col-xs-12 center-block form-horizontal\" ng-submit=\"sendEmail()\">\n" +
+    "                        <form  role=\"form\" class=\"col-md-8 col-sm-9 col-xs-12 center-block form-horizontal\" ng-submit=\"sendEmail()\">\n" +
     "                            <div class=\"form-group\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left \" for=\"from\">From</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
@@ -921,19 +921,30 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                            </div><!--/form-group-->\n" +
     "                            <br>\n" +
     "                            <br>\n" +
-    "                            <br>\n" +
     "                            <div class=\"form-group\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\">Survey</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
-    "                                    <select title=\"selectSurvey\" name=\"selectSurvey\" data-ng-model=\"respondent_form.survey_url\" class=\" form-control\"\n" +
-    "                                            ng-options=\"survey.survey_unique_public_url as survey.survey_name for survey in surveys\">\n" +
+    "                                    <select title=\"selectSurvey\" name=\"selectSurvey\" data-ng-model=\"respondent_form.survey_id\" class=\" form-control\"\n" +
+    "                                            ng-options=\"survey.id as survey.survey_name for survey in surveys\">\n" +
     "                                        <option value=\"\">Select a survey</option>\n" +
     "                                    </select>\n" +
     "                                </div><!--/col-sm-9-->\n" +
     "                            </div><!--/form-group-->\n" +
     "                            <br>\n" +
     "                            <br>\n" +
+    "\n" +
+    "\n" +
+    "                            <div class=\"form-group\">\n" +
+    "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\">Survey Description</label>\n" +
+    "                                <div class=\"col-sm-8 col-xs-12\">\n" +
+    "                                    <textarea data-ng-model=\"respondent_form.survey_description\" class=\" form-control\"\n" +
+    "                                              placeholder=\"A brief description of the survey\" rows=\"5\">\n" +
+    "                                    </textarea>\n" +
+    "                                </div><!--/col-sm-9-->\n" +
+    "                            </div><!--/form-group-->\n" +
     "                            <br>\n" +
+    "                            <br>\n" +
+    "\n" +
     "                            <div class=\"form-group\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\" for=\"emails\">Recipients</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
@@ -977,7 +988,7 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                <div class=\"porlets-content\">\n" +
     "                    <h3 class=\"page-header\" style=\"margin-top: 3px !important;\">SMS Respondents</h3>\n" +
     "                    <div class=\"row\">\n" +
-    "                        <form role=\"form\" class=\"col-md-6 col-sm-8 col-xs-12 center-block form-horizontal\" ng-submit=\"sendSMS()\">\n" +
+    "                        <form role=\"form\" class=\"col-md-8 col-sm-9 col-xs-12 center-block form-horizontal\" ng-submit=\"sendSMS()\">\n" +
     "                            <div class=\"form-group\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left \" for=\"sms_from\">From</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
@@ -986,17 +997,28 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                            </div><!--/form-group-->\n" +
     "                            <br>\n" +
     "                            <br>\n" +
-    "                            <br>\n" +
     "                            <div class=\"form-group\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\">Survey</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
-    "                                    <select data-ng-model=\"sms_respondent_form.survey_url\" class=\" form-control\"\n" +
-    "                                            ng-options=\"survey.survey_unique_public_url as survey.survey_name for survey in surveys\">\n" +
+    "                                    <select data-ng-model=\"sms_respondent_form.survey_id\" class=\" form-control\"\n" +
+    "                                            ng-options=\"survey.id as survey.survey_name for survey in surveys\">\n" +
     "                                        <option value=\"\">Select a survey</option>\n" +
     "                                    </select>\n" +
     "                                </div><!--/col-sm-9-->\n" +
     "                            </div><!--/form-group-->\n" +
+    "\n" +
     "                            <br>\n" +
+    "                            <br>\n" +
+    "                            <div class=\"form-group\">\n" +
+    "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\">Survey Description</label>\n" +
+    "                                <div class=\"col-sm-8 col-xs-12\">\n" +
+    "                                    <textarea data-ng-model=\"sms_respondent_form.survey_description\" class=\" form-control\"\n" +
+    "                                              placeholder=\"A brief description of the survey\" rows=\"5\">\n" +
+    "                                    </textarea>\n" +
+    "                                </div><!--/col-sm-9-->\n" +
+    "                            </div><!--/form-group-->\n" +
+    "\n" +
+    "\n" +
     "                            <br>\n" +
     "                            <br>\n" +
     "                            <div class=\"form-group\">\n" +
