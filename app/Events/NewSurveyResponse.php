@@ -21,7 +21,7 @@ class NewSurveyResponse extends Event implements ShouldBroadcast
 
     public function __construct(Answer $answerObject)
     {
-        $this->surveyResponseObject = $answerObject->toArray();
+        $this->surveyResponseObject = $answerObject->toJson();
     }
 
     /**
