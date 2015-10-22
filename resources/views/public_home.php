@@ -203,7 +203,7 @@
                 </div>
                 <!--/ Carousel item end -->
                 <div class="item">
-                    <img class="" style="height: 400px;" height="400px" src="front_app/assets/images/img/illuminated-keyboard.jpg" alt="slider">
+                    <img class="" style="height: 400px;" height="400px" src="front_app/assets/images/img/pegasus.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
                             <h2 class="animated7 white">

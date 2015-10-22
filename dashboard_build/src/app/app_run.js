@@ -1,8 +1,8 @@
 
 
 angular.module('pegasusrises')
-    .run(['$rootScope', '$state', '$stateParams', 'cfpLoadingBar','$localStorage','surveyService','adminService',
-        function($rootScope, $state, $stateParams, cfpLoadingBar, $localStorage, surveyService, adminService){
+    .run(['$rootScope', '$state', '$stateParams', 'cfpLoadingBar','$localStorage','surveyService','adminService','Pusher',
+        function($rootScope, $state, $stateParams, cfpLoadingBar, $localStorage, surveyService, adminService, Pusher){
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 
@@ -58,11 +58,19 @@ angular.module('pegasusrises')
                         surveyService.loadAllSurveys();
                     }
 
-            });
+                });
 
 
             $rootScope.reloadSurveyData = function () {
                 surveyService.loadAllSurveys();
-            }
+            };
 
+
+
+            Pusher.subscribe('new_survey_response', 'NewSurveyResponse', function (item) {
+                //When new data is submitted, get the section type submitted and assign
+                // sectionToGo variable and sectionUnderText variable
+
+                console.log('pusher event', item);
+            });
         }]);
