@@ -24,7 +24,7 @@
             <!--blue_border-->
             <section class="panel default blue_border vertical_border h1" ng-show="surveys.length" ng-repeat="survey in surveys | filter : { survey_name: searchSurvey } | orderBy : sortOrder : reverse">
                 <div class="task-header blue_task">
-                    <a href="" ui-sref="surveys.selected_survey({survey_id : survey.id})">{{ survey.survey_name }}</a>
+                    <a href="" title="{{ survey.survey_unique_public_url }}" ui-sref="surveys.selected_survey({survey_id : survey.id})">{{ survey.survey_name }}</a>
                     <span title="{{ survey.created_at }}" tooltip-placement="top" tooltip="{{ formatDate(survey.created_at) }}"><i class="fa fa-clock-o"></i>{{ fromNow(survey.created_at) }}</span> </div>
                 <div class="row task_inner inner_padding">
                     <div class="col-sm-9">
@@ -56,7 +56,7 @@
                     <div class="pull-right">
                         <ul class="footer-icons-group">
                             <li tooltip-placement="top" tooltip="Preview Survey"><a preview-survey="{{ survey.id }}" class="pointer"><i class="fa fa-eye"></i></a></li>
-                            <li tooltip-placement="top" tooltip="Send respondents"><a ui-sref="surveys.respondents({survey_id : survey.id })" class="pointer"><i class="fa fa-send-o"></i></a></li>
+                            <li tooltip-placement="top" tooltip="Send Survey to Respondents"><a ui-sref="surveys.respondents({survey_id : survey.id })" class="pointer"><i class="fa fa-send-o"></i></a></li>
                             <li tooltip-placement="top" tooltip="Edit Survey"><a href="" edit-survey="{{survey.id}}"><i class="fa fa-pencil"></i></a></li>
                             <li tooltip-placement="top" tooltip="Delete Survey"><a href="" delete-survey="{{survey.id}}"><i class="fa fa-trash-o"></i></a></li>
                             <!--<li class="dropup"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></a></li>-->

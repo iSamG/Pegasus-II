@@ -793,7 +793,9 @@ angular.module("app/survey/forms/design_formbuilder/design_form.tpl.html", []).r
     "            <h3 class=\"content-header\">Design Questionnaire</h3>\n" +
     "        </div>\n" +
     "        <div class=\"porlets-content\">\n" +
-    "            <div><button class=\"btn btn-primary pull-right\" preview-survey=\"{{ selected_survey.id }}\">Preview Survey</button></div>\n" +
+    "            <div>\n" +
+    "                <button class=\"btn btn-primary pull-right\" preview-survey=\"{{ selected_survey.id }}\"\n" +
+    "                        save-payload=\"saveQuestionnaire()\" call-save=\"yes\">Preview Survey</button></div>\n" +
     "            <div id='formbuilder'></div>\n" +
     "        </div>\n" +
     "    </div>\n" +
@@ -830,7 +832,7 @@ angular.module("app/survey/list_all/survey_list.tpl.html", []).run(["$templateCa
     "            <!--blue_border-->\n" +
     "            <section class=\"panel default blue_border vertical_border h1\" ng-show=\"surveys.length\" ng-repeat=\"survey in surveys | filter : { survey_name: searchSurvey } | orderBy : sortOrder : reverse\">\n" +
     "                <div class=\"task-header blue_task\">\n" +
-    "                    <a href=\"\" ui-sref=\"surveys.selected_survey({survey_id : survey.id})\">{{ survey.survey_name }}</a>\n" +
+    "                    <a href=\"\" title=\"{{ survey.survey_unique_public_url }}\" ui-sref=\"surveys.selected_survey({survey_id : survey.id})\">{{ survey.survey_name }}</a>\n" +
     "                    <span title=\"{{ survey.created_at }}\" tooltip-placement=\"top\" tooltip=\"{{ formatDate(survey.created_at) }}\"><i class=\"fa fa-clock-o\"></i>{{ fromNow(survey.created_at) }}</span> </div>\n" +
     "                <div class=\"row task_inner inner_padding\">\n" +
     "                    <div class=\"col-sm-9\">\n" +
@@ -862,7 +864,7 @@ angular.module("app/survey/list_all/survey_list.tpl.html", []).run(["$templateCa
     "                    <div class=\"pull-right\">\n" +
     "                        <ul class=\"footer-icons-group\">\n" +
     "                            <li tooltip-placement=\"top\" tooltip=\"Preview Survey\"><a preview-survey=\"{{ survey.id }}\" class=\"pointer\"><i class=\"fa fa-eye\"></i></a></li>\n" +
-    "                            <li tooltip-placement=\"top\" tooltip=\"Send respondents\"><a ui-sref=\"surveys.respondents({survey_id : survey.id })\" class=\"pointer\"><i class=\"fa fa-send-o\"></i></a></li>\n" +
+    "                            <li tooltip-placement=\"top\" tooltip=\"Send Survey to Respondents\"><a ui-sref=\"surveys.respondents({survey_id : survey.id })\" class=\"pointer\"><i class=\"fa fa-send-o\"></i></a></li>\n" +
     "                            <li tooltip-placement=\"top\" tooltip=\"Edit Survey\"><a href=\"\" edit-survey=\"{{survey.id}}\"><i class=\"fa fa-pencil\"></i></a></li>\n" +
     "                            <li tooltip-placement=\"top\" tooltip=\"Delete Survey\"><a href=\"\" delete-survey=\"{{survey.id}}\"><i class=\"fa fa-trash-o\"></i></a></li>\n" +
     "                            <!--<li class=\"dropup\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"fa fa-wrench\"></i></a></li>-->\n" +
@@ -916,12 +918,12 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                            <div class=\"form-group\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left \" for=\"from\">From</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
-    "                                    <input type=\"text\" ng-disabled=\"true\" ng-model=\"respondent_form.from_email\" id=\"from\" class=\" form-control\" >\n" +
+    "                                    <input type=\"text\" ng-disabled=\"true\" value=\"{{ user.email }}\" ng-model=\"respondent_form.from_email\" id=\"from\" class=\" form-control\" >\n" +
     "                                </div>\n" +
     "                            </div><!--/form-group-->\n" +
     "                            <br>\n" +
     "                            <br>\n" +
-    "                            <div class=\"form-group\">\n" +
+    "                            <div class=\"form-group\" ng-init=\"loadSurveys()\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\">Survey</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
     "                                    <select title=\"selectSurvey\" name=\"selectSurvey\" data-ng-model=\"respondent_form.survey_id\" class=\" form-control\"\n" +
@@ -1098,6 +1100,7 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "        </section>\n" +
     "    </div>\n" +
     "\n" +
+    "    <!--this will display whe the survey has gotten no response yet-->\n" +
     "    <div class=\"col-md-12 fill_white\" ng-hide=\"selected_survey.question_tree\">\n" +
     "        <div class=\"block-web\">\n" +
     "            <h4 style=\"margin: 25px 0\" class=\"text-center\">No questions created for this survey.</h4>\n" +
@@ -1107,6 +1110,7 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "        </div>\n" +
     "    </div>\n" +
     "\n" +
+    "    <!--Section for listing all the questions in the selected survey-->\n" +
     "    <div class=\"col-md-6\" ng-show=\"selected_survey.question_tree\">\n" +
     "        <div class=\"widget_inbox\">\n" +
     "\n" +
@@ -1129,9 +1133,13 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "        </div>\n" +
     "    </div>\n" +
     "\n" +
+    "    <!--Section for responses of the survey-->\n" +
     "    <div class=\"col-md-6\" ng-show=\"selected_survey.question_tree\">\n" +
-    "        <div class=\"widget_inbox\">\n" +
-    "            <tabset justified=\"true\">\n" +
+    "\n" +
+    "        <!--Section for  charting. Includes tabs for car, pie and column chart-->\n" +
+    "        <div ng-show=\"selected_question\" class=\"widget_inbox\">\n" +
+    "            <tabset  ng-show=\"selected_question.type === 'closed' \" justified=\"true\">\n" +
+    "\n" +
     "                <tab select=\"changeChartType('bar')\">\n" +
     "                    <tab-heading>\n" +
     "                        <i class=\"fa fa-list-ul\"></i> Bar Chart\n" +
@@ -1157,62 +1165,68 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "                    <span am-chart=\"\"  chart-type=\"column\" chart-data=\"chartData\" title-field=\"country\" value-field=\"visits\"></span>\n" +
     "                </tab>\n" +
     "            </tabset>\n" +
-    "\n" +
     "        </div>\n" +
+    "\n" +
+    "        <!--Section for  listing answers when the charts won't work-->\n" +
     "        <div class=\"row\" ng-show=\"selected_question\">\n" +
-    "            <div ng-if=\"selected_question.question_type == 'close_ended'\">\n" +
-    "                <button class=\"text-center col-sm-6 col-sm-offset-3 btn btn-primary btn-lg\" ng-click=\"$state.go('surveys.analytics', {survey : surveyName, form_id : surveyFormId, index : selected_question.index })\">\n" +
-    "                    View More Details</button>\n" +
-    "            </div>\n" +
-    "            <!--style=\"margin-top: 30%\"-->\n" +
-    "            <div ng-if=\"selected_question.question_type == 'open_ended'\" >\n" +
+    "            <div ng-show=\"selected_question.type === 'opened' \">\n" +
+    "\n" +
     "                <div class=\"panel panel-primary\">\n" +
     "                    <div class=\"panel-heading text-center\">\n" +
-    "                        <h4 class=\"panel-title \">{{selected_question.question}}</h4>\n" +
+    "                        <h4 class=\"panel-title \">{{ selected_question.label }}</h4>\n" +
     "                    </div>\n" +
     "                    <div class=\"panel-body\" style=\"padding-bottom: 0 !important;\">\n" +
-    "                        <ul ng-show=\"selected_question.answers.length\" ng-if=\"selected_question.answer_format_type == 'regular'\" class=\"media-list\">\n" +
-    "                            <li class=\"media answer-list\" style=\"\" ng-repeat=\"response in selected_question.answers | limitTo : 6\"> <a href=\"\">\n" +
-    "                                <p><strong>{{ response.value | limitTo : 100 }}</strong> <br>\n" +
-    "                                    <i class=\"text-muted\" title=\"Submission date\">{{ fromNow ( response.submitted_date) }}</i></p>\n" +
-    "                            </a> </li>\n" +
-    "                        </ul>\n" +
-    "                        <ul ng-show=\"selected_question.answers.length\" ng-if=\"selected_question.answer_format_type == 'image'\" class=\"media-list\">\n" +
-    "                            <li class=\"media answer-list\" style=\"\" ng-repeat=\"response in selected_question.answers | limitTo : 3\"> <a href=\"\">\n" +
-    "                                <div class=\"col-sm-6\">\n" +
-    "                                    <div class=\"contact_people\">\n" +
-    "                                        <a href=\"#\"><img ng-src=\"{{ response.url }}\" width=\"250px\"></a>\n" +
-    "                                    </div>\n" +
-    "                                </div>\n" +
-    "                            </a> </li>\n" +
-    "                        </ul>\n" +
     "\n" +
-    "                        <ul ng-show=\"selected_question.answers.length\" ng-if=\"selected_question.answer_format_type == 'location'\" class=\"media-list\">\n" +
-    "                            <li class=\"media answer-list\" style=\"\" ng-repeat=\"response in selected_question.answers | limitTo : 6\"> <a href=\"\">\n" +
-    "                                <p> Longitude : <strong>{{ response.longitude }}</strong>, Latitude : <strong>{{ response.latitude }}</strong><br>\n" +
-    "                                    <i class=\"text-muted\" title=\"Business Name\">{{ response.business_name }}</i>\n" +
-    "                                    <i class=\"text-muted pull-right\" title=\"Submission date\">({{ fromNow ( response.submitted_date) }})</i>\n" +
-    "                                </p>\n" +
-    "                            </a> </li>\n" +
-    "                        </ul>\n" +
+    "                        <perfect-scrollbar class=\"scroller\" wheel-propagation=\"true\" wheel-speed=\"2\" min-scrollbar-length=\"5\">\n" +
+    "\n" +
+    "                            <!--List for text or straight forward open answers-->\n" +
+    "                            <ul ng-show=\"selected_question.answers.length\" class=\"media-list\">\n" +
+    "                                <li class=\"media answer-list\" style=\"\" ng-repeat=\"response in selected_question.answers\"><!-- limitTo : 15-->\n" +
+    "                                    <a >\n" +
+    "                                        <p><strong>{{ response.content }}</strong><!--| limitTo : 100 }}--> <br>\n" +
+    "                                            <time class=\"text-muted timestamp time pull-right\" tooltip=\"Date submitted : {{ response.created_at || 'unavailable' }}\">{{ fromNow ( response.created_at) }}</time></p>\n" +
+    "                                    </a> </li>\n" +
+    "                            </ul>\n" +
+    "\n" +
+    "                            <!--List for image type responses-->\n" +
+    "                            <ul ng-show=\"selected_question.answers.length\" ng-if=\"selected_question.answer_format_type == 'image'\" class=\"media-list\">\n" +
+    "                                <li class=\"media answer-list\" style=\"\" ng-repeat=\"response in selected_question.answers | limitTo : 3\"> <a href=\"\">\n" +
+    "                                    <div class=\"col-sm-6\">\n" +
+    "                                        <div class=\"contact_people\">\n" +
+    "                                            <a href=\"#\"><img ng-src=\"{{ response.url }}\" width=\"250px\"></a>\n" +
+    "                                        </div>\n" +
+    "                                    </div>\n" +
+    "                                </a> </li>\n" +
+    "                            </ul>\n" +
+    "\n" +
+    "                            <!--List for map location coordinates-->\n" +
+    "                            <ul ng-show=\"selected_question.answers.length\" ng-if=\"selected_question.answer_format_type == 'location'\" class=\"media-list\">\n" +
+    "                                <li class=\"media answer-list\" style=\"\" ng-repeat=\"response in selected_question.answers | limitTo : 6\"> <a href=\"\">\n" +
+    "                                    <p> Longitude : <strong>{{ response.longitude }}</strong>, Latitude : <strong>{{ response.latitude }}</strong><br>\n" +
+    "                                        <i class=\"text-muted\" title=\"Business Name\">{{ response.business_name }}</i>\n" +
+    "                                        <i class=\"text-muted pull-right\" title=\"Submission date\">({{ fromNow ( response.submitted_date) }})</i>\n" +
+    "                                    </p>\n" +
+    "                                </a> </li>\n" +
+    "                            </ul>\n" +
+    "\n" +
+    "                        </perfect-scrollbar>\n" +
+    "\n" +
     "\n" +
     "                        <h4 ng-hide=\"selected_question.answers.length\" class=\"text-center\" style=\"margin: 5% 0\">No responses submitted!</h4>\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "\n" +
-    "                <button class=\"text-center col-sm-6 col-sm-offset-3 btn btn-primary btn-lg\" ng-click=\"$state.go('surveys.analytics', {survey : surveyName, form_id : surveyFormId, index : selected_question.index })\">\n" +
+    "                <button class=\"text-center hidden col-sm-6 col-sm-offset-3 btn btn-primary btn-lg\" ng-click=\"$state.go('surveys.analytics', {survey : surveyName, form_id : surveyFormId, index : selected_question.index })\">\n" +
     "                    View More Details</button>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "    <div class=\"col-md-6\" ng-show=\"selected_survey.question_tree\">\n" +
+    "\n" +
+    "    <div class=\"col-md-6\" ng-show=\"(selected_survey.question_tree && (!selected_question))\" >\n" +
     "        <div class=\"widget_inbox\">\n" +
-    "            <h3 style=\"margin-top: 30%\" class=\"text-center hidden\" ><i class=\"fa fa-arrow-left\"></i>  Select a question on the left to preview</h3>\n" +
+    "            <h3 style=\"margin-top: 30%\" class=\"text-center\" ><i class=\"fa fa-arrow-left\"></i>  Select a question on the left</h3>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "\n" +
-    "    <!--<pre>{{selected_question.answers | json }}</pre>-->\n" +
-    "\n" +
     "</div>\n" +
     "\n" +
     "");
@@ -1308,7 +1322,7 @@ angular.module("common/modals/previewSurveyFormModal.tpl.html", []).run(["$templ
     "    </div>\n" +
     "    <div class=\"modal-footer\">\n" +
     "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"close()\">Close</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-success\" ng-click=\"sendSurvey()\">Send Survey</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-success\" ng-click=\"close()\" ui-sref=\"surveys.respondents({survey_id : selected_survey.id })\" >Send Survey</button>\n" +
     "    </div>\n" +
     "</div>");
 }]);

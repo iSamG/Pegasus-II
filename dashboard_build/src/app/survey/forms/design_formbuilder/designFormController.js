@@ -3,8 +3,9 @@
  */
 
 angular.module('survey')
-    .controller('prFormBuilderController', ['$rootScope', '$scope','$state', 'homeService', 'surveyService', 'growl','$localStorage','$timeout',
-        function($rootScope, $scope,$state,  homeService, surveyService, growl, $localStorage, $timeout ){
+    .controller('prFormBuilderController', ['$rootScope', '$scope','$state', 'homeService', 'surveyService',
+        'growl','$localStorage','$timeout', '$q',
+        function($rootScope, $scope,$state,  homeService, surveyService, growl, $localStorage, $timeout, $q ){
 
             var surveyPayLoad;
             function loadSurveys() {
@@ -37,8 +38,12 @@ angular.module('survey')
 
                 $timeout(function () {
                     $('#saveQuestionnaire').click(function () {
-                        console.log('log');
-                        $scope.saveQuestionnaire();
+                        var saveButton = $(this);
+                        saveButton.html( '<span><i class=\'fa fa-spinner fa spin\'></i>&nbsp; Saving...</span>').attr('disabled', true);
+                        $scope.saveQuestionnaire()
+                            .then(function () {
+                                saveButton.html('Save Questionnaire').attr('disabled', false);
+                            })
                     });
                 });
             }
@@ -56,8 +61,9 @@ angular.module('survey')
 
 
             $scope.saveQuestionnaire = function () {
-
+                var defer = $q.defer();
                 if (surveyPayLoad) {
+                    $scope.savingQuestionnaire = true;
                     var surveyData = JSON.parse(surveyPayLoad);
                     var questionsArray = [], answerArray = [];
 
@@ -133,26 +139,36 @@ angular.module('survey')
                         })
                             .success(function (data) {
                                 if (data.code == '200' && data.status.toLowerCase() == 'ok') {
-                                    growl.success('Uploading and processing questions to the server...');
+                                    growl.info('Uploading and processing questions to the server...');
 
                                     surveyService.loadAllSurveys()
                                         .then(function (status) {
-                                            growl.success("Survey reloaded successfully");
-                                            $state.go('surveys');
+                                            growl.success("Survey saved successfully");
+                                            $scope.savingQuestionnaire = false;
+                                            defer.resolve(true);
+                                            //$state.go('surveys');
                                         });
+                                }else if(data.code == '401'){
+                                    defer.resolve(true);
+                                    $scope.savingQuestionnaire = false;
+
                                 }
                             })
                             .error(function () {
                                 growl.error('An error occurred while attempting to upload');
-
+                                defer.resolve(false);
+                                $scope.savingQuestionnaire = false;
                             });
-
-
                     }
-
-                }else{
-                    console.log("nothing");
                 }
+                else if($scope.selected_survey.question_tree.length){
+                    growl.info('Everything up to date.');
+                    defer.resolve(true);
+                }else{
+                    growl.info('Add questions to save and preview');
+                    defer.resolve(false);
+                }
+                return defer.promise;
             };
 
 

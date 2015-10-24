@@ -108,7 +108,7 @@ class SurveysRepository {
 
         if ($save_answers) {
 
-            event(new NewSurveyResponse($save_answers));
+//            event(new NewSurveyResponse($save_answers));
 
             return Helpers::responseToView($code=200, $status="OK",$message = "Survey answers saved successfully");
 

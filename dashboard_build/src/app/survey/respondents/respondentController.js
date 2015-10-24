@@ -27,7 +27,7 @@ angular.module('survey')
                             growl.success('Email Sent Successfully', {title : 'Email Sent', ttl : 5000});
                             $scope.sendingEmails = false;
                             $timeout(function () {
-                                loadSurveys();
+                                $scope.loadSurveys();
                             });
                         }
 
@@ -40,25 +40,34 @@ angular.module('survey')
 
             $scope.loadingSurveys = true;
 
-            function loadSurveys() {
-                $scope.sms_respondent_form = {
-                    from_phone_number : $scope.user.phone_number
-                };
+            $scope.loadSurveys = function() {
+                $timeout(function () {
 
-                $scope.respondent_form = {
-                    from_email : $scope.user.email
-                };
+                    $scope.surveys = surveyService.surveys;
+                    $scope.sms_respondent_form = {
+                        from_phone_number : $scope.user.phone_number,
+                        survey_id : $stateParams.survey_id || '0'
+                    };
 
-                $scope.loadingSurveys = false;
-                $scope.surveys = surveyService.surveys;
-            }
+                    $scope.respondent_form = {
+                        from_email : $scope.user.email,
+                        survey_id : $stateParams.survey_id || '0'
+                    };
+
+                    $scope.loadingSurveys = false;
+
+                    console.log($scope.respondent_form);
+                }, 100);
+
+
+            };
 
             if (surveyService.surveys && surveyService.surveys.length) {
-                loadSurveys();
+                $scope.loadSurveys()
             }
 
             $scope.$on('surveysLoadedAndPrepped', function(){
-                loadSurveys();
+                $scope.loadSurveys()
             });
 
         }]);

@@ -46,27 +46,27 @@ angular.module('survey')
 
                         //get the question of the answer in the loop and find the type of response required
                         /*if check boxes, update the count of each option in the array*/
-                        if (questionHolder[prop].field_type == 'checkboxes' || questionHolder[prop].field_type == 'radio') {
+                        if (questionHolder[prop].field_type == 'checkboxes') {
                             for(var a_o = 0; a_o < value.length; a_o++){/* a_o = answer option*/
                                 questionHolder[prop].answer_options[ value[a_o] ] ++ ;
                             }
-                        }else if(questionHolder[prop].field_type == 'dropdown'){
-                            for(var d_a_o = 0; d_a_o < value.length; d_a_o++){/*d_a_o = dropdown answer option*/
-                                questionHolder[prop].answer_options[ value ] ++ ;
-                            }
+                        }else if(questionHolder[prop].field_type == 'radio' || questionHolder[prop].field_type == 'dropdown'){
+
+                            questionHolder[prop].answer_options[ value ] ++ ;
+
                         }else{
+                            /*keep all other answer types in an array with the respondees details in an object*/
                             questionHolder[prop].answer_options.push({
-                                name : userAnswers.name_of_respondent,
-                                email : userAnswers.email,
-                                phone_number : userAnswers.phone_number,
-                                created_at : userAnswers.created_at,
+                                name : response.name_of_respondent,
+                                email : response.email,
+                                phone_number : response.phone_number,
+                                created_at : response.created_at,
                                 content : value
                             }) ;
                         }
                     });
                 }
 
-                console.log(questionHolder);
             }
 
             if (surveyService.surveys && surveyService.surveys.length) {
@@ -78,7 +78,6 @@ angular.module('survey')
             });
 
             $scope.changeChartType = function (chartType) {
-
             };
 
             $scope.selectQuestion = function (question_clicked) {
@@ -88,6 +87,7 @@ angular.module('survey')
                     questionHolder[question_clicked.cid].field_type == 'radio'||
                     questionHolder[question_clicked.cid].field_type == 'dropdown'){
                     var colorOptionTracker = 0;
+                    $scope.selected_question.type = 'closed';
                     angular.forEach(questionHolder[question_clicked.cid].answer_options, function (value, key) {
                         $scope.chartData.push({
                             "country": key,
@@ -95,7 +95,10 @@ angular.module('survey')
                             "color": prConstantOptions.colors[colorOptionTracker++]
                         })
                     });
-                    console.log($scope.chartData);
+                }else{
+                    $scope.selected_question.answers = questionHolder[question_clicked.cid].answer_options;
+                    $scope.selected_question.type = 'opened';
+
                 }
 
             }

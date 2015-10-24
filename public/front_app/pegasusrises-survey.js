@@ -48,7 +48,7 @@ angular.module('pegasusrisesSurvey', [
             }
 
             surveyService.getSurvey = function () {
-               var queryString = "http://pegasus2.app/answer/survey?unique_id=" + getURLParams('unique_id');
+                var queryString = "http://pegasusrises.com/survey?unique_id=" + getURLParams('unique_id');
 
                 return $http.get(URL.getSurvey, {params : { unique_id : queryString }})
             };
@@ -205,14 +205,14 @@ angular.module('pegasusrisesSurvey', [
                     schema: schema,
                     form: formArray,
                     onSubmit: function (errors, values) {
-                        /*  $table->bigInteger('survey_id');
-                         $table->bigInteger('name_of_respondent');/!*Make this nullable*!/
-                         $table->bigInteger('email');/!*Make this nullable*!/
-                         $table->bigInteger('phone_number');/!*Make this nullable*!/
-                         $table->string('answer_response');*/
                         growl.info('Data submitting...', {ttl : 5000});
-                        console.log("errors", errors);
-                        console.log("values", values);
+                        //console.log("errors", errors);
+                        //console.log("values", values);
+
+                        $('input[ type = "radio" ]:checked').each(function (index, elem) {
+                            values[$(elem).attr('name')] = $(elem).attr('value');
+                        });
+
                         var dataToSend = {
                             survey_id : surveyId,
                             name_of_respondent : '',
@@ -226,7 +226,6 @@ angular.module('pegasusrisesSurvey', [
                                 if(successData.code == '200' && successData.status.toLowerCase() == 'ok'){
                                     growl.success('Data submitted successfully.', {ttl : 5000});
                                     console.log(successData);
-                                    return;
                                 }
                             })
                             .error(function () {

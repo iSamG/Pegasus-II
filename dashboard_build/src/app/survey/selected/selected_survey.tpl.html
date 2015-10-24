@@ -33,6 +33,7 @@
         </section>
     </div>
 
+    <!--this will display whe the survey has gotten no response yet-->
     <div class="col-md-12 fill_white" ng-hide="selected_survey.question_tree">
         <div class="block-web">
             <h4 style="margin: 25px 0" class="text-center">No questions created for this survey.</h4>
@@ -42,6 +43,7 @@
         </div>
     </div>
 
+    <!--Section for listing all the questions in the selected survey-->
     <div class="col-md-6" ng-show="selected_survey.question_tree">
         <div class="widget_inbox">
 
@@ -64,9 +66,13 @@
         </div>
     </div>
 
+    <!--Section for responses of the survey-->
     <div class="col-md-6" ng-show="selected_survey.question_tree">
-        <div class="widget_inbox">
-            <tabset justified="true">
+
+        <!--Section for  charting. Includes tabs for car, pie and column chart-->
+        <div ng-show="selected_question" class="widget_inbox">
+            <tabset  ng-show="selected_question.type === 'closed' " justified="true">
+
                 <tab select="changeChartType('bar')">
                     <tab-heading>
                         <i class="fa fa-list-ul"></i> Bar Chart
@@ -92,61 +98,67 @@
                     <span am-chart=""  chart-type="column" chart-data="chartData" title-field="country" value-field="visits"></span>
                 </tab>
             </tabset>
-
         </div>
+
+        <!--Section for  listing answers when the charts won't work-->
         <div class="row" ng-show="selected_question">
-            <div ng-if="selected_question.question_type == 'close_ended'">
-                <button class="text-center col-sm-6 col-sm-offset-3 btn btn-primary btn-lg" ng-click="$state.go('surveys.analytics', {survey : surveyName, form_id : surveyFormId, index : selected_question.index })">
-                    View More Details</button>
-            </div>
-            <!--style="margin-top: 30%"-->
-            <div ng-if="selected_question.question_type == 'open_ended'" >
+            <div ng-show="selected_question.type === 'opened' ">
+
                 <div class="panel panel-primary">
                     <div class="panel-heading text-center">
-                        <h4 class="panel-title ">{{selected_question.question}}</h4>
+                        <h4 class="panel-title ">{{ selected_question.label }}</h4>
                     </div>
                     <div class="panel-body" style="padding-bottom: 0 !important;">
-                        <ul ng-show="selected_question.answers.length" ng-if="selected_question.answer_format_type == 'regular'" class="media-list">
-                            <li class="media answer-list" style="" ng-repeat="response in selected_question.answers | limitTo : 6"> <a href="">
-                                <p><strong>{{ response.value | limitTo : 100 }}</strong> <br>
-                                    <i class="text-muted" title="Submission date">{{ fromNow ( response.submitted_date) }}</i></p>
-                            </a> </li>
-                        </ul>
-                        <ul ng-show="selected_question.answers.length" ng-if="selected_question.answer_format_type == 'image'" class="media-list">
-                            <li class="media answer-list" style="" ng-repeat="response in selected_question.answers | limitTo : 3"> <a href="">
-                                <div class="col-sm-6">
-                                    <div class="contact_people">
-                                        <a href="#"><img ng-src="{{ response.url }}" width="250px"></a>
-                                    </div>
-                                </div>
-                            </a> </li>
-                        </ul>
 
-                        <ul ng-show="selected_question.answers.length" ng-if="selected_question.answer_format_type == 'location'" class="media-list">
-                            <li class="media answer-list" style="" ng-repeat="response in selected_question.answers | limitTo : 6"> <a href="">
-                                <p> Longitude : <strong>{{ response.longitude }}</strong>, Latitude : <strong>{{ response.latitude }}</strong><br>
-                                    <i class="text-muted" title="Business Name">{{ response.business_name }}</i>
-                                    <i class="text-muted pull-right" title="Submission date">({{ fromNow ( response.submitted_date) }})</i>
-                                </p>
-                            </a> </li>
-                        </ul>
+                        <perfect-scrollbar class="scroller" wheel-propagation="true" wheel-speed="2" min-scrollbar-length="5">
+
+                            <!--List for text or straight forward open answers-->
+                            <ul ng-show="selected_question.answers.length" class="media-list">
+                                <li class="media answer-list" style="" ng-repeat="response in selected_question.answers"><!-- limitTo : 15-->
+                                    <a >
+                                        <p><strong>{{ response.content }}</strong><!--| limitTo : 100 }}--> <br>
+                                            <time class="text-muted timestamp time pull-right" tooltip="Date submitted : {{ response.created_at || 'unavailable' }}">{{ fromNow ( response.created_at) }}</time></p>
+                                    </a> </li>
+                            </ul>
+
+                            <!--List for image type responses-->
+                            <ul ng-show="selected_question.answers.length" ng-if="selected_question.answer_format_type == 'image'" class="media-list">
+                                <li class="media answer-list" style="" ng-repeat="response in selected_question.answers | limitTo : 3"> <a href="">
+                                    <div class="col-sm-6">
+                                        <div class="contact_people">
+                                            <a href="#"><img ng-src="{{ response.url }}" width="250px"></a>
+                                        </div>
+                                    </div>
+                                </a> </li>
+                            </ul>
+
+                            <!--List for map location coordinates-->
+                            <ul ng-show="selected_question.answers.length" ng-if="selected_question.answer_format_type == 'location'" class="media-list">
+                                <li class="media answer-list" style="" ng-repeat="response in selected_question.answers | limitTo : 6"> <a href="">
+                                    <p> Longitude : <strong>{{ response.longitude }}</strong>, Latitude : <strong>{{ response.latitude }}</strong><br>
+                                        <i class="text-muted" title="Business Name">{{ response.business_name }}</i>
+                                        <i class="text-muted pull-right" title="Submission date">({{ fromNow ( response.submitted_date) }})</i>
+                                    </p>
+                                </a> </li>
+                            </ul>
+
+                        </perfect-scrollbar>
+
 
                         <h4 ng-hide="selected_question.answers.length" class="text-center" style="margin: 5% 0">No responses submitted!</h4>
                     </div>
                 </div>
 
-                <button class="text-center col-sm-6 col-sm-offset-3 btn btn-primary btn-lg" ng-click="$state.go('surveys.analytics', {survey : surveyName, form_id : surveyFormId, index : selected_question.index })">
+                <button class="text-center hidden col-sm-6 col-sm-offset-3 btn btn-primary btn-lg" ng-click="$state.go('surveys.analytics', {survey : surveyName, form_id : surveyFormId, index : selected_question.index })">
                     View More Details</button>
             </div>
         </div>
     </div>
-    <div class="col-md-6" ng-show="selected_survey.question_tree">
+
+    <div class="col-md-6" ng-show="(selected_survey.question_tree && (!selected_question))" >
         <div class="widget_inbox">
-            <h3 style="margin-top: 30%" class="text-center hidden" ><i class="fa fa-arrow-left"></i>  Select a question on the left to preview</h3>
+            <h3 style="margin-top: 30%" class="text-center" ><i class="fa fa-arrow-left"></i>  Select a question on the left</h3>
         </div>
     </div>
-
-    <!--<pre>{{selected_question.answers | json }}</pre>-->
-
 </div>
 
