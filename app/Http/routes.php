@@ -30,6 +30,9 @@ Route::get('/auth/user', 'PegasusUserController@currentUser');
 
 Route::post('/sendEmail','EmailController@sendSurveyEmail');
 
+Route::get('/email',function () {
+                        return view('email_template');
+});
 Route::get('/dashboard', [
 
     'as' => 'dashboard_view', 'uses' => 'PegasusUserController@renderDashboard'

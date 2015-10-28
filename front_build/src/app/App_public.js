@@ -9,7 +9,6 @@ angular.module('pegasusApp', [
     'oitozero.ngSweetAlert',
     'angularMoment',
     'angular-cache',
-    'doowb.angular-pusher',
     'angular-loading-bar',
     'templates.app',
     'templates.common',
@@ -19,9 +18,9 @@ angular.module('pegasusApp', [
     'public'
 ])
     .config(['$stateProvider','$urlRouterProvider','PGConstants','growlProvider','CacheFactoryProvider',
-        '$rootScopeProvider', 'PusherServiceProvider','$locationProvider','$provide',
+        '$rootScopeProvider','$locationProvider','$provide',
         function($stateProvider, $urlRouterProvider, PGConstants, growlProvider, CacheFactoryProvider,
-                 $rootScopeProvider, PusherServiceProvider, $locationProvider, $provide){
+                 $rootScopeProvider, $locationProvider, $provide){
 
             $locationProvider.html5Mode(true);
 

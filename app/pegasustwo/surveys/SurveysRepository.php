@@ -1,5 +1,6 @@
 <?php namespace App\pegasustwo\surveys;
 use App\Answer;
+use App\Events\NewSurveyResponse;
 use App\pegasustwo\Helpers;
 use App\Survey;
 use DB;
@@ -106,6 +107,8 @@ class SurveysRepository {
         $save_answers = Answer::create($answers_to_survey_questions);
 
         if ($save_answers) {
+
+//            event(new NewSurveyResponse($save_answers));
 
             return Helpers::responseToView($code=200, $status="OK",$message = "Survey answers saved successfully");
 

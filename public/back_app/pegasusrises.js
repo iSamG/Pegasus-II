@@ -231,8 +231,8 @@ angular.module('pegasusrises', [
 
 
 angular.module('pegasusrises')
-    .run(['$rootScope', '$state', '$stateParams', 'cfpLoadingBar','$localStorage','surveyService','adminService',
-        function($rootScope, $state, $stateParams, cfpLoadingBar, $localStorage, surveyService, adminService){
+    .run(['$rootScope', '$state', '$stateParams', 'cfpLoadingBar','$localStorage','surveyService','adminService','Pusher',
+        function($rootScope, $state, $stateParams, cfpLoadingBar, $localStorage, surveyService, adminService, Pusher){
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 
@@ -288,13 +288,21 @@ angular.module('pegasusrises')
                         surveyService.loadAllSurveys();
                     }
 
-            });
+                });
 
 
             $rootScope.reloadSurveyData = function () {
                 surveyService.loadAllSurveys();
-            }
+            };
 
+
+
+            Pusher.subscribe('new_survey_response', 'NewSurveyResponse', function (item) {
+                //When new data is submitted, get the section type submitted and assign
+                // sectionToGo variable and sectionUnderText variable
+
+                console.log('pusher event', item);
+            });
         }]);
 /**
  * Created by Kaygee on 03/10/2015.
@@ -558,8 +566,9 @@ angular.module('survey')
  */
 
 angular.module('survey')
-    .controller('prFormBuilderController', ['$rootScope', '$scope','$state', 'homeService', 'surveyService', 'growl','$localStorage','$timeout',
-        function($rootScope, $scope,$state,  homeService, surveyService, growl, $localStorage, $timeout ){
+    .controller('prFormBuilderController', ['$rootScope', '$scope','$state', 'homeService', 'surveyService',
+        'growl','$localStorage','$timeout', '$q',
+        function($rootScope, $scope,$state,  homeService, surveyService, growl, $localStorage, $timeout, $q ){
 
             var surveyPayLoad;
             function loadSurveys() {
@@ -592,8 +601,12 @@ angular.module('survey')
 
                 $timeout(function () {
                     $('#saveQuestionnaire').click(function () {
-                        console.log('log');
-                        $scope.saveQuestionnaire();
+                        var saveButton = $(this);
+                        saveButton.html( '<span><i class=\'fa fa-spinner fa spin\'></i>&nbsp; Saving...</span>').attr('disabled', true);
+                        $scope.saveQuestionnaire()
+                            .then(function () {
+                                saveButton.html('Save Questionnaire').attr('disabled', false);
+                            })
                     });
                 });
             }
@@ -611,8 +624,9 @@ angular.module('survey')
 
 
             $scope.saveQuestionnaire = function () {
-
+                var defer = $q.defer();
                 if (surveyPayLoad) {
+                    $scope.savingQuestionnaire = true;
                     var surveyData = JSON.parse(surveyPayLoad);
                     var questionsArray = [], answerArray = [];
 
@@ -688,26 +702,36 @@ angular.module('survey')
                         })
                             .success(function (data) {
                                 if (data.code == '200' && data.status.toLowerCase() == 'ok') {
-                                    growl.success('Uploading and processing questions to the server...');
+                                    growl.info('Uploading and processing questions to the server...');
 
                                     surveyService.loadAllSurveys()
                                         .then(function (status) {
-                                            growl.success("Survey reloaded successfully");
-                                            $state.go('surveys');
+                                            growl.success("Survey saved successfully");
+                                            $scope.savingQuestionnaire = false;
+                                            defer.resolve(true);
+                                            //$state.go('surveys');
                                         });
+                                }else if(data.code == '401'){
+                                    defer.resolve(true);
+                                    $scope.savingQuestionnaire = false;
+
                                 }
                             })
                             .error(function () {
                                 growl.error('An error occurred while attempting to upload');
-
+                                defer.resolve(false);
+                                $scope.savingQuestionnaire = false;
                             });
-
-
                     }
-
-                }else{
-                    console.log("nothing");
                 }
+                else if($scope.selected_survey.question_tree.length){
+                    growl.info('Everything up to date.');
+                    defer.resolve(true);
+                }else{
+                    growl.info('Add questions to save and preview');
+                    defer.resolve(false);
+                }
+                return defer.promise;
             };
 
 
@@ -752,7 +776,8 @@ angular.module('survey')
         function($rootScope, $scope, homeService, surveyService, growl, $stateParams, $timeout ){
 
             $scope.sendEmail = function () {
-                if (!$scope.respondent_form.survey_url) {
+                $scope.sendingEmails = true;
+                if (!$scope.respondent_form.survey_id) {
                     growl.info('Select a survey to be sent', {title : 'No Survey Selected', ttl : 5000});
                     return
                 }
@@ -760,41 +785,56 @@ angular.module('survey')
                     growl.info('Specify at least one email recipient', {title : 'No Email Recipient', ttl : 5000});
                     return
                 }
+                $scope.respondent_form.survey_url = surveyService.surveyLookup[$scope.respondent_form.survey_id].survey_unique_public_url;
+                $scope.respondent_form.survey_name = surveyService.surveyLookup[$scope.respondent_form.survey_id].survey_name;
 
                 surveyService.sendEmail($scope.respondent_form)
                     .success(function (successData) {
                         if (successData) {
                             growl.success('Email Sent Successfully', {title : 'Email Sent', ttl : 5000});
+                            $scope.sendingEmails = false;
+                            $timeout(function () {
+                                $scope.loadSurveys();
+                            });
                         }
 
                     })
                     .error(function () {
                         growl.error('Email can not be sent at this time. Check internet connection', {title : 'Email Not Sent', ttl : 5000});
-
+                        $scope.sendingEmails = false;
                     })
             };
 
             $scope.loadingSurveys = true;
 
-            function loadSurveys() {
-                $scope.sms_respondent_form = {
-                    from_phone_number : $scope.user.phone_number
-                };
+            $scope.loadSurveys = function() {
+                $timeout(function () {
 
-                $scope.respondent_form = {
-                    from_email : $scope.user.email
-                };
+                    $scope.surveys = surveyService.surveys;
+                    $scope.sms_respondent_form = {
+                        from_phone_number : $scope.user.phone_number,
+                        survey_id : $stateParams.survey_id || '0'
+                    };
 
-                $scope.loadingSurveys = false;
-                $scope.surveys = surveyService.surveys;
-            }
+                    $scope.respondent_form = {
+                        from_email : $scope.user.email,
+                        survey_id : $stateParams.survey_id || '0'
+                    };
+
+                    $scope.loadingSurveys = false;
+
+                    console.log($scope.respondent_form);
+                }, 100);
+
+
+            };
 
             if (surveyService.surveys && surveyService.surveys.length) {
-                loadSurveys();
+                $scope.loadSurveys()
             }
 
             $scope.$on('surveysLoadedAndPrepped', function(){
-                loadSurveys();
+                $scope.loadSurveys()
             });
 
         }]);
@@ -847,27 +887,27 @@ angular.module('survey')
 
                         //get the question of the answer in the loop and find the type of response required
                         /*if check boxes, update the count of each option in the array*/
-                        if (questionHolder[prop].field_type == 'checkboxes' || questionHolder[prop].field_type == 'radio') {
+                        if (questionHolder[prop].field_type == 'checkboxes') {
                             for(var a_o = 0; a_o < value.length; a_o++){/* a_o = answer option*/
                                 questionHolder[prop].answer_options[ value[a_o] ] ++ ;
                             }
-                        }else if(questionHolder[prop].field_type == 'dropdown'){
-                            for(var d_a_o = 0; d_a_o < value.length; d_a_o++){/*d_a_o = dropdown answer option*/
-                                questionHolder[prop].answer_options[ value ] ++ ;
-                            }
+                        }else if(questionHolder[prop].field_type == 'radio' || questionHolder[prop].field_type == 'dropdown'){
+
+                            questionHolder[prop].answer_options[ value ] ++ ;
+
                         }else{
+                            /*keep all other answer types in an array with the respondees details in an object*/
                             questionHolder[prop].answer_options.push({
-                                name : userAnswers.name_of_respondent,
-                                email : userAnswers.email,
-                                phone_number : userAnswers.phone_number,
-                                created_at : userAnswers.created_at,
+                                name : response.name_of_respondent,
+                                email : response.email,
+                                phone_number : response.phone_number,
+                                created_at : response.created_at,
                                 content : value
                             }) ;
                         }
                     });
                 }
 
-                console.log(questionHolder);
             }
 
             if (surveyService.surveys && surveyService.surveys.length) {
@@ -879,7 +919,6 @@ angular.module('survey')
             });
 
             $scope.changeChartType = function (chartType) {
-
             };
 
             $scope.selectQuestion = function (question_clicked) {
@@ -889,6 +928,7 @@ angular.module('survey')
                     questionHolder[question_clicked.cid].field_type == 'radio'||
                     questionHolder[question_clicked.cid].field_type == 'dropdown'){
                     var colorOptionTracker = 0;
+                    $scope.selected_question.type = 'closed';
                     angular.forEach(questionHolder[question_clicked.cid].answer_options, function (value, key) {
                         $scope.chartData.push({
                             "country": key,
@@ -896,7 +936,10 @@ angular.module('survey')
                             "color": prConstantOptions.colors[colorOptionTracker++]
                         })
                     });
-                    console.log($scope.chartData);
+                }else{
+                    $scope.selected_question.answers = questionHolder[question_clicked.cid].answer_options;
+                    $scope.selected_question.type = 'opened';
+
                 }
 
             }
@@ -1317,183 +1360,205 @@ angular.module('directives')
  */
 
 angular.module('directives')
-    .directive('previewSurvey', ['surveyService','$modal', function (surveyService, $modal) {
+    .directive('previewSurvey', ['surveyService','$modal', '$timeout', function (surveyService, $modal, $timeout) {
 
         return {
             scope: {
-                survey_id : '@previewSurvey'
+                survey_id : '@previewSurvey',
+                savePayload : ' &savePayload',
+                callSave : '@callSave'
             },
 
             link : function ($scope, elem, attrs) {
+
+
                 elem.bind('click', function () {
-                    $modal.open({
-                        controller : ['$scope','$modalInstance','growl','prFieldTypes', PreviewSurveyModalController],
-                        templateUrl : 'common/modals/previewSurveyFormModal.tpl.html',
-                        size : 'md'
-                    });
+                    if ($scope.callSave == 'yes'){
 
-                    function PreviewSurveyModalController($scope,$modalInstance, growl, prFieldTypes){
-                        $scope.close = function () {
-                            $modalInstance.dismiss();
-                        };
-                        var surveyData, formArray = [], schema = {};
+                        var initialTextInElement = $(elem).html();
+                        $timeout(function () {
+                            $(elem).html(initialTextInElement).attr('disabled', false);
+                        }, 15000);
 
-                        var prepFormComponents = function () {
-                            $scope.selected_survey = surveyService.surveyLookup[attrs.previewSurvey];
+                        $(elem).html('<i class="fa fa-spinner fa-spin"></i>&nbsp; Rendering...').attr('disabled', true);
 
-                            if ($scope.selected_survey && $scope.selected_survey.question_tree && $scope.selected_survey.question_tree.length) {
-                                surveyData =$scope.selected_survey.question_tree;
-                                console.log(surveyData);
-                            }else{
-                                $scope.close();
-                                growl.warning('Add questions and save the survey before viewing preview');
-                                return;
-                            }
+                        $scope.savePayload().then(function (value) {
+                            $(elem).html(initialTextInElement).attr('disabled', false);
+                            openModal();
+                        });
+                    }else{
+                        openModal();
+                    }
 
-                            if (surveyData) {
-                                for(var i = 0; i < surveyData.length; i++){
-                                    var itemInLoop = surveyData[i], enumholder = [];
+                    function openModal() {
+                        $modal.open({
+                            controller: ['$scope', '$modalInstance', 'growl', 'prFieldTypes', PreviewSurveyModalController],
+                            templateUrl: 'common/modals/previewSurveyFormModal.tpl.html',
+                            size: 'md'
+                        });
+                        function PreviewSurveyModalController($scope,$modalInstance, growl, prFieldTypes){
+                            $scope.close = function () {
+                                $modalInstance.dismiss();
+                            };
+                            var surveyData, formArray = [], schema = {};
 
-                                    schema[itemInLoop.cid] = {
-                                        type: prFieldTypes[itemInLoop.field_type], /*[string, number(numbers, including floating numbers), integer, boolean, array, object ]*/
-                                        title: itemInLoop.label,
-                                        "default" : '',
-                                        //maxLength : itemInLoop.field_options.maxlength,
-                                        //minimum : itemInLoop.field_options.minlength,
-                                        //readOnly : true,
-                                        required: itemInLoop.required,
-                                        "description": itemInLoop.field_options.description
-                                        //"enum": ["male","female","alien"]/*minItems , maxItems*/
-                                    };
+                            var prepFormComponents = function () {
+                                $scope.selected_survey = surveyService.surveyLookup[attrs.previewSurvey];
 
-                                    if (itemInLoop.field_type == "radio" || itemInLoop.field_type == "checkboxes" ||  itemInLoop.field_type == "dropdown"){
+                                if ($scope.selected_survey && $scope.selected_survey.question_tree && $scope.selected_survey.question_tree.length) {
+                                    surveyData =$scope.selected_survey.question_tree;
+                                }else{
+                                    $scope.close();
+                                    growl.warning('Add questions before viewing preview', {title : 'No questions under this survey'});
+                                    return;
+                                }
 
-                                        if (itemInLoop.field_options.options && itemInLoop.field_options.options.length) {
+                                if (surveyData) {
+                                    for(var i = 0; i < surveyData.length; i++){
+                                        var itemInLoop = surveyData[i], enumholder = [];
 
-                                            for(var e = 0; e < itemInLoop.field_options.options.length; e++) {
-                                                enumholder.push( itemInLoop.field_options.options[e].label);
+                                        schema[itemInLoop.cid] = {
+                                            type: prFieldTypes[itemInLoop.field_type], /*[string, number(numbers, including floating numbers), integer, boolean, array, object ]*/
+                                            title: itemInLoop.label,
+                                            "default" : '',
+                                            //maxLength : itemInLoop.field_options.maxlength,
+                                            //minimum : itemInLoop.field_options.minlength,
+                                            //readOnly : true,
+                                            required: itemInLoop.required,
+                                            "description": itemInLoop.field_options.description
+                                            //"enum": ["male","female","alien"]/*minItems , maxItems*/
+                                        };
+
+                                        if (itemInLoop.field_type == "radio" || itemInLoop.field_type == "checkboxes" ||  itemInLoop.field_type == "dropdown"){
+
+                                            if (itemInLoop.field_options.options && itemInLoop.field_options.options.length) {
+
+                                                for(var e = 0; e < itemInLoop.field_options.options.length; e++) {
+                                                    enumholder.push( itemInLoop.field_options.options[e].label);
+                                                }
+
+                                                if (itemInLoop.field_type == 'radio') {
+                                                    formArray.push({
+                                                        key: itemInLoop.cid,
+                                                        type: "radios"
+                                                    });
+                                                    schema[itemInLoop.cid].enum = enumholder;
+
+                                                }else if (itemInLoop.field_type == 'checkboxes') {
+                                                    formArray.push({
+                                                        key: itemInLoop.cid,
+                                                        type: "checkboxes"
+                                                    });
+                                                    schema[itemInLoop.cid].items = {
+                                                        "type": "string",
+                                                        "title": itemInLoop.label,
+                                                        "enum": enumholder
+                                                    };
+                                                }else if (itemInLoop.field_type == 'dropdown') {
+                                                    schema[itemInLoop.cid].enum = enumholder;
+                                                    formArray.push({
+                                                        key: itemInLoop.cid,
+                                                        type: "select"
+                                                    });
+                                                }
                                             }
+                                        }else{
+                                            //price : 'string',
+                                            //address : 'string',
+                                            //gps : 'string',
+                                            //image : 'string',
+                                            //video : 'string',
+                                            //file : 'string'
+                                            switch(itemInLoop.field_type)  {
+                                                case 'text' :  formArray.push({
+                                                    key: itemInLoop.cid,
+                                                    type: "text"
+                                                }); break;
 
-                                            if (itemInLoop.field_type == 'radio') {
-                                                formArray.push({
+                                                case  "paragraph" :  formArray.push({
                                                     key: itemInLoop.cid,
-                                                    type: "radios"
-                                                });
-                                                schema[itemInLoop.cid].enum = enumholder;
+                                                    type: "textarea"
+                                                }); break;
 
-                                            }else if (itemInLoop.field_type == 'checkboxes') {
-                                                formArray.push({
+                                                case  "email" :  formArray.push({
                                                     key: itemInLoop.cid,
-                                                    type: "checkboxes"
-                                                });
-                                                schema[itemInLoop.cid].items = {
-                                                    "type": "string",
-                                                    "title": itemInLoop.label,
-                                                    "enum": enumholder
-                                                };
-                                            }else if (itemInLoop.field_type == 'dropdown') {
-                                                schema[itemInLoop.cid].enum = enumholder;
-                                                formArray.push({
+                                                    type: "email"
+                                                }); break;
+
+                                                case  "date" :  formArray.push({
                                                     key: itemInLoop.cid,
-                                                    type: "select"
-                                                });
+                                                    type: "date"
+                                                }); break;
+
+                                                case  "time" :  formArray.push({
+                                                    key: itemInLoop.cid,
+                                                    type: "time"
+                                                }); break;
+
+                                                case  "number" :  formArray.push({
+                                                    key: itemInLoop.cid,
+                                                    type: "time"
+                                                }); break;
+
+                                                case  "website" :  formArray.push({
+                                                    key: itemInLoop.cid,
+                                                    type: "url"
+                                                }); break;
+
+                                                case  "price" :  formArray.push({
+                                                    key: itemInLoop.cid,
+                                                    type: "text"
+                                                }); break;
+
+                                                default :  formArray.push({
+                                                    key: itemInLoop.cid,
+                                                    type: "text"
+                                                })
                                             }
                                         }
-                                    }else{
-                                        //price : 'string',
-                                        //address : 'string',
-                                        //gps : 'string',
-                                        //image : 'string',
-                                        //video : 'string',
-                                        //file : 'string'
-                                        switch(itemInLoop.field_type)  {
-                                            case 'text' :  formArray.push({
-                                                key: itemInLoop.cid,
-                                                type: "text"
-                                            }); break;
 
-                                            case  "paragraph" :  formArray.push({
-                                                key: itemInLoop.cid,
-                                                type: "textarea"
-                                            }); break;
-
-                                            case  "email" :  formArray.push({
-                                                key: itemInLoop.cid,
-                                                type: "email"
-                                            }); break;
-
-                                            case  "date" :  formArray.push({
-                                                key: itemInLoop.cid,
-                                                type: "date"
-                                            }); break;
-
-                                            case  "time" :  formArray.push({
-                                                key: itemInLoop.cid,
-                                                type: "time"
-                                            }); break;
-
-                                            case  "number" :  formArray.push({
-                                                key: itemInLoop.cid,
-                                                type: "time"
-                                            }); break;
-
-                                            case  "website" :  formArray.push({
-                                                key: itemInLoop.cid,
-                                                type: "url"
-                                            }); break;
-
-                                            case  "price" :  formArray.push({
-                                                key: itemInLoop.cid,
-                                                type: "text"
-                                            }); break;
-
-                                            default :  formArray.push({
-                                                key: itemInLoop.cid,
-                                                type: "text"
-                                            })
-                                        }
                                     }
-
                                 }
-                            }
-                            console.log('formArray', formArray);
-                            console.log('schema', schema);
+                                console.log('formArray', formArray);
+                                console.log('schema', schema);
 
-                            $('form').jsonForm({
-                                schema: schema,
-                                form: formArray,
-                                onSubmit: function (errors, values) {
-                                    growl.info('This is for preview purposes only.');
-                                    return false;
-                                    //if (errors) {
-                                    //    $('#res').html('<p>I beg your pardon?</p>');
-                                    //}
-                                    //else {
-                                    //    $('#res').html('<p>Hello ' + values.name + '.' +
-                                    //        (values.age ? '<br/>You are ' + values.age + '.' : '') +
-                                    //        '</p>');
-                                    //}
-                                }
-                            })
-
-                        };
-
-                        $scope.initJSForm = function () {
-                            prepFormComponents();
-                        };
-
-                        $scope.sendSurvey = function () {
-                            surveyService.editSurvey($scope.selected_survey)
-                                .success(function (data) {
-                                    if (data.code == '200') {
-                                        growl.success('Survey edited successfully');
-                                        surveyService.loadAllSurveys()
-                                            .then(function (status) {
-                                                $scope.close()
-                                            })
+                                $('form').jsonForm({
+                                    schema: schema,
+                                    form: formArray,
+                                    onSubmit: function (errors, values) {
+                                        growl.info('This is for preview purposes only.');
+                                        return false;
+                                        //if (errors) {
+                                        //    $('#res').html('<p>I beg your pardon?</p>');
+                                        //}
+                                        //else {
+                                        //    $('#res').html('<p>Hello ' + values.name + '.' +
+                                        //        (values.age ? '<br/>You are ' + values.age + '.' : '') +
+                                        //        '</p>');
+                                        //}
                                     }
                                 })
-                        };
+
+                            };
+
+                            $scope.initJSForm = function () {
+                                prepFormComponents();
+                            };
+
+                            $scope.sendSurvey = function () {
+                                surveyService.editSurvey($scope.selected_survey)
+                                    .success(function (data) {
+                                        if (data.code == '200') {
+                                            growl.success('Survey edited successfully');
+                                            surveyService.loadAllSurveys()
+                                                .then(function (status) {
+                                                    $scope.close()
+                                                })
+                                        }
+                                    })
+                            };
+                        }
+
                     }
                 })
             }

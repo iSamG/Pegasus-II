@@ -128,15 +128,20 @@
                 <fieldset>
 
                     <!-- Form Name -->
-                    <legend ng-bind="survey_name"></legend>
-                    <div class="col-md-8 col-sm-10 col-xs-12 center-block">
+                    <legend ng-bind="survey_name" ng-show="survey_name.length"></legend>
+                    <div ng-show="survey_name.length" class="col-md-8 col-sm-10 col-xs-12 center-block">
                         <div class="alert alert-info text-center h4" ng-bind="survey_description || 'Please fill the survey as accurately as possible'"></div>
                     </div>
 
                 </fieldset>
-                <form class="form-horizontal">
+                <form class="form-horizontal" ng-show="survey_name.length">
 
                 </form>
+
+                <p ng-if="!(survey_name.length)" class="h3 text-center" style="margin: 30px 0 150px">
+                    <i class="fa fa-search h2"></i><br><br><br>
+                    Oops! We couldn't find the survey you requested.<br> Please contact the sender of the link for more information.
+                </p>
 
 
             </div><!-- .row -->
@@ -156,15 +161,15 @@
 
 
                 <!-- Start Subscribe & Social Links Widget -->
-                <div class="col-md-3 col-xs-12">
-                    <div class="footer-widget mail-subscribe-widget">
-                        <h4>Get in touch<span class="head-line"></span></h4>
-                        <p>Join our mailing list to stay up to date and get notices about our new releases!</p>
-                        <form class="subscribe">
-                            <input type="text" placeholder="mail@pegasusrises.com">
-                            <input type="submit" class="main-button" value="Send">
-                        </form>
-                    </div>
+                <div class="col-md-6 col-xs-12">
+                    <!--<div class="footer-widget mail-subscribe-widget">-->
+                        <!--<h4>Get in touch<span class="head-line"></span></h4>-->
+                        <!--<p>Join our mailing list to stay up to date and get notices about our new releases!</p>-->
+                        <!--<form class="subscribe">-->
+                            <!--<input type="text" placeholder="mail@pegasusrises.com">-->
+                            <!--<input type="submit" class="main-button" value="Send">-->
+                        <!--</form>-->
+                    <!--</div>-->
                     <div class="footer-widget social-widget">
                         <h4>Follow Us<span class="head-line"></span></h4>
                         <ul class="social-icons">
@@ -205,86 +210,86 @@
 
 
                 <!-- Start Twitter Widget -->
-                <div class="col-md-3 col-xs-12">
-                    <div class="footer-widget twitter-widget">
-                        <h4>Twitter Feed<span class="head-line"></span></h4>
-                        <ul>
-                            <li>
-                                <p><a href="#">@innovationslab </a> Lorem ipsum dolor et, consectetur adipiscing eli.</p>
-                                <span>28 February 2014</span>
-                            </li>
-                            <li>
-                                <p><a href="#">@innovationslab </a> Lorem ipsum dolor et, consectetur adipiscing eli.An Fusce eleifend aliquet nis application.</p>
-                                <span>26 February 2014</span>
-                            </li>
-                            <li>
-                                <p><a href="#">@innovationslab </a> Lorem ipsum dolor et, consectetur adipiscing eli.</p>
-                                <span>28 February 2014</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div><!-- .col-md-3 -->
+                <!--<div class="col-md-3 col-xs-12">-->
+                    <!--<div class="footer-widget twitter-widget">-->
+                        <!--<h4>Twitter Feed<span class="head-line"></span></h4>-->
+                        <!--<ul>-->
+                            <!--<li>-->
+                                <!--<p><a href="#">@innovationslab </a> Lorem ipsum dolor et, consectetur adipiscing eli.</p>-->
+                                <!--<span>28 February 2014</span>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p><a href="#">@innovationslab </a> Lorem ipsum dolor et, consectetur adipiscing eli.An Fusce eleifend aliquet nis application.</p>-->
+                                <!--<span>26 February 2014</span>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p><a href="#">@innovationslab </a> Lorem ipsum dolor et, consectetur adipiscing eli.</p>-->
+                                <!--<span>28 February 2014</span>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</div>&lt;!&ndash; .col-md-3 &ndash;&gt;-->
                 <!-- End Twitter Widget -->
 
 
                 <!-- Start Flickr Widget -->
-                <div class="col-md-3 col-xs-12">
-                    <div class="footer-widget flickr-widget">
-                        <h4>Flicker Feed<span class="head-line"></span></h4>
-                        <ul class="flickr-list">
-                            <li>
-                                <a href="front_app/assets/images/flickr-01.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-01.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-02.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-02.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-03.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-03.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-04.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-04.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-05.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-05.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-06.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-06.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-07.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-07.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-08.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-08.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-09.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-09.jpg">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div><!-- .col-md-3 -->
+                <!--<div class="col-md-3 col-xs-12">-->
+                    <!--<div class="footer-widget flickr-widget">-->
+                        <!--<h4>Flicker Feed<span class="head-line"></span></h4>-->
+                        <!--<ul class="flickr-list">-->
+                            <!--<li>-->
+                                <!--<a href="front_app/assets/images/flickr-01.jpg" class="lightbox">-->
+                                    <!--<img alt="" src="front_app/assets/images/flickr-01.jpg">-->
+                                <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a href="front_app/assets/images/flickr-02.jpg" class="lightbox">-->
+                                    <!--<img alt="" src="front_app/assets/images/flickr-02.jpg">-->
+                                <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a href="front_app/assets/images/flickr-03.jpg" class="lightbox">-->
+                                    <!--<img alt="" src="front_app/assets/images/flickr-03.jpg">-->
+                                <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a href="front_app/assets/images/flickr-04.jpg" class="lightbox">-->
+                                    <!--<img alt="" src="front_app/assets/images/flickr-04.jpg">-->
+                                <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a href="front_app/assets/images/flickr-05.jpg" class="lightbox">-->
+                                    <!--<img alt="" src="front_app/assets/images/flickr-05.jpg">-->
+                                <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a href="front_app/assets/images/flickr-06.jpg" class="lightbox">-->
+                                    <!--<img alt="" src="front_app/assets/images/flickr-06.jpg">-->
+                                <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a href="front_app/assets/images/flickr-07.jpg" class="lightbox">-->
+                                    <!--<img alt="" src="front_app/assets/images/flickr-07.jpg">-->
+                                <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a href="front_app/assets/images/flickr-08.jpg" class="lightbox">-->
+                                    <!--<img alt="" src="front_app/assets/images/flickr-08.jpg">-->
+                                <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a href="front_app/assets/images/flickr-09.jpg" class="lightbox">-->
+                                    <!--<img alt="" src="front_app/assets/images/flickr-09.jpg">-->
+                                <!--</a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</div>&lt;!&ndash; .col-md-3 &ndash;&gt;-->
                 <!-- End Flickr Widget -->
 
 
                 <!-- Start Contact Widget -->
-                <div class="col-md-3 col-xs-12">
+                <div class="col-md-6 col-xs-12">
                     <div class="footer-widget contact-widget">
                         <h4><img src="front_app/assets/images/footer-margo.pngw22" class="img-responsive" alt="BBG Logo" /></h4>
                         <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
@@ -308,11 +313,11 @@
                     </div><!-- .col-md-6 -->
                     <div class="col-md-6">
                         <ul class="footer-nav">
-                            <li><a href="#">Sitemap</a>
+                            <li><a href="">Sitemap</a>
                             </li>
-                            <li><a href="#">Privacy Policy</a>
+                            <li><a href="">Privacy Policy</a>
                             </li>
-                            <li><a href="#">Contact</a>
+                            <li><a href="">Contact</a>
                             </li>
                         </ul>
                     </div><!-- .col-md-6 -->

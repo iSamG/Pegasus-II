@@ -8,6 +8,6 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" ng-click="close()">Close</button>
-        <button type="button" class="btn btn-success" ng-click="sendSurvey()">Send Survey</button>
+        <button type="button" class="btn btn-success" ng-click="close()" ui-sref="surveys.respondents({survey_id : selected_survey.id })" >Send Survey</button>
     </div>
 </div>

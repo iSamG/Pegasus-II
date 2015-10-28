@@ -87,7 +87,7 @@ module.exports = function (grunt) {
                     process: true
                 }
             },
-            email: {
+            respondent_email_template : {
                 src: ['<%= src.email %>'],
                 dest: '<%= distdirHtml %>/email_template.php',
                 options: {

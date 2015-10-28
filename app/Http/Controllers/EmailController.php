@@ -14,8 +14,9 @@ class EmailController extends Controller{
         $GLOBALS['from'] = $all_inputs['from_email'];
         $link = $all_inputs['survey_url'];
         $recipients = $all_inputs['emails'];
-        $title = 'title';
-        $name='Emmanuel';
+        $survey_name = $all_inputs['survey_name'];
+        $survey_description = $all_inputs['survey_description'];
+        $name='Pegasus';
         $GLOBALS["name"] = '';
 
         foreach($recipients as $address){
@@ -24,12 +25,11 @@ class EmailController extends Controller{
 
             $send_mail = Mail::queue(
                 'email_template',
-                ['name'=>$name, 'survey_id'=>'', 'title'=>$title,'link'=>$link],
+                ['name'=>$name, 'survey_id'=>'', 'survey_name'=>$survey_name, 'survey_description'=>$survey_description, 'link'=>$link],
                 function($message){
-
-                    $message->from($GLOBALS['from'],'Pegasus User');
+                    $message->from($GLOBALS['from'],'Pegasus');
                     $message->to($GLOBALS["name"]['text'],'Respondent');
-                    $message->subject('PegasusRises Email Survey');
+                    $message->subject('Pegasus Email Survey');
                 }
             );
                             return Helpers::responseToView($code = 200, $status = "OK", $message = "Survey email sent successfully");

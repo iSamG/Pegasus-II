@@ -17,28 +17,39 @@
                     <h3 class="page-header" style="margin-top: 3px !important;">Email Respondents</h3>
 
                     <div class="row">
-                        <form  role="form" class="col-md-6 col-sm-8 col-xs-12 center-block form-horizontal" ng-submit="sendEmail()">
+                        <form  role="form" class="col-md-8 col-sm-9 col-xs-12 center-block form-horizontal" ng-submit="sendEmail()">
                             <div class="form-group">
                                 <label class="col-sm-4 col-xs-12 control-label text-left " for="from">From</label>
                                 <div class="col-sm-8 col-xs-12">
-                                    <input type="text" ng-disabled="true" ng-model="respondent_form.from_email" id="from" class=" form-control" >
+                                    <input type="text" ng-disabled="true" value="{{ user.email }}" ng-model="respondent_form.from_email" id="from" class=" form-control" >
                                 </div>
                             </div><!--/form-group-->
                             <br>
                             <br>
-                            <br>
-                            <div class="form-group">
+                            <div class="form-group" ng-init="loadSurveys()">
                                 <label class="col-sm-4 col-xs-12 control-label text-left">Survey</label>
                                 <div class="col-sm-8 col-xs-12">
-                                    <select title="selectSurvey" name="selectSurvey" data-ng-model="respondent_form.survey_url" class=" form-control"
-                                            ng-options="survey.survey_unique_public_url as survey.survey_name for survey in surveys">
+                                    <select title="selectSurvey" name="selectSurvey" data-ng-model="respondent_form.survey_id" class=" form-control"
+                                            ng-options="survey.id as survey.survey_name for survey in surveys">
                                         <option value="">Select a survey</option>
                                     </select>
                                 </div><!--/col-sm-9-->
                             </div><!--/form-group-->
                             <br>
                             <br>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-4 col-xs-12 control-label text-left">Survey Description</label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <textarea data-ng-model="respondent_form.survey_description" class=" form-control"
+                                              placeholder="A brief description of the survey" rows="5">
+                                    </textarea>
+                                </div><!--/col-sm-9-->
+                            </div><!--/form-group-->
                             <br>
+                            <br>
+
                             <div class="form-group">
                                 <label class="col-sm-4 col-xs-12 control-label text-left" for="emails">Recipients</label>
                                 <div class="col-sm-8 col-xs-12">
@@ -64,7 +75,10 @@
                             <div class="form-group">
                                 <div class="col-sm-4 col-xs-6 pull-right">
                                     <button class="hidden btn btn-default" type="reset" ng-click="resetRespondentForm()">Cancel</button>
-                                    <button class="btn btn-primary pull-right" type="submit">Send</button>
+                                    <button class="btn  pull-right" ng-class="{true : 'btn-default', false : 'btn-primary'}[sendingEmails]" type="submit" data-ng-disabled="sendingEmails">
+                                        <span ng-if="!(sendingEmails)">Send Mail</span>
+                                        <span ng-if="sendingEmails">Sending mails, hang on...</span>
+                                    </button>
                                 </div>
                             </div><!--/form-group-->
                         </form>
@@ -79,7 +93,7 @@
                 <div class="porlets-content">
                     <h3 class="page-header" style="margin-top: 3px !important;">SMS Respondents</h3>
                     <div class="row">
-                        <form role="form" class="col-md-6 col-sm-8 col-xs-12 center-block form-horizontal" ng-submit="sendSMS()">
+                        <form role="form" class="col-md-8 col-sm-9 col-xs-12 center-block form-horizontal" ng-submit="sendSMS()">
                             <div class="form-group">
                                 <label class="col-sm-4 col-xs-12 control-label text-left " for="sms_from">From</label>
                                 <div class="col-sm-8 col-xs-12">
@@ -88,17 +102,28 @@
                             </div><!--/form-group-->
                             <br>
                             <br>
-                            <br>
                             <div class="form-group">
                                 <label class="col-sm-4 col-xs-12 control-label text-left">Survey</label>
                                 <div class="col-sm-8 col-xs-12">
-                                    <select data-ng-model="sms_respondent_form.survey_url" class=" form-control"
-                                            ng-options="survey.survey_unique_public_url as survey.survey_name for survey in surveys">
+                                    <select data-ng-model="sms_respondent_form.survey_id" class=" form-control"
+                                            ng-options="survey.id as survey.survey_name for survey in surveys">
                                         <option value="">Select a survey</option>
                                     </select>
                                 </div><!--/col-sm-9-->
                             </div><!--/form-group-->
+
                             <br>
+                            <br>
+                            <div class="form-group">
+                                <label class="col-sm-4 col-xs-12 control-label text-left">Survey Description</label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <textarea data-ng-model="sms_respondent_form.survey_description" class=" form-control"
+                                              placeholder="A brief description of the survey" rows="5">
+                                    </textarea>
+                                </div><!--/col-sm-9-->
+                            </div><!--/form-group-->
+
+
                             <br>
                             <br>
                             <div class="form-group">

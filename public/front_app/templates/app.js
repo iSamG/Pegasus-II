@@ -9,7 +9,7 @@ angular.module("public/about/about.tpl.html", []).run(["$templateCache", functio
     "    <div class=\"page-banner\" style=\"padding:10px 0;\">\n" +
     "        <div class=\"\">\n" +
     "            <div class=\"row\">\n" +
-    "                <div class=\"col-xs-11 col-sm-10\" style=\"padding-left :40px \">\n" +
+    "                <div class=\"col-xs-11 col-sm-10 \" style=\"padding-left :40px \">\n" +
     "                    <h2>About </h2>\n" +
     "                </div>\n" +
     "                <div class=\"col-md-6 hidden\">\n" +
