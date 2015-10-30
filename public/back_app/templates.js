@@ -350,9 +350,9 @@ angular.module("app/admin/settings.tpl.html", []).run(["$templateCache", functio
 angular.module("app/home/home.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/home/home.tpl.html",
     "<div class=\"white_bg\" ng-hide=\"loadingSurveys\" ng-if=\"true\"><!--surveys.length < 1-->\n" +
-    "    <h2 class=\"page-header text-center\">Welcome to Pegasusrises</h2>\n" +
+    "    <h2 class=\"page-header text-center\">Welcome to Pegasus</h2>\n" +
     "    <div class=\"row\" style=\"padding-bottom: 50px\">\n" +
-    "        <p class=\"h5 text-center\">Click the button below to create a survey on Pegasusrises</p>\n" +
+    "        <p class=\"h5 text-center\">Click the button below to create a survey</p>\n" +
     "        <div class=\"text-center\" style=\"margin: 50px 0\" id=\"ngJoyRide_1_gdrive\">\n" +
     "\n" +
     "            <!--This button appears if you've not selected a file-->\n" +
@@ -839,11 +839,11 @@ angular.module("app/survey/list_all/survey_list.tpl.html", []).run(["$templateCa
     "                        <p><em>Start Date : &nbsp;</em><span ng-bind=\"formatDate(survey.start_date)\"></span></p>\n" +
     "                        <p><em>End Date : &nbsp;</em><span ng-bind=\"formatDate(survey.end_date)\"></span></p>\n" +
     "                        <p><em>Questions : &nbsp;</em>\n" +
-    "                            <span ng-hide=\"survey.question_tree\" ui-sref=\"surveys.form_builder({survey_id : survey.id})\" class=\"pointer btn btn-link\">Click to add questions</span>\n" +
-    "                            <span ng-show=\"survey.question_tree\" ui-sref=\"surveys.form_builder({survey_id : survey.id})\" tooltip=\"Click to add/edit question\" class=\"pointer\" ng-bind=\"survey.question_tree.length\"></span>\n" +
+    "                            <button ng-hide=\"survey.question_tree\" ui-sref=\"surveys.form_builder({survey_id : survey.id})\" class=\"pointer btn btn-link\">Click to add questions</button>\n" +
+    "                            <button ng-show=\"survey.question_tree\" ui-sref=\"surveys.form_builder({survey_id : survey.id})\" tooltip=\"Click to add/edit question\" class=\"btn btn-link pointer\" ng-bind=\"survey.question_tree.length\"></button>\n" +
     "                        </p>\n" +
     "                        <!--<p><em>Total Responses : &nbsp;</em><span ui-sref=\"surveys.demo_form\">Click to send survey</span></p>-->\n" +
-    "                        <p><em>Total Responses : &nbsp;</em><span>No responses recorded</span></p>\n" +
+    "                        <p ui-sref=\"surveys.selected_survey({survey_id : survey.id})\"><em>Responses : &nbsp;</em><button class=\"btn btn-link btn-sm\" tooltip=\"Click to view responses\">Show</button></p>\n" +
     "                    </div>\n" +
     "                    <div class=\"col-sm-3\">\n" +
     "                        <!--<div class=\"pull-right\"><span>August  15, 2014</span></div>-->\n" +
@@ -899,8 +899,8 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "    <div class=\"block-web\">\n" +
     "        <div class=\"header\">\n" +
     "            <div class=\"actions hidden\">\n" +
-    "                <a href=\"#\" class=\"minimize\"><i class=\"fa fa-chevron-down\"></i></a>\n" +
-    "                <a href=\"#\" class=\"close-down\"><i class=\"fa fa-times\"></i></a> </div>\n" +
+    "                <a href=\"\" class=\"minimize\"><i class=\"fa fa-chevron-down\"></i></a>\n" +
+    "                <a href=\"\" class=\"close-down\"><i class=\"fa fa-times\"></i></a> </div>\n" +
     "            <h3 class=\"content-header\">Survey Respondents\n" +
     "                <span ng-click=\"$state.go('surveys')\"  tooltip-placement=\"left\" tooltip=\"Back to survey list\" class=\"pointer pull-right label label-info\"><i class=\"fa fa-arrow-left\"></i></span>\n" +
     "            </h3>\n" +
@@ -914,16 +914,16 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "                    <h3 class=\"page-header\" style=\"margin-top: 3px !important;\">Email Respondents</h3>\n" +
     "\n" +
     "                    <div class=\"row\">\n" +
-    "                        <form  role=\"form\" class=\"col-md-8 col-sm-9 col-xs-12 center-block form-horizontal\" ng-submit=\"sendEmail()\">\n" +
+    "                        <form  role=\"form\" class=\"col-md-8 col-sm-9 col-xs-12 center-block form-horizontal\">\n" +
     "                            <div class=\"form-group\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left \" for=\"from\">From</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
-    "                                    <input type=\"text\" ng-disabled=\"true\" value=\"{{ user.email }}\" ng-model=\"respondent_form.from_email\" id=\"from\" class=\" form-control\" >\n" +
+    "                                    <span type=\"text\" ng-bind=\"respondent_form.from_email\" id=\"from\" class=\"form-control\" ></span>\n" +
     "                                </div>\n" +
     "                            </div><!--/form-group-->\n" +
     "                            <br>\n" +
     "                            <br>\n" +
-    "                            <div class=\"form-group\" ng-init=\"loadSurveys()\">\n" +
+    "                            <div class=\"form-group\">\n" +
     "                                <label class=\"col-sm-4 col-xs-12 control-label text-left\">Survey</label>\n" +
     "                                <div class=\"col-sm-8 col-xs-12\">\n" +
     "                                    <select title=\"selectSurvey\" name=\"selectSurvey\" data-ng-model=\"respondent_form.survey_id\" class=\" form-control\"\n" +
@@ -971,8 +971,8 @@ angular.module("app/survey/respondents/respondents.tpl.html", []).run(["$templat
     "\n" +
     "                            <div class=\"form-group\">\n" +
     "                                <div class=\"col-sm-4 col-xs-6 pull-right\">\n" +
-    "                                    <button class=\"hidden btn btn-default\" type=\"reset\" ng-click=\"resetRespondentForm()\">Cancel</button>\n" +
-    "                                    <button class=\"btn  pull-right\" ng-class=\"{true : 'btn-default', false : 'btn-primary'}[sendingEmails]\" type=\"submit\" data-ng-disabled=\"sendingEmails\">\n" +
+    "                                    <button class=\"hidden btn btn-default\" type=\"reset\" >Cancel</button>\n" +
+    "                                    <button class=\"btn pull-right\" ng-class=\"{true : 'btn-default', false : 'btn-success'}[sendingEmails]\" ng-click=\"sendEmail()\" data-ng-disabled=\"sendingEmails\">\n" +
     "                                        <span ng-if=\"!(sendingEmails)\">Send Mail</span>\n" +
     "                                        <span ng-if=\"sendingEmails\">Sending mails, hang on...</span>\n" +
     "                                    </button>\n" +
@@ -1183,7 +1183,9 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "                            <ul ng-show=\"selected_question.answers.length\" class=\"media-list\">\n" +
     "                                <li class=\"media answer-list\" style=\"\" ng-repeat=\"response in selected_question.answers\"><!-- limitTo : 15-->\n" +
     "                                    <a >\n" +
-    "                                        <p><strong>{{ response.content }}</strong><!--| limitTo : 100 }}--> <br>\n" +
+    "                                        <p>\n" +
+    "                                            <span ng-show=\"selected_question.field_type != 'date' \"><strong>{{ response.content }}</strong><!--| limitTo : 100 }}--> <br></span>\n" +
+    "                                            <span ng-show=\"selected_question.field_type == 'date' \"><strong>{{ formatDate( response.content, true) || 'invalid date format' }}</strong><!--| limitTo : 100 }}--> <br></span>\n" +
     "                                            <time class=\"text-muted timestamp time pull-right\" tooltip=\"Date submitted : {{ response.created_at || 'unavailable' }}\">{{ fromNow ( response.created_at) }}</time></p>\n" +
     "                                    </a> </li>\n" +
     "                            </ul>\n" +

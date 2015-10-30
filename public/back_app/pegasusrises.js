@@ -244,8 +244,11 @@ angular.module('pegasusrises')
                 return moment(datetime).fromNow();
             };
 
-            $rootScope.formatDate = function(datetime){
+            $rootScope.formatDate = function(datetime, full){
                 //return moment(datetime).format('Do, MMMM  YYYY, h:mm:ss a');
+                if (full) {
+                    return moment(datetime).format('dddd  Do MMMM,  YYYY');
+                }
                 return moment(datetime).format('Do, MMM  YYYY');
             };
             //$table->enum('input_type', ['radio', 'checkboxes','text','date','dropdown','time','number','website','email','price','address','gps','image','video']);
@@ -775,16 +778,24 @@ angular.module('survey')
         '$stateParams','$timeout',
         function($rootScope, $scope, homeService, surveyService, growl, $stateParams, $timeout ){
 
+            $scope.sendingEmails = false;/*a variable to disable the send button*/
+
             $scope.sendEmail = function () {
                 $scope.sendingEmails = true;
                 if (!$scope.respondent_form.survey_id) {
                     growl.info('Select a survey to be sent', {title : 'No Survey Selected', ttl : 5000});
+                    $scope.sendingEmails = false;
                     return
                 }
                 if (!$scope.respondent_form.emails) {
                     growl.info('Specify at least one email recipient', {title : 'No Email Recipient', ttl : 5000});
+                    $scope.sendingEmails = false;
                     return
                 }
+                if (!$scope.respondent_form.survey_description) {
+                    $scope.respondent_form.survey_description = 'Survey created on <a href="http://www.pegasusrises.com">Pegasus</a>.';
+                }
+                $scope.respondent_form.from_email  =  $scope.user.email;
                 $scope.respondent_form.survey_url = surveyService.surveyLookup[$scope.respondent_form.survey_id].survey_unique_public_url;
                 $scope.respondent_form.survey_name = surveyService.surveyLookup[$scope.respondent_form.survey_id].survey_name;
 
@@ -792,10 +803,10 @@ angular.module('survey')
                     .success(function (successData) {
                         if (successData) {
                             growl.success('Email Sent Successfully', {title : 'Email Sent', ttl : 5000});
-                            $scope.sendingEmails = false;
                             $timeout(function () {
+                                $scope.sendingEmails = false;
                                 $scope.loadSurveys();
-                            });
+                            }, 2000);
                         }
 
                     })
@@ -808,25 +819,19 @@ angular.module('survey')
             $scope.loadingSurveys = true;
 
             $scope.loadSurveys = function() {
-                $timeout(function () {
+                $scope.surveys = surveyService.surveys;
+                $scope.sms_respondent_form = {
+                    from_phone_number : $scope.user.phone_number,
+                    survey_id : $stateParams.survey_id || '0'
+                };
 
-                    $scope.surveys = surveyService.surveys;
-                    $scope.sms_respondent_form = {
-                        from_phone_number : $scope.user.phone_number,
-                        survey_id : $stateParams.survey_id || '0'
-                    };
+                $scope.respondent_form = {
+                    from_email : $scope.user.email,
+                    survey_id : $stateParams.survey_id || '0',
+                    emails : []
+                };
 
-                    $scope.respondent_form = {
-                        from_email : $scope.user.email,
-                        survey_id : $stateParams.survey_id || '0'
-                    };
-
-                    $scope.loadingSurveys = false;
-
-                    console.log($scope.respondent_form);
-                }, 100);
-
-
+                $scope.loadingSurveys = false;
             };
 
             if (surveyService.surveys && surveyService.surveys.length) {
@@ -1303,7 +1308,12 @@ angular.module('directives')
                         $scope.selected_survey = angular.copy(surveyService.surveyLookup[attrs.editSurvey]);
 
                         $scope.selected_survey.survey_id = attrs.editSurvey;
-                        $scope.selected_survey.question_tree = JSON.stringify($scope.selected_survey.question_tree);
+
+                        /*put it in a object with property called files for consistency*/
+                        var fields = {
+                            fields : $scope.selected_survey.question_tree
+                        };
+                        $scope.selected_survey.question_tree = JSON.stringify(fields);
 
                         $scope.editSurvey = function () {
                             surveyService.editSurvey($scope.selected_survey)

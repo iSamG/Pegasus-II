@@ -2,7 +2,7 @@
 <html lang="en" ng-app="pegasusrises">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Pegasusrises Dashboard</title>
+    <title>Pegasus Dashboard</title>
     <link rel="stylesheet" type="text/css" href="back_app/pegasusrises.css"/>
 
 
@@ -14,7 +14,7 @@
         <!--\\\\\\\ header Start \\\\\\-->
         <div class="brand">
             <!--\\\\\\\ brand Start \\\\\\-->
-            <div class="logo" style="display:block"><span class="blue_text">Pegasus Rises</span> </div>
+            <div class="logo" style="display:block"><span class="blue_text">Pegasus</span> </div>
         </div>
         <!--\\\\\\\ brand end \\\\\\-->
         <div class="header_top_bar">

@@ -14,8 +14,11 @@ angular.module('pegasusrises')
                 return moment(datetime).fromNow();
             };
 
-            $rootScope.formatDate = function(datetime){
+            $rootScope.formatDate = function(datetime, full){
                 //return moment(datetime).format('Do, MMMM  YYYY, h:mm:ss a');
+                if (full) {
+                    return moment(datetime).format('dddd  Do MMMM,  YYYY');
+                }
                 return moment(datetime).format('Do, MMM  YYYY');
             };
             //$table->enum('input_type', ['radio', 'checkboxes','text','date','dropdown','time','number','website','email','price','address','gps','image','video']);

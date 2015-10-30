@@ -48,7 +48,12 @@ angular.module('directives')
                         $scope.selected_survey = angular.copy(surveyService.surveyLookup[attrs.editSurvey]);
 
                         $scope.selected_survey.survey_id = attrs.editSurvey;
-                        $scope.selected_survey.question_tree = JSON.stringify($scope.selected_survey.question_tree);
+
+                        /*put it in a object with property called files for consistency*/
+                        var fields = {
+                            fields : $scope.selected_survey.question_tree
+                        };
+                        $scope.selected_survey.question_tree = JSON.stringify(fields);
 
                         $scope.editSurvey = function () {
                             surveyService.editSurvey($scope.selected_survey)

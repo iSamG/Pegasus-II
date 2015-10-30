@@ -116,7 +116,9 @@
                             <ul ng-show="selected_question.answers.length" class="media-list">
                                 <li class="media answer-list" style="" ng-repeat="response in selected_question.answers"><!-- limitTo : 15-->
                                     <a >
-                                        <p><strong>{{ response.content }}</strong><!--| limitTo : 100 }}--> <br>
+                                        <p>
+                                            <span ng-show="selected_question.field_type != 'date' "><strong>{{ response.content }}</strong><!--| limitTo : 100 }}--> <br></span>
+                                            <span ng-show="selected_question.field_type == 'date' "><strong>{{ formatDate( response.content, true) || 'invalid date format' }}</strong><!--| limitTo : 100 }}--> <br></span>
                                             <time class="text-muted timestamp time pull-right" tooltip="Date submitted : {{ response.created_at || 'unavailable' }}">{{ fromNow ( response.created_at) }}</time></p>
                                     </a> </li>
                             </ul>

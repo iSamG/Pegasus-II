@@ -8,16 +8,24 @@ angular.module('survey')
         '$stateParams','$timeout',
         function($rootScope, $scope, homeService, surveyService, growl, $stateParams, $timeout ){
 
+            $scope.sendingEmails = false;/*a variable to disable the send button*/
+
             $scope.sendEmail = function () {
                 $scope.sendingEmails = true;
                 if (!$scope.respondent_form.survey_id) {
                     growl.info('Select a survey to be sent', {title : 'No Survey Selected', ttl : 5000});
+                    $scope.sendingEmails = false;
                     return
                 }
                 if (!$scope.respondent_form.emails) {
                     growl.info('Specify at least one email recipient', {title : 'No Email Recipient', ttl : 5000});
+                    $scope.sendingEmails = false;
                     return
                 }
+                if (!$scope.respondent_form.survey_description) {
+                    $scope.respondent_form.survey_description = 'Survey created on <a href="http://www.pegasusrises.com">Pegasus</a>.';
+                }
+                $scope.respondent_form.from_email  =  $scope.user.email;
                 $scope.respondent_form.survey_url = surveyService.surveyLookup[$scope.respondent_form.survey_id].survey_unique_public_url;
                 $scope.respondent_form.survey_name = surveyService.surveyLookup[$scope.respondent_form.survey_id].survey_name;
 
@@ -25,10 +33,10 @@ angular.module('survey')
                     .success(function (successData) {
                         if (successData) {
                             growl.success('Email Sent Successfully', {title : 'Email Sent', ttl : 5000});
-                            $scope.sendingEmails = false;
                             $timeout(function () {
+                                $scope.sendingEmails = false;
                                 $scope.loadSurveys();
-                            });
+                            }, 2000);
                         }
 
                     })
@@ -41,25 +49,19 @@ angular.module('survey')
             $scope.loadingSurveys = true;
 
             $scope.loadSurveys = function() {
-                $timeout(function () {
+                $scope.surveys = surveyService.surveys;
+                $scope.sms_respondent_form = {
+                    from_phone_number : $scope.user.phone_number,
+                    survey_id : $stateParams.survey_id || '0'
+                };
 
-                    $scope.surveys = surveyService.surveys;
-                    $scope.sms_respondent_form = {
-                        from_phone_number : $scope.user.phone_number,
-                        survey_id : $stateParams.survey_id || '0'
-                    };
+                $scope.respondent_form = {
+                    from_email : $scope.user.email,
+                    survey_id : $stateParams.survey_id || '0',
+                    emails : []
+                };
 
-                    $scope.respondent_form = {
-                        from_email : $scope.user.email,
-                        survey_id : $stateParams.survey_id || '0'
-                    };
-
-                    $scope.loadingSurveys = false;
-
-                    console.log($scope.respondent_form);
-                }, 100);
-
-
+                $scope.loadingSurveys = false;
             };
 
             if (surveyService.surveys && surveyService.surveys.length) {

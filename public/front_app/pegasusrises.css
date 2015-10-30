@@ -1,4 +1,4 @@
-/* pegasusrises - v2.0 - 2015-10-22
+/* pegasusrises - v2.0 - 2015-10-30
  * pegasusrises.com
  * Copyright (c) 2015 BBG Digital Innovation Lab;
  * Licensed MIT
@@ -6474,6 +6474,9 @@ ul.social-list li a.twitter:hover {
 ul.social-list li a.google:hover {
 	background-color: #F16261;
 }
+ul.social-list li a.youtube:hover {
+	background-color: #f13f37;
+}
 
 ul.social-list li a.dribbble:hover {
 	background-color: #E46387;
@@ -10115,6 +10118,10 @@ footer a:hover {
 	background-color: #F16261;
 }
 
+.social-widget ul.social-icons li a.youtube:hover i {
+	background-color: #f13f37;
+}
+
 .social-widget ul.social-icons li a.dribbble:hover i {
 	background-color: #E46387;
 }
@@ -10589,7 +10596,7 @@ ul.footer-nav li a:hover {
 
 
 .purchase {
-    background: url(assets/images/img/windows.jpg) no-repeat;
+    background: url(assets/images/img/parallax_1.jpg) no-repeat;
     background-attachment: fixed;
     padding: 100px 0;
 }
@@ -10610,6 +10617,10 @@ ul.footer-nav li a:hover {
 
 #surveySection .form-group {
 	margin-top: 40px;
+}
+
+.pointer{
+	cursor: pointer;
 }
 @media (max-width: 1200px) {
 	

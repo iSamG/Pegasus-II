@@ -57,11 +57,11 @@
                     <div class="col-md-7">
                         <!-- Start Contact Info -->
                         <ul class="contact-details">
-                            <li><a href="#"><i class="fa fa-map-marker"></i>&nbsp; BBG Innovation Lab | Hub Accra</a></li>
+                            <li><a href=""><i class="fa fa-map-marker"></i>&nbsp; BBG Innovation Lab | Impact Hub Accra</a></li>
 
-                            <li><a href="#"><i class="fa fa-envelope-o"></i>&nbsp; labteam@pegasusrises.com</a>
+                            <li><a href=""><i class="fa fa-envelope-o"></i>&nbsp; lab@pegasusrises.com</a>
                             </li>
-                            <li><a href="#"><i class="fa fa-phone"></i>&nbsp; +12 345 678 000</a>
+                            <li><a href=""><i class="fa fa-phone"></i>&nbsp; +233 540 832 867</a>
                             </li>
                         </ul>
                         <!-- End Contact Info -->
@@ -70,17 +70,20 @@
                         <!-- Start Social Links -->
                         <ul class="social-list">
                             <li>
-                                <a class="facebook " tooltip-placement="bottom" tooltip="Facebook" title="Facebook" href="#"><i class="fa fa-facebook"></i></a>
+                                <a class="facebook " target="_blank" tooltip-placement="bottom" tooltip="Facebook" title="Facebook" href="https://www.facebook.com/BBGgov/"><i class="fa fa-facebook"></i></a>
                             </li>
                             <li>
-                                <a class="twitter " tooltip-placement="bottom" tooltip="Twitter" title="Twitter" href=""><i class="fa fa-twitter"></i></a>
+                                <a class="twitter " target="_blank" tooltip-placement="bottom" tooltip="Twitter" title="Twitter" href="https://twitter.com/hubaccra/"><i class="fa fa-twitter"></i></a>
                             </li>
                             <li>
-                                <a class="google " tooltip-placement="bottom" tooltip="Google Plus" title="Google Plus" href=""><i class="fa fa-google-plus"></i></a>
+                                <a class="youtube" target="_blank" tooltip-placement="bottom" tooltip="YouTube" title="YouTube" href="https://www.youtube.com/user/bbgtunein/featured"><i class="fa fa-youtube"></i></a>
                             </li>
-                            <li>
-                                <a class="linkdin " tooltip-placement="bottom" tooltip="Linkedin" title="Linkedin" href="#"><i class="fa fa-linkedin"></i></a>
-                            </li>
+                            <!--<li>-->
+                                <!--<a class="google " tooltip-placement="bottom" tooltip="Google Plus" title="Google Plus" href=""><i class="fa fa-google-plus"></i></a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="linkdin " tooltip-placement="bottom" tooltip="Linkedin" title="Linkedin" href=""><i class="fa fa-linkedin"></i></a>-->
+                            <!--</li>-->
                         </ul>
                         <!-- End Social Links -->
                     </div><!-- .col-md-6 -->
@@ -99,7 +102,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
                     <!-- End Toggle Nav Link For Mobiles -->
-                    <a class="navbar-brand" href="/">
+                    <a class="navbar-brand" href="#/">
                         Pegasusrises
                         <!--<img alt="" src="front_app/assets/images/margo.png">-->
                     </a>
@@ -118,28 +121,11 @@
                     <!-- Start Navigation List -->
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a class="active" href="/">Home</a>
-                            <!--<ul class="dropdown">-->
-                                <!--<li><a class="active" href="index.html">Home Main Version</a>-->
-                                <!--</li>-->
-                                <!--<li><a href="index-01.html">Home Version 1</a>-->
-                                <!--</li>-->
-                                <!--<li><a href="index-02.html">Home Version 2</a>-->
-                                <!--</li>-->
-                                <!--<li><a href="index-03.html">Home Version 3</a>-->
-                                <!--</li>-->
-                                <!--<li><a href="index-04.html">Home Version 4</a>-->
-                                <!--</li>-->
-                                <!--<li><a href="index-05.html">Home Version 5</a>-->
-                                <!--</li>-->
-                                <!--<li><a href="index-06.html">Home Version 6</a>-->
-                                <!--</li>-->
-                                <!--<li><a href="index-07.html">Home Version 7</a>-->
-                                <!--</li>-->
-                            <!--</ul>-->
+                            <a class="active" href="#/">Home</a>
+
                         </li>
-                        <li><a href="">Contact</a></li>
-                        <li><a href="">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#about">About</a></li>
                         <li><a href="" login-modal="">Login</a></li>
                         <li><a href="" signup-modal="">Signup</a></li>
                         <!--<li><a href="/survey?sid=10">Test Survey</a></li>-->
@@ -171,14 +157,14 @@
             <!-- Carousel inner -->
             <div class="carousel-inner">
                 <div class="item active">
-                    <img class="" height="400px" style="height: 400px;" src="front_app/assets/images/img/rays.jpg" alt="slider">
+                    <img class="" height="400px" style="height: 400px;" src="front_app/assets/images/img/carousel_i.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
-                            <h2 class="animated2">
-                                <span>Welcome to <strong>Pegasus</strong></span>
+                            <h2 class="animated2 white">
+                                <span>Create  <strong>Dynamic</strong> Forms</span>
                             </h2>
-                            <h3 class="animated3">
-                                <span>Data collection could be much easier</span>
+                            <h3 class="animated4 white">
+                                <span> Via a customizable account interface</span>
                             </h3>
                             <p class="animated4"><a href="" class="slider btn btn-primary" signup-modal="">Sign up now</a>
                             </p>
@@ -187,14 +173,14 @@
                 </div>
                 <!--/ Carousel item end -->
                 <div class="item">
-                    <img class="" height="400px" style="height: 400px;" src="front_app/assets/images/img/rays-of-light.jpg" alt="slider">
+                    <img class="" height="400px" style="height: 400px;" src="front_app/assets/images/img/carousel_ii.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
-                            <h2 class="animated4">
-                                <span><strong>Pegasus</strong> Cloud Surveys</span>
+                            <h2 class="animated4 white">
+                                <span>Send  <strong>Targeted</strong> Surveys</span>
                             </h2>
-                            <h3 class="animated5">
-                                <span>Gather and analyse data in realtime</span>
+                            <h3 class="animated5 white">
+                                <span>To effectively collect the data you need</span>
                             </h3>
                             <p class="animated6"><a href="" class="slider btn btn-primary" signup-modal="">Get Started</a>
                             </p>
@@ -203,14 +189,14 @@
                 </div>
                 <!--/ Carousel item end -->
                 <div class="item">
-                    <img class="" style="height: 400px;" height="400px" src="front_app/assets/images/img/pegasus.jpg" alt="slider">
+                    <img class="" style="height: 400px;" height="400px" src="front_app/assets/images/img/carousel_iii.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
                             <h2 class="animated7 white">
-                                <span>Free Cloud <strong>Questionnaires</strong></span>
+                                <span>Gain <strong>Relevant</strong> Insights</span>
                             </h2>
                             <h3 class="animated8 white">
-                                <span>Why you are waiting</span>
+                                <span>With intuitive graphical visualisations</span>
                             </h3>
                             <div class="">
                                 <a class="animated4 slider btn btn-primary btn-min-block" href="" signup-modal="">Sign up</a>
@@ -224,10 +210,10 @@
             <!-- Carousel inner end-->
 
             <!-- Controls -->
-            <a class="left carousel-control" data-target="#main-slide" data-slide="prev">
+            <a class="pointer left carousel-control" data-target="#main-slide" data-slide="prev">
                 <span><i class="fa fa-angle-left"></i></span>
             </a>
-            <a class="right carousel-control" data-target="#main-slide" data-slide="next">
+            <a class="pointer right carousel-control" data-target="#main-slide" data-slide="next">
                 <span><i class="fa fa-angle-right"></i></span>
             </a>
         </div>
@@ -237,18 +223,18 @@
 
 
     <!-- Start Services Section -->
-    <div class="section service">
+    <div class="section service" id="about">
         <div class="container">
             <div class="row">
 
                 <!-- Start Service Icon 1 -->
                 <div class="col-md-3 col-sm-6 service-box service-center" data-animation="fadeIn" data-animation-delay="01">
                     <div class="service-icon">
-                        <i class="fa fa-leaf icon-large"></i>
+                        <i class="fa fa-file  icon-large"></i>
                     </div>
                     <div class="service-content">
-                        <h4>SURVEY BUILDING</h4>
-                        <p class="text-justify">Create easy-to-deploy survey forms for mobile data collection. The forms support a variety of files such as photos, videos, location and other types. These help to make surveys comprehensive and don't require any coding.</p>
+                        <h4>SURVEY BUILDS</h4>
+                        <p class="text-center">Create easy-to-deploy survey forms for mobile data collection. The forms support a variety of files such as photos, videos, location and other types.</p>
 
                     </div>
                 </div>
@@ -257,11 +243,11 @@
                 <!-- Start Service Icon 2 -->
                 <div class="col-md-3 col-sm-6 service-box service-center" data-animation="fadeIn" data-animation-delay="02">
                     <div class="service-icon">
-                        <i class="fa fa-desktop icon-large"></i>
+                        <i class="fa  fa-list-alt icon-large"></i>
                     </div>
                     <div class="service-content">
                         <h4>CUSTOMIZABLE FORMS</h4>
-                        <p class="text-justify">Process data through a rich open platform that supports a wide range of use cases. Pegasus can be customized for several data aggregation purposes. Among others, these include communications, healthcare, education, economic empowerment, emergency services, and market analytics.</p>
+                        <p class="text-center">Process data through a rich open platform that supports a wide range of use cases. Pegasus can be customized for several data aggregation purposes. Among others, these include communications, healthcare, education, economic empowerment, emergency services, and market analytics.</p>
                     </div>
                 </div>
                 <!-- End Service Icon 2 -->
@@ -269,11 +255,11 @@
                 <!-- Start Service Icon 3 -->
                 <div class="col-md-3 col-sm-6 service-box service-center" data-animation="fadeIn" data-animation-delay="03">
                     <div class="service-icon">
-                        <i class="fa fa-eye icon-large"></i>
+                        <i class="fa  fa-mobile-phone icon-large"></i>
                     </div>
                     <div class="service-content">
                         <h4>MOBILE DEPLOYMENT</h4>
-                        <p class="text-justify">Deliver contextually relevant data that integrates with a wide range of existing mobile app services. Data collectors can access forms created on the Pegasus web portal via their mobile devices. Through this medium, data can be collected and submitted for administrative viewing.</p>
+                        <p class="text-center">Deliver contextually relevant data that integrates with a wide range of existing mobile app services. Data collectors can access forms created on the Pegasus web portal via their mobile devices. Through this medium, data can be collected and submitted for administrative viewing.</p>
                     </div>
                 </div>
                 <!-- End Service Icon 3 -->
@@ -281,11 +267,11 @@
                 <!-- Start Service Icon 4 -->
                 <div class="col-md-3 col-sm-6 service-box service-center" data-animation="fadeIn" data-animation-delay="04">
                     <div class="service-icon">
-                        <i class="fa fa-code icon-large"></i>
+                        <i class="fa fa-line-chart icon-large"></i>
                     </div>
                     <div class="service-content">
                         <h4>REAL-TIME ANALYTICS</h4>
-                        <p class="text-justify">Data submitted are collated and presented in graphical formats on a custom dashboard. This enables organizations to gain real-time insights from surveys deployed.</p>
+                        <p class="text-center">Data submitted are collated and presented in graphical formats on a custom dashboard. This enables organizations to gain real-time insights from surveys deployed.</p>
                     </div>
                 </div>
                 <!-- End Service Icon 4 -->
@@ -304,15 +290,16 @@
             <div class="section-video-content text-center">
 
                 <!-- Start Animations Text -->
-                <h1 class="fittext wite-text uppercase tlt">
-                    Pegasus is free to use and is supported by <br/><strong>the BBG</strong> at the <strong>Impact Hub Accra's Digital Innovation Lab</strong>
+                <h1 class="fittext uppercase tlt"><!--wite-text-->
+                    <strong>Pegasus</strong> is free to use and is supported by <br/><strong>the BBG</strong> at the <strong>Impact Hub Accra's  <br/>
+                        Digital Innovation Lab</strong>
                 </h1>
                 <!-- End Animations Text -->
 
 
                 <!-- Start Buttons -->
-                <a href="#" class="btn-system btn-large border-btn btn-wite"><i class="fa fa fa-sign-in"></i> Login</a>
-                <a href="#" class="btn-system btn-large btn-wite"><i class="fa fa-sign-out"></i> Signup Now</a>
+                <a href="" login-modal="" class="btn-system btn-large border-btn btn-wite"><i class="fa fa fa-sign-in"></i>&nbsp;Login</a>
+                <a href="" signup-modal="" class="btn-system btn-large btn-wite"><i class="fa fa-sign-out"></i> Signup</a>
 
             </div>
             <!-- End Section Content -->
@@ -328,41 +315,40 @@
 
             <!-- Start Big Heading -->
             <div class="big-title text-center" data-animation="fadeInDown" data-animation-delay="01">
-                <h1>Our Great <strong>Partners</strong></h1>
+                <h1>Our <strong>Partners</strong></h1>
             </div>
             <!-- End Big Heading -->
 
             <!-- Some Text -->
-            <p class="text-center"><span class="accent-color">Pegasus</span> is powered by our kind sponsors as well as the host of the Digital Innovations Lab
-                <br/>located at <span class="accent-color">Impact Hub Accra</span> facility at Labone, in Accra Ghana.</p>
+            <p style="font-size: 20px" class="text-center"><span class="accent-color">Pegasus</span> is powered by the <span class="accent-color">BBG Digital Innovation Lab
+                </span> at the <span class="accent-color">Impact Hub Accra</span>.
+            </p>
 
 
 
 
             <!-- Start Team Members -->
-            <div class="row">
+            <div class="row" style="font-size: 20px">
 
                 <!-- Start Member 1 -->
                 <div class="col-md-6 col-sm-6 col-xs-12" data-animation="fadeIn" data-animation-delay="03">
                     <div class="team-member modern">
                         <!-- Member Photo, Name & Position -->
                         <div class="member-photo">
-                            <img class="img-responsive img-thumbnail center-block" style="width: 100%; height: 300px" alt="BBG" src="front_app/assets/images/team/face_1.png" />
+                            <img class="img-responsive img-thumbnail center-block" style="width: 100%; height: 300px" alt="BBG" src="front_app/assets/images/team/bbg-boards.jpg" />
                             <div class="member-name">Broadcasting Board of Governors <span>(BBG)</span>
                             </div>
                         </div>
                         <!-- Member Words -->
                         <div class="member-info">
-                            <p class="text-center">BBG is US based partner in radio and television accross several continents</p>
+                            <p class="text-center">BBG is US based partner in radio and television across several continents</p>
                         </div>
 
                         <!-- Member Social Links -->
                         <div class="member-socail text-center center-block">
-                            <a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
-                            <a class="gplus" href="#"><i class="fa fa-google-plus"></i></a>
-                            <a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a>
-                            <a class="flickr" href="#"><i class="fa fa-flickr"></i></a>
-                            <a class="mail" href="#"><i class="fa fa-envelope"></i></a>
+                            <a target="_blank" class="facebook" href="https://www.facebook.com/BBGgov/"><i class="fa fa-facebook"></i></a>
+                            <a target="_blank" class="twitter" href=" https://twitter.com/BBGgov/"><i class="fa fa-twitter"></i></a>
+                            <a target="_blank" class="mail" href="http://www.bbg.gov/contact-us/"><i class="fa fa-envelope"></i></a>
                         </div>
                     </div>
                 </div>
@@ -373,7 +359,7 @@
                     <div class="team-member modern">
                         <!-- Member Photo, Name & Position -->
                         <div class="member-photo">
-                            <img alt="IHA" class="img-responsive img-thumbnail center-block" style="width: 100%; height: 300px" src="front_app/assets/images/team/face_2.png" />
+                            <img alt="IHA" class="img-responsive img-thumbnail center-block" style="width: 100%; height: 300px" src="front_app/assets/images/team/ha-team.jpg" />
                             <div class="member-name">Impact Hub Accra<span>(IHA)</span>
                             </div>
                         </div>
@@ -384,11 +370,9 @@
 
                         <!-- Member Social Links -->
                         <div class="member-socail center-block text-center">
-                            <a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
-                            <a class="gplus" href="#"><i class="fa fa-google-plus"></i></a>
-                            <a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a>
-                            <a class="flickr" href="#"><i class="fa fa-flickr"></i></a>
-                            <a class="mail" href="#"><i class="fa fa-envelope"></i></a>
+                            <a target="_blank" class="twitter" href="https://twitter.com/hubaccra/"><i class="fa fa-twitter"></i></a>
+                            <a target="_blank" class="facebook" href="https://www.facebook.com/HubAccra/"><i class="fa fa-facebook"></i></a>
+                            <a target="_blank" class="mail" href="http://hubaccra.com/"><i class="fa fa-envelope"></i></a>
                         </div>
                     </div>
                 </div>
@@ -501,30 +485,30 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-3 col-md-3">
                             <div class="counter-item">
-                                <i class="fa fa-cloud-upload"></i>
+                                <i class="fa fa-compress"></i>
                                 <div class="timer" id="item1" data-to="991" data-speed="5000"></div>
-                                <h5>Files uploaded</h5>
+                                <h5>Serves multiple purposes</h5>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-3 col-md-3">
                             <div class="counter-item">
-                                <i class="fa fa-check"></i>
+                                <i class="fa fa-lock"></i>
                                 <div class="timer" id="item2" data-to="7394" data-speed="5000"></div>
-                                <h5>Projects completed</h5>
+                                <h5>Secured data storage</h5>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-3 col-md-3">
                             <div class="counter-item">
-                                <i class="fa fa-code"></i>
+                                <i class="fa fa-desktop"></i>
                                 <div class="timer" id="item3" data-to="18745" data-speed="5000"></div>
-                                <h5>Lines of code written</h5>
+                                <h5>Simple user experience</h5>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-3 col-md-3">
                             <div class="counter-item">
-                                <i class="fa fa-male"></i>
+                                <i class="fa fa-share-alt"></i>
                                 <div class="timer" id="item4" data-to="8423" data-speed="5000"></div>
-                                <h5>Happy clients</h5>
+                                <h5>Share with anyone</h5>
                             </div>
                         </div>
                     </div>
@@ -535,53 +519,32 @@
 
 
     <!-- Start Footer Section -->
-    <footer >
+    <footer id="contact">
         <div class="container">
             <div class="row footer-widgets">
 
 
                 <!-- Start Subscribe & Social Links Widget -->
-                <div class="col-md-3 col-xs-12">
-                    <div class="footer-widget mail-subscribe-widget">
-                        <h4>Get in touch<span class="head-line"></span></h4>
-                        <p>Join our mailing list to stay up to date and get notices about our new releases!</p>
-                        <form class="subscribe">
-                            <input type="text" placeholder="mail@example.com">
-                            <input type="submit" class="main-button" value="Send">
-                        </form>
-                    </div>
+                <div class="col-md-6 col-xs-12">
+                    <!--<div class="footer-widget mail-subscribe-widget">-->
+                    <!--<h4>Get in touch<span class="head-line"></span></h4>-->
+                    <!--<p>Join our mailing list to stay up to date and get notices about our new releases!</p>-->
+                    <!--<form class="subscribe">-->
+                    <!--<input type="text" placeholder="mail@pegasusrises.com">-->
+                    <!--<input type="submit" class="main-button" value="Send">-->
+                    <!--</form>-->
+                    <!--</div>-->
                     <div class="footer-widget social-widget">
                         <h4>Follow Us<span class="head-line"></span></h4>
                         <ul class="social-icons">
                             <li>
-                                <a class="facebook" href="#"><i class="fa fa-facebook"></i></a>
+                                <a  target="_blank" class="facebook" href="https://www.facebook.com/BBGgov/"><i class="fa fa-facebook"></i></a>
                             </li>
                             <li>
-                                <a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
+                                <a target="_blank"  class="twitter" href="https://twitter.com/hubaccra/"><i class="fa fa-twitter"></i></a>
                             </li>
                             <li>
-                                <a class="google" href="#"><i class="fa fa-google-plus"></i></a>
-                            </li>
-                            <li>
-                                <a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a>
-                            </li>
-                            <li>
-                                <a class="linkdin" href="#"><i class="fa fa-linkedin"></i></a>
-                            </li>
-                            <li>
-                                <a class="flickr" href="#"><i class="fa fa-flickr"></i></a>
-                            </li>
-                            <li>
-                                <a class="tumblr" href="#"><i class="fa fa-tumblr"></i></a>
-                            </li>
-                            <li>
-                                <a class="instgram" href="#"><i class="fa fa-instagram"></i></a>
-                            </li>
-                            <li>
-                                <a class="vimeo" href="#"><i class="fa fa-vimeo-square"></i></a>
-                            </li>
-                            <li>
-                                <a class="skype" href="#"><i class="fa fa-skype"></i></a>
+                                <a target="_blank"  class="youtube" href="https://www.youtube.com/user/bbgtunein/featured"><i class="fa fa-youtube"></i></a>
                             </li>
                         </ul>
                     </div>
@@ -589,93 +552,14 @@
                 <!-- End Subscribe & Social Links Widget -->
 
 
-                <!-- Start Twitter Widget -->
-                <div class="col-md-3 col-xs-12">
-                    <div class="footer-widget twitter-widget">
-                        <h4>Twitter Feed<span class="head-line"></span></h4>
-                        <ul>
-                            <li>
-                                <p><a href="#">@ithemeslab </a> Lorem ipsum dolor et, consectetur adipiscing eli.</p>
-                                <span>28 February 2014</span>
-                            </li>
-                            <li>
-                                <p><a href="#">@ithemeslab </a> Lorem ipsum dolor et, consectetur adipiscing eli.An Fusce eleifend aliquet nis application.</p>
-                                <span>26 February 2014</span>
-                            </li>
-                            <li>
-                                <p><a href="#">@ithemeslab </a> Lorem ipsum dolor et, consectetur adipiscing eli.</p>
-                                <span>28 February 2014</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div><!-- .col-md-3 -->
-                <!-- End Twitter Widget -->
-
-
-                <!-- Start Flickr Widget -->
-                <div class="col-md-3 col-xs-12">
-                    <div class="footer-widget flickr-widget">
-                        <h4>Flicker Feed<span class="head-line"></span></h4>
-                        <ul class="flickr-list">
-                            <li>
-                                <a href="front_app/assets/images/flickr-01.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-01.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-02.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-02.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-03.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-03.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-04.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-04.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-05.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-05.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-06.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-06.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-07.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-07.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-08.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-08.jpg">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="front_app/assets/images/flickr-09.jpg" class="lightbox">
-                                    <img alt="" src="front_app/assets/images/flickr-09.jpg">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div><!-- .col-md-3 -->
-                <!-- End Flickr Widget -->
-
-
                 <!-- Start Contact Widget -->
-                <div class="col-md-3 col-xs-12">
+                <div class="col-md-6 col-xs-12">
                     <div class="footer-widget contact-widget">
-                        <h4><img src="front_app/assets/images/footer-margo.png" class="img-responsive" alt="Footer Logo" /></h4>
-                        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
+                        <h4><img src="" class="img-responsive" alt="Pegasus Logo" /></h4>
+                        <p>We’d love to hear from you! Please stay in touch using the information provided below:</p>
                         <ul>
-                            <li><span>Phone Number:</span> +01 234 567 890</li>
-                            <li><span>Email:</span> info@pegasusrises.com</li>
+                            <li><span>Phone Number:</span> +233 540 832 867</li>
+                            <li><span>Email:</span> lab@pegasusrises.com</li>
                             <li><span>Website:</span> www.pegasusrises.com</li>
                         </ul>
                     </div>
@@ -693,11 +577,9 @@
                     </div><!-- .col-md-6 -->
                     <div class="col-md-6">
                         <ul class="footer-nav">
-                            <li><a href="#">Sitemap</a>
-                            </li>
-                            <li><a href="#">Privacy Policy</a>
-                            </li>
-                            <li><a href="#">Contact</a>
+                            <!--<li><a href="">Sitemap</a></li>-->
+                            <!--<li><a href="">Privacy Policy</a></li>-->
+                            <li><a href="http://www.pegasusrises.com#contact">Contact</a>
                             </li>
                         </ul>
                     </div><!-- .col-md-6 -->
