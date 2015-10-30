@@ -48,6 +48,24 @@ class EmailController extends Controller{
     }
 
 
+    public function sendPasswordREcoveryEmail(){
+        $recovery_details = \Input::all();
+
+        $email = $recovery_details['email'];
+
+        $send_mail = Mail::queue(
+            'email_template',
+            ['name'=>'Pegasus Users name', 'survey_id'=>'', 'title'=>'Other details her','link'=>'A link to home page'],
+            function($message){
+
+                $message->from($GLOBALS['from'],'Pegasus User');
+                $message->to($GLOBALS["name"]['text'],'Respondent');
+                $message->subject('PegasusRises Email Survey');
+            }
+        );
+
+    }
+
     public function showPage(){
         \View::make('email_template');
     }

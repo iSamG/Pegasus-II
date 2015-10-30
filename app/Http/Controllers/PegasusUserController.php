@@ -132,11 +132,13 @@ class PegasusUserController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id, $new_password)
+    public function edit($id, $old_password, $new_password)
     {
         //
+
         DB::table('users')
             ->where('id', $id)
+            ->where('password', $old_password)
             ->update(['password' => $new_password]);
     }
 
