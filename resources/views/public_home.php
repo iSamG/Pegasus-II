@@ -160,10 +160,10 @@
                     <img class="" height="400px" style="height: 400px;" src="front_app/assets/images/img/carousel_i.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
-                            <h2 class="animated2 white">
+                            <h2 class=" white">
                                 <span>Create  <strong>Dynamic</strong> Forms</span>
                             </h2>
-                            <h3 class="animated4 white">
+                            <h3 class=" white">
                                 <span> Via a customizable account interface</span>
                             </h3>
                             <p class="animated4"><a href="" class="slider btn btn-primary" signup-modal="">Sign up now</a>
@@ -176,10 +176,10 @@
                     <img class="" height="400px" style="height: 400px;" src="front_app/assets/images/img/carousel_ii.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
-                            <h2 class="animated4 white">
+                            <h2 class=" white">
                                 <span>Send  <strong>Targeted</strong> Surveys</span>
                             </h2>
-                            <h3 class="animated5 white">
+                            <h3 class=" white">
                                 <span>To effectively collect the data you need</span>
                             </h3>
                             <p class="animated6"><a href="" class="slider btn btn-primary" signup-modal="">Get Started</a>
@@ -192,10 +192,10 @@
                     <img class="" style="height: 400px;" height="400px" src="front_app/assets/images/img/carousel_iii.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
-                            <h2 class="animated7 white">
+                            <h2 class=" white">
                                 <span>Gain <strong>Relevant</strong> Insights</span>
                             </h2>
-                            <h3 class="animated8 white">
+                            <h3 class=" white">
                                 <span>With intuitive graphical visualisations</span>
                             </h3>
                             <div class="">
@@ -291,8 +291,8 @@
 
                 <!-- Start Animations Text -->
                 <h1 class="fittext uppercase tlt"><!--wite-text-->
-                    <strong>Pegasus</strong> is free to use and is supported by <br/><strong>the BBG</strong> at the <strong>Impact Hub Accra's  <br/>
-                        Digital Innovation Lab</strong>
+                    <strong>Pegasus</strong> is free to use and is supported  <br/>by the<strong> BBG</strong>  Digital Innovation Lab
+                    <br/>at<strong> Impact Hub Accra</strong>
                 </h1>
                 <!-- End Animations Text -->
 
@@ -320,7 +320,8 @@
             <!-- End Big Heading -->
 
             <!-- Some Text -->
-            <p style="font-size: 20px" class="text-center"><span class="accent-color">Pegasus</span> is powered by the <span class="accent-color">BBG Digital Innovation Lab
+            <p style="font-size: 20px" class="text-center">
+                <span class="accent-color">Pegasus</span> is powered by the <span class="accent-color">BBG Digital Innovation Lab
                 </span> at the <span class="accent-color">Impact Hub Accra</span>.
             </p>
 
@@ -365,13 +366,13 @@
                         </div>
                         <!-- Member Words -->
                         <div class="member-info">
-                            <p class="text-center">A co-working and incubator for companies and startups to facilitate high energy innovative ideas</p>
+                            <p class="text-center">A co-working space for startups to execute high energy innovative ideas</p>
                         </div>
 
                         <!-- Member Social Links -->
                         <div class="member-socail center-block text-center">
-                            <a target="_blank" class="twitter" href="https://twitter.com/hubaccra/"><i class="fa fa-twitter"></i></a>
                             <a target="_blank" class="facebook" href="https://www.facebook.com/HubAccra/"><i class="fa fa-facebook"></i></a>
+                            <a target="_blank" class="twitter" href="https://twitter.com/hubaccra/"><i class="fa fa-twitter"></i></a>
                             <a target="_blank" class="mail" href="http://hubaccra.com/"><i class="fa fa-envelope"></i></a>
                         </div>
                     </div>
