@@ -98,17 +98,18 @@ class SurveyController extends Controller
 
     public function saveResponsesToSurvey()
     {
-        $testAnswerObject = new Answer();
-        $testAnswerObject->id = 1;
-        $testAnswerObject->survey_id = 1;
-        $testAnswerObject->name_of_respondent = "Gbeila Aliu Wahab";
-        $testAnswerObject->email = "aliu@pollafrique.com";
-        $testAnswerObject->phone_number = '02020303';
-        $testAnswerObject->answer_response = 'Yes';
-
-        event(new NewSurveyResponse($testAnswerObject));
-
-        exit();
+        
+//        $testAnswerObject = new Answer();
+//        $testAnswerObject->id = 1;
+//        $testAnswerObject->survey_id = 1;
+//        $testAnswerObject->name_of_respondent = "Gbeila Aliu Wahab";
+//        $testAnswerObject->email = "aliu@pollafrique.com";
+//        $testAnswerObject->phone_number = '02020303';
+//        $testAnswerObject->answer_response = 'Yes';
+//
+//        event(new NewSurveyResponse($testAnswerObject));
+//
+//        exit();
 
 
         $responses_to_survey_questions = $this->surveyRepository->saveAnswersToSurveyQuestions($this->requestMade->all());
