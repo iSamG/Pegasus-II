@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
+use App\Events\NewSurveyResponse;
 use App\pegasustwo\Helpers;
 use App\pegasustwo\surveys\SurveysRepository;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Vinkla\Pusher\Facades\Pusher;
 
 class SurveyController extends Controller
 {
@@ -95,6 +98,19 @@ class SurveyController extends Controller
 
     public function saveResponsesToSurvey()
     {
+        
+//        $testAnswerObject = new Answer();
+//        $testAnswerObject->id = 1;
+//        $testAnswerObject->survey_id = 1;
+//        $testAnswerObject->name_of_respondent = "Gbeila Aliu Wahab";
+//        $testAnswerObject->email = "aliu@pollafrique.com";
+//        $testAnswerObject->phone_number = '02020303';
+//        $testAnswerObject->answer_response = 'Yes';
+//
+//        event(new NewSurveyResponse($testAnswerObject));
+//
+//        exit();
+
 
         $responses_to_survey_questions = $this->surveyRepository->saveAnswersToSurveyQuestions($this->requestMade->all());
 

@@ -26,12 +26,12 @@ class SurveyResponded
      */
     public function handle(NewSurveyResponse $event)
     {
-        echo $event->id;
-        echo $event->survey_id;
-        echo $event->name_of_respondent;
-        echo $event->email;
-        echo $event->phone_number;
-        echo $event->answer_response;
+        echo $event->surveyAnswerObject->id;
+        echo $event->surveyAnswerObject->survey_id;
+        echo $event->surveyAnswerObject->name_of_respondent;
+        echo $event->surveyAnswerObject->email;
+        echo $event->surveyAnswerObject->phone_number;
+        echo $event->surveyAnswerObject->answer_response;
 
 
     }

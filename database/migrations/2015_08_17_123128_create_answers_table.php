@@ -15,10 +15,10 @@ class CreateAnswersTable extends Migration
         Schema::create('answers', function(Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('survey_id');
-            $table->bigInteger('name_of_respondent')->nullable();/*Make this nullable*/
-            $table->bigInteger('email')->nullable();/*Make this nullable*/
-            $table->bigInteger('phone_number')->nullable();/*Make this nullable*/
-            $table->string('answer_response');
+            $table->string('name_of_respondent')->nullable();/*Make this nullable*/
+            $table->string('email')->nullable();/*Make this nullable*/
+            $table->string('phone_number')->nullable();/*Make this nullable*/
+            $table->text('answer_response');
             $table->timestamps();
         });
     }

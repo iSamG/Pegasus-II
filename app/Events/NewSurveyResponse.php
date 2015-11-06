@@ -7,7 +7,7 @@ use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class NewSurveyResponse extends Event implements ShouldBroadcast
+class NewSurveyResponse implements ShouldBroadcast
 {
     use SerializesModels;
 
@@ -17,11 +17,12 @@ class NewSurveyResponse extends Event implements ShouldBroadcast
      * @return void
      */
 
-    protected $surveyResponseObject = [];
+
+    public $surveyAnswerObject;
 
     public function __construct(Answer $answerObject)
     {
-        $this->surveyResponseObject = $answerObject->toJson();
+        $this->surveyAnswerObject = $answerObject;
     }
 
     /**
@@ -31,6 +32,8 @@ class NewSurveyResponse extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
+
         return ["new_survey_response"];
+
     }
 }

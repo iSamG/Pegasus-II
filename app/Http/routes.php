@@ -11,6 +11,13 @@
 |
 */
 
+Route::get('/test', [
+
+    'as' => 'test_route', 'uses' => 'SurveyController@saveResponsesToSurvey'
+
+]);
+
+
 Route::get('/', function(){
     return view('public_home');
 });

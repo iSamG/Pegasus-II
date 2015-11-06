@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.1.23 (LTS) on 2015-11-05.
+ * Generated for Laravel 5.1.23 (LTS) on 2015-11-06.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -11954,7 +11954,7 @@ namespace {
     }
 
 
-    class Pusher extends \Vinkla\Pusher\Facades\Pusher{
+    class PusherObject extends \Vinkla\Pusher\Facades\Pusher{
         
         /**
          * Get the factory instance.
