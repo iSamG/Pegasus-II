@@ -159,14 +159,16 @@
                 <div class="item active">
                     <img class="" height="400px" style="height: 400px;" src="front_app/assets/images/img/carousel_i.jpg" alt="slider">
                     <div class="slider-content">
-                        <div class="col-md-12 text-center">
-                            <h2 class=" white">
+                        <div class="col-md-12 text-right">
+                            <h2 class=" white  text-right" >
                                 <span>Create  <strong>Dynamic</strong> Forms</span>
                             </h2>
-                            <h3 class=" white">
+                            <h3 class=" white  text-right">
                                 <span> Via a customizable account interface</span>
                             </h3>
-                            <p class="animated4"><a href="" class="slider btn btn-primary" signup-modal="">Sign up now</a>
+                            <p class="animated4">
+                                <a href="" class="slider btn btn-primary visible-lg visible-md pull-right" style="margin-right: 200px" signup-modal="">Sign up now</a>
+                                <a href="" class="slider btn btn-primary visible-sm visible-xs" signup-modal="">Sign up now</a>
                             </p>
                         </div>
                     </div>

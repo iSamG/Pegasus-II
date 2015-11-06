@@ -69,7 +69,6 @@ angular.module('pegasusrises')
             };
 
 
-
             Pusher.subscribe('new_survey_response', 'NewSurveyResponse', function (item) {
                 //When new data is submitted, get the section type submitted and assign
                 // sectionToGo variable and sectionUnderText variable
