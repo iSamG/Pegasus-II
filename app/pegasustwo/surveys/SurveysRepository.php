@@ -104,6 +104,16 @@ class SurveysRepository {
     public function saveAnswersToSurveyQuestions($answers_to_survey_questions = [])
     {
 
+//        $answers_to_survey_questions = [
+//            'survey_id' => 1,
+//            'name_of_respondent' => "Gbeila Aliu Wahab",
+//            'email' => "aliu@pollafrique.com",
+//            'phone_number' => '02020303',
+//            'answer_response' => 'Just an answer Just an answerJust an answerJust an answer'
+//
+//        ];
+
+
         $save_answers = Answer::create($answers_to_survey_questions);
 
         if ($save_answers) {
