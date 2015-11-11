@@ -36,7 +36,5 @@ angular.module('pegasusrises', [
 
             PusherServiceProvider.setToken('21469ff0850de21291e1');
             //            .setOptions({});
-
-
         }]);
 

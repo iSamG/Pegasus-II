@@ -223,16 +223,14 @@ angular.module('pegasusrises', [
 
             PusherServiceProvider.setToken('21469ff0850de21291e1');
             //            .setOptions({});
-
-
         }]);
 
 
 
 
 angular.module('pegasusrises')
-    .run(['$rootScope', '$state', '$stateParams', 'cfpLoadingBar','$localStorage','surveyService','adminService','Pusher',
-        function($rootScope, $state, $stateParams, cfpLoadingBar, $localStorage, surveyService, adminService, Pusher){
+    .run(['$rootScope', '$state', '$stateParams', 'cfpLoadingBar','$localStorage','surveyService','adminService','Pusher','growl',
+        function($rootScope, $state, $stateParams, cfpLoadingBar, $localStorage, surveyService, adminService, Pusher, growl){
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 
@@ -290,7 +288,6 @@ angular.module('pegasusrises')
                     if (status) {
                         surveyService.loadAllSurveys();
                     }
-
                 });
 
 
@@ -299,12 +296,23 @@ angular.module('pegasusrises')
             };
 
 
-
-            Pusher.subscribe('new_survey_response', 'NewSurveyResponse', function (item) {
-                //When new data is submitted, get the section type submitted and assign
-                // sectionToGo variable and sectionUnderText variable
-
+            Pusher.subscribe('new_survey_response', 'App\\Events\\NewSurveyResponse', function (item) {
                 console.log('pusher event', item);
+
+                /*if the survey lookup os not empty and the survey response recorded belongs to the admin*/
+                if (!(_.isEmpty(surveyService.surveyLookup)) && surveyService.surveyLookup[item.surveyAnswerObject.survey_id] != undefined) {
+                    growl.info('New response submitted', {title : surveyService.surveyLookup[item.surveyAnswerObject.survey_id].survey_name } );
+                    $rootScope.$broadcast('newSurveyResponse', item.surveyAnswerObject);
+                }
+                //surveyAnswerObject: Object
+                //answer_response: "{"c2":"rre","c16":"03:04","c20":"","c21":"0004-04-04","c33":"04:44","c48":"http://www.google.com","c17":""}"
+                //    created_at: "2015-11-06 15:27:42"
+                //email: 0
+                //id: 50
+                //name_of_respondent: 0
+                //phone_number: 0
+                //survey_id: 5
+                //updated_at: "2015-11-06 15:27:42"
             });
         }]);
 /**
@@ -314,7 +322,8 @@ angular.module('pegasusrises')
 angular.module('pegasusrises')
     .constant('prConstantKeys', {
         google_api_key: 'AIzaSyDSBIljWNHZ9xMXuaROc4oAypA8LT5xmaU',
-        google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com'
+        google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com',
+        pusher_key : '21469ff0850de21291e1',
     })
     .constant('prFieldTypes', {
         /*[string, number(numbers, including floating numbers), integer, boolean, array, object ]*/
@@ -850,9 +859,9 @@ angular.module('survey')
 
 angular.module('survey')
 
-    .controller('prSelectedSurveyController', ['$rootScope', '$scope', 'homeService','surveyService', 'growl',
+    .controller('prSelectedSurveyController', ['$rootScope', '$scope', 'homeService','surveyService', 'growl', '$state',
         '$stateParams','cfpLoadingBar','$timeout','answersData', 'prConstantOptions',
-        function($rootScope, $scope, homeService, surveyService, growl,
+        function($rootScope, $scope, homeService, surveyService, growl, $state,
                  $stateParams, cfpLoadingBar, $timeout, answersData, prConstantOptions){
             //prConstantOptions.colors[0];
             $scope.chartData = [];
@@ -881,6 +890,8 @@ angular.module('survey')
                     }
                 }
 
+                $scope.selected_survey.answers = answersData.data.data.answers.length;
+
                 for (var i = 0; i < answersData.data.data.answers.length; i++) {
                     var response = answersData.data.data.answers[i];
 
@@ -901,7 +912,7 @@ angular.module('survey')
                             questionHolder[prop].answer_options[ value ] ++ ;
 
                         }else{
-                            /*keep all other answer types in an array with the respondees details in an object*/
+                            /*keep all other answer types in an array with the respondents' details in an object*/
                             questionHolder[prop].answer_options.push({
                                 name : response.name_of_respondent,
                                 email : response.email,
@@ -923,12 +934,28 @@ angular.module('survey')
                 loadSurveys();
             });
 
-            $scope.changeChartType = function (chartType) {
+            $scope.$on('newSurveyResponse', function(evt, data){
+                if (data.survey_id == $stateParams.survey_id) {
+                    answersData.data.data.answers.push(data);
+                    loadSurveys();
+                    if (! _.isEmpty($scope.selected_question)) {
+                    $scope.selectQuestion($scope.selected_question);
+                    }
+                }
+            });
+
+            $scope.reloadAnswers = function () {
+                $state.reload(true)
             };
 
+            $scope.changeChartType = function (chartType) {
+            };
             $scope.selectQuestion = function (question_clicked) {
                 $scope.selected_question = question_clicked;
+                $scope.searchResponse = '';
+                $scope.reverse = true;
                 $scope.chartData = [];
+
                 if (questionHolder[question_clicked.cid].field_type == 'checkboxes' ||
                     questionHolder[question_clicked.cid].field_type == 'radio'||
                     questionHolder[question_clicked.cid].field_type == 'dropdown'){
@@ -941,6 +968,7 @@ angular.module('survey')
                             "color": prConstantOptions.colors[colorOptionTracker++]
                         })
                     });
+                    $scope.selected_question.answers = answersData.data.data.answers.length;
                 }else{
                     $scope.selected_question.answers = questionHolder[question_clicked.cid].answer_options;
                     $scope.selected_question.type = 'opened';
@@ -1165,7 +1193,7 @@ angular.module('directives')
 
                             // value
                             var valueAxis = new AmCharts.ValueAxis();
-                            valueAxis.title = "Visitors";
+                            //valueAxis.title = "Visitors";
                             valueAxis.dashLength = 5;
                             chart.addValueAxis(valueAxis);
 

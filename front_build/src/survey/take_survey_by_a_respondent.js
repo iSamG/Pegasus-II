@@ -10,25 +10,26 @@ angular.module('pegasusrisesSurvey', [
     'oitozero.ngSweetAlert',
     'angularMoment',
     'angular-loading-bar'
-]) .constant('prFieldTypes', {
-    /*[string, number(numbers, including floating numbers), integer, boolean, array, object ]*/
-    radio : 'boolean', /*'boolean',*/
-    checkboxes : 'array',
-    text : 'string',
-    paragraph : 'string',
-    date : 'string',
-    dropdown : 'string',
-    time : 'string',
-    number : 'number',
-    website : 'string',
-    email : 'string',
-    price : 'string',
-    address : 'string',
-    gps : 'string',
-    image : 'string',
-    video : 'string',
-    file : 'string'
-})
+])
+    .constant('prFieldTypes', {
+        /*[string, number(numbers, including floating numbers), integer, boolean, array, object ]*/
+        radio : 'boolean', /*'boolean',*/
+        checkboxes : 'array',
+        text : 'string',
+        paragraph : 'string',
+        date : 'string',
+        dropdown : 'string',
+        time : 'string',
+        number : 'number',
+        website : 'string',
+        email : 'string',
+        price : 'string',
+        address : 'string',
+        gps : 'string',
+        image : 'string',
+        video : 'string',
+        file : 'string'
+    })
     .service('PGTakeSurveyService', ['$rootScope','$http','$q','$location',
         function ($rootScope, $http, $q, $location) {
 
@@ -66,7 +67,6 @@ angular.module('pegasusrisesSurvey', [
             PGTakeSurveyService.getSurvey()
                 .success(function (successData) {
                     if(successData.code == '200' && successData.status.toLowerCase() == 'ok'){
-                        console.log(successData);
                         $scope.survey_name = successData.data.survey_name;
                         prepFormComponents(successData.data.question_tree, successData.data.id);
                     }
@@ -200,14 +200,22 @@ angular.module('pegasusrisesSurvey', [
                     title : 'Submit Survey'
                 });
 
+                var modal = $("#successModal");
+
+                modal.on('hide.bs.modal', function () {
+                    growl.info('Redirecting to home page', {ttl : 2000});
+                });
+
+                modal.on('hidden.bs.modal', function () {
+                    location.href = '/';
+                });
+
                 //$('#formContainer').jsonForm({
                 $('form').jsonForm({
                     schema: schema,
                     form: formArray,
                     onSubmit: function (errors, values) {
                         growl.info('Data submitting...', {ttl : 5000});
-                        //console.log("errors", errors);
-                        //console.log("values", values);
 
                         $('input[ type = "radio" ]:checked').each(function (index, elem) {
                             values[$(elem).attr('name')] = $(elem).attr('value');
@@ -225,7 +233,10 @@ angular.module('pegasusrisesSurvey', [
                             .success(function (successData) {
                                 if(successData.code == '200' && successData.status.toLowerCase() == 'ok'){
                                     growl.success('Data submitted successfully.', {ttl : 5000});
-                                    console.log(successData);
+                                    modal.modal({
+                                        backdrop : 'static',
+                                        keyboard : false
+                                    });
                                 }
                             })
                             .error(function () {

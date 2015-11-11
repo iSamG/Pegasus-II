@@ -4,9 +4,9 @@
 
 angular.module('survey')
 
-    .controller('prSelectedSurveyController', ['$rootScope', '$scope', 'homeService','surveyService', 'growl',
+    .controller('prSelectedSurveyController', ['$rootScope', '$scope', 'homeService','surveyService', 'growl', '$state',
         '$stateParams','cfpLoadingBar','$timeout','answersData', 'prConstantOptions',
-        function($rootScope, $scope, homeService, surveyService, growl,
+        function($rootScope, $scope, homeService, surveyService, growl, $state,
                  $stateParams, cfpLoadingBar, $timeout, answersData, prConstantOptions){
             //prConstantOptions.colors[0];
             $scope.chartData = [];
@@ -35,6 +35,8 @@ angular.module('survey')
                     }
                 }
 
+                $scope.selected_survey.answers = answersData.data.data.answers.length;
+
                 for (var i = 0; i < answersData.data.data.answers.length; i++) {
                     var response = answersData.data.data.answers[i];
 
@@ -55,7 +57,7 @@ angular.module('survey')
                             questionHolder[prop].answer_options[ value ] ++ ;
 
                         }else{
-                            /*keep all other answer types in an array with the respondees details in an object*/
+                            /*keep all other answer types in an array with the respondents' details in an object*/
                             questionHolder[prop].answer_options.push({
                                 name : response.name_of_respondent,
                                 email : response.email,
@@ -77,12 +79,28 @@ angular.module('survey')
                 loadSurveys();
             });
 
-            $scope.changeChartType = function (chartType) {
+            $scope.$on('newSurveyResponse', function(evt, data){
+                if (data.survey_id == $stateParams.survey_id) {
+                    answersData.data.data.answers.push(data);
+                    loadSurveys();
+                    if (! _.isEmpty($scope.selected_question)) {
+                    $scope.selectQuestion($scope.selected_question);
+                    }
+                }
+            });
+
+            $scope.reloadAnswers = function () {
+                $state.reload(true)
             };
 
+            $scope.changeChartType = function (chartType) {
+            };
             $scope.selectQuestion = function (question_clicked) {
                 $scope.selected_question = question_clicked;
+                $scope.searchResponse = '';
+                $scope.reverse = true;
                 $scope.chartData = [];
+
                 if (questionHolder[question_clicked.cid].field_type == 'checkboxes' ||
                     questionHolder[question_clicked.cid].field_type == 'radio'||
                     questionHolder[question_clicked.cid].field_type == 'dropdown'){
@@ -95,6 +113,7 @@ angular.module('survey')
                             "color": prConstantOptions.colors[colorOptionTracker++]
                         })
                     });
+                    $scope.selected_question.answers = answersData.data.data.answers.length;
                 }else{
                     $scope.selected_question.answers = questionHolder[question_clicked.cid].answer_options;
                     $scope.selected_question.type = 'opened';

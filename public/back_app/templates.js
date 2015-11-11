@@ -1090,12 +1090,17 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "                        <li class=\"divider\"></li>\n" +
     "                        <li delete-survey=\"{{ selected_survey.id }}\"><a href=\"\"><i class=\"fa fa-times\"></i> Delete Survey</a></li>\n" +
     "                        <li class=\"divider\"></li>\n" +
-    "                        <li ng-click=\"reloadSurveyData()\"><a href=\"\"><i class=\"fa fa-refresh\"></i> Refresh</a></li>\n" +
+    "                        <li ng-click=\"reloadSurveyData()\"><a href=\"\"><i class=\"fa fa-refresh\"></i> Refresh Survey</a></li>\n" +
+    "                        <li class=\"divider\"></li>\n" +
+    "                        <li ng-click=\"reloadAnswers()\"><a href=\"\"><i class=\"fa fa-refresh\"></i> Reload Answers</a></li>\n" +
+    "                        <li class=\"divider\"></li>\n" +
     "                    </ul>\n" +
     "                </div>\n" +
     "                <!--<span   tooltip-placement=\"left\" tooltip=\"Refresh\" class=\"pointer pull-right label label-success\">-->\n" +
     "                <!--</span>-->\n" +
     "\n" +
+    "                <br>\n" +
+    "                <small class=\"text-center\">Total Responses : <span ng-bind=\"selected_survey.answers\"></span></small>\n" +
     "            </div>\n" +
     "        </section>\n" +
     "    </div>\n" +
@@ -1137,34 +1142,50 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "    <div class=\"col-md-6\" ng-show=\"selected_survey.question_tree\">\n" +
     "\n" +
     "        <!--Section for  charting. Includes tabs for car, pie and column chart-->\n" +
-    "        <div ng-show=\"selected_question\" class=\"widget_inbox\">\n" +
-    "            <tabset  ng-show=\"selected_question.type === 'closed' \" justified=\"true\">\n" +
+    "        <div ng-show=\"selected_question.type === 'closed' \" class=\"widget_inbox\">\n" +
+    "            <div class=\"panel panel-primary\">\n" +
+    "                <div class=\"panel-heading \">\n" +
+    "                    <h4 class=\"panel-title text-center\">{{ selected_question.label }}</h4>\n" +
+    "                    <div class=\"row\">\n" +
+    "                        <div class=\"col-md-5 col-sm-3 pull-left\" style=\"margin-top: 10px\">\n" +
+    "                            <small class=\"text-white-important\" style=\"font-size: 12px !important; margin-top: 15px\">\n" +
+    "                                Response<span ng-show=\"selected_question.answers > 1\">s</span>&nbsp;:&nbsp;\n" +
+    "                                <b ng-bind=\"selected_question.answers\"></b>\n" +
+    "                            </small>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "                <div class=\"panel-body\">\n" +
+    "                    <tabset   justified=\"true\">\n" +
     "\n" +
-    "                <tab select=\"changeChartType('bar')\">\n" +
-    "                    <tab-heading>\n" +
-    "                        <i class=\"fa fa-list-ul\"></i> Bar Chart\n" +
-    "                    </tab-heading>\n" +
+    "                        <tab select=\"changeChartType('bar')\">\n" +
+    "                            <tab-heading>\n" +
+    "                                <i class=\"fa fa-list-ul\"></i> Bar Chart\n" +
+    "                            </tab-heading>\n" +
     "\n" +
-    "                    <span am-chart=\"\" chart-type=\"bar\"  chart-data=\"$parent.$parent.chartData\" title-field=\"country\" value-field=\"visits\"></span>\n" +
-    "\n" +
-    "\n" +
-    "                </tab>\n" +
-    "\n" +
-    "                <tab select=\"changeChartType('pie')\">\n" +
-    "                    <tab-heading>\n" +
-    "                        <i class=\"fa fa-pie-chart\"></i> Pie Chart\n" +
-    "                    </tab-heading>\n" +
-    "                    <span am-chart=\"\" chart-type=\"pie\" chart-data=\"chartData\" title-field=\"country\" value-field=\"visits\"></span>\n" +
-    "                </tab>\n" +
+    "                            <span am-chart=\"\" chart-type=\"bar\"  chart-data=\"$parent.$parent.chartData\" title-field=\"country\" value-field=\"visits\"></span>\n" +
     "\n" +
     "\n" +
-    "                <tab select=\"changeChartType('column')\">\n" +
-    "                    <tab-heading>\n" +
-    "                        <i class=\"fa fa-bar-chart\"></i> Column Chart\n" +
-    "                    </tab-heading>\n" +
-    "                    <span am-chart=\"\"  chart-type=\"column\" chart-data=\"chartData\" title-field=\"country\" value-field=\"visits\"></span>\n" +
-    "                </tab>\n" +
-    "            </tabset>\n" +
+    "                        </tab>\n" +
+    "\n" +
+    "                        <tab select=\"changeChartType('pie')\">\n" +
+    "                            <tab-heading>\n" +
+    "                                <i class=\"fa fa-pie-chart\"></i> Pie Chart\n" +
+    "                            </tab-heading>\n" +
+    "                            <span am-chart=\"\" chart-type=\"pie\" chart-data=\"chartData\" title-field=\"country\" value-field=\"visits\"></span>\n" +
+    "                        </tab>\n" +
+    "\n" +
+    "\n" +
+    "                        <tab select=\"changeChartType('column')\">\n" +
+    "                            <tab-heading>\n" +
+    "                                <i class=\"fa fa-bar-chart\"></i> Column Chart\n" +
+    "                            </tab-heading>\n" +
+    "                            <span am-chart=\"\"  chart-type=\"column\" chart-data=\"chartData\" title-field=\"country\" value-field=\"visits\"></span>\n" +
+    "                        </tab>\n" +
+    "                    </tabset>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "\n" +
     "        </div>\n" +
     "\n" +
     "        <!--Section for  listing answers when the charts won't work-->\n" +
@@ -1172,8 +1193,28 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "            <div ng-show=\"selected_question.type === 'opened' \">\n" +
     "\n" +
     "                <div class=\"panel panel-primary\">\n" +
-    "                    <div class=\"panel-heading text-center\">\n" +
-    "                        <h4 class=\"panel-title \">{{ selected_question.label }}</h4>\n" +
+    "                    <div class=\"panel-heading \">\n" +
+    "                        <h4 class=\"panel-title text-center\">{{ selected_question.label }}</h4>\n" +
+    "                        <div class=\"row\">\n" +
+    "                            <div class=\"col-md-5 col-sm-3 pull-left\" style=\"margin-top: 10px\">\n" +
+    "                                <small class=\"text-white-important\" style=\"font-size: 12px !important; margin-top: 15px\">\n" +
+    "                                    Response<span ng-show=\"(selected_question.answers | filter : {content : searchResponse }).length > 1\">s</span>&nbsp;:&nbsp;\n" +
+    "                                    <b ng-bind=\"(selected_question.answers | filter : {content : searchResponse }).length\"></b>\n" +
+    "                                </small>\n" +
+    "                            </div>\n" +
+    "                            <div class=\"col-md-1 col-sm-2 pull-right\" style=\"margin-top: 10px\">\n" +
+    "                                <button tooltip=\"Sort responses by date\" class=\"btn btn-link pull-right text-center center-block\"\n" +
+    "                                        ng-init=\"reverse = true\" ng-click=\"reverse = !reverse\"><i class=\"fa fa-sort text-white-important\"></i></button>\n" +
+    "                            </div>\n" +
+    "                            <div class=\"col-md-4 col-sm-6 pull-right search-form\">\n" +
+    "                                <div class=\"form-group has-feedback\">\n" +
+    "                                    <label for=\"search\" class=\"sr-only\">Search</label>\n" +
+    "                                    <input type=\"text\" ng-model=\"searchResponse\" ng-init=\"searchResponse = '' \" class=\"form-control\" id=\"search\" placeholder=\"Search\">\n" +
+    "                                    <span class=\"fa fa-search form-control-feedback\"></span>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "\n" +
+    "                        </div>\n" +
     "                    </div>\n" +
     "                    <div class=\"panel-body\" style=\"padding-bottom: 0 !important;\">\n" +
     "\n" +
@@ -1181,7 +1222,7 @@ angular.module("app/survey/selected/selected_survey.tpl.html", []).run(["$templa
     "\n" +
     "                            <!--List for text or straight forward open answers-->\n" +
     "                            <ul ng-show=\"selected_question.answers.length\" class=\"media-list\">\n" +
-    "                                <li class=\"media answer-list\" style=\"\" ng-repeat=\"response in selected_question.answers\"><!-- limitTo : 15-->\n" +
+    "                                <li class=\"media answer-list\" style=\"\" ng-repeat=\"response in selected_question.answers | filter : {content : searchResponse } | orderBy : 'created_at' : reverse\"><!-- limitTo : 15-->\n" +
     "                                    <a >\n" +
     "                                        <p>\n" +
     "                                            <span ng-show=\"selected_question.field_type != 'date' \"><strong>{{ response.content }}</strong><!--| limitTo : 100 }}--> <br></span>\n" +

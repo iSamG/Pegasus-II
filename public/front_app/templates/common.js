@@ -48,9 +48,9 @@ angular.module("modals/loginModal.tpl.html", []).run(["$templateCache", function
     "            </div><!-- /.col-lg-12 -->\n" +
     "        </div><!-- /.row -->\n" +
     "\n" +
-    "        <hr class=\"hr1\">\n" +
+    "        <hr class=\"hr1hidden\">\n" +
     "\n" +
-    "        <div class=\"row\" style=\"margin-top: 20px\">\n" +
+    "        <div class=\"row hidden\" style=\"margin-top: 20px\">\n" +
     "            <!---->\n" +
     "            <!--href=\"/facebook/login\" target=\"_blank\"-->\n" +
     "            <button class=\"facebook btn btn-sm btn-facebook center-block col-xs-10\"  social-media-login=\"facebook\"><i class=\"fa fa-facebook-official\"></i>   Login with Facebook</button>\n" +
@@ -173,9 +173,9 @@ angular.module("modals/signupModal.tpl.html", []).run(["$templateCache", functio
     "            </div><!-- /.col-lg-12 -->\n" +
     "        </div><!-- /.row -->\n" +
     "\n" +
-    "        <hr class=\"hr1\">\n" +
+    "        <hr class=\"hr1 hidden\">\n" +
     "\n" +
-    "        <div class=\"row\" style=\"margin-top: 20px\">\n" +
+    "        <div class=\"row hidden\" style=\"margin-top: 20px\">\n" +
     "            <!---->\n" +
     "            <!--href=\"/facebook/login\" target=\"_blank\"-->\n" +
     "            <button class=\"facebook btn btn-sm btn-facebook center-block col-xs-10\"  social-media-login=\"facebook\"><i class=\"fa fa-facebook-official\"></i>   Register with Facebook</button>\n" +

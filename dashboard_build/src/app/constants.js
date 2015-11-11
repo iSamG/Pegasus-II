@@ -5,7 +5,8 @@
 angular.module('pegasusrises')
     .constant('prConstantKeys', {
         google_api_key: 'AIzaSyDSBIljWNHZ9xMXuaROc4oAypA8LT5xmaU',
-        google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com'
+        google_client_id : '982002203062-qllsi843lackaof6acad3308p7m1j5pr.apps.googleusercontent.com',
+        pusher_key : '21469ff0850de21291e1',
     })
     .constant('prFieldTypes', {
         /*[string, number(numbers, including floating numbers), integer, boolean, array, object ]*/

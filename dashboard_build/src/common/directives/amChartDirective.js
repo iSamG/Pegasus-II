@@ -98,7 +98,7 @@ angular.module('directives')
 
                             // value
                             var valueAxis = new AmCharts.ValueAxis();
-                            valueAxis.title = "Visitors";
+                            //valueAxis.title = "Visitors";
                             valueAxis.dashLength = 5;
                             chart.addValueAxis(valueAxis);
 
