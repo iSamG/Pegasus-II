@@ -23,7 +23,7 @@ class EmailController extends Controller{
 
             $GLOBALS["name"] = $address;
 
-            $send_mail = Mail::queue(
+            $send_mail = Mail::send(
                 'email_template',
                 ['name'=>$name, 'survey_id'=>'', 'survey_name'=>$survey_name, 'survey_description'=>$survey_description, 'link'=>$link],
                 function($message){
