@@ -350,7 +350,7 @@ angular.module("app/admin/settings.tpl.html", []).run(["$templateCache", functio
 angular.module("app/home/home.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/home/home.tpl.html",
     "<div class=\"white_bg\" ng-hide=\"loadingSurveys\" ng-if=\"true\"><!--surveys.length < 1-->\n" +
-    "    <h2 class=\"page-header text-center\">Welcome to Pegasus</h2>\n" +
+    "    <h2 class=\"page-header text-center\">Welcome to Bissame</h2>\n" +
     "    <div class=\"row\" style=\"padding-bottom: 50px\">\n" +
     "        <p class=\"h5 text-center\">Click the button below to create a survey</p>\n" +
     "        <div class=\"text-center\" style=\"margin: 50px 0\" id=\"ngJoyRide_1_gdrive\">\n" +

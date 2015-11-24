@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Pegasusrises | The Cloud Survey Builder</title>
+    <title>Bissame | The Cloud Survey Builder</title>
     <!--[if IE]> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="BBG Innovation Lab " name="description" />
@@ -12,10 +12,10 @@
           content="BBG Innovation Lab" />
 
     <meta property="og:site_name"
-          content="Pegasusrises" />
+          content="Bissame" />
 
     <meta property="og:url"
-          content="http://www.pegasusrises.com" />
+          content="http://www.bissame.com" />
 
     <meta property="og:description" content="BBG Innovation Lab"/>
 
@@ -98,7 +98,7 @@
                     </button>
                     <!-- End Toggle Nav Link For Mobiles -->
                     <a class="navbar-brand" href="/">
-                        Pegasusrises
+                        Bissame
                         <!--<img alt="" src="front_app/assets/images/margo.png">-->
                     </a>
                 </div>
@@ -192,7 +192,7 @@
                 <!-- Start Contact Widget -->
                 <div class="col-md-6 col-xs-12">
                     <div class="footer-widget contact-widget">
-                        <h4><img src="" class="img-responsive" alt="Pegasus Logo" /></h4>
+                        <h4><img src="" class="img-responsive" alt="Bissame Logo" /></h4>
                         <p>We’d love to hear from you! Please stay in touch using the information provided below:</p>
                         <ul>
                             <li><span>Phone Number:</span> +233 540 832 867</li>
@@ -210,7 +210,7 @@
             <div class="copyright-section">
                 <div class="row">
                     <div class="col-md-6">
-                        <p>&copy; 2015 Pegasus -  All Rights Reserved <a href="http://pegasusrises.com">Pegasusrises</a> </p>
+                        <p>&copy; 2015 Bissame -  All Rights Reserved <a href="http://pegasusrises.com">Bissame</a> </p>
                     </div><!-- .col-md-6 -->
                     <div class="col-md-6">
                         <ul class="footer-nav">
