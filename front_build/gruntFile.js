@@ -38,6 +38,15 @@ module.exports = function (grunt) {
         '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
         ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>;\n' +
         ' * Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>\n */\n',
+
+        js_php_banner : '<?php header("Cache-Control: public, s-maxage=604899999900 max-age=604899999900"); header("Expires: Sun, 25-Jun-2030 19:14:07 GMT"); ' +
+        '$etag = \'"\' .  md5(<%= new Date().getTime() %>) . \'"\';$etag_header =\'Etag: \' . $etag;header($etag_header);if (isset($_SERVER["HTTP_IF_NONE_MATCH"]) and $_SERVER["HTTP_IF_NONE_MATCH"]==$etag) {header("HTTP/1.1 304 Not Modified");exit();}header("Content-Type: text/javascript");header("last-modified: Sun, 25-Jun-2000 19:14:07 GMT");if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) ' +
+        'ob_start("ob_gzhandler"); else ob_start();?>',
+
+        css_php_banner : '<?php header("Cache-Control: public, s-maxage=604899999900 max-age=604899999900"); header("Expires: Sun, 25-Jun-2030 19:14:07 GMT"); ' +
+        '$etag = \'"\' .  md5(<%= new Date().getTime() %>) . \'"\';$etag_header =\'Etag: \' . $etag;header($etag_header);if (isset($_SERVER["HTTP_IF_NONE_MATCH"]) and $_SERVER["HTTP_IF_NONE_MATCH"]==$etag) {header("HTTP/1.1 304 Not Modified");exit();}header("Content-Type: text/css");header("last-modified: Sun, 25-Jun-2000 19:14:07 GMT");if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) ' +
+        'ob_start("ob_gzhandler"); else ob_start();?>',
+
         src: {
             html: ['src/public_index.html'],
             survey_html: ['src/public_survey.html'],
@@ -76,18 +85,40 @@ module.exports = function (grunt) {
         html2js: {
             app: {
                 options: {
+                    fileHeaderString: '<%= js_php_banner %>',
+                    singleModule: true,
+                    useStrict: true,
+                    htmlmin: {
+                        collapseBooleanAttributes: true,
+                        collapseWhitespace: true,
+                        removeAttributeQuotes: true,
+                        removeComments: true,
+                        removeEmptyAttributes: true,
+                        removeRedundantAttributes: true
+                    },
                     base: 'src/app'
                 },
                 src: ['<%= src.tpl.app %>'],
-                dest: '<%= distdir %>/templates/app.js',
+                dest: '<%= distdir %>/templates/app.js.gzip.php',
                 module: 'templates.app'
             },
             common: {
                 options: {
+                    fileHeaderString: '<%= js_php_banner %>',
+                    singleModule: true,
+                    useStrict: true,
+                    htmlmin: {
+                        collapseBooleanAttributes: true,
+                        collapseWhitespace: true,
+                        removeAttributeQuotes: true,
+                        removeComments: true,
+                        removeEmptyAttributes: true,
+                        removeRedundantAttributes: true
+                    },
                     base: 'src/common'
                 },
                 src: ['<%= src.tpl.common %>'],
-                dest: '<%= distdir %>/templates/common.js',
+                dest: '<%= distdir %>/templates/common.js.gzip.php',
                 module: 'templates.common'
             }
         },
@@ -110,18 +141,18 @@ module.exports = function (grunt) {
             },
             stylesheets : {
                 options: {
-                    banner: "<%= banner %>"
+                    banner: "<%= css_php_banner %>"
                 },
                 files : {
-                    '<%= distdir %>/<%= pkg.name %>.css' : '<%= src.css %>'
+                    '<%= distdir %>/<%= pkg.name %>.css.gzip.php' : '<%= src.css %>'
                 }
             },
             app_files : {
                 options: {
-                    banner: "<%= banner %>"
+                    banner: "<%= js_php_banner %>"
                 },
                 src:['<%= src.app_files %>', '<%= src.jsCommon %>'],
-                dest: '<%= distdir %>/<%= pkg.name %>.js'
+                dest: '<%= distdir %>/<%= pkg.name %>.js.gzip.php'
             },
             vendors: {
                 options: {
@@ -131,18 +162,20 @@ module.exports = function (grunt) {
                 dest: '<%= distdir %>/scripts.js'
             },
             take_survey: {
+                options: {
+                    banner: "<%= js_php_banner %>"
+                },
                 src:['<%= src.take_survey_files %>'],
-                dest: '<%= distdir %>/<%= pkg.name %>-survey.js'
+                dest: '<%= distdir %>/<%= pkg.name %>-survey.js.gzip.php'
             }
         },
         uglify: {
             dist:{
                 options: {
-                    banner: "<%= banner %>"
+                    banner: "<%= js_php_banner %>"
                 },
-                //src:['<%= distdir %>/**/*.js'],
                 src:['<%= distdir %>/scripts.js'],
-                dest:'<%= distdir %>/<%= pkg.name %>min.js'
+                dest:'<%= distdir %>/scripts.min.js.gzip.php'
             }
         },
         watch:{

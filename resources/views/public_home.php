@@ -1,3 +1,13 @@
+<?php
+header('Pragma: public');
+header('Cache-Control: max-age=86400, public');
+header('Expires: '. gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
+header('Content-Type: image/png');
+if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip"))
+ob_start("ob_gzhandler");
+else ob_start();
+?>
+
 <!DOCTYPE html>
 <!--[if IE 8]> <html class="ie8" lang="en"> <![endif]-->
 <!--[if IE 9]> <html class="ie9" lang="en"> <![endif]-->
@@ -17,7 +27,7 @@
           content="Bissame" />
 
     <meta property="og:url"
-          content="http://www.pegasusrises.com" />
+          content="http://www.bissame.com" />
 
     <meta property="og:description" content="BBG Innovation Lab"/>
 
@@ -29,9 +39,9 @@
 
     <base href="/">
 
-    <link rel="stylesheet" href="/front_app/pegasusrises.css">
+    <link rel="stylesheet" href="/front_app/pegasusrises.css.gzip.php?v=1450186667925">
     <!-- Favicon-->
-    <link href="favicon.ico" rel="icon" type="image/ico" />
+    <link href="front_app/assets/images/favicon.png" rel="icon" type="image/png" />
     <!--- jQuery -->
     <!--[if IE 8]>
 <script type="javascript" src="/front_app/assets/legacy.js"></script>
@@ -103,8 +113,8 @@
                     </button>
                     <!-- End Toggle Nav Link For Mobiles -->
                     <a class="navbar-brand" href="#container">
-                        Bissame
-                        <!--<img alt="" src="front_app/assets/images/margo.png">-->
+                        <!--Bissame-->
+                        <img alt="Bissame" style="width: 90%" src="front_app/assets/images/bissame.png">
                     </a>
                 </div>
                 <div class="navbar-collapse collapse">
@@ -157,7 +167,7 @@
             <!-- Carousel inner -->
             <div class="carousel-inner">
                 <div class="item active">
-                    <img class="" height="400px" style="height: 400px;" src="front_app/assets/images/img/carousel_i.jpg" alt="slider">
+                    <img class="" style="height: 330px;" src="front_app/assets/images/img/carousel_i.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
                             <h2 class=" white" >
@@ -175,7 +185,7 @@
                 </div>
                 <!--/ Carousel item end -->
                 <div class="item">
-                    <img class="" height="400px" style="height: 400px;" src="front_app/assets/images/img/carousel_ii.jpg" alt="slider">
+                    <img class=""  style="height: 330px;" src="front_app/assets/images/img/carousel_ii.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
                             <h2 class=" white">
@@ -191,7 +201,7 @@
                 </div>
                 <!--/ Carousel item end -->
                 <div class="item">
-                    <img class="" style="height: 400px;" height="400px" src="front_app/assets/images/img/carousel_iii.jpg" alt="slider">
+                    <img class="" style="height: 330px;" src="front_app/assets/images/img/carousel_iii.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
                             <h2 class=" white">
@@ -289,10 +299,10 @@
         <div class="container">
 
             <!-- Start Video Section Content -->
-            <div class="section-video-content text-center">
+            <div class="section-video-content text-center white">
 
                 <!-- Start Animations Text -->
-                <h1 class="fittext uppercase tlt"><!--wite-text-->
+                <h1 class="fittext uppercase tlt wite-text white "><!---->
                     <strong>Bissame</strong> is free to use and is supported  <br/>by the<strong> BBG</strong>  Digital Innovation Lab
                     <br/>at<strong> Impact Hub Accra</strong>
                 </h1>
@@ -533,7 +543,7 @@
                     <!--<h4>Get in touch<span class="head-line"></span></h4>-->
                     <!--<p>Join our mailing list to stay up to date and get notices about our new releases!</p>-->
                     <!--<form class="subscribe">-->
-                    <!--<input type="text" placeholder="mail@pegasusrises.com">-->
+                    <!--<input type="text" placeholder="mail@bissame.com">-->
                     <!--<input type="submit" class="main-button" value="Send">-->
                     <!--</form>-->
                     <!--</div>-->
@@ -558,12 +568,12 @@
                 <!-- Start Contact Widget -->
                 <div class="col-md-6 col-xs-12">
                     <div class="footer-widget contact-widget">
-                        <h4><img src="" class="img-responsive" alt="Bissame Logo" /></h4>
+                        <h4><img src="front_app/assets/images/bissame-white.png" class="img-responsive" alt="Bissame Logo" /></h4>
                         <p>We’d love to hear from you! Please stay in touch using the information provided below:</p>
                         <ul>
                             <li><span>Phone Number:</span> +233 540 832 867</li>
                             <li><span>Email:</span> lab@pegasusrises.com</li>
-                            <li><span>Website:</span> www.pegasusrises.com</li>
+                            <li><span>Website:</span> www.bissame.com</li>
                         </ul>
                     </div>
                 </div><!-- .col-md-3 -->
@@ -576,13 +586,13 @@
             <div class="copyright-section">
                 <div class="row">
                     <div class="col-md-6">
-                        <p>&copy; 2015 -  All Rights Reserved <a href="http://pegasusrises.com">Bissame</a> </p>
+                        <p>&copy; 2015 -  All Rights Reserved <a href="http://bissame.com">Bissame</a> </p>
                     </div><!-- .col-md-6 -->
                     <div class="col-md-6">
                         <ul class="footer-nav">
                             <!--<li><a href="">Sitemap</a></li>-->
                             <!--<li><a href="">Privacy Policy</a></li>-->
-                            <li><a href="http://www.pegasusrises.com#contact">Contact</a>
+                            <li><a href="http://www.bissame.com#contact">Contact</a>
                             </li>
                         </ul>
                     </div><!-- .col-md-6 -->
@@ -616,10 +626,10 @@
 <!--End of  angular-growl-2-->
 
 
-<script  src="/front_app/scripts.js"></script>
-<script  src="/front_app/pegasusrises.js"></script>
-<script src="/front_app/templates/app.js"></script>
-<script src="/front_app/templates/common.js"></script>
+<script  src="/front_app/scripts.min.js.gzip.php?v=1450186667925"></script>
+<script  src="/front_app/pegasusrises.js.gzip.php?v=1450186667925"></script>
+<script src="/front_app/templates/app.js.gzip.php?v=1450186667925"></script>
+<script src="/front_app/templates/common.js.gzip.php?v=1450186667925"></script>
 
 
 

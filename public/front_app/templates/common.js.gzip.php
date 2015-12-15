@@ -1,6 +1,8 @@
+<?php header("Cache-Control: public, s-maxage=604899999900 max-age=604899999900"); header("Expires: Sun, 25-Jun-2030 19:14:07 GMT"); $etag = '"' .  md5(1450183349597) . '"';$etag_header ='Etag: ' . $etag;header($etag_header);if (isset($_SERVER["HTTP_IF_NONE_MATCH"]) and $_SERVER["HTTP_IF_NONE_MATCH"]==$etag) {header("HTTP/1.1 304 Not Modified");exit();}header("Content-Type: text/javascript");header("last-modified: Sun, 25-Jun-2000 19:14:07 GMT");if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) ob_start("ob_gzhandler"); else ob_start();?>
 angular.module('templates.common', ['modals/loginModal.tpl.html', 'modals/signupModal.tpl.html']);
 
 angular.module("modals/loginModal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  "use strict";
   $templateCache.put("modals/loginModal.tpl.html",
     "<div class=\"modal-content\" ng-controller=\"PGPublicLoginController\">\n" +
     "    <div class=\"modal-header\">\n" +
@@ -68,6 +70,7 @@ angular.module("modals/loginModal.tpl.html", []).run(["$templateCache", function
 }]);
 
 angular.module("modals/signupModal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  "use strict";
   $templateCache.put("modals/signupModal.tpl.html",
     "<div class=\"modal-content\" ng-controller=\"PGPublicSignUpModalController\">\n" +
     "    <div class=\"modal-header\">\n" +

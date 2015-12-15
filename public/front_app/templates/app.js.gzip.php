@@ -1,6 +1,8 @@
+<?php header("Cache-Control: public, s-maxage=604899999900 max-age=604899999900"); header("Expires: Sun, 25-Jun-2030 19:14:07 GMT"); $etag = '"' .  md5(1450183349541) . '"';$etag_header ='Etag: ' . $etag;header($etag_header);if (isset($_SERVER["HTTP_IF_NONE_MATCH"]) and $_SERVER["HTTP_IF_NONE_MATCH"]==$etag) {header("HTTP/1.1 304 Not Modified");exit();}header("Content-Type: text/javascript");header("last-modified: Sun, 25-Jun-2000 19:14:07 GMT");if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) ob_start("ob_gzhandler"); else ob_start();?>
 angular.module('templates.app', ['public/about/about.tpl.html', 'public/error/error.tpl.html']);
 
 angular.module("public/about/about.tpl.html", []).run(["$templateCache", function($templateCache) {
+  "use strict";
   $templateCache.put("public/about/about.tpl.html",
     "\n" +
     "\n" +
@@ -214,6 +216,7 @@ angular.module("public/about/about.tpl.html", []).run(["$templateCache", functio
 }]);
 
 angular.module("public/error/error.tpl.html", []).run(["$templateCache", function($templateCache) {
+  "use strict";
   $templateCache.put("public/error/error.tpl.html",
     "<div id=\"content\" class=\"add-shadow\" style=\"margin-bottom: 20px\">\n" +
     "    <div class=\"container\">\n" +
