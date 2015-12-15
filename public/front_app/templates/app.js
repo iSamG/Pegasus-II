@@ -1,4 +1,9 @@
-<?php header("Cache-Control: public, s-maxage=604899999900 max-age=604899999900"); header("Expires: Sun, 25-Jun-2030 19:14:07 GMT"); $etag = '"' .  md5(1450189997929) . '"';$etag_header ='Etag: ' . $etag;header($etag_header);if (isset($_SERVER["HTTP_IF_NONE_MATCH"]) and $_SERVER["HTTP_IF_NONE_MATCH"]==$etag) {header("HTTP/1.1 304 Not Modified");exit();}header("Content-Type: text/javascript");header("last-modified: Sun, 25-Jun-2000 19:14:07 GMT");if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) ob_start("ob_gzhandler"); else ob_start();?>
+/* pegasusrises - v2.0 - 2015-12-15
+ * pegasusrises.com
+ * Copyright (c) 2015 BBG Digital Innovation Lab;
+ * Licensed MIT
+ */
+
 angular.module('templates.app', ['public/about/about.tpl.html', 'public/error/error.tpl.html']);
 
 angular.module("public/about/about.tpl.html", []).run(["$templateCache", function($templateCache) {

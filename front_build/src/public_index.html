@@ -1,11 +1,6 @@
 <?php
 header('Pragma: public');
 header('Cache-Control: max-age=86400, public');
-header('Expires: '. gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
-header('Content-Type: image/png, image/jpg');
-if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip"))
-ob_start("ob_gzhandler");
-else ob_start();
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +34,7 @@ else ob_start();
 
     <base href="/">
 
-    <link rel="stylesheet" href="/front_app/<%= grunt.config.get('pkg.name') %>.css.php?v=<%= new Date().getTime() %>">
+    <link rel="stylesheet" href="/front_app/<%= grunt.config.get('pkg.name') %>.css?v=<%= new Date().getTime() %>">
     <!-- Favicon-->
     <link href="front_app/assets/images/favicon.png" rel="icon" type="image/png" />
     <!--- jQuery -->
@@ -626,10 +621,10 @@ else ob_start();
 <!--End of  angular-growl-2-->
 
 
-<script  src="/front_app/scripts.min.js.php?v=<%= new Date().getTime() %>"></script>
-<script  src="/front_app/<%= grunt.config.get('pkg.name') %>.js.php?v=<%= new Date().getTime() %>"></script>
-<script src="/front_app/templates/app.js.php?v=<%= new Date().getTime() %>"></script>
-<script src="/front_app/templates/common.js.php?v=<%= new Date().getTime() %>"></script>
+<script  src="/front_app/scripts.min.js?v=<%= new Date().getTime() %>"></script>
+<script  src="/front_app/<%= grunt.config.get('pkg.name') %>.js?v=<%= new Date().getTime() %>"></script>
+<script src="/front_app/templates/app.js?v=<%= new Date().getTime() %>"></script>
+<script src="/front_app/templates/common.js?v=<%= new Date().getTime() %>"></script>
 
 
 

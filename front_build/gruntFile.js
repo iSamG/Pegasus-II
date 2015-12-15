@@ -85,7 +85,7 @@ module.exports = function (grunt) {
         html2js: {
             app: {
                 options: {
-                    fileHeaderString: '<%= js_php_banner %>',
+                    fileHeaderString: '<%= banner %>',
                     singleModule: true,
                     useStrict: true,
                     htmlmin: {
@@ -99,12 +99,12 @@ module.exports = function (grunt) {
                     base: 'src/app'
                 },
                 src: ['<%= src.tpl.app %>'],
-                dest: '<%= distdir %>/templates/app.js.php',
+                dest: '<%= distdir %>/templates/app.js',
                 module: 'templates.app'
             },
             common: {
                 options: {
-                    fileHeaderString: '<%= js_php_banner %>',
+                    fileHeaderString: '<%= banner %>',
                     singleModule: true,
                     useStrict: true,
                     htmlmin: {
@@ -118,7 +118,7 @@ module.exports = function (grunt) {
                     base: 'src/common'
                 },
                 src: ['<%= src.tpl.common %>'],
-                dest: '<%= distdir %>/templates/common.js.php',
+                dest: '<%= distdir %>/templates/common.js',
                 module: 'templates.common'
             }
         },
@@ -149,10 +149,10 @@ module.exports = function (grunt) {
             },
             app_files : {
                 options: {
-                    banner: "<%= js_php_banner %>"
+                    banner: "<%= banner %>"
                 },
                 src:['<%= src.app_files %>', '<%= src.jsCommon %>'],
-                dest: '<%= distdir %>/<%= pkg.name %>.js.php'
+                dest: '<%= distdir %>/<%= pkg.name %>.js'
             },
             vendors: {
                 options: {
@@ -163,26 +163,19 @@ module.exports = function (grunt) {
             },
             take_survey: {
                 options: {
-                    banner: "<%= js_php_banner %>"
+                    banner: "<%= banner %>"
                 },
                 src:['<%= src.take_survey_files %>'],
-                dest: '<%= distdir %>/<%= pkg.name %>-survey.js.php'
+                dest: '<%= distdir %>/<%= pkg.name %>-survey.js'
             }
         },
         uglify: {
             scripts:{
                 options: {
-                    banner: "<%= js_php_banner %>"
+                    banner: "<%= banner %>"
                 },
                 src:['<%= distdir %>/scripts.js'],
-                dest:'<%= distdir %>/scripts.min.js.php'
-            },
-            stylesheets:{
-                options: {
-                    banner: "<%= css_php_banner %>"
-                },
-                src:['<%= distdir %>/pegasusrises.css'],
-                dest:'<%= distdir %>/pegasusrises.css.php'
+                dest:'<%= distdir %>/scripts.min.js'
             }
         },
         watch:{

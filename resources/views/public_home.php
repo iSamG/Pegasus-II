@@ -39,7 +39,7 @@ else ob_start();
 
     <base href="/">
 
-    <link rel="stylesheet" href="/front_app/pegasusrises.css.php?v=1450189998054">
+    <link rel="stylesheet" href="/front_app/pegasusrises.css?v=1450192507038">
     <!-- Favicon-->
     <link href="front_app/assets/images/favicon.png" rel="icon" type="image/png" />
     <!--- jQuery -->
@@ -626,10 +626,10 @@ else ob_start();
 <!--End of  angular-growl-2-->
 
 
-<script  src="/front_app/scripts.min.js.php?v=1450189998054"></script>
-<script  src="/front_app/pegasusrises.js.php?v=1450189998054"></script>
-<script src="/front_app/templates/app.js.php?v=1450189998054"></script>
-<script src="/front_app/templates/common.js.php?v=1450189998054"></script>
+<script  src="/front_app/scripts.min.js?v=1450192507038"></script>
+<script  src="/front_app/pegasusrises.js?v=1450192507038"></script>
+<script src="/front_app/templates/app.js?v=1450192507038"></script>
+<script src="/front_app/templates/common.js?v=1450192507038"></script>
 
 
 
