@@ -99,7 +99,7 @@ module.exports = function (grunt) {
                     base: 'src/app'
                 },
                 src: ['<%= src.tpl.app %>'],
-                dest: '<%= distdir %>/templates/app.js.gzip.php',
+                dest: '<%= distdir %>/templates/app.js.php',
                 module: 'templates.app'
             },
             common: {
@@ -118,7 +118,7 @@ module.exports = function (grunt) {
                     base: 'src/common'
                 },
                 src: ['<%= src.tpl.common %>'],
-                dest: '<%= distdir %>/templates/common.js.gzip.php',
+                dest: '<%= distdir %>/templates/common.js.php',
                 module: 'templates.common'
             }
         },
@@ -141,10 +141,10 @@ module.exports = function (grunt) {
             },
             stylesheets : {
                 options: {
-                    banner: "<%= css_php_banner %>"
+                    banner: "<%= banner %>"
                 },
                 files : {
-                    '<%= distdir %>/<%= pkg.name %>.css.gzip.php' : '<%= src.css %>'
+                    '<%= distdir %>/<%= pkg.name %>.css' : '<%= src.css %>'
                 }
             },
             app_files : {
@@ -152,7 +152,7 @@ module.exports = function (grunt) {
                     banner: "<%= js_php_banner %>"
                 },
                 src:['<%= src.app_files %>', '<%= src.jsCommon %>'],
-                dest: '<%= distdir %>/<%= pkg.name %>.js.gzip.php'
+                dest: '<%= distdir %>/<%= pkg.name %>.js.php'
             },
             vendors: {
                 options: {
@@ -166,16 +166,23 @@ module.exports = function (grunt) {
                     banner: "<%= js_php_banner %>"
                 },
                 src:['<%= src.take_survey_files %>'],
-                dest: '<%= distdir %>/<%= pkg.name %>-survey.js.gzip.php'
+                dest: '<%= distdir %>/<%= pkg.name %>-survey.js.php'
             }
         },
         uglify: {
-            dist:{
+            scripts:{
                 options: {
                     banner: "<%= js_php_banner %>"
                 },
                 src:['<%= distdir %>/scripts.js'],
-                dest:'<%= distdir %>/scripts.min.js.gzip.php'
+                dest:'<%= distdir %>/scripts.min.js.php'
+            },
+            stylesheets:{
+                options: {
+                    banner: "<%= css_php_banner %>"
+                },
+                src:['<%= distdir %>/pegasusrises.css'],
+                dest:'<%= distdir %>/pegasusrises.css.php'
             }
         },
         watch:{
