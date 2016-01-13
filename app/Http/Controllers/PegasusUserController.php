@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use Hash;
 use Illuminate\Support\Facades\Auth;
 use Input;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Mockery\CountValidator\Exception;
 
 class PegasusUserController extends Controller
 {
@@ -77,28 +79,46 @@ class PegasusUserController extends Controller
         );
 
         $validation_patterns = array(
-            'username'=>'required',
+            'username'=>'required|unique',
             'password'=>'required',
-            'email'=>'required',
+            'email'=>'required|unique',
             'phone_number'=>'required',
             'country'=>'required'
         );
 
-        $input_is_valid = \Validator::make($fields, $validation_patterns);
-        if($input_is_valid){
-            $user = User::create($fields);
-            if($user){
-                Auth::attempt(['username' => $user_name, 'password' => $password]);
-            }
+        if(\DB::table('user')->where('username',$user_name)){
 
-            return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully",
-                $data = $user);
+            return Helpers::responseToView($code = 301, $status = "failed", $message = "Username already exist",
+                $data = null);
+        }
+        else  if(\DB::table('user')->where('email',$email)){
+
+            return Helpers::responseToView($code = 301, $status = "failed", $message = "Email already exist",
+                $data = null);
         }
         else{
+            $input_is_valid = \Validator::make($fields, $validation_patterns);
 
-            return Helpers::responseToView($code = 401, $status = "failed", $message = "User creation failed");
+            if($input_is_valid){
+                $user = User::create($fields);
+                if($user){
+                    Auth::attempt(['username' => $user_name, 'password' => $password]);
+                }
 
+                return Helpers::responseToView($code = 200, $status = "OK", $message = "Pegasus User logged in successfully",
+                    $data = $user);
+            }
         }
+
+//        try{
+//
+//        }
+//        catch(Exception $e){
+//
+//        }
+
+
+
 
     }
 

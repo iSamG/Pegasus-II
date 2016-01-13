@@ -23,7 +23,7 @@ class EmailController extends Controller{
 
             $GLOBALS["name"] = $address;
 
-            $send_mail = Mail::queue(
+             Mail::send(
                 'email_template',
                 ['name'=>$name, 'survey_id'=>'', 'survey_name'=>$survey_name, 'survey_description'=>$survey_description, 'link'=>$link],
                 function($message){
@@ -53,7 +53,7 @@ class EmailController extends Controller{
 
         $email = $recovery_details['email'];
 
-        $send_mail = Mail::queue(
+        $send_mail = Mail::send(
             'email_template',
             ['name'=>'Pegasus Users name', 'survey_id'=>'', 'title'=>'Other details her','link'=>'A link to home page'],
             function($message){
