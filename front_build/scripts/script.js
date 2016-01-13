@@ -76,7 +76,7 @@ $(document).ready(function ($) {
 	 /*----------------------------------------------------*/
 
 	var offset = 200;
-	var duration = 500;
+	var duration = 900;
 	$(window).scroll(function() {
 		if ($(this).scrollTop() > offset) {
 			$('.back-to-top').fadeIn(400);
@@ -86,10 +86,28 @@ $(document).ready(function ($) {
 	});
 	$('.back-to-top').click(function(event) {
 		event.preventDefault();
-		$('html, body').animate({scrollTop: 0}, 600);
+		$('html, body').animate({scrollTop: 0}, duration);
 		return false;
 	});
 
+	$('a[href="#contact"]').click(function (event) {
+		event.preventDefault();
+		$('html, body').animate({ scrollTop: $(document).height() }, duration);
+		return false;
+	});
+
+	$('a[href="#about"]').click(function (event) {
+		var about = $('#about');
+		$('html, body').animate({
+			scrollTop: about.offset().top } , duration
+		);
+	});
+
+	$('a[href="#home"]').click(function (event) {
+		event.preventDefault();
+		$('html, body').animate({scrollTop: 0}, duration);
+		return false;
+	});
 
 
 
@@ -357,7 +375,7 @@ $(document).ready(function ($) {
 			if ( sy >= changeHeaderOn ) {
 				$('.top-bar').slideUp(300);
 				$("header").addClass("fixed-header");
-				$('.navbar-brand').css({ 'padding-top' : 19 + "px", 'padding-bottom' : 19 + "px" });
+				$('.navbar-brand').css({ 'padding-top' : 1 + "px", 'padding-bottom' : 1+ "px" });
 
 				if (/iPhone|iPod|BlackBerry/i.test(navigator.userAgent) || $(window).width() < 479 ){
 					$('.navbar-default .navbar-nav > li > a').css({ 'padding-top' : 0 + "px", 'padding-bottom' : 0 + "px" })
@@ -370,14 +388,14 @@ $(document).ready(function ($) {
 			else {
 				$('.top-bar').slideDown(300);
 				$("header").removeClass("fixed-header");
-				$('.navbar-brand').css({ 'padding-top' : 27 + "px", 'padding-bottom' : 27 + "px" });
+				$('.navbar-brand').css({ 'padding-top' : 9 + "px", 'padding-bottom' : 9 + "px" });
 
 				if (/iPhone|iPod|BlackBerry/i.test(navigator.userAgent) || $(window).width() < 479 ){
 					$('.navbar-default .navbar-nav > li > a').css({ 'padding-top' : 0 + "px", 'padding-bottom' : 0 + "px" })
 				}else{
-					$('.navbar-default .navbar-nav > li > a').css({ 'padding-top' : 28 + "px", 'padding-bottom' : 28 + "px" })
+					$('.navbar-default .navbar-nav > li > a').css({ 'padding-top' : 28 + "px", 'padding-bottom' : 28 + "px" });
 					$('.search-side').css({ 'margin-top' : 0  + "px" });
-				};
+				}
 
 			}
 			didScroll = false;

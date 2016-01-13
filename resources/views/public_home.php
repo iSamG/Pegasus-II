@@ -1,10 +1,15 @@
+<?php
+header('Pragma: public');
+header('Cache-Control: max-age=86400, public');
+?>
+
 <!DOCTYPE html>
 <!--[if IE 8]> <html class="ie8" lang="en"> <![endif]-->
 <!--[if IE 9]> <html class="ie9" lang="en"> <![endif]-->
 <!--[if !IE]><!--> <html lang="en" ><!--<![endif]--><!--manifest="/front_app/b2w_public.appcache"-->
 <head>
     <meta charset="utf-8">
-    <title>Pegasusrises | The Cloud Survey Builder</title>
+    <title>Bissame | The Cloud Survey Builder</title>
     <!--[if IE]> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="BBG Innovation Lab " name="description" />
@@ -14,10 +19,10 @@
           content="BBG Innovation Lab" />
 
     <meta property="og:site_name"
-          content="Pegasusrises" />
+          content="Bissame" />
 
     <meta property="og:url"
-          content="http://www.pegasusrises.com" />
+          content="http://www.bissame.com" />
 
     <meta property="og:description" content="BBG Innovation Lab"/>
 
@@ -29,9 +34,9 @@
 
     <base href="/">
 
-    <link rel="stylesheet" href="/front_app/pegasusrises.css">
+    <link rel="stylesheet" href="/front_app/pegasusrises.css?v=1452705281335">
     <!-- Favicon-->
-    <link href="favicon.ico" rel="icon" type="image/ico" />
+    <link href="front_app/assets/images/favicon.png" rel="icon" type="image/png" />
     <!--- jQuery -->
     <!--[if IE 8]>
 <script type="javascript" src="/front_app/assets/legacy.js"></script>
@@ -40,7 +45,7 @@
 </head>
 
 
-<body ng-app="pegasusApp">
+<body ng-app="pegasusApp" data-spy="scroll" data-target="#menuNavbar" data-offset="25">
 
 <!-- Full Body Container -->
 <div id="container">
@@ -94,7 +99,7 @@
 
 
         <!-- Start  Logo & Naviagtion  -->
-        <div class="navbar navbar-default navbar-top">
+        <nav class="navbar navbar-default navbar-top" id="menuNavbar">
             <div class="container">
                 <div class="navbar-header">
                     <!-- Stat Toggle Nav Link For Mobiles -->
@@ -103,8 +108,8 @@
                     </button>
                     <!-- End Toggle Nav Link For Mobiles -->
                     <a class="navbar-brand" href="#container">
-                        Pegasusrises
-                        <!--<img alt="" src="front_app/assets/images/margo.png">-->
+                        <!--Bissame-->
+                        <img alt="Bissame" style="width: 90%" src="front_app/assets/images/bissame.png">
                     </a>
                 </div>
                 <div class="navbar-collapse collapse">
@@ -112,20 +117,20 @@
                     <div class="search-side">
                         <a href="" class="show-search hidden"><i class="fa fa-search"></i></a>
                         <div class="search-form">
-                            <form autocomplete="off" role="search" method="get" class="searchform" action="#">
-                                <input type="text" value="" name="s" id="s" placeholder="Search the site...">
+                            <form autocomplete="off" role="search" class="searchform" >
+                                <input type="text" placeholder="Search the site...">
                             </form>
                         </div>
                     </div>
                     <!-- End Search -->
                     <!-- Start Navigation List -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a class="active" href="#/">Home</a>
+                    <ul class="nav navbar-nav navbar-right" >
+                        <li >
+                            <a class="active" href="#home">Home</a>
 
                         </li>
-                        <li><a href="#contact">Contact</a></li>
                         <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
                         <li><a href="" login-modal="">Login</a></li>
                         <li><a href="" signup-modal="">Signup</a></li>
                         <!--<li><a href="/survey?sid=10">Test Survey</a></li>-->
@@ -133,7 +138,7 @@
                     <!-- End Navigation List -->
                 </div>
             </div>
-        </div>
+        </nav>
         <!-- End Header Logo & Naviagtion -->
 
     </header>
@@ -157,7 +162,7 @@
             <!-- Carousel inner -->
             <div class="carousel-inner">
                 <div class="item active">
-                    <img class="" height="400px" style="height: 400px;" src="front_app/assets/images/img/carousel_i.jpg" alt="slider">
+                    <img class="" style="height: 330px;" src="front_app/assets/images/img/carousel_i.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
                             <h2 class=" white" >
@@ -175,7 +180,7 @@
                 </div>
                 <!--/ Carousel item end -->
                 <div class="item">
-                    <img class="" height="400px" style="height: 400px;" src="front_app/assets/images/img/carousel_ii.jpg" alt="slider">
+                    <img class=""  style="height: 330px;" src="front_app/assets/images/img/carousel_ii.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
                             <h2 class=" white">
@@ -191,7 +196,7 @@
                 </div>
                 <!--/ Carousel item end -->
                 <div class="item">
-                    <img class="" style="height: 400px;" height="400px" src="front_app/assets/images/img/carousel_iii.jpg" alt="slider">
+                    <img class="" style="height: 330px;" src="front_app/assets/images/img/carousel_iii.jpg" alt="slider">
                     <div class="slider-content">
                         <div class="col-md-12 text-center">
                             <h2 class=" white">
@@ -249,7 +254,7 @@
                     </div>
                     <div class="service-content">
                         <h4>CUSTOMIZABLE FORMS</h4>
-                        <p class="text-center">Process data through a rich open platform that supports a wide range of use cases. Pegasus can be customized for several data aggregation purposes. Among others, these include communications, healthcare, education, economic empowerment, emergency services, and market analytics.</p>
+                        <p class="text-center">Process data through a rich open platform that supports a wide range of use cases. Bissame can be customized for several data aggregation purposes. Among others, these include communications, healthcare, education, economic empowerment, emergency services, and market analytics.</p>
                     </div>
                 </div>
                 <!-- End Service Icon 2 -->
@@ -261,7 +266,7 @@
                     </div>
                     <div class="service-content">
                         <h4>MOBILE DEPLOYMENT</h4>
-                        <p class="text-center">Deliver contextually relevant data that integrates with a wide range of existing mobile app services. Data collectors can access forms created on the Pegasus web portal via their mobile devices. Through this medium, data can be collected and submitted for administrative viewing.</p>
+                        <p class="text-center">Deliver contextually relevant data that integrates with a wide range of existing mobile app services. Data collectors can access forms created on the Bissame web portal via their mobile devices. Through this medium, data can be collected and submitted for administrative viewing.</p>
                     </div>
                 </div>
                 <!-- End Service Icon 3 -->
@@ -289,11 +294,11 @@
         <div class="container">
 
             <!-- Start Video Section Content -->
-            <div class="section-video-content text-center">
+            <div class="section-video-content text-center white">
 
                 <!-- Start Animations Text -->
-                <h1 class="fittext uppercase tlt"><!--wite-text-->
-                    <strong>Pegasus</strong> is free to use and is supported  <br/>by the<strong> BBG</strong>  Digital Innovation Lab
+                <h1 class="fittext uppercase tlt wite-text white "><!---->
+                    <strong>Bissame</strong> is free to use and is supported  <br/>by the<strong> BBG</strong>  Digital Innovation Lab
                     <br/>at<strong> Impact Hub Accra</strong>
                 </h1>
                 <!-- End Animations Text -->
@@ -323,7 +328,7 @@
 
             <!-- Some Text -->
             <p style="font-size: 20px" class="text-center">
-                <span class="accent-color">Pegasus</span> is powered by the <span class="accent-color">BBG Digital Innovation Lab
+                <span class="accent-color">Bissame</span> is powered by the <span class="accent-color">BBG Digital Innovation Lab
                 </span> at the <span class="accent-color">Impact Hub Accra</span>.
             </p>
 
@@ -483,7 +488,7 @@
 
     <div id="parallax-one" class="parallax" style="background-image:url(front_app/assets/images/img/african-sunrise.jpg); margin: 15px">
         <div class="parallax-text-container-1">
-            <div class="parallax-text-item">
+            <div class="parallax-text-item" id="contact">
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12 col-sm-3 col-md-3">
@@ -522,7 +527,7 @@
 
 
     <!-- Start Footer Section -->
-    <footer id="contact">
+    <footer id="contactus">
         <div class="container">
             <div class="row footer-widgets">
 
@@ -533,7 +538,7 @@
                     <!--<h4>Get in touch<span class="head-line"></span></h4>-->
                     <!--<p>Join our mailing list to stay up to date and get notices about our new releases!</p>-->
                     <!--<form class="subscribe">-->
-                    <!--<input type="text" placeholder="mail@pegasusrises.com">-->
+                    <!--<input type="text" placeholder="mail@bissame.com">-->
                     <!--<input type="submit" class="main-button" value="Send">-->
                     <!--</form>-->
                     <!--</div>-->
@@ -558,12 +563,12 @@
                 <!-- Start Contact Widget -->
                 <div class="col-md-6 col-xs-12">
                     <div class="footer-widget contact-widget">
-                        <h4><img src="" class="img-responsive" alt="Pegasus Logo" /></h4>
+                        <h4><img src="front_app/assets/images/bissame-white.png" class="img-responsive" alt="Bissame Logo" /></h4>
                         <p>We’d love to hear from you! Please stay in touch using the information provided below:</p>
                         <ul>
                             <li><span>Phone Number:</span> +233 540 832 867</li>
                             <li><span>Email:</span> lab@pegasusrises.com</li>
-                            <li><span>Website:</span> www.pegasusrises.com</li>
+                            <li><span>Website:</span> www.bissame.com</li>
                         </ul>
                     </div>
                 </div><!-- .col-md-3 -->
@@ -576,13 +581,13 @@
             <div class="copyright-section">
                 <div class="row">
                     <div class="col-md-6">
-                        <p>&copy; 2015 Pegasus -  All Rights Reserved <a href="http://pegasusrises.com">Pegasusrises</a> </p>
+                        <p>&copy; 2015 -  All Rights Reserved <a href="http://bissame.com">Bissame</a> </p>
                     </div><!-- .col-md-6 -->
                     <div class="col-md-6">
                         <ul class="footer-nav">
                             <!--<li><a href="">Sitemap</a></li>-->
                             <!--<li><a href="">Privacy Policy</a></li>-->
-                            <li><a href="http://www.pegasusrises.com#contact">Contact</a>
+                            <li><a href="http://www.bissame.com#contact">Contact</a>
                             </li>
                         </ul>
                     </div><!-- .col-md-6 -->
@@ -616,10 +621,10 @@
 <!--End of  angular-growl-2-->
 
 
-<script  src="/front_app/scripts.js"></script>
-<script  src="/front_app/pegasusrises.js"></script>
-<script src="/front_app/templates/app.js"></script>
-<script src="/front_app/templates/common.js"></script>
+<script  src="/front_app/scripts.js?v=1452705281335"></script>
+<script  src="/front_app/pegasusrises.js?v=1452705281336"></script>
+<script src="/front_app/templates/app.js?v=1452705281336"></script>
+<script src="/front_app/templates/common.js?v=1452705281336"></script>
 
 
 

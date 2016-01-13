@@ -49,7 +49,7 @@ angular.module('pegasusrisesSurvey', [
             }
 
             surveyService.getSurvey = function () {
-                var queryString = "http://pegasusrises.com/survey?unique_id=" + getURLParams('unique_id');
+                var queryString = "http://bissame.com/survey?unique_id=" + getURLParams('unique_id');
 
                 return $http.get(URL.getSurvey, {params : { unique_id : queryString }})
             };
