@@ -1,4 +1,4 @@
-/* pegasusrises - v2.0 - 2015-11-09
+/* pegasusrises - v2.0 - 2015-12-15
  * pegasusrises.com
  * Copyright (c) 2015 BBG Digital Innovation Lab;
  * Licensed MIT
@@ -6532,7 +6532,7 @@ ul.social-list li:last-child a i {
 
 .navbar-brand {
 	position: relative;
-	padding: 27px 0;
+	padding: 9px 0;
 	margin: 0!important;
 	transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -6814,7 +6814,7 @@ ul.social-list li:last-child a i {
 }
 
 #main-slide .carousel-indicators {
-	bottom: 30px;
+	bottom: -5px;
 }
 
 .carousel-indicators li{
@@ -11048,375 +11048,377 @@ ul.footer-nav li a:hover {
     
 }
 a {
-    color: #f36510;
+    color: #175bb4;
 }
 
 .accent-color {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .accent-color-bg {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .top-bar a:hover {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .section-overlay {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .top-bar.color-bar {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .service-box .read-more {
-	color: #f36510;
+	color: #175bb4;
 }
 
 a.main-button, input[type="submit"] {
-	/*background-color: #f36510;*/
+	background-color: #175bb4;
 }
 
 .navbar-default .navbar-nav > li:hover > a,
 .navbar-default .navbar-nav > li > a.active {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .dropdown > li:hover > a, .sup-dropdown li:hover > a {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .navbar-default .navbar-nav > li > a:after {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .navbar-default .navbar-nav > li > a.active, .navbar-default .navbar-nav > li:hover > a {
-	border-color: #f36510;
+	border-color: #175bb4;
 }
 
 .dropdown  li a.active, .sup-dropdown li a.active {
-	color: #f36510;
+	color: #175bb4;
 }
 
 ul.breadcrumbs li a:hover {
-    color: #f36510;
+    color: #175bb4;
 }
 
 .full-width-recent-projects .portfolio-item:hover .portfolio-thumb .thumb-overlay {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .tp-caption.color-bg {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .team-member .member-socail a.mail:hover i {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .post-share a.mail:hover {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .progress .progress-bar.progress-bar-primary {
-	/*background-color: #f36510;*/
+	background-color: #175bb4;
 }
 
 .latest-posts-classic .left-meta-post .post-type i {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .latest-posts-classic .post-title a:hover {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .latest-posts-classic .read-more {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .panel-title a {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .panel-title a:hover {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .milestone-block .milestone-icon {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .milestone-block .milestone-icon:after {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .milestone-block .milestone-number {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .pricing-tables .pricing-table.highlight-plan .plan-name h3 {
-	//color: #f36510;
+	//color: #175bb4;
 }
 
 .pricing-tables .pricing-table.highlight-plan .plan-signup {
-    background-color: #f36510;
+    background-color: #175bb4;
 }
 
 .pricing-tables .pricing-table.highlight-plan .plan-name {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .btn-system {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .btn-system.border-btn {
-	border-color: #f36510;
-	color: #f36510;
+	border-color: #175bb4;
+	color: #175bb4;
 }
 
 .btn-system.border-btn:hover {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .btn-system.border-btn.btn-wite:hover {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .btn-system.btn-wite{
-	color: #f36510;
+	color: #175bb4;
 }
 
 ul.icons-list li i {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .icon-small {
-	text-shadow: 0 0 0 #f36510;
+	text-shadow: 0 0 0 #175bb4;
 }
 
 .icon-small:hover, .service-box:hover .icon-small {
-	color: #f36510;
+	color: #175bb4;
 }
 .icon-medium {
-	text-shadow: 0 0 0 #f36510;
+	text-shadow: 0 0 0 #175bb4;
 }
 
 .icon-medium:hover, .service-box:hover .icon-medium {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .icon-large {
-	text-shadow: 0 0 0 #f36510;
+	text-shadow: 0 0 0 #175bb4;
 }
 
 .icon-large:hover, .service-box:hover .icon-large {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .icon-effect-1 {
-	box-shadow: 0 0 0 3px #f36510;
-	-o-box-shadow: 0 0 0 3px #f36510;
-	-moz-box-shadow: 0 0 0 3px #f36510;
-  	-webkit-box-shadow: 0 0 0 3px #f36510;
+	box-shadow: 0 0 0 3px #175bb4;
+	-o-box-shadow: 0 0 0 3px #175bb4;
+	-moz-box-shadow: 0 0 0 3px #175bb4;
+  	-webkit-box-shadow: 0 0 0 3px #175bb4;
 }
 
 .icon-effect-1:after {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .icon-effect-1:hover, .service-box:hover .icon-effect-1 {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .icon-effect-2 {
-	color: #f36510;
-	box-shadow: 0 0 0 3px #f36510;
-	-o-box-shadow: 0 0 0 3px #f36510;
-	-moz-box-shadow: 0 0 0 3px #f36510;
-  	-webkit-box-shadow: 0 0 0 3px #f36510;
+	color: #175bb4;
+	box-shadow: 0 0 0 3px #175bb4;
+	-o-box-shadow: 0 0 0 3px #175bb4;
+	-moz-box-shadow: 0 0 0 3px #175bb4;
+  	-webkit-box-shadow: 0 0 0 3px #175bb4;
 }
 
 .icon-effect-2:after {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .icon-effect-3 {
-	color: #f36510;
-	box-shadow: 0 0 0 3px #f36510;
-	-o-box-shadow: 0 0 0 3px #f36510;
-	-moz-box-shadow: 0 0 0 3px #f36510;
-  	-webkit-box-shadow: 0 0 0 3px #f36510;
+	color: #175bb4;
+	box-shadow: 0 0 0 3px #175bb4;
+	-o-box-shadow: 0 0 0 3px #175bb4;
+	-moz-box-shadow: 0 0 0 3px #175bb4;
+  	-webkit-box-shadow: 0 0 0 3px #175bb4;
 }
 
 .icon-effect-4 {
-	color: #f36510;
-	box-shadow: 0 0 0 3px #f36510;
-	-o-box-shadow: 0 0 0 3px #f36510;
-	-moz-box-shadow: 0 0 0 3px #f36510;
-  	-webkit-box-shadow: 0 0 0 3px #f36510;
+	color: #175bb4;
+	box-shadow: 0 0 0 3px #175bb4;
+	-o-box-shadow: 0 0 0 3px #175bb4;
+	-moz-box-shadow: 0 0 0 3px #175bb4;
+  	-webkit-box-shadow: 0 0 0 3px #175bb4;
 }
 
 .icon-effect-5 {
-	color: #f36510;
-	box-shadow: 0 0 0 3px #f36510;
-	-o-box-shadow: 0 0 0 3px #f36510;
-	-moz-box-shadow: 0 0 0 3px #f36510;
-  	-webkit-box-shadow: 0 0 0 3px #f36510;
+	color: #175bb4;
+	box-shadow: 0 0 0 3px #175bb4;
+	-o-box-shadow: 0 0 0 3px #175bb4;
+	-moz-box-shadow: 0 0 0 3px #175bb4;
+  	-webkit-box-shadow: 0 0 0 3px #175bb4;
 }
 
 .icon-effect-6 {
-	color: #f36510;
-	box-shadow: 0 0 0 3px #f36510;
-	-o-box-shadow: 0 0 0 3px #f36510;
-	-moz-box-shadow: 0 0 0 3px #f36510;
-  	-webkit-box-shadow: 0 0 0 3px #f36510;
+	color: #175bb4;
+	box-shadow: 0 0 0 3px #175bb4;
+	-o-box-shadow: 0 0 0 3px #175bb4;
+	-moz-box-shadow: 0 0 0 3px #175bb4;
+  	-webkit-box-shadow: 0 0 0 3px #175bb4;
 }
 
 .team-member .member-photo .member-name span {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .classic-title span {
-	border-bottom-color: #f36510;
+	border-bottom-color: #175bb4;
 }
 
 .portfolio-filter li a:hover {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .portfolio-filter li a.selected {
-	border-color: #f36510;
-	background-color: #f36510;
+	border-color: #175bb4;
+	background-color: #175bb4;
 }
 
 .portfolio-item:hover .portfolio-details h4 {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .project-content h4 span {
-	border-bottom-color: #f36510;
+	border-bottom-color: #175bb4;
 }
 
 .recent-projects h4.title span {
-	border-bottom-color: #f36510;
+	border-bottom-color: #175bb4;
 }
 
 ul.post-meta li a:hover {
-	color: #f36510;
+	color: #175bb4;
 }
 
 #pagination span.current {
-	border-color: #f36510;
-	background-color: #f36510;
+	border-color: #175bb4;
+	background-color: #175bb4;
 }
 
 #pagination a:hover {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .post-tags-list a:hover {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .post-share a.mail {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .sidebar a:hover {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .widget-search .search-btn {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .sidebar .tagcloud a:hover {
-    background-color: #f36510;
+    background-color: #175bb4;
 }
 
 .back-to-top:hover i {
-    background-color: #f36510;
+    background-color: #175bb4;
 }
 
 .touch-slider .owl-controls.clickable .owl-buttons div:hover {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .touch-carousel .owl-controls.clickable .owl-buttons div:hover {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .testimonials-carousel .owl-controls.clickable .owl-buttons div {
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 
 .testimonials-carousel .owl-controls.clickable .owl-buttons div:hover i {
-	color: #f36510;
+	color: #175bb4;
 }
+
 
 
 #portfolio-list li .portfolio-item-content {
-    background: rgb(243, 101, 16);
+    background: rgba(0, 175, 209, 0.9);
 }
 
 .services-3-icon i {
-    background-color: #f36510;
+    background-color: #175bb4;
 }
 
 .services-2-icon i {
-    background-color: #f36510;
+    background-color: #175bb4;
 }
 
 #main-slide strong {
-    color: #f36510;
+    color: #175bb4;
 }
 
 #main-slide .carousel-control i:hover{
-	background-color: #f36510;
+	background-color: #175bb4;
 }
 .slider.btn {
-    background-color: #f36510;
+    background-color: #175bb4;
 }
 
 #main-slide .carousel-indicators .active {
-    background-color: #f36510;
+    background-color: #175bb4;
 }
 
 
 .counter-item i {
-    color: #f36510;
+    color: #175bb4;
 }
 
 .timer {
-    color: #f36510;
+    color: #175bb4;
 }
 
 .progress-bar {
-    /*background-color: #f36510;*/
+    background-color: #175bb4;
 }
 
 .team-member.modern .member-photo:after {
-    background-color: #f36510;
+    background-color: #175bb4;
 }
+
 
 
 .twitter-widget a {
-	color: #f36510;
+	color: #175bb4;
 }
 
 .dot1, .dot2 {
-    background-color: #f36510;
+    background-color: #175bb4;
 }
 /**
  * angular-growl-v2 - v0.7.3 - 2015-02-22

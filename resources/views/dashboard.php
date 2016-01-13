@@ -2,7 +2,7 @@
 <html lang="en" ng-app="pegasusrises">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Pegasus Dashboard</title>
+    <title>Bissame Dashboard</title>
     <link rel="stylesheet" type="text/css" href="back_app/pegasusrises.css"/>
 
 
@@ -14,7 +14,7 @@
         <!--\\\\\\\ header Start \\\\\\-->
         <div class="brand">
             <!--\\\\\\\ brand Start \\\\\\-->
-            <div class="logo" style="display:block"><span class="blue_text">Pegasus</span> </div>
+            <div class="logo" style="display:block"><span class="blue_text">Bissame</span> </div>
         </div>
         <!--\\\\\\\ brand end \\\\\\-->
         <div class="header_top_bar">
@@ -91,7 +91,7 @@
 
         <!--\\\\\\\left_nav start \\\\\\-->
         <div class="search_bar"> <i class="fa fa-search"></i>
-            <input name="" disabled type="text" class="search" placeholder="Search Pegasus..." />
+            <input name="" disabled type="text" class="search" placeholder="Search Bissame..." />
         </div>
         <div class="left_nav_slidebar">
             <ul>

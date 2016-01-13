@@ -43,29 +43,34 @@ angular.module('survey')
                     /*Parse the response string to JSON*/
                     var userAnswers = JSON.parse(response.answer_response);
 
+                    console.log('questionHolder', questionHolder);
+                    console.log('userAnswers', userAnswers);
                     /*loop through each of the answer keys of the json object*/
                     angular.forEach(userAnswers, function (value, prop) {
-
                         //get the question of the answer in the loop and find the type of response required
-                        /*if check boxes, update the count of each option in the array*/
-                        if (questionHolder[prop].field_type == 'checkboxes') {
-                            for(var a_o = 0; a_o < value.length; a_o++){/* a_o = answer option*/
-                                questionHolder[prop].answer_options[ value[a_o] ] ++ ;
+                        /*check if the answer and the question property match, i.e. nothing has been edited*/
+                        if (questionHolder[prop] !== undefined) {
+                            /*if check boxes, update the count of each option in the array*/
+                            if (questionHolder[prop].field_type == 'checkboxes') {
+                                for(var a_o = 0; a_o < value.length; a_o++){/* a_o = answer option*/
+                                    questionHolder[prop].answer_options[ value[a_o] ] ++ ;
+                                }
+                            }else if(questionHolder[prop].field_type == 'radio' || questionHolder[prop].field_type == 'dropdown'){
+
+                                questionHolder[prop].answer_options[ value ] ++ ;
+
+                            }else{
+                                /*keep all other answer types in an array with the respondents' details in an object*/
+                                questionHolder[prop].answer_options.push({
+                                    name : response.name_of_respondent,
+                                    email : response.email,
+                                    phone_number : response.phone_number,
+                                    created_at : response.created_at,
+                                    content : value
+                                }) ;
                             }
-                        }else if(questionHolder[prop].field_type == 'radio' || questionHolder[prop].field_type == 'dropdown'){
-
-                            questionHolder[prop].answer_options[ value ] ++ ;
-
-                        }else{
-                            /*keep all other answer types in an array with the respondents' details in an object*/
-                            questionHolder[prop].answer_options.push({
-                                name : response.name_of_respondent,
-                                email : response.email,
-                                phone_number : response.phone_number,
-                                created_at : response.created_at,
-                                content : value
-                            }) ;
                         }
+
                     });
                 }
 
