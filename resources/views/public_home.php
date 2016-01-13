@@ -34,7 +34,7 @@ header('Cache-Control: max-age=86400, public');
 
     <base href="/">
 
-    <link rel="stylesheet" href="/front_app/pegasusrises.css?v=1452705281335">
+    <link rel="stylesheet" href="/front_app/pegasusrises.css?v=1452705602058">
     <!-- Favicon-->
     <link href="front_app/assets/images/favicon.png" rel="icon" type="image/png" />
     <!--- jQuery -->
@@ -621,10 +621,14 @@ header('Cache-Control: max-age=86400, public');
 <!--End of  angular-growl-2-->
 
 
-<script  src="/front_app/scripts.js?v=1452705281335"></script>
-<script  src="/front_app/pegasusrises.js?v=1452705281336"></script>
-<script src="/front_app/templates/app.js?v=1452705281336"></script>
-<script src="/front_app/templates/common.js?v=1452705281336"></script>
+<<<<<<< HEAD
+<script  src="/front_app/scripts.js?v=1452705602058"></script>
+=======
+<script  src="/front_app/scripts.min.js?v=1452705602058"></script>
+>>>>>>> e2a7ef1bfe6a26a75745fc34e04e3e6fdff2f218
+<script  src="/front_app/pegasusrises.js?v=1452705602058"></script>
+<script src="/front_app/templates/app.js?v=1452705602058"></script>
+<script src="/front_app/templates/common.js?v=1452705602058"></script>
 
 
 

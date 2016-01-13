@@ -1,5 +1,5 @@
 <?php
-if (!isset($link)){ $link = 'http://www.pegasusrises.com';}
+if (!isset($link)){ $link = 'http://www.bissame.com';}
 if (!isset($survey_name)){ $survey_name = 'Election 2016 Survey';}
 if (!isset($survey_description)){ $survey_description = "This survey is aimed at collecting information on citizen\'s opinion on the upcoming 2016 elections in Ghana";}
 ?>
@@ -20,9 +20,9 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />
 
 	<!-- Facebook sharing information tags -->
-	<meta property="og:title" content="Pegasusrises Survey" />
+	<meta property="og:title" content="Bissame Survey" />
 
-	<title>Pegasusrises Survey</title>
+	<title>Bissame Survey</title>
 
 	<!-- Hotmail ignores some valid styling, so we have to add this -->
 	<style type="text/css">
@@ -183,7 +183,7 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 										<tr>
 											<td class="RespoImage_LogoW" width="10">
 												<a href="#" style="border: none;">
-													<img alt="Pegasus Survey : " border="0" class="RespoImage_Logo" src="../assets/logo.png" style="width: 200px; display: block;" width="200" />
+													<img alt="Bissame Survey : " border="0" class="RespoImage_Logo" src="../assets/logo.png" style="width: 200px; display: block;" width="200" />
 												</a>
 											</td>
 
@@ -192,8 +192,8 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 											<td align="left" style="background-color: #343437" width="1"></td><!-- // vertical Spacer \\ -->
 
 											<td align="left" style="padding-left:20px; font-family: Helvetica, Arial, sans-serif; font-size: 9px; font-weight: normal; color: #9ca1a3; line-height: 13px; text-align: left;">
-												<span class="RespoHideMedium">You've been invited to participate in a survey<br />
-												<br /></span> <a href="http://www.pegasusrises.com/email?survey_id=i7z" style="text-decoration:none; color: #ffffff;">View Online &gt;</a>
+												<span class="RespoHideMedium">You've been invited to participate in a survey</span>
+												<!--<br /></span> <a href="http://www.pegasusrises.com/email?survey_id=i7z" style="text-decoration:none; color: #ffffff;">View Online &gt;</a>-->
 											</td>
 										</tr>
 									</table>
@@ -284,7 +284,7 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 										</tr><!-- // Horizontal Spacer \\ -->
 
 										<tr>
-											<td bgcolor="#e4ded8" style="background-color: #e4ded8; padding-left: 20px; padding-right: 20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;">Pegasus is a cloud-based survey platform to reach the unreachable.</td>
+											<td bgcolor="#e4ded8" style="background-color: #e4ded8; padding-left: 20px; padding-right: 20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;">Bissame is a cloud-based survey platform to help you gather relevant information.</td>
 										</tr>
 
 										<tr>
@@ -297,7 +297,7 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 										<tr>
 											<td class="RespoImage_FullW" width="600" style="position: relative">
 												<a href="#" style="border: none; margin: 0 auto; display: block">
-													<img alt="" border="0" class="RespoImage_Full" height="200" src="http://placehold.it/600x200?text=Pegasus%20Surveys" style="width: 600px; height: 200px; display: block;" width="600" />
+													<img alt="" border="0" class="RespoImage_Full" height="200" src="http://placehold.it/600x200?text=Bissame%20Surveys" style="width: 600px; height: 200px; display: block;" width="600" />
 													<div style="position: absolute; top: 160px; right : 225px"><!--[if mso]>
 														<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="<?=$link?>" style="height:40px;v-text-anchor:middle;width:150px;" arcsize="10%" fillcolor="#46a8b9">
 															<w:anchorlock/>
@@ -305,7 +305,7 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 														</v:roundrect>
 														<![endif]-->
 														<a href="<?=$link?>"
-														   style=" margin: 0 auto; display: block; background-color:#46a8b9;border-radius:4px;color:#ffffff;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:150px;-webkit-text-size-adjust:none;mso-hide:all;">Take Survey</a></div>
+														   style=" margin: 10px auto; display: block; background-color:#46a8b9;border-radius:4px;color:#ffffff;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:150px;-webkit-text-size-adjust:none;mso-hide:all;">Take Survey</a></div>
 												</a>
 											</td>
 										</tr>
@@ -336,7 +336,7 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 										</tr><!-- // Horizontal Spacer \\ -->
 
 										<tr>
-											<td style="padding-left:20px; padding-right:20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;" valign="top" width="100%">With very few clicks, anyone can create an account on Pegasus and deploy surveys to gather relevant information</td>
+											<td style="padding-left:20px; padding-right:20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;" valign="top" width="100%">With very few clicks, anyone can create an account on Bissame and deploy surveys instantly.</td>
 										</tr>
 									</table><!-- // List Item \\ -->
 									<!-- Footer -->
@@ -347,9 +347,9 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 										</tr><!-- // Horizontal Spacer \\ -->
 
 										<tr style="min-height: 20px">
-											<td height="25" width="40" bgcolor="#e4ded8" style="background-color: #e4ded8; padding: 20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;">&copy; Pegasus 2015</td>
+											<td height="25" width="40" bgcolor="#e4ded8" style="background-color: #e4ded8; padding: 20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;">&copy; Bissame 2015</td>
 											<td height="25" width="30" bgcolor="#e4ded8" style="background-color: #e4ded8; padding: 20px;font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: right;">
-												<a href="http://www.pegasusrises.com/unsubscribe">Unsubscribe</a>
+												<a href="http://www.bissame.com/unsubscribe">Unsubscribe</a>
 											</td>
 											<td width="20" height="25"></td>
 										</tr>

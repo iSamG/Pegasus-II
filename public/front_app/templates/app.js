@@ -1,6 +1,13 @@
+/* pegasusrises - v2.0 - 2016-01-13
+ * pegasusrises.com
+ * Copyright (c) 2016 BBG Digital Innovation Lab;
+ * Licensed MIT
+ */
+
 angular.module('templates.app', ['public/about/about.tpl.html', 'public/error/error.tpl.html']);
 
 angular.module("public/about/about.tpl.html", []).run(["$templateCache", function($templateCache) {
+  "use strict";
   $templateCache.put("public/about/about.tpl.html",
     "\n" +
     "\n" +
@@ -214,6 +221,7 @@ angular.module("public/about/about.tpl.html", []).run(["$templateCache", functio
 }]);
 
 angular.module("public/error/error.tpl.html", []).run(["$templateCache", function($templateCache) {
+  "use strict";
   $templateCache.put("public/error/error.tpl.html",
     "<div id=\"content\" class=\"add-shadow\" style=\"margin-bottom: 20px\">\n" +
     "    <div class=\"container\">\n" +

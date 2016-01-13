@@ -39,7 +39,7 @@ class Helpers
         $unique_survey_code = strtolower($unique_survey_code);
 
         // Base Url for Production
-               $base_url = "http://pegasusrises.com/survey";
+               $base_url = "http://bissame.com/survey";
 
 
         //Base Url for Local Development

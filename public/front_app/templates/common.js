@@ -1,6 +1,13 @@
+/* pegasusrises - v2.0 - 2016-01-13
+ * pegasusrises.com
+ * Copyright (c) 2016 BBG Digital Innovation Lab;
+ * Licensed MIT
+ */
+
 angular.module('templates.common', ['modals/loginModal.tpl.html', 'modals/signupModal.tpl.html']);
 
 angular.module("modals/loginModal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  "use strict";
   $templateCache.put("modals/loginModal.tpl.html",
     "<div class=\"modal-content\" ng-controller=\"PGPublicLoginController\">\n" +
     "    <div class=\"modal-header\">\n" +
@@ -68,6 +75,7 @@ angular.module("modals/loginModal.tpl.html", []).run(["$templateCache", function
 }]);
 
 angular.module("modals/signupModal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  "use strict";
   $templateCache.put("modals/signupModal.tpl.html",
     "<div class=\"modal-content\" ng-controller=\"PGPublicSignUpModalController\">\n" +
     "    <div class=\"modal-header\">\n" +
