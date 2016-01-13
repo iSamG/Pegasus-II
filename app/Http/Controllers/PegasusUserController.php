@@ -86,14 +86,15 @@ class PegasusUserController extends Controller
             'country'=>'required'
         );
 
-        if(\DB::table('user')->where('username',$user_name)){
-
+        $user_name_exist = \DB::table('users')->where('username',$user_name)->get();
+        if($user_name_exist){
+            //var_dump($user_name_exist);
             return Helpers::responseToView($code = 301, $status = "failed", $message = "Username already exist",
-                $data = null);
+                $data = $user_name_exist);
         }
-        else  if(\DB::table('user')->where('email',$email)){
+        else  if(\DB::table('users')->where('email',$email)->get()){
 
-            return Helpers::responseToView($code = 301, $status = "failed", $message = "Email already exist",
+            return Helpers::responseToView($code = 302, $status = "failed", $message = "Email already exist",
                 $data = null);
         }
         else{
