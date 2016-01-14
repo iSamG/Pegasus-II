@@ -1,11 +1,6 @@
 <?php
 header('Pragma: public');
 header('Cache-Control: max-age=86400, public');
-header('Expires: '. gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
-header('Content-Type: image/png, image/jpg');
-if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip"))
-ob_start("ob_gzhandler");
-else ob_start();
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +34,7 @@ else ob_start();
 
     <base href="/">
 
-    <link rel="stylesheet" href="/front_app/pegasusrises.css?v=1450192507038">
+    <link rel="stylesheet" href="/front_app/pegasusrises.css?v=1452769776686">
     <!-- Favicon-->
     <link href="front_app/assets/images/favicon.png" rel="icon" type="image/png" />
     <!--- jQuery -->
@@ -50,7 +45,7 @@ else ob_start();
 </head>
 
 
-<body ng-app="pegasusApp">
+<body ng-app="pegasusApp" data-spy="scroll" data-target="#menuNavbar" data-offset="25">
 
 <!-- Full Body Container -->
 <div id="container">
@@ -104,7 +99,7 @@ else ob_start();
 
 
         <!-- Start  Logo & Naviagtion  -->
-        <div class="navbar navbar-default navbar-top">
+        <nav class="navbar navbar-default navbar-top" id="menuNavbar">
             <div class="container">
                 <div class="navbar-header">
                     <!-- Stat Toggle Nav Link For Mobiles -->
@@ -129,13 +124,13 @@ else ob_start();
                     </div>
                     <!-- End Search -->
                     <!-- Start Navigation List -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a class="active" href="#/">Home</a>
+                    <ul class="nav navbar-nav navbar-right" >
+                        <li >
+                            <a class="active" href="#home">Home</a>
 
                         </li>
-                        <li><a href="#contact">Contact</a></li>
                         <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
                         <li><a href="" login-modal="">Login</a></li>
                         <li><a href="" signup-modal="">Signup</a></li>
                         <!--<li><a href="/survey?sid=10">Test Survey</a></li>-->
@@ -143,7 +138,7 @@ else ob_start();
                     <!-- End Navigation List -->
                 </div>
             </div>
-        </div>
+        </nav>
         <!-- End Header Logo & Naviagtion -->
 
     </header>
@@ -493,7 +488,7 @@ else ob_start();
 
     <div id="parallax-one" class="parallax" style="background-image:url(front_app/assets/images/img/african-sunrise.jpg); margin: 15px">
         <div class="parallax-text-container-1">
-            <div class="parallax-text-item">
+            <div class="parallax-text-item" id="contact">
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12 col-sm-3 col-md-3">
@@ -532,7 +527,7 @@ else ob_start();
 
 
     <!-- Start Footer Section -->
-    <footer id="contact">
+    <footer id="contactus">
         <div class="container">
             <div class="row footer-widgets">
 
@@ -586,7 +581,7 @@ else ob_start();
             <div class="copyright-section">
                 <div class="row">
                     <div class="col-md-6">
-                        <p>&copy; 2015 -  All Rights Reserved <a href="http://bissame.com">Bissame</a> </p>
+                        <p>&copy; 2016 -  All Rights Reserved <a href="http://bissame.com">Bissame</a> </p>
                     </div><!-- .col-md-6 -->
                     <div class="col-md-6">
                         <ul class="footer-nav">
@@ -626,10 +621,10 @@ else ob_start();
 <!--End of  angular-growl-2-->
 
 
-<script  src="/front_app/scripts.min.js?v=1450192507038"></script>
-<script  src="/front_app/pegasusrises.js?v=1450192507038"></script>
-<script src="/front_app/templates/app.js?v=1450192507038"></script>
-<script src="/front_app/templates/common.js?v=1450192507038"></script>
+<script  src="/front_app/scripts.js?v=1452769776686"></script>
+<script  src="/front_app/pegasusrises.js?v=1452769776687"></script>
+<script src="/front_app/templates/app.js?v=1452769776687"></script>
+<script src="/front_app/templates/common.js?v=1452769776687"></script>
 
 
 

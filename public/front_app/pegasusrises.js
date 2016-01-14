@@ -1,6 +1,6 @@
-/* pegasusrises - v2.0 - 2015-12-15
+/* pegasusrises - v2.0 - 2016-01-13
  * pegasusrises.com
- * Copyright (c) 2015 BBG Digital Innovation Lab;
+ * Copyright (c) 2016 BBG Digital Innovation Lab;
  * Licensed MIT
  */
 angular.module('pegasusApp', [
@@ -272,8 +272,11 @@ angular.module('public')
                             location.href ='/dashboard';
                             $scope.cancel();
 
-
-                        }else if(successData.code == '401'){
+                        }else if(successData.code == '403') {
+                            growl.error(successData.message, {title: "Duplicate Credentials"});
+                            $scope.loginError = true;
+                        }
+                        else if(successData.code == '401'){
                             growl.error("Some of the fields already exist.", {title : "Duplicate Credentials"});
                             $scope.loginError = true;
                         }
@@ -283,7 +286,7 @@ angular.module('public')
                             /*The regex strips the square brackets from the server response*/
                             $scope.validation[prop] = value.toString().replace(/[\[\]"]+/g, "");
                         });
-                        growl.error("Your submission could not be processed at this time. Please check the following fields and try again", {title: 'Registration'});
+                        growl.error("Your submission could not be processed at this time.", {title: 'Registration'});
                     })
                     .finally(function () {
                         $scope.submittingRegistrationFormLoader = false;

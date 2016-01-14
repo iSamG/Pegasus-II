@@ -1,6 +1,6 @@
-/* pegasusrises - v2.0 - 2015-12-15
+/* pegasusrises - v2.0 - 2016-01-13
  * pegasusrises.com
- * Copyright (c) 2015 BBG Digital Innovation Lab;
+ * Copyright (c) 2016 BBG Digital Innovation Lab;
  * Licensed MIT
  */
 /*! jQuery v2.1.1 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
@@ -22392,7 +22392,7 @@ $(document).ready(function ($) {
 	 /*----------------------------------------------------*/
 
 	var offset = 200;
-	var duration = 500;
+	var duration = 900;
 	$(window).scroll(function() {
 		if ($(this).scrollTop() > offset) {
 			$('.back-to-top').fadeIn(400);
@@ -22402,10 +22402,28 @@ $(document).ready(function ($) {
 	});
 	$('.back-to-top').click(function(event) {
 		event.preventDefault();
-		$('html, body').animate({scrollTop: 0}, 600);
+		$('html, body').animate({scrollTop: 0}, duration);
 		return false;
 	});
 
+	$('a[href="#contact"]').click(function (event) {
+		event.preventDefault();
+		$('html, body').animate({ scrollTop: $(document).height() }, duration);
+		return false;
+	});
+
+	$('a[href="#about"]').click(function (event) {
+		var about = $('#about');
+		$('html, body').animate({
+			scrollTop: about.offset().top } , duration
+		);
+	});
+
+	$('a[href="#home"]').click(function (event) {
+		event.preventDefault();
+		$('html, body').animate({scrollTop: 0}, duration);
+		return false;
+	});
 
 
 

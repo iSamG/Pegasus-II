@@ -600,7 +600,7 @@ ul.social-list li:last-child a i {
     -o-transition: all 0.3s ease-in-out;
 }
 
-.navbar-default .navbar-nav > li > a.active, .navbar-default .navbar-nav > li:hover > a {
+.navbar-default .navbar-nav > li.active > a, .navbar-default .navbar-nav > li:hover > a {
 	border-bottom: 2px solid;
 }
 
@@ -608,7 +608,7 @@ ul.social-list li:last-child a i {
 	margin: 0 -2px 0 -5px;
 }
 
-.navbar-default .navbar-nav > li > a:after {
+.navbar-default .navbar-nav > li.active > a:after {
 	position: absolute;
 	bottom: 0;
 	content: '';
@@ -626,7 +626,7 @@ ul.social-list li:last-child a i {
 	position: absolute;
 }
 
-.navbar-default .navbar-nav > li > a.active:after {
+.navbar-default .navbar-nav > li.active > a:after {
 	opacity: 1;
 }
 

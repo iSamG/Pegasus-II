@@ -27,7 +27,7 @@
 
     <base href="/">
 
-    <link rel="stylesheet" href="/front_app/pegasusrises.css">
+    <link rel="stylesheet" href="/front_app/<%= grunt.config.get('pkg.name') %>.css">
     <!-- Favicon-->
     <link href="front_app/assets/images/favicon.png" rel="icon" type="image/png" />
     <!--- jQuery -->
@@ -126,25 +126,13 @@
 
 
     <!-- Start Services Section -->
-    <div class=" section service" id="surveySection" ng-controller="PGTakeSurveyController">
+    <div class=" section service" id="surveySection">
         <div class="container">
             <div class="row">
-                <fieldset>
-
-                    <!-- Form Name -->
-                    <legend ng-bind="survey_name" ng-show="survey_name.length"></legend>
-                    <div ng-show="survey_name.length" class="col-md-8 col-sm-10 col-xs-12 center-block">
-                        <div class="alert alert-info text-center h4" ng-bind="survey_description || 'Please fill the survey as accurately as possible'"></div>
-                    </div>
-
-                </fieldset>
-                <form class="form-horizontal" ng-show="survey_name.length">
-
-                </form>
-
                 <p ng-if="!(survey_name.length)" class="h3 text-center" style="margin: 30px 0 150px">
-                    <i class="fa fa-search h2"></i><br><br><br>
-                    Oops! We couldn't find the survey you requested.<br> Please contact the sender of the link for more information.
+                    <i class="fa fa-frown-o h2" style="font-size: 30px"></i><br><br>
+                    We hate to see you go!<br><br> But you have been unsubscribed and we won't send any more surveys.
+                    <br><br> Thank you!
                 </p>
 
 
@@ -246,49 +234,7 @@
 </div>
 
 
-<!-- Modal -->
-<div id="successModal" class="modal fade" role="dialog">
-    <div class="modal-dialog" style="width: 500px;">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header" >
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Thank you for participating!</h4>
-            </div>
-            <div class="modal-body">
-                <p class="h5 text-center">Survey response has been submitted successfully.</p>
-                <p class="text-center">This survey has been marked public and can be shared on social media for more responses. Kindly help spread the word.</p>
-                <br>
-                <h3 class="text-center">Share via : </h3>
-                <br>
-                <div class="row">
-                    <div class="col-sm-4"><button class="btn btn-primary btn-sm text-center center-block"><i class="fa fa-facebook"></i>  Facebook</button></div>
-                    <div class="col-sm-4"><button class="btn btn-info btn-sm text-center center-block"><i class="fa fa-twitter"></i> Twitter&nbsp;</button></div>
-                    <div class="col-sm-4"><button class="btn btn-danger btn-sm text-center center-block"><i class="fa fa-google-plus"></i> Google +</button></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
-
-
-<!--This directive is for angular-growl-2-->
-<div growl="" limit-messages="1"></div>
-<!--End of  angular-growl-2-->
-
-
 <script  src="/front_app/scripts.js"></script>
-<script  src="/front_app/pegasusrises-survey.js"></script>
-
-
-
 
 
 

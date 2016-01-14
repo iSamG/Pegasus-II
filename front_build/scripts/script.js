@@ -76,7 +76,7 @@ $(document).ready(function ($) {
 	 /*----------------------------------------------------*/
 
 	var offset = 200;
-	var duration = 500;
+	var duration = 900;
 	$(window).scroll(function() {
 		if ($(this).scrollTop() > offset) {
 			$('.back-to-top').fadeIn(400);
@@ -86,10 +86,28 @@ $(document).ready(function ($) {
 	});
 	$('.back-to-top').click(function(event) {
 		event.preventDefault();
-		$('html, body').animate({scrollTop: 0}, 600);
+		$('html, body').animate({scrollTop: 0}, duration);
 		return false;
 	});
 
+	$('a[href="#contact"]').click(function (event) {
+		event.preventDefault();
+		$('html, body').animate({ scrollTop: $(document).height() }, duration);
+		return false;
+	});
+
+	$('a[href="#about"]').click(function (event) {
+		var about = $('#about');
+		$('html, body').animate({
+			scrollTop: about.offset().top } , duration
+		);
+	});
+
+	$('a[href="#home"]').click(function (event) {
+		event.preventDefault();
+		$('html, body').animate({scrollTop: 0}, duration);
+		return false;
+	});
 
 
 
