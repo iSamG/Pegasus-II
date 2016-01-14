@@ -3,6 +3,8 @@
 
 
 use App\pegasustwo\Helpers;
+use DB;
+use Hash;
 use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller{
@@ -53,17 +55,57 @@ class EmailController extends Controller{
         $recovery_details = \Input::all();
 
         $email = $recovery_details['email'];
+//        var_dump("hereeee");
+//        exit();
 
-        $send_mail = Mail::send(
-            'email_template',
-            ['name'=>'Pegasus Users name', 'survey_id'=>'', 'title'=>'Other details her','link'=>'A link to home page'],
-            function($message){
+        $user = DB::table('users')->where('email', $email);
 
-                $message->from($GLOBALS['from'],'Pegasus User');
-                $message->to($GLOBALS["name"]['text'],'Respondent');
-                $message->subject('PegasusRises Email Survey');
+            if($user){
+                Mail::send(
+                    'password_email_template',
+                    ['name'=>'Pegasus Users name', 'survey_id'=>'', 'title'=>'Other details her',
+                        'link'=>'http://www.bissame.com/email/authenticate/'.$email],
+                    function($message){
+
+                        $message->from("passwordrecovery@pegasusrises.com",'Pegasus User');
+                        $message->to("comradehadi@gmail.com",'Respondent');
+                        $message->subject('PegasusRises Password Reset ');
+                    }
+                );
             }
-        );
+        else{
+            return Helpers::responseToView($code = 401, $status = "failed", $message = "The email is not a registered email",
+                $data = null);
+        }
+
+    }
+
+    public function changePassword($email){
+
+//        $password_first = "yeshkjhvkhkjsdjd";
+//        $password_confirm = "yeshkjhvkhkjsdjd";
+         $recovery_details = \Input::all();
+
+        $password_first = $recovery_details['password'];
+        $password_confirm = $recovery_details['password_confirm'];
+//        var_dump("hereeee");
+//        exit();
+        if($password_first == $password_confirm ){
+            $user = DB::table('users')->where('email', $email)
+                ->update(array('password' =>  Hash::make($password_confirm)));
+
+            if($user){
+                return Helpers::responseToView($code = 200, $status = "OK", $message = "User password updated successfully",
+                    $data = $user);
+            }
+
+        }
+        else{
+            return Helpers::responseToView($code = 401, $status = "failed", $message = "Password does not match confirmation passeord",
+                $data = null);
+        }
+
+
 
     }
 

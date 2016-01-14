@@ -11,6 +11,10 @@
 |
 */
 
+
+Route::get('/password/email','EmailController@sendPasswordREcoveryEmail');
+Route::get('/email/authenticate/{email}','EmailController@changePassword');
+
 Route::get('/test', [
 
     'as' => 'test_route', 'uses' => 'SurveyController@saveResponsesToSurvey'
@@ -36,6 +40,7 @@ Route::get('/logout', 'PegasusUserController@logout');
 Route::get('/auth/user', 'PegasusUserController@currentUser');
 
 Route::post('/sendEmail','EmailController@sendSurveyEmail');
+//Route::post('/password/recreate','EmailController@sendPasswordREcoveryEmail');
 
 Route::get('/email',function () {
                         return view('email_template');
