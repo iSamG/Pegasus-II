@@ -5,6 +5,7 @@
     <title>Bissame Dashboard</title>
     <link rel="stylesheet" type="text/css" href="back_app/<%= grunt.config.get('pkg.name') %>.css"/>
 
+    <link href="front_app/assets/images/favicon.png" rel="icon" type="image/png" />
 
 </head>
 <body class="light_theme  fixed_header left_nav_fixed hidden">
@@ -14,7 +15,12 @@
         <!--\\\\\\\ header Start \\\\\\-->
         <div class="brand">
             <!--\\\\\\\ brand Start \\\\\\-->
-            <div class="logo" style="display:block"><span class="blue_text">Bissame</span> </div>
+            <div class="logo" style="display:block">
+                <a href="/">
+                    <img alt="Bissame" style="width: 60%" src="front_app/assets/images/bissame.png">
+                </a>
+                <!--<span class="blue_text">Bissame</span>-->
+            </div>
         </div>
         <!--\\\\\\\ brand end \\\\\\-->
         <div class="header_top_bar">
@@ -99,15 +105,15 @@
                     <a ui-sref="home"><i class="fa fa-home"></i> HOME <span class="left_nav_pointer">
 
                     </span>
-                    <!--<span class="plus"><i class="fa fa-plus"></i></span> </a>-->
-                    <!--<ul class="opened" style="display:block">-->
+                        <!--<span class="plus"><i class="fa fa-plus"></i></span> </a>-->
+                        <!--<ul class="opened" style="display:block">-->
                         <!--<li> <a href="index.html"> <span>&nbsp;</span> <i class="fa fa-circle theme_color"></i> <b class="theme_color">Dashboard</b> </a> </li>-->
                         <!--<li> <a href="settings.html"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Settings</b> </a> </li>-->
                         <!--<li> <a href="layouts.html"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Layouts</b> </a> </li>-->
                         <!--<li> <a href="themes.html"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Themes</b> </a> </li>-->
                         <!--<li> <a href="widgets.html"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Widgets</b> </a> </li>-->
                         <!--<li> <a href="animations.html"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Animations</b> </a> </li>-->
-                    <!--</ul>-->
+                        <!--</ul>-->
                     </a>
                 </li>
                 <li class="theme_border" ng-class="{'left_nav_active' : $state.includes('surveys')}">

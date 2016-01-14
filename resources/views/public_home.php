@@ -34,7 +34,7 @@ header('Cache-Control: max-age=86400, public');
 
     <base href="/">
 
-    <link rel="stylesheet" href="/front_app/pegasusrises.css?v=1452705602058">
+    <link rel="stylesheet" href="/front_app/pegasusrises.css?v=1452769776686">
     <!-- Favicon-->
     <link href="front_app/assets/images/favicon.png" rel="icon" type="image/png" />
     <!--- jQuery -->
@@ -581,7 +581,7 @@ header('Cache-Control: max-age=86400, public');
             <div class="copyright-section">
                 <div class="row">
                     <div class="col-md-6">
-                        <p>&copy; 2015 -  All Rights Reserved <a href="http://bissame.com">Bissame</a> </p>
+                        <p>&copy; 2016 -  All Rights Reserved <a href="http://bissame.com">Bissame</a> </p>
                     </div><!-- .col-md-6 -->
                     <div class="col-md-6">
                         <ul class="footer-nav">
@@ -621,14 +621,10 @@ header('Cache-Control: max-age=86400, public');
 <!--End of  angular-growl-2-->
 
 
-<<<<<<< HEAD
-<script  src="/front_app/scripts.js?v=1452705602058"></script>
-=======
-<script  src="/front_app/scripts.min.js?v=1452705602058"></script>
->>>>>>> e2a7ef1bfe6a26a75745fc34e04e3e6fdff2f218
-<script  src="/front_app/pegasusrises.js?v=1452705602058"></script>
-<script src="/front_app/templates/app.js?v=1452705602058"></script>
-<script src="/front_app/templates/common.js?v=1452705602058"></script>
+<script  src="/front_app/scripts.js?v=1452769776686"></script>
+<script  src="/front_app/pegasusrises.js?v=1452769776687"></script>
+<script src="/front_app/templates/app.js?v=1452769776687"></script>
+<script src="/front_app/templates/common.js?v=1452769776687"></script>
 
 
 

@@ -16,7 +16,7 @@ class EmailController extends Controller{
         $recipients = $all_inputs['emails'];
         $survey_name = $all_inputs['survey_name'];
         $survey_description = $all_inputs['survey_description'];
-        $name='Pegasus';
+        $name='Bissame';
         $GLOBALS["name"] = '';
 
         foreach($recipients as $address){
@@ -28,9 +28,9 @@ class EmailController extends Controller{
                 'email_template',
                 ['name'=>$name, 'survey_id'=>'', 'survey_name'=>$survey_name, 'survey_description'=>$survey_description, 'link'=>$link],
                 function($message){
-                    $message->from($GLOBALS['from'],'Pegasus');
+                    $message->from($GLOBALS['from'],'Bissame');
                     $message->to($GLOBALS["name"]['text'],'Respondent');
-                    $message->subject('Pegasus Email Survey');
+                    $message->subject('Bissame Email Survey');
                 }
             );
                             return Helpers::responseToView($code = 200, $status = "OK", $message = "Survey email sent successfully");
@@ -56,12 +56,12 @@ class EmailController extends Controller{
 
         $send_mail = Mail::send(
             'email_template',
-            ['name'=>'Pegasus Users name', 'survey_id'=>'', 'title'=>'Other details her','link'=>'A link to home page'],
+            ['name'=>'Bissame Users name', 'survey_id'=>'', 'title'=>'Other details her','link'=>'A link to home page'],
             function($message){
 
-                $message->from($GLOBALS['from'],'Pegasus User');
+                $message->from($GLOBALS['from'],'Bissame User');
                 $message->to($GLOBALS["name"]['text'],'Respondent');
-                $message->subject('PegasusRises Email Survey');
+                $message->subject('Bissame Email Survey');
             }
         );
 

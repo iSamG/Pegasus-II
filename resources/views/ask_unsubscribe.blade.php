@@ -45,7 +45,7 @@
                 <div class="quote">{{ Inspiring::quote() }}</div>
                 <br>
                 <br>
-                <div class="quote"><a href="/">Take Me Off</a></div>
+                <div class="quote"><a href="/confirm_unsubscribe">Take Me Off</a></div>
             </div>
         </div>
     </body>

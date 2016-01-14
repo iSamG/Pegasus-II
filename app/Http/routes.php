@@ -40,6 +40,14 @@ Route::post('/sendEmail','EmailController@sendSurveyEmail');
 Route::get('/email',function () {
                         return view('email_template');
 });
+
+Route::get('/unsubscribe',function () {
+                        return view('ask_unsubscribe');
+});
+Route::get('/confirm_unsubscribe',function () {
+                        return view('unsubscribe');
+});
+
 Route::get('/dashboard', [
 
     'as' => 'dashboard_view', 'uses' => 'PegasusUserController@renderDashboard'

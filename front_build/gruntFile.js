@@ -50,6 +50,7 @@ module.exports = function (grunt) {
         src: {
             html: ['src/public_index.html'],
             survey_html: ['src/public_survey.html'],
+            unsubscribe_html: ['src/public_unsubscribe.html'],
             css: ['stylesheets/**.css', 'stylesheets/responsive.css', 'vendor/**/*.css'],
             assets : ['assets'],
             app_files : ['src/app/**/*.js'],
@@ -134,6 +135,14 @@ module.exports = function (grunt) {
             survey_html: {
                 src: ['<%= src.survey_html %>'],
                 dest: '<%= destinations.php_views %>/survey_page.php',
+                options: {
+                    force : true,
+                    process: true
+                }
+            },
+            unsubscribe_html: {
+                src: ['<%= src.unsubscribe_html %>'],
+                dest: '<%= destinations.php_views %>/unsubscribe.php',
                 options: {
                     force : true,
                     process: true

@@ -182,8 +182,8 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 									<table align="right" border="0" cellpadding="0" cellspacing="0" width="100%">
 										<tr>
 											<td class="RespoImage_LogoW" width="10">
-												<a href="#" style="border: none;">
-													<img alt="Bissame Logo" border="0" class="RespoImage_Logo" src="http://www.bissame.com/front_app/assets/images/bissame.png" style="width: 100px; display: block;" width="100" />
+												<a href="http://www.bissame.com" style="border: none;">
+													<img alt="Bissame : " border="0" class="RespoImage_Logo" src="http://www.bissame.com/front_app/assets/images/bissame.png" style="width: 100px; display: block;" width="100" />
 												</a>
 											</td>
 
@@ -193,7 +193,7 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 
 											<td align="left" style="padding-left:20px;padding-top: 17px; font-family: Helvetica, Arial, sans-serif; font-size: 9px; font-weight: normal; color: #101010; line-height: 13px; text-align: left;">
 												<span class="RespoHideMedium">You've been invited to participate in a survey</span>
-												<!--<br /></span> <a href="http://www.pegasusrises.com/email?survey_id=i7z" style="text-decoration:none; color: #ffffff;">View Online &gt;</a>-->
+												<!--<br /></span> <a href="http://www.bissame.com/email?survey_id=i7z" style="text-decoration:none; color: #ffffff;">View Online &gt;</a>-->
 											</td>
 										</tr>
 									</table>
@@ -297,7 +297,7 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 									<table align="center" cellpadding="0" cellspacing="0" width="100%">
 										<tr>
 											<td class="RespoImage_FullW" width="600" style="position: relative">
-												<a href="#" style="border: none; margin: 0 auto; display: block">
+												<a href="http://www.bissame.com" style="border: none; margin: 0 auto; display: block">
 													<img alt="" border="0" class="RespoImage_Full" height="200" src="http://www.bissame.com/front_app/assets/images/img/carousel_ii.jpg" style="width: 600px; height: 200px; display: block;" width="600" />
 													<div style="position: absolute; top: 70px; right : 225px"><!--[if mso]>
 														<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="<?=$link?>" style="height:40px;v-text-anchor:middle;width:150px;" arcsize="10%" fillcolor="#46a8b9">
@@ -352,9 +352,9 @@ if (!isset($survey_description)){ $survey_description = "This survey is aimed at
 										</tr><!-- // Horizontal Spacer \\ -->
 
 										<tr style="min-height: 20px">
-											<td height="25" width="40" bgcolor="#e4ded8" style="background-color: #e4ded8; padding: 20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;">&copy; Bissame 2015</td>
+											<td height="25" width="40" bgcolor="#e4ded8" style="background-color: #e4ded8; padding: 20px; font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: left;">&copy; Bissame 2016</td>
 											<td height="25" width="30" bgcolor="#e4ded8" style="background-color: #e4ded8; padding: 20px;font-family: Myriad Pro, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; color: #6f7579; line-height: 20px; text-align: right;">
-												<a href="http://www.bissame.com/unsubscribe">Unsubscribe</a>
+												<a href="http://www.bissame.com/unsubscribe" style="display: none">Unsubscribe</a>
 											</td>
 											<td width="20" height="25"></td>
 										</tr>
