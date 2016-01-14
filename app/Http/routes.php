@@ -13,7 +13,8 @@
 
 
 Route::get('/password/email','EmailController@sendPasswordREcoveryEmail');
-Route::get('/email/authenticate/{email}','EmailController@changePassword');
+Route::get('/email/authenticate/{email}','EmailController@changePasswordGET');
+Route::post('/email/authenticate/{email}','EmailController@changePasswordPOST');
 
 Route::get('/test', [
 

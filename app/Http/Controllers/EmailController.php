@@ -80,7 +80,7 @@ class EmailController extends Controller{
 
     }
 
-    public function changePassword($email){
+    public function changePasswordPOST($email){
 
 //        $password_first = "yeshkjhvkhkjsdjd";
 //        $password_confirm = "yeshkjhvkhkjsdjd";
@@ -114,6 +114,10 @@ class EmailController extends Controller{
         \View::make('email_template');
     }
 
+    public function changePasswordGET($email){
+//        return "looooo";
+       return \View::make('password_recovery')->with('email',$email);
+    }
 }
 /**
  * Created by PhpStorm.
