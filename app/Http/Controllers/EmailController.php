@@ -54,20 +54,20 @@ class EmailController extends Controller{
     public function sendPasswordREcoveryEmail(){
         $recovery_details = \Input::all();
 
-        $email = $recovery_details['email'];
+        $GLOBALS['email'] = $recovery_details['email'];
 //        var_dump("hereeee");
 //        exit();
-        $user = DB::table('users')->where('email', $email);
+        $user = DB::table('users')->where('email', $GLOBALS['email']);
 
             if($user){
                 Mail::send(
                     'password_email_template',
                     ['name'=>'Bissame', 'survey_id'=>'', 'title'=>'Other details her',
-                        'link'=>'http://www.bissame.com/email/authenticate/'.$email],
+                        'link'=>'http://www.bissame.com/email/authenticate/'.$GLOBALS['email']],
                     function($message){
 
                         $message->from("auth@bissame.com",'Bissame');
-                        $message->to($email,'User');
+                        $message->to($GLOBALS['email'],'User');
                         $message->subject('Bissame Password Reset');
                     }
                 );
