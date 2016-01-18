@@ -63,7 +63,7 @@ class EmailController extends Controller{
                 Mail::send(
                     'password_email_template',
                     ['name'=>'Bissame', 'survey_id'=>'', 'title'=>'Other details her',
-                        'link'=>'http://pegasusrises.app/email/authenticate/'.$GLOBALS['email']],
+                        'link'=>'http://www.bissame.com/email/authenticate/'.$GLOBALS['email']],
                     function($message){
 
                         $message->from("auth@bissame.com",'Bissame');
