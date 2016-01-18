@@ -68,7 +68,7 @@ angular.module('pegasusApp.services')
             };
 
             User.sendPasswordResetToken = function(formObject){
-                return $http.post(PGRoutes.login, formObject);
+                return $http.post(PGRoutes.reset, formObject);
             };
 
             $rootScope.logoutUser = function(){

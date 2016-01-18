@@ -57,21 +57,22 @@ class EmailController extends Controller{
         $email = $recovery_details['email'];
 //        var_dump("hereeee");
 //        exit();
-
         $user = DB::table('users')->where('email', $email);
 
             if($user){
                 Mail::send(
                     'password_email_template',
-                    ['name'=>'Pegasus Users name', 'survey_id'=>'', 'title'=>'Other details her',
+                    ['name'=>'Bissame', 'survey_id'=>'', 'title'=>'Other details her',
                         'link'=>'http://www.bissame.com/email/authenticate/'.$email],
                     function($message){
 
-                        $message->from("passwordrecovery@pegasusrises.com",'Pegasus User');
-                        $message->to("comradehadi@gmail.com",'Respondent');
-                        $message->subject('PegasusRises Password Reset ');
+                        $message->from("auth@bissame.com",'Bissame');
+                        $message->to($email,'User');
+                        $message->subject('Bissame Password Reset');
                     }
                 );
+
+                    return Helpers::responseToView($code = 200, $status = "OK", $message = "Email sent successfully", $data = null);
             }
         else{
             return Helpers::responseToView($code = 401, $status = "failed", $message = "The email is not a registered email",
@@ -97,12 +98,14 @@ class EmailController extends Controller{
             if($user){
                 return Helpers::responseToView($code = 200, $status = "OK", $message = "User password updated successfully",
                     $data = $user);
-
-            }
+            }  else{
+                         return Helpers::responseToView($code = 401, $status = "failed", $message = "User email not found",
+                             $data = null);
+                     }
 
         }
         else{
-            return Helpers::responseToView($code = 401, $status = "failed", $message = "Password does not match confirmation passeord",
+            return Helpers::responseToView($code = 401, $status = "failed", $message = "Password does not match confirmation password",
                 $data = null);
         }
 

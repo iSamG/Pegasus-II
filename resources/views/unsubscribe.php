@@ -38,7 +38,7 @@
 </head>
 
 
-<body ng-app="pegasusrisesSurvey">
+<body>
 
 <!-- Full Body Container -->
 <div id="container">
@@ -129,7 +129,7 @@
     <div class=" section service" id="surveySection">
         <div class="container">
             <div class="row">
-                <p ng-if="!(survey_name.length)" class="h3 text-center" style="margin: 30px 0 150px">
+                <p class="h3 text-center" style="margin: 30px 0 50px">
                     <i class="fa fa-frown-o h2" style="font-size: 30px"></i><br><br>
                     We hate to see you go!<br><br> But you have been unsubscribed and we won't send any more surveys.
                     <br><br> Thank you!

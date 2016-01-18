@@ -12,9 +12,9 @@
 */
 
 
-Route::get('/password/email','EmailController@sendPasswordREcoveryEmail');
+Route::post('/password/email','EmailController@sendPasswordREcoveryEmail');
 Route::get('/email/authenticate/{email}','EmailController@changePasswordGET');
-Route::post('/email/authenticate/{email}','EmailController@changePasswordPOST');
+Route::post('/email/authenticate/{email}' ,'EmailController@changePasswordPOST');
 
 Route::get('/test', [
 

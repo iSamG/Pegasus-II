@@ -99,7 +99,7 @@ $(document).ready(function ($) {
 	$('a[href="#about"]').click(function (event) {
 		var about = $('#about');
 		$('html, body').animate({
-			scrollTop: about.offset().top } , duration
+				scrollTop: about.offset().top } , duration
 		);
 	});
 
@@ -455,5 +455,52 @@ jQuery(window).load(function(){
 		$this.addClass('selected');
 	});
 
+});
+
+/*reset password Script*/
+$(function () {
+	var form = $("#resetPasswordForm");
+	var password = $("#password");
+	var confirm_pass = $("#password_confirm");
+	var infoBox = $("div.alert");
+
+	form.on("submit", function (evt) {
+		evt.preventDefault();
+		var newPass = password.val();
+		var confPass = confirm_pass.val();
+
+		if (newPass.length && confPass.length) {
+			if (newPass != confPass) {
+				infoBox.removeClass("alert-info").addClass("alert-danger").text("Both password fields should match. Please check and try again");
+				return false;
+			}else{
+				$.ajax({
+					url : '/email/authenticate/' + form.data("email"),
+					method : "POST",
+					data : {password : newPass, password_confirm : confPass},
+					success : function (successData) {
+						if (successData.code == 200) {
+							infoBox.removeClass("alert-info, alert-danger").addClass("alert-success")
+								.text("Password reset was successful. Redirecting you back to home page...");
+							window.location.href = '/';
+						}else{
+							infoBox.removeClass("alert-info, alert-danger").addClass("alert-danger")
+								.text("Password could not be reset. " + successData.message);
+						}
+					},
+					error : function (errorData) {
+						infoBox.removeClass("alert-info, alert-danger").addClass("alert-info")
+							.text("Password could not be reset. Check email and try again");
+						return false;
+
+					}
+				})
+			}
+		}else{
+			infoBox.removeClass("alert-info, alert-danger").addClass("alert-danger").text("Please enter new password in both fields");
+			return false;
+
+		}
+	})
 });
 /* ----------------- End JS Document ----------------- */

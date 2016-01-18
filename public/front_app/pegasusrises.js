@@ -1,4 +1,4 @@
-/* pegasusrises - v2.0 - 2016-01-13
+/* pegasusrises - v2.0 - 2016-01-18
  * pegasusrises.com
  * Copyright (c) 2016 BBG Digital Innovation Lab;
  * Licensed MIT
@@ -316,6 +316,7 @@ angular.module('pegasusApp.constants', [])
         sendPasswordResetToken : 'user/send/password/link',
         register : '/register',
         login : '/login',
+        reset : '/password/email',
         logout : '/logout'
     });
 angular.module('pegasusApp')
@@ -425,7 +426,7 @@ angular.module('pegasusApp.directives')
                 scope.verify = function (inputValue) {
                     var defer = $q.defer();
                     var data_to_post = {
-                        password_reset_email : inputValue
+                        email : inputValue
                     };
                     User.sendPasswordResetToken(data_to_post)
                         .success(function (successData) {
@@ -765,7 +766,7 @@ angular.module('pegasusApp.services')
             };
 
             User.sendPasswordResetToken = function(formObject){
-                return $http.post(PGRoutes.login, formObject);
+                return $http.post(PGRoutes.reset, formObject);
             };
 
             $rootScope.logoutUser = function(){

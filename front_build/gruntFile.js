@@ -51,6 +51,7 @@ module.exports = function (grunt) {
             html: ['src/public_index.html'],
             survey_html: ['src/public_survey.html'],
             unsubscribe_html: ['src/public_unsubscribe.html'],
+            reset_password_html: ['src/public_reset_password.html'],
             css: ['stylesheets/**.css', 'stylesheets/responsive.css', 'vendor/**/*.css'],
             assets : ['assets'],
             app_files : ['src/app/**/*.js'],
@@ -143,6 +144,14 @@ module.exports = function (grunt) {
             unsubscribe_html: {
                 src: ['<%= src.unsubscribe_html %>'],
                 dest: '<%= destinations.php_views %>/unsubscribe.php',
+                options: {
+                    force : true,
+                    process: true
+                }
+            },
+            reset_password_html: {
+                src: ['<%= src.reset_password_html %>'],
+                dest: '<%= destinations.php_views %>/password_recovery.php',
                 options: {
                     force : true,
                     process: true

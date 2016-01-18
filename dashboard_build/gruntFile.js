@@ -51,6 +51,7 @@ module.exports = function (grunt) {
             ],
             html: ['src/dashboard_index.html'],
             email: ['src/email_template.html'],
+            password_reset_email: ['src/password_reset_email_template.html'],
             tpl: {
                 app: ['src/app/**/*.tpl.html', 'src/common/**/*.tpl.html']
             },
@@ -90,6 +91,13 @@ module.exports = function (grunt) {
             respondent_email_template : {
                 src: ['<%= src.email %>'],
                 dest: '<%= distdirHtml %>/email_template.php',
+                options: {
+                    process: true
+                }
+            },
+            password_reset_email : {
+                src: ['<%= src.password_reset_email %>'],
+                dest: '<%= distdirHtml %>/password_email_template.php',
                 options: {
                     process: true
                 }

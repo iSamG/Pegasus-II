@@ -18,5 +18,6 @@ angular.module('pegasusApp.constants', [])
         sendPasswordResetToken : 'user/send/password/link',
         register : '/register',
         login : '/login',
+        reset : '/password/email',
         logout : '/logout'
     });

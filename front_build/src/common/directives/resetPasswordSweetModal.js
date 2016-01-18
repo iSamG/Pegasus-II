@@ -10,7 +10,7 @@ angular.module('pegasusApp.directives')
                 scope.verify = function (inputValue) {
                     var defer = $q.defer();
                     var data_to_post = {
-                        password_reset_email : inputValue
+                        email : inputValue
                     };
                     User.sendPasswordResetToken(data_to_post)
                         .success(function (successData) {
