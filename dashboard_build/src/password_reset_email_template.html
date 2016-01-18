@@ -79,7 +79,7 @@
               <tr style="margin: 5px 3px 20px !important;display: inline-block;">
                 <td class="RespoImage_LogoW" width="150" style="margin-bottom: 50px !important;">
                   <a href="http://www.bissame.com" style="border: none;">
-                    <img alt="Bissame Reset Password" border="0" class="RespoImage_Logo" src="http://www.bissame.com/front_app/assets/images/bissame.png" style="width: 150px; display: block;" width="150">
+                    <img alt="" border="0" class="RespoImage_Logo" src="http://www.bissame.com/front_app/assets/images/bissame.png" style="width: 150px; display: block;" width="150">
                   </a>
                 </td>
               </tr>

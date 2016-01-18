@@ -133,7 +133,7 @@
                     <div class="alert alert-info text-center h4">Please enter a new password to reset</div>
                 </div>
 
-                <form class="h3 text-center" id="resetPasswordForm" data-email="<?= $email ?> ">
+                <form class="h3 text-center" id="resetPasswordForm" data-email="<?= $email ?>">
                     <fieldset class="form-group col-xs-12 col-sm-8 col-md-4 center-block">
                         <label for="password" class="pull-left">New Password</label>
                         <input type="password" id="password" class="form-control">
